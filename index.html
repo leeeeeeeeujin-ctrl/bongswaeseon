@@ -8750,11 +8750,14 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
     else if (M.phase === "move") { const s = Math.max(0, Math.ceil(M.moveEnd - game.t)); label = `방어 지점 이동 · ${s}`; sub = "남아 있는 가사인격은 반환 없이 빠집니다"; col = "#ffcf6a"; }
     else if (M.moveAt !== null) { const s = Math.max(0, Math.ceil(M.moveAt - game.t)); label = `${P.name} · 이동까지 ${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`; }
     else label = P.name;
-    ctx.font = `700 17px ${FONT_KR}`; const w = ctx.measureText(label).width + 44;
-    ctx.fillStyle = "rgba(14,15,18,.72)"; ctx.fillRect(VW / 2 - w / 2, y - 16, w, 32);
-    ctx.fillStyle = col; ctx.fillRect(VW / 2 - w / 2, y - 16, 3, 32);
-    text(label, VW / 2, y + 6, 17, col, { align: "center", weight: 700 });
-    if (sub) text(sub, VW / 2, y + 34, 14, "rgba(255,220,150,.85)", { align: "center", weight: 500 });
+    // where the march stands, large under the top bar: the part, the time to the move, and the move itself in amber
+    const fs = TOUCH ? 27 : 22, bh = fs + 22, mv = M.phase === "move";
+    ctx.font = `800 ${fs}px ${FONT_KR}`; const w = ctx.measureText(label).width + 64, top = y - 18;
+    ctx.fillStyle = mv ? "rgba(60,38,6,.88)" : "rgba(14,15,18,.82)"; ctx.fillRect(VW / 2 - w / 2, top, w, bh);
+    ctx.fillStyle = col; ctx.fillRect(VW / 2 - w / 2, top, 5, bh); ctx.fillRect(VW / 2 + w / 2 - 5, top, 5, bh);
+    if (!M.choose && !mv && M.moveAt !== null && P.hold) { const f = Math.max(0, Math.min(1, (M.moveAt - game.t) / P.hold)); rect(VW / 2 - w / 2, top + bh - 3, w * f, 3, "rgba(255,255,255,.55)"); }   // the time left, as a bar
+    text(label, VW / 2, top + bh / 2 + fs * 0.36, fs, col, { align: "center", weight: 800 });
+    if (sub) { ctx.font = `600 ${fs - 7}px ${FONT_KR}`; const sw = ctx.measureText(sub).width + 30; rect(VW / 2 - sw / 2, top + bh + 6, sw, fs + 6, "rgba(10,11,13,.75)"); text(sub, VW / 2, top + bh + 6 + (fs + 6) / 2 + (fs - 7) * 0.36, fs - 7, "#ffdca0", { align: "center", weight: 600 }); }
   }
   // the road forks: an arrow off the edge of the part for each way on; everything waits until one is taken
   function drawRoute(M) {
@@ -8763,22 +8766,24 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
       const Q = M.def.parts[id], tx = Q.at[0] + (Q.map[0].length - 1) / 2, ty = Q.at[1] + (Q.map.length - 1) / 2;
       let dx = tx - cx, dy = ty - cy; const L = Math.hypot(dx, dy) || 1; dx /= L; dy /= L;
       const t = Math.min(dx ? (aw / 2) / Math.abs(dx) : 1e9, dy ? (ah / 2) / Math.abs(dy) : 1e9);
-      const [px, py] = P(cx + dx * (t + 0.9), cy + dy * (t + 0.9), 0), [qx, qy] = P(cx + dx * (t + 1.6), cy + dy * (t + 1.6), 0);
+      const [px, py] = camApply(...P(cx + dx * (t + 0.9), cy + dy * (t + 0.9), 0).slice(0, 2)), [qx, qy] = camApply(...P(cx + dx * (t + 1.6), cy + dy * (t + 1.6), 0).slice(0, 2));   // drawn over the field: follow the player's zoom
       const ang = Math.atan2(qy - py, qx - px), pulse = 1 + 0.08 * Math.sin(clock * 5);
       ctx.save(); ctx.translate(px, py);
-      ctx.fillStyle = "rgba(10,12,16,.82)"; ctx.beginPath(); ctx.arc(0, 0, 40, 0, Math.PI * 2); ctx.fill();
-      ctx.strokeStyle = "rgba(235,245,255,.9)"; ctx.lineWidth = 2; ctx.stroke();
-      ctx.rotate(ang); ctx.scale(pulse, pulse); ctx.fillStyle = "#fff";
+      ctx.fillStyle = "rgba(10,12,16,.86)"; ctx.beginPath(); ctx.arc(0, 0, 50, 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = "rgba(235,245,255,.95)"; ctx.lineWidth = 3; ctx.stroke();
+      ctx.rotate(ang); ctx.scale(pulse * 1.3, pulse * 1.3); ctx.fillStyle = "#fff";
       ctx.fillRect(-17, -3.5, 22, 7); ctx.beginPath(); ctx.moveTo(19, 0); ctx.lineTo(2, -13); ctx.lineTo(2, 13); ctx.closePath(); ctx.fill();   // an arrow with a shaft: no doubt which way it points
       ctx.restore();
       // the name and what lies there, beside the arrow on the side away from the middle of the screen, on a dark plate
-      const right = px < VW * 0.62, al = right ? "left" : "right", lx = px + (right ? 54 : -54);
-      ctx.font = `500 13px ${FONT_KR}`; const w2 = Math.max(Q.desc ? ctx.measureText(Q.desc).width : 0, 90) + 20;
-      ctx.fillStyle = "rgba(10,12,16,.78)"; ctx.fillRect(right ? lx - 10 : lx - w2 + 10, py - 26, w2, Q.desc ? 50 : 32);
-      ctx.fillStyle = "rgba(235,245,255,.85)"; ctx.fillRect(right ? lx - 10 : lx + 7, py - 26, 3, Q.desc ? 50 : 32);
-      text(Q.name, lx, py - 4, 18, "#fff", { align: al, weight: 900 });
-      if (Q.desc) text(Q.desc, lx, py + 16, 13, "#c8ccd4", { align: al, weight: 500 });
-      buttons.push({ x: px, y: py, r: 48, act: () => game.marchGo(id) });
+      const right = px < VW * 0.62, al = right ? "left" : "right", lx = px + (right ? 66 : -66), nf = TOUCH ? 27 : 23, df = TOUCH ? 19 : 16, ph = Q.desc ? nf + df + 30 : nf + 20;
+      ctx.font = `900 ${nf}px ${FONT_KR}`; const nw = ctx.measureText(Q.name).width; ctx.font = `500 ${df}px ${FONT_KR}`;
+      const w2 = Math.max(Q.desc ? ctx.measureText(Q.desc).width : 0, nw, 90) + 28;
+      ctx.fillStyle = "rgba(10,12,16,.86)"; ctx.fillRect(right ? lx - 12 : lx - w2 + 12, py - nf - 8, w2, ph);
+      ctx.fillStyle = "rgba(235,245,255,.9)"; ctx.fillRect(right ? lx - 12 : lx + 8, py - nf - 8, 4, ph);
+      text(Q.name, lx, py + 2, nf, "#fff", { align: al, weight: 900 });
+      if (Q.desc) text(Q.desc, lx, py + 10 + df, df, "#d8dce4", { align: al, weight: 500 });
+      buttons.push({ x: px, y: py, r: 58, act: () => game.marchGo(id) });
+      buttons.push({ x: right ? lx - 12 : lx - w2 + 12, y: py - nf - 8, w: w2, h: ph, act: () => game.marchGo(id) });   // the plate takes the tap too
     });
   }
   function banner(text, sub, kind) { banners.push({ text, sub, kind, t: 0, life: kind === "warn" ? 2.6 : kind === "op" ? 1.9 : 2.2 }); }
@@ -12833,9 +12838,10 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
     if (sub) text(sub, sx, sy - 96 + bob, 12, col, { align: "center", font: FONT_NUM, weight: 600, shadow: true });
   }
   function panel(ln) {
-    const lines = ln.txt.split("\n"), size = 21, lh = 40;
-    const w = panelOn ? Math.min(820, VW - 506) : 820, h = 50 + lines.length * lh, x = panelOn ? 490 : (VW - w) / 2;
-    const y = ln.at === "top" ? 92 : ln.at === "mid" ? 250 : VH - 150 - h - 20;
+    const BIG = TOUCH ? 1.3 : 1.12;   // the terminal's lines, larger, more so on a phone
+    const lines = ln.txt.split("\n"), size = Math.round(21 * BIG), lh = Math.round(40 * BIG), W0 = Math.round(820 * BIG);
+    const w = panelOn ? Math.min(W0, VW - 506) : Math.min(W0, VW - 40), h = Math.round(50 * BIG) + lines.length * lh, x = panelOn ? 490 : (VW - w) / 2;
+    const y = ln.at === "top" ? 88 : ln.at === "mid" ? 230 : VH - (TOUCH ? 180 : 150) - h - 16;
     const a = Math.min(1, ln.t * 5);
     ctx.save(); ctx.globalAlpha = a;
     const gr = ctx.createLinearGradient(x, 0, x + w, 0); gr.addColorStop(0, "rgba(6,18,26,.94)"); gr.addColorStop(1, "rgba(6,14,20,.86)");
@@ -12843,26 +12849,26 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
     rect(x, y, w, 2, "rgba(127,227,255,.75)"); rect(x, y, 5, h, TK_CYAN);
     const wd = ln.who && TD.UNITS.find((u) => u.id === ln.who), wim = wd && artOf(wd, null, "card");
     if (wd && wim && wim.complete && wim.naturalWidth) {   // who is speaking: their card portrait, framed, and their name
-      const ph = Math.min(h - 12, 92), pw = ph * wim.naturalWidth / wim.naturalHeight, px = x + 12, py = y + (h - ph) / 2;
+      const ph = Math.min(h - 12, Math.round(92 * BIG)), pw = ph * wim.naturalWidth / wim.naturalHeight, px = x + 12, py = y + (h - ph) / 2;
       ctx.save(); ctx.beginPath(); ctx.rect(px, py, pw, ph); ctx.clip(); ctx.drawImage(wim, px, py, pw, ph); ctx.restore();
       ctx.strokeStyle = TK_CYAN; ctx.lineWidth = 1.5; ctx.strokeRect(px + .5, py + .5, pw - 1, ph - 1);
       ln.ox = pw - 52;
-      text(TD.nameOf(wd, (game.cards.find((c) => c.def.id === wd.id) || { elite: 0 }).elite).main, x + 82 + ln.ox, y + 21, 14, "#7fe3ff", { weight: 800 });
+      text(TD.nameOf(wd, (game.cards.find((c) => c.def.id === wd.id) || { elite: 0 }).elite).main, x + 82 + ln.ox, y + Math.round(22 * BIG), Math.round(15 * BIG), "#7fe3ff", { weight: 800 });
     } else {
       ln.ox = 0;
       // the terminal's mark
       ctx.save(); ctx.translate(x + 44, y + h / 2); ctx.strokeStyle = TK_CYAN; ctx.lineWidth = 2.5;
       ctx.beginPath(); for (let i = 0; i < 6; i++) { const an = Math.PI / 6 + i * Math.PI / 3; ctx.lineTo(Math.cos(an) * 20, Math.sin(an) * 20); } ctx.closePath(); ctx.stroke();
       ctx.fillStyle = TK_CYAN; ctx.globalAlpha = a * (0.5 + 0.5 * Math.sin(clock * 4)); ctx.beginPath(); ctx.arc(0, 0, 6, 0, Math.PI * 2); ctx.fill(); ctx.restore();
-      text("LINK TERMINAL", x + 82, y + 19, 12, "rgba(127,227,255,.8)", { font: FONT_NUM, weight: 600 });
+      text("LINK TERMINAL", x + 82, y + Math.round(20 * BIG), Math.round(12 * BIG), "rgba(127,227,255,.8)", { font: FONT_NUM, weight: 600 });
     }
     // scan-in: each line wipes in left to right
     const rv = reveal(ln);
     lines.forEach((l, i) => {
       const p = Math.max(0, Math.min(1, rv * lines.length - i));
       if (p <= 0) return;
-      ctx.save(); ctx.beginPath(); ctx.rect(x + 80 + (ln.ox || 0), y + 28 + i * lh, (w - 100 - (ln.ox || 0)) * p, lh + 6); ctx.clip();
-      rubyLine(l, x + 82 + (ln.ox || 0), y + 66 + i * lh, size, "#eef6fa");
+      ctx.save(); ctx.beginPath(); ctx.rect(x + 80 + (ln.ox || 0), y + Math.round(28 * BIG) + i * lh, (w - 100 - (ln.ox || 0)) * p, lh + 6); ctx.clip();
+      rubyLine(l, x + 82 + (ln.ox || 0), y + Math.round(66 * BIG) + i * lh, size, "#eef6fa");
       ctx.restore();
     });
     if (ln.tap && rv >= 1) { ctx.globalAlpha = a * (0.5 + 0.5 * Math.sin(clock * 5)); text("▼", x + w - 24, y + h - 12, 14, TK_CYAN, { align: "center" }); }
