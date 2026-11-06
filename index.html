@@ -12026,112 +12026,134 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
     ctx.restore();
   }
 
+  // the operator panel, after the original: the illustration large down the left, fading into the field; over it the class,
+  // the name, the numbers, the reach, a long health bar, and the skill in readable type — all above the card row
+  const PANEL_ART = {};
+  function panelArt(d, card) {
+    const art = artOf(d, card, "e"); if (!ready(art)) return null;
+    const key = d.id + ":" + (card ? card.elite : 0); if (PANEL_ART[key] && PANEL_ART[key].src === art) return PANEL_ART[key].c;
+    const PW = 480, c = document.createElement("canvas"); c.width = PW * 1.5; c.height = VH * 1.5; const g = c.getContext("2d"); g.scale(1.5, 1.5);
+    const e2 = card && card.elite === 2 && d.art === true && !d.noTrueName;
+    const h = VH * 1.08, w = art.naturalWidth * h / art.naturalHeight, x = (PW - w) / 2 + 30 + (e2 ? -20 : 0), y = d.noTrueName ? 40 : -20;
+    g.drawImage(art, x, y, w, h);
+    g.globalCompositeOperation = "destination-out";   // fade to nothing on the right and at the bottom
+    const fr = g.createLinearGradient(PW - 170, 0, PW, 0); fr.addColorStop(0, "rgba(0,0,0,0)"); fr.addColorStop(1, "rgba(0,0,0,1)"); g.fillStyle = fr; g.fillRect(0, 0, PW, VH);
+    const fb = g.createLinearGradient(0, VH * 0.62, 0, VH * 0.92); fb.addColorStop(0, "rgba(0,0,0,0)"); fb.addColorStop(1, "rgba(0,0,0,1)"); g.fillStyle = fb; g.fillRect(0, 0, PW, VH);
+    PANEL_ART[key] = { src: art, c }; return c;
+  }
   function drawPanel(d, u, card) {
-    const PW = 400;
-    buttons.push({ x: 0, y: 0, w: PW, h: VH, act: () => {} });   // the panel swallows taps
+    const PW = 480, CW = 440;   // the panel, and the width its text keeps to
+    buttons.push({ x: 0, y: 0, w: PW - 40, h: VH - (TOUCH ? 170 : 130), act: () => {} });   // the panel swallows taps (not the card row under it)
     const col = CLS_COL[d.id];
     const bg = ctx.createLinearGradient(0, 0, PW, 0);
-    bg.addColorStop(0, "rgba(8,9,11,.97)"); bg.addColorStop(0.8, "rgba(8,9,11,.9)"); bg.addColorStop(1, "rgba(8,9,11,0)");
+    bg.addColorStop(0, "rgba(8,9,11,.9)"); bg.addColorStop(0.55, "rgba(8,9,11,.72)"); bg.addColorStop(1, "rgba(8,9,11,0)");
     ctx.fillStyle = bg; ctx.fillRect(0, 0, PW, VH);
-    // illustration
-    ctx.save(); ctx.beginPath(); ctx.rect(0, 70, PW - 20, 320); ctx.clip();
-    const art = artOf(d, card, "e");
-    if (ready(art)) {
-      const e2 = card && card.elite === 2 && d.art === true && !d.noTrueName;   // Subterror wears one illustration at every promotion
-      const sc = (PW - 20) / art.naturalWidth * 1.15, ox = e2 ? -60 : -30, oy = e2 ? -130 : d.noTrueName ? -5 : (d.art === true ? 40 : -20);
-      ctx.drawImage(art, ox, 70 + oy, art.naturalWidth * sc, art.naturalHeight * sc);
-    } else {
-      const pg = ctx.createLinearGradient(0, 70, 0, 390); pg.addColorStop(0, "#2a2d33"); pg.addColorStop(1, "#15171a");
-      ctx.fillStyle = pg; ctx.fillRect(0, 70, PW, 320);
-      drawOperator(ctx, d.id, 190, 520, 420, { face: 1, t: clock });
-    }
-    const sh = ctx.createLinearGradient(0, 250, 0, 390); sh.addColorStop(0, "rgba(8,9,11,0)"); sh.addColorStop(1, "rgba(8,9,11,1)");
-    ctx.fillStyle = sh; ctx.fillRect(0, 250, PW, 140);
-    ctx.restore();
+    const pa = panelArt(d, card);
+    if (pa) { ctx.globalAlpha = 0.95; ctx.drawImage(pa, 0, 0, PW, VH); ctx.globalAlpha = 1; }
+    else drawOperator(ctx, d.id, 300, 470, 380, { face: 1, t: clock });
+    // a dark wash under the text column so it reads over any picture
+    const tw = ctx.createLinearGradient(0, 0, 440, 0); tw.addColorStop(0, "rgba(6,7,9,.8)"); tw.addColorStop(0.6, "rgba(6,7,9,.55)"); tw.addColorStop(1, "rgba(6,7,9,0)"); ctx.fillStyle = tw; ctx.fillRect(0, 262, 440, VH - 262);
+    { const tt = ctx.createLinearGradient(0, 0, 260, 0); tt.addColorStop(0, "rgba(6,7,9,.6)"); tt.addColorStop(1, "rgba(6,7,9,0)"); ctx.fillStyle = tt; ctx.fillRect(0, 80, 260, 182); }
+    const lo = ctx.createLinearGradient(0, 330, 0, 400); lo.addColorStop(0, "rgba(6,7,9,0)"); lo.addColorStop(1, "rgba(6,7,9,.86)"); ctx.fillStyle = lo; ctx.fillRect(0, 330, PW - 30, VH - 330);
     // promotion toggle for operators with generated art
-    if ((d.art === true || (d.art && d.art.e2)) && card && (!onEnd || game.stage.sandbox)) {   // the training room may flip between promotions too
+    if ((d.art === true || (d.art && d.art.e2)) && card && (!onEnd || game.stage.sandbox)) {
       [0, 2].forEach((e, i) => {
-        const bx = 278 + i * 50, by = 82, on = card.elite === e;
-        ctx.fillStyle = on ? "#f2f3f5" : "rgba(10,11,13,.8)"; ctx.fillRect(bx, by, 44, 30);
-        ctx.strokeStyle = "rgba(255,255,255,.4)"; ctx.lineWidth = 1; ctx.strokeRect(bx + .5, by + .5, 43, 29);
-        text("E" + e, bx + 22, by + 21, 16, on ? "#0b0c0e" : "#fff", { align: "center", font: FONT_NUM, weight: 700 });
-        buttons.push({ x: bx, y: by, w: 44, h: 30, act: () => { card.elite = e; } });
+        const bx = 330 + i * 54, by = 92, on = card.elite === e;
+        ctx.fillStyle = on ? "#f2f3f5" : "rgba(10,11,13,.8)"; ctx.fillRect(bx, by, 48, 32);
+        ctx.strokeStyle = "rgba(255,255,255,.4)"; ctx.lineWidth = 1; ctx.strokeRect(bx + .5, by + .5, 47, 31);
+        text("E" + e, bx + 24, by + 23, 17, on ? "#0b0c0e" : "#fff", { align: "center", font: FONT_NUM, weight: 700 });
+        buttons.push({ x: bx, y: by, w: 48, h: 32, act: () => { card.elite = e; } });
       });
     }
-    classIcon(ctx, d.id, 24, 318, 30, col);
-    text(d.cls, 62, 340, 16, "#c8ccd4", { shadow: true });
-    if (d.sub) { ctx.font = `500 16px ${FONT_KR}`; const cw = ctx.measureText(d.cls).width; text("·", 62 + cw + 8, 340, 16, "#8a909c"); wrapText("{" + d.sub + "}", 62 + cw + 22, 340, 200, 16, "#c8ccd4", 20); }   // 세부 분류: tap for what it means
+    // class mark in a gold-edged box, the name under it
+    rect(22, 92, 66, 66, "rgba(10,11,13,.9)"); ctx.strokeStyle = "#e8c45a"; ctx.lineWidth = 2.5; ctx.strokeRect(23, 93, 64, 64);
+    classIcon(ctx, d.id, 32, 102, 46, col);
     const nm = TD.nameOf(d, card ? card.elite : undefined);
-    ctx.font = `900 36px ${FONT_KR}`; const nw = ctx.measureText(nm.main).width;
-    text(nm.main, 24, 384, 36, "#fff", { weight: 900, shadow: true });
-    if (nm.sub) text(nm.sub, 24 + nw + 10, 384, 17, "#c8ccd4", { weight: 700, shadow: true });
-    if (u) text(`배치 ${Math.round(game.t - u.born)}초`, PW - 30, 384, 14, "#8a8f99", { align: "right" });
-    else text(`코스트 ${game.costOf(card)} · 저지 ${u ? game.stat(u, "block") : (d.blockE && card ? Object.keys(d.blockE).reduce((v, e) => card.elite >= +e ? Math.max(v, d.blockE[e]) : v, d.block) : d.block)}`, PW - 30, 384, 14, "#c8ccd4", { align: "right", weight: 700 });
-    const stats = [["체력", u ? `${Math.ceil(u.hp)}/${u.hpTop || u.maxHp}` : d.hp], ["공격", u ? Math.round(game.stat(u, "atk")) : d.atk],
-      ["방어", u ? Math.round(game.stat(u, "def")) : d.def], ["마법 저항", d.res], ["저지", u ? game.stat(u, "block") : d.block], ["재배치", (d.redeploy - (card && card.pot ? card.pot.redeploy : 0)) + "s"]];
+    ctx.font = `900 38px ${FONT_KR}`; const nw = ctx.measureText(nm.main).width;
+    text(nm.main, 22, 204, 38, "#fff", { weight: 900, shadow: true });
+    if (nm.sub) text(nm.sub, 22 + nw + 10, 204, 18, "#c8ccd4", { weight: 700, shadow: true });
+    ctx.font = `600 18px ${FONT_KR}`; const cw = ctx.measureText(d.cls).width;
+    text(d.cls, 22, 234, 18, "#d8dbe0", { weight: 600, shadow: true });
+    if (d.sub) { text("·", 22 + cw + 8, 234, 18, "#8a909c"); wrapText("{" + d.sub + "}", 22 + cw + 22, 234, 220, 18, "#d8dbe0", 22); }
+    if (card) text(`정예화 ${card.elite}`, 22, 260, 15, "#9aa0aa", { weight: 700, shadow: true });
+    // numbers: two short columns, the reach beside them
+    const blk = u ? game.stat(u, "block") : (d.blockE && card ? Object.keys(d.blockE).reduce((v, e) => card.elite >= +e ? Math.max(v, d.blockE[e]) : v, d.block) : d.block);
+    const stats = [["공격", u ? Math.round(game.stat(u, "atk")) : d.atk], ["방어", u ? Math.round(game.stat(u, "def")) : d.def], ["마법 저항", d.res],
+      ["저지", blk], ["재배치", (d.redeploy - (card && card.pot ? card.pot.redeploy : 0)) + "s"], u ? ["배치", Math.round(game.t - u.born) + "s"] : ["코스트", game.costOf(card)]];
     stats.forEach(([k, v], i) => {
-      const x = 24 + (i % 2) * 180, y = 418 + Math.floor(i / 2) * 30;
-      text(k, x, y, 14, "#8a8f99");
-      text(String(v), x + 160, y, 17, "#fff", { align: "right", font: FONT_NUM, weight: 500 });
-      rect(x, y + 8, 160, 1, "rgba(255,255,255,.1)");
+      const x = 22 + Math.floor(i / 3) * 170, y = 292 + (i % 3) * 28;
+      text(k, x, y, 16, "#b4b9c2", { weight: 600, shadow: true });
+      text(String(v), x + 150, y, 20, "#fff", { align: "right", font: FONT_NUM, weight: 500, shadow: true });
     });
-    // tabs, as in the original: 스킬 · 재능 · 모듈
+    // the reach, small, facing right
+    { const offs = RANGE[TD.rangeKeyOf(d, card ? card.elite : 0)] || [], cs = 12, xs = offs.map((o) => o[0]), ys = offs.map((o) => o[1]);
+      const x0 = Math.min(0, ...xs), x1 = Math.max(0, ...xs), y0 = Math.min(0, ...ys), y1 = Math.max(0, ...ys), sc = Math.min(1, 74 / ((x1 - x0 + 1) * cs), 62 / ((y1 - y0 + 1) * cs)), c2 = cs * sc;
+      const bx = 362 + (90 - (x1 - x0 + 1) * c2) / 2, by = 270 + (66 - (y1 - y0 + 1) * c2) / 2;
+      for (const [ox, oy] of offs) { ctx.strokeStyle = "rgba(255,255,255,.75)"; ctx.lineWidth = 1.2; ctx.strokeRect(bx + (ox - x0) * c2 + 1, by + (oy - y0) * c2 + 1, c2 - 2, c2 - 2); }
+      rect(bx + (0 - x0) * c2 + 1, by + (0 - y0) * c2 + 1, c2 - 2, c2 - 2, "#ff8a3a");
+      text("공격 범위", 407, 352, 14, "#c8ccd4", { align: "center", weight: 700, shadow: true }); }
+    // health: a long bar across, the number in a chip at its end
+    const hpNow = u ? Math.ceil(u.hp) : d.hp, hpMax = u ? (u.hpTop || u.maxHp) : d.hp, hf = Math.max(0, Math.min(1, hpNow / hpMax));
+    rect(0, 372, 340, 5, "rgba(255,255,255,.18)"); rect(0, 372, 340 * hf, 5, "#2aa7ec");
+    text("체력", 292, 366, 15, "#fff", { align: "right", weight: 700, shadow: true });
+    ctx.font = `500 17px ${FONT_NUM}`; const hw = ctx.measureText(`${hpNow}/${hpMax}`).width + 16;
+    rect(300, 352, hw, 24, "#1e8fd6"); text(`${hpNow}/${hpMax}`, 300 + hw / 2, 370, 17, "#fff", { align: "center", font: FONT_NUM, weight: 500 });
+    // tabs, as in the original
     if (d.cls === "소환물") {
-      text(d.talent.name, 24, 518, 15, "#ffd27a", { weight: 700 });
-      const tl = wrapText(d.talent.desc, 24, 540, PW - 52, 14, "#d8dbe0", 19, 0), dy = (tl - 1) * 19;
-      text("그려진 소환물", 24, 580 + dy, 15, "#ffd27a", { weight: 700 });
-      wrapText("주인이 퇴각하면 함께 사라짐. 찢어지면 15초 뒤 다시 그릴 수 있음.", 24, 604 + dy, PW - 52, 14, "#d8dbe0", 20);
+      text(d.talent.name, 22, 418, 19, "#ffd27a", { weight: 700 });
+      const tl = wrapText(d.talent.desc, 22, 446, CW - 20, 17, "#e2e5ea", 24, 0, true), dy = (tl - 1) * 24;
+      text("그려진 소환물", 22, 486 + dy, 18, "#ffd27a", { weight: 700 });
+      wrapText("주인이 퇴각하면 함께 사라짐. 찢어지면 15초 뒤 다시 그릴 수 있음.", 22, 512 + dy, CW - 20, 17, "#e2e5ea", 24);
       return;
     }
     const TABS = [["skill", "스킬"], ["talent", "재능"], ["module", "모듈"]];
+    rect(0, 388, 430, 36, "rgba(30,31,35,.85)");
     TABS.forEach(([k, label], i) => {
-      const bx = 24 + i * 118, by = 500, on = panelTab === k;
-      ctx.fillStyle = on ? "#f2f3f5" : "rgba(255,255,255,.06)"; ctx.fillRect(bx, by, 110, 30);
-      text(label, bx + 55, by + 21, 15, on ? "#0b0c0e" : "#c8ccd4", { align: "center", weight: 700 });
-      buttons.push({ x: bx, y: by, w: 110, h: 30, act: () => { panelTab = k; } });
+      const bx = i * 143, by = 388, on = panelTab === k;
+      if (on) rect(bx, by, 143, 36, "rgba(70,72,78,.95)");
+      if (on) rect(bx, by + 33, 143, 3, "#fff");
+      text(label, bx + 71, by + 25, 18, on ? "#fff" : "#9aa0aa", { align: "center", weight: 700 });
+      buttons.push({ x: bx, y: by, w: 143, h: 36, act: () => { panelTab = k; } });
     });
     const sc = d.summon && u && game.summonCard(u);
     if (sc) {
       const pend = sc.chargeT.length ? ` · 다음 ${Math.ceil(Math.min(...sc.chargeT))}초` : "";
-      text(`낙서 ${sc.charges}장 남음${pend}`, PW - 30, 492, 13, "#ff8a8a", { align: "right", weight: 700 });
+      text(`낙서 ${sc.charges}장 남음${pend}`, 330, 344, 14, "#ff8a8a", { weight: 700, shadow: true });
     }
-    if (panelTab === "talent") {   // the talents (the second greyed until the second promotion), and under them what the 세부 분류 means
-      const el = card ? card.elite : 2; let y0 = 560;
+    if (panelTab === "talent") {
+      const el = card ? card.elite : 2; let y0 = 456;
       for (const T of d.talents || [d.talent]) {
         const lock = (T.elite || 0) > el;
-        text(T.name, 24, y0, 17, lock ? "#6a6f78" : "#ffd27a", { weight: 700 });
-        if (lock) text(`정예화 ${T.elite} 해금`, PW - 30, y0, 13, "#6a6f78", { align: "right", weight: 600 });
-        const tl = wrapText(T.desc, 24, y0 + 24, PW - 52, 14, lock ? "#5c616a" : "#d8dbe0", 20, 0); y0 += 24 + tl * 20 + 18;
+        text(T.name, 22, y0, 19, lock ? "#6a6f78" : "#ffd27a", { weight: 700 });
+        if (lock) text(`정예화 ${T.elite} 해금`, CW - 10, y0, 14, "#6a6f78", { align: "right", weight: 600 });
+        const tl = wrapText(T.desc, 22, y0 + 26, CW - 20, 17, lock ? "#5c616a" : "#e2e5ea", 24, 0, !lock); y0 += 26 + tl * 24 + 14;
       }
-      y0 -= 4;
       if (d.sub) {
-        rect(24, y0 - 10, PW - 52, 1, "rgba(255,255,255,.12)");
-        classIcon(ctx, d.id, 24, y0 + 2, 20, "#9fd0ff");
-        text(d.sub, 52, y0 + 18, 15, "#9fd0ff", { weight: 700 });
-        wrapText(((TD.STATUS || {})[d.sub] || {}).desc || "", 24, y0 + 42, PW - 52, 14, "#b8c0cc", 20, 0);
+        y0 -= 2; rect(22, y0 - 12, CW - 30, 1, "rgba(255,255,255,.12)");
+        classIcon(ctx, d.id, 22, y0 + 2, 22, "#9fd0ff");
+        text(d.sub, 52, y0 + 19, 17, "#9fd0ff", { weight: 700 });
+        wrapText(((TD.STATUS || {})[d.sub] || {}).desc || "", 22, y0 + 46, CW - 20, 16, "#b8c0cc", 22, 0);
       }
       return;
     }
     if (panelTab === "module") {
-      ctx.globalAlpha = 0.6; classIcon(ctx, d.id, PW / 2 - 40, 560, 36, "#8a8f99"); ctx.globalAlpha = 1;
-      text("모듈 시스템 미개방", PW / 2 + 6, 586, 16, "#8a8f99", { weight: 700 });
-      text("모듈 시스템이 열리면 장착한 모듈의 효과가 여기에 표시됩니다.", 24, 632, 13, "#6a6f79");
+      ctx.globalAlpha = 0.6; classIcon(ctx, d.id, 22, 446, 40, "#8a8f99"); ctx.globalAlpha = 1;
+      text("모듈 시스템 미개방", 74, 474, 19, "#9aa0aa", { weight: 700 });
+      wrapText("모듈 시스템이 열리면 장착한 모듈의 효과가 여기에 표시됩니다.", 22, 518, CW - 20, 16, "#7d828c", 22);
       return;
     }
-    // skills: pick one before deploying, like the squad screen
+    // the skill it carries: its mark, name, how it charges, and what it does
     const sel = u ? d.skills.indexOf(u.skill.base || u.skill) : card.skillIdx;
-    const list = [sel];   // only the skill it carries; which one is chosen in the squad, not here
-    list.forEach((i, n) => {
-      const bx = 24 + n * 62, by = 548, on = i === sel;
-      ctx.fillStyle = on ? "#1c1d22" : "#111216"; ctx.fillRect(bx, by, 52, 52);
-      ctx.strokeStyle = on ? "#ffe066" : "rgba(255,255,255,.25)"; ctx.lineWidth = on ? 2.5 : 1; ctx.strokeRect(bx + .5, by + .5, 51, 51);
-      skillGlyph(d, i, bx + 26, by + 26, on);
-      text("S" + (i + 1), bx + 4, by + 14, 11, on ? "#ffe066" : "#8a8f99", { font: FONT_NUM, weight: 600 });
-    });
-    const s = d.skills[sel];
-    text(s.name, 24 + list.length * 62 + 6, 570, 19, "#ffe066", { weight: 900 });
-    text(`${s.mode === "auto" ? "자동" : "수동"} · ${s.spType === "hit" ? "피격 회복" : s.spType === "atk" ? "공격 회복" : "자동 회복"} · SP ${s.sp}${s.dur ? (s.ammo ? ` · 탄약 ${s.dur}발` : ` · ${s.dur}초`) : ""}`, 24 + list.length * 62 + 6, 592, 13, "#8a8f99");
-    wrapText(s.desc, 24, 626, PW - 52, 14, "#d8dbe0", 20, 0);
+    const s = d.skills[sel], bx = 22, by = 436;
+    rect(bx, by, 62, 62, "#15161a"); ctx.strokeStyle = "#ffe066"; ctx.lineWidth = 2.5; ctx.strokeRect(bx + 1, by + 1, 60, 60);
+    skillGlyph(d, sel, bx + 31, by + 31, true);
+    text("S" + (sel + 1), bx + 5, by + 15, 12, "#ffe066", { font: FONT_NUM, weight: 600 });
+    text(s.name, 98, 460, 22, "#fff", { weight: 900, shadow: true });
+    const tags = [s.mode === "auto" ? "자동" : "수동", s.spType === "hit" ? "피격 회복" : s.spType === "atk" ? "공격 회복" : "자동 회복"];
+    let tx = 98;
+    tags.forEach((t, i) => { ctx.font = `700 14px ${FONT_KR}`; const w = ctx.measureText(t).width + 16; rect(tx, 472, w, 22, i ? "#5a8f2b" : "#4a4c52"); text(t, tx + w / 2, 488, 14, "#fff", { align: "center", weight: 700 }); tx += w + 6; });
+    text(`SP ${s.sp}${s.dur ? (s.ammo ? ` · ${s.dur}발` : ` · ${s.dur}초`) : ""}`, tx + 4, 489, 15, "#c8ccd4", { font: FONT_NUM, weight: 500 });
+    wrapText(s.desc, 22, 526, CW - 20, 17, "#e2e5ea", 24, 0, true);
   }
   function skillGlyph(d, i, x, y, on) {
     const id = d.skills[i].id || d.id;
@@ -12145,19 +12167,20 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
   }
   // wrapped text; {용어} becomes an underlined term in its own colour that opens its explanation when tapped (oy: any translate the caller is under)
   let kwTip = null, panelTab = "skill";
-  function wrapText(str, x, y, w, size, col, lh, oy = 0) {
+  function wrapText(str, x, y, w, size, col, lh, oy = 0, nums = false) {
     ctx.font = `500 ${size}px ${FONT_KR}`;
     const ST = TD.STATUS || {}, chars = [];
-    String(str).replace(/\{([^}]+)\}|([\s\S])/g, (m, kw, ch) => { if (kw) for (const c of kw) chars.push([c, kw]); else chars.push([ch, null]); return ""; });
+    // nums: figures (+20%, 1.5, 3초's 3) in the original's blue
+    String(str).replace(/\{([^}]+)\}|([+\-]?\d+(?:\.\d+)?%?)|([\s\S])/g, (m, kw, num, ch) => { if (kw) for (const c of kw) chars.push([c, kw]); else if (num) for (const c of num) chars.push([c, nums ? "#num" : null]); else chars.push([ch, null]); return ""; });
     let line = [], yy = y;
     const flush = () => {
       let cx = x, i = 0;
       while (i < line.length) {
         const kw = line[i][1]; let j = i, seg = "";
         while (j < line.length && line[j][1] === kw) seg += line[j++][0];
-        const sw = ctx.measureText(seg).width, c = kw ? (ST[kw] || {}).col || "#ffd27a" : col;
+        const sw = ctx.measureText(seg).width, c = kw === "#num" ? "#4fb8ff" : kw ? (ST[kw] || {}).col || "#ffd27a" : col;
         text(seg, cx, yy, size, c, { weight: kw ? 700 : 500 });
-        if (kw) {
+        if (kw && kw !== "#num") {
           rect(cx, yy + 3, sw, 1, c);
           const bx = cx, by = yy;
           buttons.push({ x: bx - 2, y: by - size - 2 + oy, w: sw + 4, h: size + 8, kw, act: () => { kwTip = { name: kw, x: bx, y: by + 8 + oy }; } }); kwRects[kw] = { x: bx - 4, y: by - size - 4 + oy, w: sw + 8, h: size + 12 };
