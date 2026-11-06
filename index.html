@@ -5364,6 +5364,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
   // every operator's 세부 분류
   const SUBOF = {"belina": "척후병", "tao": "척후병", "rabi6": "돌격수", "falchion": "돌격수", "hakuren": "기수", "veil": "로드", "geomseon": "로드", "rabi": "파이터", "lulu": "소드마스터", "hiro": "공격수", "yui": "가디언", "sunae": "프로텍터", "ker": "프로텍터", "eungyeol": "저거너트", "brick": "프로텍터", "bongeun": "명사수", "alpha": "명사수", "nana": "저격수", "capy": "포격사수", "skakea2": "코어 캐스터", "irins": "코어 캐스터", "lilith": "코어 캐스터", "piania": "멀티 타겟 메딕", "angelina": "멀티 타겟 메딕", "miho": "메딕", "ayaki": "메딕", "teka": "감속자", "jayeon": "감속자", "atat": "소환사", "silphy": "약화자", "smoqueen": "약화자", "skakea": "푸쉬마스터", "alpha2": "처형자"};
   for (const d of UNITS) if (SUBOF[d.id]) d.sub = SUBOF[d.id];
+  for (const d of UNITS) if (d.sub === "감속자") { d.slow = 0.8; d.slowDur = 0.8; }   // the trait as written: every hit holds the target at a fifth of its pace for 0.8s ({정지})
   for (const d of UNITS) if (d.cls === "저격" && d.sub !== "저격수" && d.sub !== "포격사수") d.airFirst = true;   // the marksmen take what flies first; the long rifles and the guns keep to their own
   for (const d of UNITS) { if (d.talents) d.talent = d.talents[0]; else if (d.talent) d.talents = [Object.assign({ elite: 0 }, d.talent)]; }   // 제1·제2 재능: every operator has a list; the second opens at the second promotion
   const HOLY = { max: 1000, dur: 10, dps: 100, onHit: 0.1 };
@@ -11215,7 +11216,11 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
           holyRing(e, sx, by0, bk, k); erodeRing(e, sx, by0, bk, k);
           if (e.sleepT > 0) sleepZs(sx, by0 - k * 0.08, k, e); else if (e.stunT > 0) stunStars(sx, by0 - k * 0.08, k);
         });
-        if (e.slowT > 0) { ctx.strokeStyle = "rgba(120,200,255,.8)"; ctx.lineWidth = 2; ctx.beginPath(); ctx.ellipse(sx, sy, k * 0.3, k * 0.1, 0, 0, Math.PI * 2); ctx.stroke(); }
+        if (e.slowT > 0 && !e.def.flying) {   // held back: a cold ring on the ground under it, brighter the harder it is held
+          const st = Math.min(1, e.slowAmt || 0);
+          ctx.fillStyle = `rgba(120,200,255,${0.12 + 0.18 * st})`; ctx.strokeStyle = `rgba(150,215,255,${0.55 + 0.4 * st})`; ctx.lineWidth = 1.5 + st * 1.5;
+          ctx.beginPath(); ctx.ellipse(sx, sy, k * 0.34, k * 0.11, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+        }
       }
     }
 
