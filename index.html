@@ -3666,7 +3666,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
     drone:   { name: "정찰 드론", info: ["하늘을 나는 정찰 드론. 근거리 가사인격은 막을 수 없다.", "병사를 실어 나르기도 한다. 저격으로 떨어뜨리자."], hp: 800, atk: 0, def: 50, res: 0, speed: 0.9, interval: 99, weight: 0, mass: 0, life: 1, flying: true },
     hexer:   { name: "척후병", info: ["멀리서 총을 쏘는 척후병.", "사거리 안에 가사인격이 들어오면 멈춰 서서 조준한다."], hp: 1400, atk: 220, def: 100, res: 0, speed: 0.7, interval: 2.8, weight: 1, mass: 2, life: 1, ranged: 2.2 },
     // the shield bearers the balloon corps sets down beside every place to stand: whoever is in reach hits the shield first
-    shield:  { name: "방패병", info: ["커다란 방패를 앞세운 망령 보병.", "사거리 안 가사인격의 공격을 먼저 받아 낸다. 마법이나 범위 공격으로 뚫자."], hp: 2600, atk: 180, def: 420, res: 0, speed: 0.6, interval: 2.2, weight: 1, mass: 2, life: 1, taunt: true },
+    shield:  { name: "방패병", info: ["커다란 방패를 앞세운 망령 보병.", "주변 가사인격의 공격을 먼저 받아 낸다. 마법으로 뚫자."], hp: 2600, atk: 180, def: 420, res: 0, speed: 0.6, interval: 2.2, weight: 1, mass: 2, life: 1, taunt: true },
     // the balloon corps: a slow, heavy airship that carries men over the lines and lets them down on ropes, one stop after another
     airship: { name: "수송 비행선", info: ["병사를 싣고 전장 위를 건너는 비행선. 느리지만 단단하다.", "멈춰 설 때마다 병사를 내려보낸다. 내리기 전에 떨어뜨리자."], hp: 3800, atk: 0, def: 120, res: 10, speed: 0.4, interval: 99, weight: 0, mass: 0, life: 1, flying: true, carrier: true },
     boss:    { name: "독수리 기수", hp: 16000, atk: 850, def: 450, res: 30, speed: 0.42, interval: 2.2, weight: 2, mass: 4, life: 3, boss: true },
@@ -3810,11 +3810,11 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
   const UP = { via: [[2, 0], [4, 0]] }, DOWN = { via: [[2, 4], [5, 4]] };
   const RANGED_AIM = 0.7, RANGED_HOLD = 0.35;   // how long a rifleman stands with his sights up before each shot, and stays put after it
   const AIR_DROP = { hover: 2.2, lead: 0.5, gap: 0.45 };   // an airship's stop: how long it holds, when the first man goes, the gap between men
-  // BL-06's airship runs: the stops on each crossing, [where, who, how many]
+  // BL-06: the ones the first airships already set down before the operation opens, each on the mud beside a place to stand
+  const GARRISON6 = [[8, 1, "shield"], [9, 1, "hexer"], [5, 2, "shield"], [6, 4, "shield"], [4, 4, "hexer"], [10, 4, "shield"], [9, 4, "hexer"]];
   // BL-06's airship runs: the stops on each crossing, [where, who, how many] — each stop sits beside a place to stand
   const AIR = { a: { drops: [[[8, 1], "shield", 1], [[9, 3], "hexer", 1]] }, b: { drops: [[[5, 2], "shield", 1], [[4, 4], "hexer", 1]] },
-    c: { drops: [[[5, 2], "hexer", 1], [[8, 1], "shield", 2]] }, d: { drops: [[[6, 4], "shield", 1], [[9, 3], "hexer", 1]] },
-    e: { drops: [[[5, 2], "shield", 1], [[8, 1], "hexer", 1], [[9, 3], "shield", 1]] } };
+    c: { drops: [[[6, 4], "shield", 1], [[9, 3], "hexer", 1]] }, e: { drops: [[[5, 2], "hexer", 1], [[8, 1], "shield", 1]] } };
   const LAND = [{ land: [9, 1], drop: "soldier" }, { land: [2, 2], drop: "dog" }, { land: [7, 4], drop: "soldier" }];
   const STAGES = [
     { code: "BL-01", name: "마트로 가는 길", map: MAP_C1.alley, bg: "bg_c1_alley", cam: [0.8368, 14.6214, 1553.44, 640.28, 285.49], hz: 0.5, mul: { hp: 0.7, atk: 0.85, def: 0.5 },
@@ -3852,8 +3852,8 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
       boss: ["", ""], desc: "방어 지점 바로 곁의 두 입구에서 적이 동시에 나옵니다. 입구와 방어 지점 앞은 배치할 수 없습니다. 양쪽 물량을 끝까지 버티십시오.",
       lose: "두 길이 만나는 가운데를 두텁게 막으세요." },
     { code: "BL-06", name: "낙하 지점", map: MAP_C1.drop, bg: "bg_c1_drop", cam: [0.86, 13.5, 942.04, 640, 271.14], hz: 0.5, mul: { hp: 0.45, atk: 0.6, def: 0.7 },
-      waves: W1([[8, "soldier", 1, 2, 4], [18, "airship", 0, 1, 0, AIR.a], [32, "dog", 1, 3, 1.2], [42, "airship", 0, 1, 0, AIR.b], [52, "heavy", 1], [58, "soldier", 1, 3, 2],
-        [68, "airship", 0, 2, 10, [AIR.c, AIR.d]], [82, "heavy", 1], [86, "dog", 1, 4, 1], [96, "airship", 0, 1, 0, AIR.e], [102, "soldier", 1, 4, 1.5], [112, "dog", 1, 4, 0.8]]),
+      waves: W1([...GARRISON6.map(([x, y, ty]) => [0.2, ty, 0, 1, 0, { at: [x, y], until: 96 }]), [10, "soldier", 1, 2, 4], [22, "airship", 0, 1, 0, AIR.a], [36, "dog", 1, 3, 1.2],
+        [48, "airship", 0, 1, 0, AIR.b], [58, "heavy", 1], [70, "airship", 0, 1, 0, AIR.c], [84, "soldier", 1, 3, 2], [100, "airship", 0, 1, 0, AIR.e], [108, "dog", 1, 3, 1]]),
       boss: ["", ""], desc: "땅길이 막히자 정규군이 비행선으로 넘어옵니다. 지상에 설 수 있는 자리는 몇 곳뿐이고, 비행선은 그 곁마다 방패병과 척후병을 내려놓습니다. 방패병은 사거리 안 가사인격의 공격을 먼저 받아 냅니다.",
       lose: "비행선은 저격으로 미리 떨어뜨리고, 방패병은 술사의 마법으로 뚫으세요. 착지 지점 곁의 자리는 내리기 전에 먼저 차지해 두세요." },
     { code: "BL-07", name: "봉쇄선", waves: WAVES_NEY, mul: { hp: 0.5, atk: 0.6, def: 0.7 }, boss: ["경고: 마탄의 사수", "미셸 네 · WARNING"],
@@ -4446,7 +4446,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
     }
     spawn(type, s, o) {
       const d = ENEMIES[type];
-      let path = o && o.land ? [SPAWNS[s].slice(), o.land.slice()] : o && o.drops ? [SPAWNS[s].slice(), ...o.drops.map((q) => q[0].slice()), BASE.slice()] : d.flying ? AIR_PATHS[s] : o && o.via ? viaPath(s, o.via) : PATHS[s];
+      let path = o && o.at ? (bfsPath(o.at, BASE) || [o.at.slice(), BASE.slice()]) : o && o.land ? [SPAWNS[s].slice(), o.land.slice()] : o && o.drops ? [SPAWNS[s].slice(), ...o.drops.map((q) => q[0].slice()), BASE.slice()] : d.flying ? AIR_PATHS[s] : o && o.via ? viaPath(s, o.via) : PATHS[s];
       if (!path) path = AIR_PATHS[s];   // a foot soldier sent through a gate only drones use: let it float in rather than break
       this.enemies.push({ id: this.uid++, isEnemy: true, type, def: d, path, seg: 0, segT: 0, x: path[0][0], y: path[0][1],
         hp: d.hp, maxHp: d.hp, defv: d.def, res: d.res, blockedBy: null, atkT: d.interval * 0.5,
@@ -4454,6 +4454,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
       const e = this.enemies[this.enemies.length - 1];
       const mul = this.stage.mul; if (mul) { e.hp = e.maxHp = Math.round(e.hp * (mul.hp || 1)); e.atkMul = mul.atk || 1; if (mul.def) e.defMul0 = mul.def; }   // early stages field weaker men
       if (o && o.land) { e.land = o.land; e.drop = o.drop || "soldier"; }
+      if (o && o.at) e.postUntil = o.until || 1e9;   // a garrison: it holds its square (and fights from it) until then
       if (o && o.drops) { e.drops = o.drops.map(([at, type, n]) => ({ at, type, n: n || 1 })); e.dropI = 0; e.hoverT = 0; e.cargo = e.drops.reduce((a, q) => a + q.n, 0); }
       if (o && o.pre) { this.advance(e, o.pre.adv); e.hold = true; e.holdUntil = o.pre.until; }   // already out on the square when the operation opens: they stand there until the column comes   // a drone carrying a man: it sets him down and is gone
       if (d.charge) e.chargeCD = d.charge.every * 0.6;
@@ -5006,7 +5007,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
             m.path = bfsPath(q.at, BASE) || [q.at.slice(), BASE.slice()]; m.seg = 0; m.segT = 0; m.x = q.at[0] + off[0] * 0.5; m.y = q.at[1] + off[1] * 0.5; m.remain = segLen(m.path); m.dropT = this.t;
             this.total++; this.fx.push({ k: "land", x: m.x, y: m.y, t: 0, life: 0.8 });
           }
-        } else if (!e.blockedBy && !e.heldBy && !e.aiming && !settling) {
+        } else if (!e.blockedBy && !e.heldBy && !e.aiming && !settling && !(e.postUntil > this.t)) {
           const step = e.def.speed * (1 - slow) * (e.chargeT > 0 ? ch.mult : 1) * dt;
           const sx = e.x, sy = e.y, sseg = e.seg, st = e.segT;
           let reached = this.advance(e, step);
@@ -7550,6 +7551,30 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
     terrain = drawTerrain();
   }
 
+  function drawMud(g, x, y) {
+    let sd = (x * 73856093) ^ (y * 19349663); const rnd = () => ((sd = (sd * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff);
+    const q = quad(x, y, 0), ctr = P(x, y, 0), k = ctr[2];
+    g.save();
+    poly(g, q.map((p) => [ctr[0] + (p[0] - ctr[0]) * 1.04, ctr[1] + (p[1] - ctr[1]) * 1.04])); g.clip();
+    // the slush itself: a dark wet layer, thicker in the middle and fading at the edges into the next square
+    for (let i = 0; i < 6; i++) {
+      const px = ctr[0] + (rnd() - 0.5) * k * 0.7, py = ctr[1] + (rnd() - 0.5) * k * 0.3, r = k * (0.35 + rnd() * 0.3);
+      const gr = g.createRadialGradient(px, py, 0, px, py, r);
+      gr.addColorStop(0, "rgba(34,26,20,.62)"); gr.addColorStop(0.6, "rgba(40,31,24,.4)"); gr.addColorStop(1, "rgba(40,31,24,0)");
+      g.fillStyle = gr; g.beginPath(); g.ellipse(px, py, r, r * 0.42, 0, 0, Math.PI * 2); g.fill();
+    }
+    // ruts and standing water: a few thin cold glints and dark furrows
+    for (let i = 0; i < 4; i++) {
+      const px = ctr[0] + (rnd() - 0.5) * k * 0.8, py = ctr[1] + (rnd() - 0.5) * k * 0.32, w = k * (0.12 + rnd() * 0.2);
+      g.strokeStyle = i % 2 ? "rgba(170,200,230,.22)" : "rgba(14,10,8,.5)"; g.lineWidth = Math.max(1, k * 0.012);
+      g.beginPath(); g.moveTo(px - w, py); g.quadraticCurveTo(px, py - k * 0.02 * (rnd() - 0.5), px + w, py + k * 0.01); g.stroke();
+    }
+    for (let i = 0; i < 3; i++) {   // little sheets of slush catching the light
+      const px = ctr[0] + (rnd() - 0.5) * k * 0.7, py = ctr[1] + (rnd() - 0.5) * k * 0.28, r = k * (0.05 + rnd() * 0.07);
+      g.fillStyle = "rgba(200,215,230,.16)"; g.beginPath(); g.ellipse(px, py, r, r * 0.4, 0, 0, Math.PI * 2); g.fill();
+    }
+    g.restore();
+  }
   function drawTerrain() {
     const c = document.createElement("canvas");
     c.width = canvas.width; c.height = canvas.height;
@@ -7559,6 +7584,8 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
     const BG = IMG[(game && game.stage.bg) || "bg"];
     if (ready(BG)) {
       g.drawImage(BG, 0, 0, VW, VH);
+      // ground nobody can stand on: deep slush and churned mud (the rasputitsa), so it reads as no place to put anyone
+      for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) if (tileAt(x, y) === ",") drawMud(g, x, y);
       // faint tile edges, the way the original marks deployable squares
       for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
         const ch = tileAt(x, y);
