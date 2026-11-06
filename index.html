@@ -28,6 +28,11 @@
 :root { --bg: #0b0c0e; --fg: #d8dbe0; --muted: #7d828c; color-scheme: dark; }
 [hidden] { display: none !important; }
 html, body { background: var(--bg); color: var(--fg); }
+/* phones: no blue flash on taps, no long-press callout or text selection over the game */
+html, body, #stagewrap, #stagewrap * { -webkit-tap-highlight-color: transparent; -webkit-touch-callout: none; }
+#stagewrap, #stagewrap * { user-select: none; -webkit-user-select: none; }
+#stagewrap input, #stagewrap textarea { user-select: text; -webkit-user-select: text; }
+*:focus { outline: none; }
 body { font-family: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif; font-size: 14px;
   padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 16px; }
 .wrap { max-width: 1280px; margin: 0 auto; display: grid; gap: 10px; }
@@ -5716,7 +5721,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
     }
     // the edge: a thin white line along the tip's path, glowing, thicker towards the head
     g.lineCap = "round"; g.lineJoin = "round";
-    g.shadowColor = `rgba(${col[0]},${col[1]},${col[2]},0.9)`; g.shadowBlur = k * 0.12;
+    g.shadowColor = `rgba(${col[0]},${col[1]},${col[2]},0.9)`; g.shadowBlur = Q >= 2 ? k * 0.12 : 0;
     for (let i = Math.max(1, start + 1); i < n; i++) {
       const u = i / (n - 1);
       g.strokeStyle = `rgba(255,255,255,${(0.2 + 0.8 * u) * (1 - life)})`; g.lineWidth = Math.max(1, k * (0.006 + 0.02 * Math.sin(Math.PI * Math.min(1, u * 1.04))));
@@ -6172,7 +6177,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
         ctx.closePath(); return true;
       };
       ctx.save(); ctx.translate(r.x, r.y); ctx.rotate(r.ang); ctx.scale(1, r.flip || 1);
-      ctx.globalCompositeOperation = "lighter"; if ("filter" in ctx) ctx.filter = `blur(${Math.max(1, k * 0.05)}px)`;
+      ctx.globalCompositeOperation = "lighter"; if (Q >= 2 && "filter" in ctx) ctx.filter = `blur(${Math.max(1, k * 0.05)}px)`;
       const RC = r.cols || ["154,116,255", "36,16,70", "255,178,58", "255,255,255"];
       if (shape(2.6, 1.08)) { ctx.fillStyle = `rgba(${RC[0]},${0.4 * fade})`; ctx.fill(); }   // the bloom
       if ("filter" in ctx) ctx.filter = "none";
@@ -6198,7 +6203,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
       const LC = l.cols || ["#9a74ff", "#7a5aff", "#ffa62e", "#ffcf5a", "#ffffff", "#fff6d8"];
       const spear = (w, len, back) => { ctx.beginPath(); ctx.moveTo(-back, 0); ctx.quadraticCurveTo(len * 0.25, -w, len, 0); ctx.quadraticCurveTo(len * 0.25, w, -back, 0); ctx.closePath(); };
       const grad = (c0, c1, al) => { const g = ctx.createLinearGradient(-k * 0.1, 0, L, 0); g.addColorStop(0, c0 + "00"); g.addColorStop(0.12, c0 + Math.round(al * 255).toString(16).padStart(2, "0")); g.addColorStop(0.7, c1 + Math.round(al * 200).toString(16).padStart(2, "0")); g.addColorStop(1, c1 + "00"); return g; };
-      if ("filter" in ctx) ctx.filter = `blur(${Math.max(1, k * 0.04)}px)`;
+      if (Q >= 2 && "filter" in ctx) ctx.filter = `blur(${Math.max(1, k * 0.04)}px)`;
       spear(W * 2.0, L * 1.05, k * 0.12); ctx.fillStyle = grad(LC[0], LC[1], 0.3 * a); ctx.fill();   // lavender haze round it
       if ("filter" in ctx) ctx.filter = "none";
       ctx.globalCompositeOperation = "source-over";
@@ -6274,7 +6279,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
       if (head - tail > 0.02) {
         const prof = (f) => Math.pow(Math.sin(Math.PI * Math.min(1, f * 0.92 + 0.04)), 0.65) * (0.35 + 0.65 * f);
         ctx.globalCompositeOperation = "lighter";
-        if ("filter" in ctx) ctx.filter = `blur(${Math.max(1, k * 0.03)}px)`;
+        if (Q >= 2 && "filter" in ctx) ctx.filter = `blur(${Math.max(1, k * 0.03)}px)`;
         crescent(tail, head, R * 1.05, W * 1.6, prof); ctx.fillStyle = arcGrad(tail, head, w.cols[0], 0.55 * fade); ctx.fill();   // the soft outer glow
         if ("filter" in ctx) ctx.filter = "none";
         ctx.globalCompositeOperation = "source-over";
@@ -7696,10 +7701,15 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
   }
 
   let scale = 1, dpr = 1, terrain = null;
+  // render quality: 2 full, 1 for phones and tablets, 0 when a device can't keep up (fewer particles, no soft blurs, fewer pixels)
+  const TOUCH = window.matchMedia && matchMedia("(pointer: coarse)").matches;
+  let Q = (() => { try { const v = localStorage.getItem("bsl_q"); if (v !== null) return +v; } catch (e) {} return TOUCH ? 1 : 2; })();
+  const DPR_Q = [1, 1.5, 2];
+  function setQuality(q) { if (q === Q) return; Q = q; try { localStorage.setItem("bsl_q", q); } catch (e) {} ATM.flakes.length = [40, 90, 160][Q]; ATM.dust.length = [2, 4, 7][Q]; resize(); }
   function resize() {
     const w = wrap.clientWidth;
     scale = w / VW;
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    dpr = Math.min(window.devicePixelRatio || 1, DPR_Q[Q]);
     canvas.width = Math.round(VW * scale * dpr);
     canvas.height = Math.round(VH * scale * dpr);
     canvas.style.height = (VH * scale) + "px";
@@ -8822,8 +8832,8 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
   function text(str, x, y, size, col, opt = {}) {
     ctx.font = `${opt.weight || 600} ${size}px ${opt.font || FONT_KR}`;
     ctx.fillStyle = col; ctx.textAlign = opt.align || "left"; ctx.textBaseline = opt.base || "alphabetic";
-    if (opt.shadow) { ctx.shadowColor = "rgba(0,0,0,.8)"; ctx.shadowBlur = 6; }
-    ctx.fillText(str, x, y); ctx.shadowBlur = 0;
+    if (opt.shadow) { ctx.shadowColor = "rgba(0,0,0,.8)"; if (Q >= 2) ctx.shadowBlur = 6; else { ctx.shadowOffsetY = 1.5; ctx.shadowOffsetX = 0.5; } }   // a hard drop shadow on phones: blurred ones cost a lot there
+    ctx.fillText(str, x, y); ctx.shadowBlur = 0; ctx.shadowOffsetX = 0; ctx.shadowOffsetY = 0;
   }
   function rect(x, y, w, h, col) { ctx.fillStyle = col; ctx.fillRect(x, y, w, h); }
   function tileFill(x, y, col, line) {
@@ -9215,7 +9225,8 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
   }
   let PFX = [];
   // p: { x, y, vx, vy, life, tex, col, size, grow, add, alpha, drag, grav, rot, rotv, stretch, home: [x,y,k], fadeIn }
-  function emit(p) { p.t = 0; p.size = p.size || 10; p.alpha = p.alpha === undefined ? 1 : p.alpha; PFX.push(p); return p; }
+  let emitN = 0;
+  function emit(p) { if (Q < 2 && !p.keep && (emitN++ % (Q ? 3 : 2)) === 1 && PFX.length > 40) return p; p.t = 0; p.size = p.size || 10; p.alpha = p.alpha === undefined ? 1 : p.alpha; PFX.push(p); return p; }
   const rr = (a, b) => a + Math.random() * (b - a);
   function updatePFX(dt) {
     for (const p of PFX) {
@@ -11480,8 +11491,8 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
   function flake(init) {
     return { x: init ? rnd(0, VW) : rnd(-60, -10), y: init ? rnd(0, VH) : rnd(-40, VH * 0.8), z: rnd(0.35, 1.35), ember: Math.random() < 0.05, ph: rnd(0, 6.3), spin: rnd(0.6, 1.6) };
   }
-  for (let i = 0; i < 160; i++) ATM.flakes.push(flake(true));
-  for (let i = 0; i < 7; i++) ATM.dust.push({ x: rnd(-200, VW), y: rnd(VH * 0.35, VH * 0.95), r: rnd(140, 280), v: rnd(10, 22), a: rnd(0.05, 0.1) });
+  for (let i = 0; i < [40, 90, 160][Q]; i++) ATM.flakes.push(flake(true));
+  for (let i = 0; i < [2, 4, 7][Q]; i++) ATM.dust.push({ x: rnd(-200, VW), y: rnd(VH * 0.35, VH * 0.95), r: rnd(140, 280), v: rnd(10, 22), a: rnd(0.05, 0.1) });
   function atmosphere(dt) {
     const w = ATM.wind = 1 + 0.55 * Math.sin(clock * 0.33) + 0.3 * Math.sin(clock * 1.07 + 1.3);
     // low dust clouds rolling with the wind
@@ -12948,8 +12959,12 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
 
   // ---------- loop ----------
   let last = performance.now();
+  let paceT = 0, paceN = 0, paceSlow = 0;
   function frame(now) {
-    const real = Math.min(0.05, (now - last) / 1000); last = now;
+    if (now - last < 12) { requestAnimationFrame(frame); return; }   // 120Hz screens: draw at 60, not twice as often
+    const raw = (now - last) / 1000, real = Math.min(0.05, raw); last = now;
+    // a device that can't keep up steps down a quality level (fewer pixels, fewer particles), once it has been slow for a while
+    if (phase === "play" && !paused && Q > 0) { paceT += raw; paceN++; if (paceT >= 2) { const fps = paceN / paceT; paceSlow = fps < 40 ? paceSlow + 1 : 0; paceT = 0; paceN = 0; if (paceSlow >= 2) { paceSlow = 0; setQuality(Q - 1); } } }
     if (phase === "idle") { requestAnimationFrame(frame); return; }
     clock += real;
     if (tut && phase === "play" && !paused) tut.update(real);
