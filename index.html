@@ -3849,6 +3849,11 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
     { code: "BL-07", name: "봉쇄선", waves: WAVES_NEY, mul: { hp: 0.5, atk: 0.6, def: 0.7 }, boss: ["경고: 마탄의 사수", "미셸 네 · WARNING"],
       desc: "보이지 않는 저격수가 언덕 위에서 전장을 내려다보고 있습니다. 은신한 적은 저지한 가사인격만 공격할 수 있습니다. 체력이 3분의 1씩 깎일 때마다 전장 전체를 훑고, 가장 앞선 가사인격 셋을 저격합니다.",
       lose: "조준선이 지나가면 맨 앞(왼쪽) 셋이 노려집니다. 중장은 버티고, 딜러는 미리 퇴각시키거나 보호막을 씌우세요." },
+    // a side branch under BL-01: the terminal's lesson on defenders, medics and who the ranged foes shoot at
+    { code: "TR-01", name: "방어선 학습", map: MAP_C1.alley, bg: "bg_c1_alley", cam: [0.8368, 14.6214, 1553.44, 640.28, 285.49], hz: 0.5, branch: 0, startCost: 45, mul: { hp: 0.6, atk: 0.75, def: 0.6 },
+      waves: W1([[3, "soldier", 0, 2, 3], [12, "soldier", 0, 3, 2.5], [22, "heavy", 0, 1], [32, "hexer", 0, 2, 3], [42, "soldier", 0, 3, 2], [48, "hexer", 0, 2, 2.5], [58, "soldier", 0, 4, 1.5], [64, "hexer", 0, 3, 2]]),
+      boss: ["", ""], desc: "중장으로 길을 막고, 의무로 버티게 하는 법을 익힙니다. 원거리 적은 가장 마지막에 배치된 가사인격을 먼저 노립니다.",
+      lose: "중장 뒤에 의무를 두고, 원거리 적이 나오면 중장을 마지막에 배치해 표적을 넘기세요." },
   ];
   // level-0 training: no timed waves (the tutorial script spawns and paces everything), no passive cost
   const TUTORIAL = { code: "TR-00", name: "링크 학습", map: MAP_TUT, waves: [], holo: true, tutorial: true, costRate: 0, mul: { hp: 0.45, atk: 0.8, def: 0.3 },
@@ -3963,6 +3968,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
       this.waves = this.stage.waves;
       setMap(this.stage.map || MAP0);
       this.costRate = this.stage.costRate !== undefined ? this.stage.costRate : CFG.costPerSec;
+      if (this.stage.startCost) this.cost = this.stage.startCost;
       this.hold = !!(this.stage.tutorial || this.stage.sandbox);
       if (this.stage.sandbox) { this.life = 99; this.cost = CFG.maxCost; }   // a scripted stage ends only when its script lets go; the training room never ends
       this.killed = 0; this.leaked = 0; this.total = this.waves.length; this.over = null;
@@ -4015,7 +4021,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
       const pt = card.pot || {};
       const mh = Math.round(d.hp * mOf(card.mult, "hp") * (pt.hp || 1));
       const u = { id: this.uid++, card: cardIdx, def: d, skill: sk, x, y, dir, hp: mh, maxHp: mh, mult: card.mult || 1, hpMul: pt.hp || 1, potAtk: pt.atk || 1, potDef: pt.def || 1, potRes: pt.res || 0, paid, sp: sk.init, skillT: 0, stored: 0,
-        atkT: d.interval * 0.4, blocked: [], buff: {}, flash: 0, swing: 0, born: this.t };
+        atkT: d.interval * 0.4, blocked: [], buff: {}, flash: 0, swing: 0, born: this.t, seq: (this.deploySeq = (this.deploySeq || 0) + 1) };   // seq: deploy order, for who draws the ranged fire
       if (d.summon) {   // her summon card joins the deck while she is out
         let sc = this.cards.find((c) => c.summonOf === cardIdx);
         if (!sc) { sc = { def: SUMMONS[d.summon.id], summonOf: cardIdx, cooldown: 0, deployed: false, level: 0, skillIdx: 0, elite: 0 }; this.cards.push(sc); }
@@ -5001,7 +5007,8 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
           let target = e.blockedBy || e.heldBy;
           if (!target && e.def.ranged) {
             let best = null, bd = 1e9;
-            for (const u of this.units) { const d = Math.hypot(u.x - e.x, u.y - e.y), key = d + (u.def.unseen ? 50 : 0); if (d <= e.def.ranged && key < bd) { bd = key; best = u; } }
+            // the original's rule: of those in range, the one deployed last draws the fire (the unseen only when nothing else is there)
+            for (const u of this.units) { const d = Math.hypot(u.x - e.x, u.y - e.y), key = (u.def.unseen ? 1e6 : 0) - (u.seq || 0) * 100 + d; if (d <= e.def.ranged && key < bd) { bd = key; best = u; } }
             target = best;
           }
           if (target) {
@@ -8102,13 +8109,23 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
         g.strokeStyle = "#2a1f1f"; capsule(g, -0.12, -0.12, -0.14 - step, 0, 0.025); capsule(g, 0.12, -0.12, 0.13 + step, 0, 0.025);
         g.fillStyle = "#3a2c2c"; g.beginPath(); g.ellipse(0.2, -0.24, 0.08, 0.06, -0.3, 0, Math.PI * 2); g.fill();
         g.fillStyle = red; g.beginPath(); g.arc(0.24, -0.26, 0.015, 0, Math.PI * 2); g.fill(); break;
-      case "drone": {
-        const hov = -0.55 + Math.sin(t * 4 + e.id) * 0.03;
-        g.fillStyle = "rgba(0,0,0,.35)"; g.beginPath(); g.ellipse(0, 0, .2, .06, 0, 0, Math.PI * 2); g.fill();
-        g.fillStyle = "#3b3f48"; g.beginPath(); g.ellipse(0, hov, 0.16, 0.06, 0, 0, Math.PI * 2); g.fill(); g.stroke();
-        g.strokeStyle = "rgba(220,230,240,.7)"; g.lineWidth = 0.012;
-        for (const dx of [-0.2, 0.2]) { g.beginPath(); g.ellipse(dx, hov - 0.05, 0.1, 0.02, Math.sin(t * 30) * 0.2, 0, Math.PI * 2); g.stroke(); }
-        g.fillStyle = red; g.beginPath(); g.arc(0.08, hov, 0.025, 0, Math.PI * 2); g.fill(); break;
+      case "drone": {   // big enough to pick out over the field: a pale body, spinning rotor discs, a red light that blinks
+        const hov = -0.62 + Math.sin(t * 4 + e.id) * 0.04, blink = (Math.sin(t * 9 + e.id) > 0.2);
+        g.fillStyle = "rgba(0,0,0,.4)"; g.beginPath(); g.ellipse(0, 0, .45, .11, 0, 0, Math.PI * 2); g.fill();
+        g.save(); g.scale(1.6, 1.6);
+        g.strokeStyle = "rgba(0,0,0,.55)"; g.lineWidth = 0.02; g.beginPath(); g.moveTo(-0.1, hov + 0.06); g.lineTo(-0.14, hov + 0.16); g.moveTo(0.1, hov + 0.06); g.lineTo(0.14, hov + 0.16); g.stroke();
+        g.strokeStyle = "#101216"; g.lineWidth = 0.025; g.beginPath(); g.moveTo(-0.3, hov - 0.04); g.lineTo(0.3, hov - 0.04); g.stroke();
+        for (const dx of [-0.3, 0.3]) {
+          g.fillStyle = "rgba(230,240,250,.28)"; g.beginPath(); g.ellipse(dx, hov - 0.07, 0.15, 0.035, 0, 0, Math.PI * 2); g.fill();
+          g.strokeStyle = "rgba(240,248,255,.85)"; g.lineWidth = 0.014; g.beginPath(); g.ellipse(dx, hov - 0.07, 0.15, 0.035, 0, 0, Math.PI * 2); g.stroke();
+          g.strokeStyle = "rgba(255,255,255,.9)"; g.lineWidth = 0.018; const a = t * 40 + dx * 10; g.beginPath(); g.moveTo(dx - Math.cos(a) * 0.14, hov - 0.07 - Math.sin(a) * 0.03); g.lineTo(dx + Math.cos(a) * 0.14, hov - 0.07 + Math.sin(a) * 0.03); g.stroke();
+        }
+        g.fillStyle = "#9aa3b2"; g.strokeStyle = "#14161b"; g.lineWidth = 0.022; g.beginPath(); g.ellipse(0, hov, 0.2, 0.085, 0, 0, Math.PI * 2); g.fill(); g.stroke();
+        g.fillStyle = "#5d6574"; g.beginPath(); g.ellipse(0, hov + 0.03, 0.13, 0.04, 0, 0, Math.PI); g.fill();
+        g.fillStyle = "#1b1e24"; g.beginPath(); g.arc(0.13, hov + 0.02, 0.035, 0, Math.PI * 2); g.fill();   // the camera
+        if (blink) { g.fillStyle = "rgba(255,60,60,.35)"; g.beginPath(); g.arc(0, hov - 0.05, 0.09, 0, Math.PI * 2); g.fill(); }
+        g.fillStyle = blink ? "#ff4a4a" : "#7a1d1d"; g.beginPath(); g.arc(0, hov - 0.05, 0.035, 0, Math.PI * 2); g.fill();
+        g.restore(); break;
       }
       default: {
         const coat = { soldier: "#3a3d44", heavy: "#5a5f68", hexer: "#3a2a4a", boss: "#2a1e22" }[e.type];
@@ -11868,10 +11885,23 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
     ],
     // 감시탑 아래: no story; when the first drone comes over, the terminal points at a sniper
     "BL-04": [
-      { waitFoe: "drone" }, { wait: 0.4 },
-      { say: "공중 개체 접근. 근거리 가사인격은 공중 개체를 저지할 수 없습니다.", tap: true },
+      { waitFoe: "drone" }, { wait: 2.2 },   // out over the field first, where it can be seen
+      { focusFoe: "drone", say: "공중 개체 접근. 근거리 가사인격은 공중 개체를 저지할 수 없습니다.", tap: true, at: "bottom" },
       { cardAir: true, say: "저격 가사인격은 공중 개체를 우선 공격합니다. 「{op}」 카드를 터치하십시오." },
       { say: "고지대에 배치해, 드론의 비행 경로를 사거리에 넣으십시오.", tap: true },
+    ],
+    // TR-01 (the branch under BL-01): defenders, medics, and who the ranged foes shoot at
+    "TR-01": [
+      { wait: 0.4 },
+      { say: "단말 학습 기록, 방어 편. 가사인격체의 역할을 확인합니다.", tap: true },
+      { deployCls: "중장", say: "중장 가사인격은 다수의 적을 동시에 저지하고, 오래 버팁니다.\n「{op}」를 길 위에 배치하십시오." },
+      { deployCls: "의무", say: "의무 가사인격은 사거리 안의 아군을 치료합니다.\n「{op}」를 중장 뒤쪽 고지대에 배치하십시오." },
+      { say: "치료가 닿는 동안, 중장은 쉽게 쓰러지지 않습니다.", tap: true },
+      { waitFoe: "hexer" }, { wait: 0.6 },
+      { focusFoe: "hexer", say: "원거리 적성 개체. 원거리 적은 사거리 안의 가사인격 중,\n가장 마지막에 배치된 대상을 우선 공격합니다.", tap: true, at: "bottom" },
+      { say: "지금 표적은 마지막에 배치된 「{last}」입니다.", tap: true },
+      { deployCls: "중장", say: "공격을 받아낼 중장을 마지막에 배치하면 표적이 넘어갑니다.\n「{op}」를 길 위에 배치하십시오." },
+      { say: "표적이 「{last}」(으)로 바뀌었습니다. 배치 순서가 곧 방어선입니다.", tap: true },
     ],
   };
   function makeStageScript(code) {
@@ -11900,8 +11930,14 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
         if (!SS.sub || inspect !== SS.cardIdx) return next();
         kwTip = null;
       }
-      if (st.cardAir) {   // a sniper that shoots fliers first (else any sniper)
-        SS.cardIdx = game.cards.findIndex((c) => c.def.airFirst && !c.deployed);
+      if (st.deployCls) {   // point at a card of this class and wait for it to be put down (the field holds still meanwhile)
+        SS.cardIdx = game.cards.findIndex((c) => c.def.cls === st.deployCls && !c.deployed && !(c.cooldown > 0));
+        if (SS.cardIdx < 0) return next();
+        SS.name = TD.nameOf(game.cards[SS.cardIdx].def, game.cards[SS.cardIdx].elite).main;
+      }
+      if (st.cardAir) {   // a sniper that shoots fliers first: Alpha when she is here, else any of them (else any sniper)
+        SS.cardIdx = game.cards.findIndex((c) => c.def.id === "alpha" && !c.deployed);
+        if (SS.cardIdx < 0) SS.cardIdx = game.cards.findIndex((c) => c.def.airFirst && !c.deployed);
         if (SS.cardIdx < 0) SS.cardIdx = game.cards.findIndex((c) => c.def.cls === "저격" && !c.deployed);
         if (SS.cardIdx < 0) return next();
         SS.name = TD.nameOf(game.cards[SS.cardIdx].def, game.cards[SS.cardIdx].elite).main;
@@ -11912,7 +11948,11 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
         if (SS.cardIdx < 0) return next();
         SS.name = TD.nameOf(game.cards[SS.cardIdx].def, game.cards[SS.cardIdx].elite).main;
       }
-      if (st.say) { SS.freeze = true; SS.line = { txt: st.say.replace("{op}", SS.name).replace("{sub}", SS.sub || ""), t: 0, tap: !!st.tap, at: st.at || "top" }; }
+      if (st.say) {
+        const last = game.units.filter((u) => !u.summoned).sort((a, b) => (b.seq || 0) - (a.seq || 0))[0];   // the one deployed last
+        const lastName = last ? TD.nameOf(last.def, (game.cards[last.card] || {}).elite).main : "";
+        SS.freeze = true; SS.line = { txt: st.say.replace("{op}", SS.name).replace("{sub}", SS.sub || "").replace(/\{last\}/g, lastName), t: 0, tap: !!st.tap, at: st.at || "top" };
+      }
     };
     SS.update = (real) => {
       SS.t += real; SS.dark = Math.max(0, SS.dark - real * 0.45);
@@ -11925,11 +11965,13 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
       if (st.kwSub && kwTip && kwTip.name === SS.sub) next();
       if (st.kwSub && inspect !== SS.cardIdx) { inspect = SS.cardIdx; }   // the panel stays open until the word is touched
       if (st.waitFoe && game.enemies.some((e) => e.type === st.waitFoe && !e.dead)) next();
+      if (st.deployCls && SS.cardIdx >= 0 && game.cards[SS.cardIdx].deployed) next();
     };
     SS.gate = (b) => {
       const st = steps[SS.i]; if (!st) return false;
       if (st.card || st.cardSub || st.cardAir) return !(b && b.card && cardRects[SS.cardIdx] && b.x === cardRects[SS.cardIdx].x);   // only her card
       if (st.kwSub) return !(b && b.kw === SS.sub);   // only the word
+      if (st.deployCls) return !!(b && b.card && cardRects[SS.cardIdx] && b.x !== cardRects[SS.cardIdx].x);   // her card, the field and the direction: anything but another card
       if (st.waitFoe) return false;
       if (SS.line && SS.line.tap) {
         if (SS.line.t < 0.35) return true;
@@ -11942,6 +11984,16 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
       const st = steps[SS.i];
       if (SS.dark > 0) { ctx.save(); ctx.globalAlpha = Math.min(0.85, SS.dark); ctx.fillStyle = "#000"; ctx.fillRect(0, 0, VW, VH); ctx.restore(); }
       if (st && st.subs && SS.subIdx) holes(SS.subIdx.filter((k) => cardRects[k]).map((k) => cardRects[k]));
+      if (st && st.focusFoe) {   // a ring on the foe the line is about, so it is seen under everything else
+        const e = game.enemies.find((q) => q.type === st.focusFoe && !q.dead);
+        if (e) {
+          const [px, py, k] = P(e.x, e.y, e._z || 0), [sx, sy0] = camApply(px, py), r = k * 0.62, sy = sy0 - k * (e.def.flying ? 1.0 : 0.45);   // round the body, not the feet
+          holes([{ x: sx - r * 1.2, y: sy - r * 1.2, w: r * 2.4, h: r * 2.4 }]);
+          ctx.save(); ctx.strokeStyle = TK_CYAN; ctx.lineWidth = 3; ctx.globalAlpha = 0.6 + 0.4 * Math.sin(clock * 6);
+          ctx.beginPath(); ctx.arc(sx, sy, r * 1.1, 0, Math.PI * 2); ctx.stroke(); ctx.restore();
+        }
+      }
+      if (st && st.deployCls && cardRects[SS.cardIdx] && pending !== SS.cardIdx && !drag && !aim) { const r = cardRects[SS.cardIdx]; hand(r.x + r.w / 2, r.y - 90, r.x + r.w / 2, r.y + r.h / 2); }
       if (st && st.kwSub && kwRects[SS.sub]) { const r = kwRects[SS.sub]; holes([r]); hand(r.x + r.w / 2, r.y + r.h + 70, r.x + r.w / 2, r.y + r.h / 2); }
       if (st && (st.card || st.cardSub || st.cardAir) && cardRects[SS.cardIdx]) { const r = cardRects[SS.cardIdx]; holes([{ x: r.x, y: r.y, w: r.w, h: r.h }]); hand(r.x + r.w / 2, r.y - 90, r.x + r.w / 2, r.y + r.h / 2); }
       if (st && st.hl === "block") holes([{ x: 16, y: 458, w: 176, h: 30 }]);
@@ -12790,7 +12842,9 @@ window.BSL_OPTEXT = {"alpha": {"illustrator": "", "basic": [["코드네임", "�
     { cost: 10, first: { orb: 1800 }, coin: 1500, exp: 100, rec: "정예화 0 · Lv.15" },
     { cost: 10, first: { orb: 1800 }, coin: 1600, exp: 110, rec: "정예화 0 · Lv.30" },
     { cost: 12, first: { orb: 2400 }, coin: 2000, exp: 140, rec: "정예화 1 · Lv.1" },
-  ].map((m, i) => Object.assign(m, { unlock: i === 0 ? () => true : (s) => ((s.stages[TD.STAGES[i - 1].code] || {}).stars || 0) > 0 }));
+    { cost: 3, first: { orb: 600 }, coin: 600, exp: 40, rec: "정예화 0 · Lv.1", branch: 0 },   // TR-01: a side lesson hanging under BL-01
+  ].map((m, i) => Object.assign(m, { unlock: m.branch !== undefined ? (s) => ((s.stages[TD.STAGES[m.branch].code] || {}).stars || 0) > 0
+    : i === 0 ? () => true : (s) => ((s.stages[TD.STAGES[i - 1].code] || {}).stars || 0) > 0 }));
   const POOL = { 6: ["rabi6", "veil", "eungyeol", "smoqueen", "angelina"], 5: ["geomseon", "belina", "yui", "rabi", "piania", "silphy", "bongeun", "alpha2", "skakea2"], 4: ["falchion", "atat", "hakuren", "miho", "lulu", "irins", "alpha", "skakea", "ker", "sunae", "teka"], 3: ["brick", "jayeon", "capy", "hiro", "lilith", "ayaki", "nana", "tao"] };
   const PULL = 600, STAM_EVERY = 360;
   // the start link: one fixed ten (placeholders until the new operators and their scripts arrive)
@@ -12909,6 +12963,7 @@ window.BSL_OPTEXT = {"alpha": {"illustrator": "", "basic": [["코드네임", "�
   .node.next .hx { background:linear-gradient(#56c8ff,#1a8fd6); } .node.next .hx i { background:#2aa7ec; box-shadow:inset 0 0 0 2px #fff; }
   .node .c { font-size:23px; font-weight:500; letter-spacing:.01em; line-height:1; }
   .node.sel .box { background:linear-gradient(90deg,#8e9095,#6f7277); color:#2a2a2a; } .node.sel .hx { filter:grayscale(1) brightness(.85); }
+  .node.tr .box { background:linear-gradient(90deg,#1d1e21 0,#2a2b2f 100%); color:#fff; } .node.tr .lab { background:#e9eaec; color:#151515; } .node.tr.sel .box { background:linear-gradient(90deg,#55585e,#43464b); color:#ddd; }   /* a lesson, as the original's TR stages: the tag in black */
   @keyframes hxPulse { 50% { filter:brightness(1.35); } }
   .detail { position:absolute; right:0; top:0; bottom:0; width:540px; background:linear-gradient(90deg,rgba(10,11,13,0),rgba(10,11,13,.9) 18%,rgba(10,11,13,.95)); padding:96px 36px 30px 90px; }
   .detail .hd { display:flex; align-items:flex-end; gap:12px; background:linear-gradient(90deg,rgba(0,0,0,0),rgba(0,0,0,.55) 20%); margin:0 -36px 0 -40px; padding:10px 36px 10px 40px; }
@@ -13733,7 +13788,7 @@ window.BSL_OPTEXT = {"alpha": {"illustrator": "", "basic": [["코드네임", "�
   const nm = (id) => TD.nameOf(def(id), S.ops[id] ? S.ops[id].elite : 0);
   const epHtml = (id, big) => { const r = nm(id).ruby; return r ? `<div class="${big ? "ep-big" : "epi"}">${esc(r)}</div>` : ""; };   // the epithet: its own quiet line over the name, never squeezed onto it
   const nameHtml = (id, big) => { const n = nm(id); return `${esc(n.main)}${n.sub ? `<span class="sub-nm"${big ? ' style="font-size:20px"' : ""}>${esc(n.sub)}</span>` : ""}`; };
-  const curStage = () => { let i = 0; STAGE_META.forEach((m, k) => { if (m.unlock(S)) i = k; }); return i; };
+  const curStage = () => { let i = 0; STAGE_META.forEach((m, k) => { if (m.unlock(S) && m.branch === undefined) i = k; }); return i; };   // side branches never become "current"
 
   const SCREENS = {
     lobby(el) {
@@ -13837,32 +13892,39 @@ window.BSL_OPTEXT = {"alpha": {"illustrator": "", "basic": [["코드네임", "�
       const stb = h("div", "btn tm-stam", `<i>${icn("it-stam")}</i><b class="en">${S.res.stam}/${stamMax()}</b>`); stb.onclick = () => itemInfo("stam", S.res.stam); el.appendChild(stb);
       // the stages that have opened, at different heights, joined by straight runs from one to the next
       const strip = h("div", "strip"), track = h("div", "track"), GAP = 214, X0 = 110, n = TD.STAGES.length;
-      const shown = TD.STAGES.filter((q, i) => STAGE_META[i].unlock(S)).length;
+      const isMain = (i) => STAGE_META[i].branch === undefined;
+      const shown = TD.STAGES.filter((q, i) => isMain(i) && STAGE_META[i].unlock(S)).length;
       const cleared = (i) => ((S.stages[TD.STAGES[i].code] || {}).stars || 0) > 0;
-      const YS = [150, 236, 128, 222, 140, 232, 150], ny = (i) => YS[i % YS.length], cx = (i) => X0 + i * GAP + 50, cy = (i) => ny(i) + 26;
+      const YS = [150, 236, 128, 222, 140, 232, 150];
+      // a branch sits below the stage it comes off, a little to the right
+      const nx = (i) => isMain(i) ? X0 + i * GAP : X0 + STAGE_META[i].branch * GAP + 96;
+      const ny = (i) => isMain(i) ? YS[i % YS.length] : 318, cx = (i) => nx(i) + 50, cy = (i) => ny(i) + 26;
       track.style.width = (X0 * 2 + shown * GAP + 760) + "px";
-      track.innerHTML = `<svg width="${X0 * 2 + n * GAP + 760}" height="420"><path d="${TD.STAGES.slice(0, shown).map((q, i) => (i ? "L" : "M") + cx(i) + " " + cy(i)).join(" ")}" stroke="rgba(255,255,255,.85)" stroke-width="2.5" fill="none"/></svg>`;
+      const mainIdx = TD.STAGES.map((q, i) => i).filter((i) => isMain(i)).slice(0, shown);
+      const branchIdx = TD.STAGES.map((q, i) => i).filter((i) => !isMain(i) && STAGE_META[i].unlock(S));
+      track.innerHTML = `<svg width="${X0 * 2 + n * GAP + 760}" height="420"><path d="${mainIdx.map((i, k) => (k ? "L" : "M") + cx(i) + " " + cy(i)).join(" ")}" stroke="rgba(255,255,255,.85)" stroke-width="2.5" fill="none"/>`
+        + branchIdx.map((i) => { const f = STAGE_META[i].branch; return `<path d="M${cx(f)} ${cy(f)} L${cx(f)} ${cy(i)} L${cx(i)} ${cy(i)}" stroke="rgba(255,255,255,.55)" stroke-width="2" stroke-dasharray="6 5" fill="none"/>`; }).join("") + `</svg>`;
       const nodes = [];
       TD.STAGES.forEach((st, i) => {
         if (!STAGE_META[i].unlock(S)) return;
-        const nd = h("div", "btn node" + (cleared(i) ? " clear" : " next"), `<div class="lab en">OPERATION</div><div class="box"><div class="hx"><i></i></div><div class="c en">${st.code}</div></div>`);
-        Object.assign(nd.style, { left: (X0 + i * GAP) + "px", top: ny(i) + "px" });
+        const nd = h("div", "btn node" + (cleared(i) ? " clear" : " next") + (isMain(i) ? "" : " tr"), `<div class="lab en">${isMain(i) ? "OPERATION" : "TUTORIAL"}</div><div class="box"><div class="hx"><i></i></div><div class="c en">${st.code}</div></div>`);
+        Object.assign(nd.style, { left: nx(i) + "px", top: ny(i) + "px" });
         nd.onclick = (ev) => { ev.stopPropagation(); pick(i, true); };
         nodes[i] = nd; track.appendChild(nd);
       });
       strip.appendChild(track); el.appendChild(strip);
-      let prog = 0; for (let i = 0; i < n; i++) if (cleared(i)) prog = i + 1;
+      let prog = 0; for (let i = 0; i < n; i++) if (cleared(i) && isMain(i)) prog = i + 1;
       const epb = h("div", "ep", `<div><div class="s">현재 진행도</div><div class="k en">EPISODE</div><div class="t en">01</div></div><div class="btn nx"><div class="s">▶</div><div class="k en">EPISODE</div><div class="t en">02</div></div>`);
       epb.querySelector(".nx").onclick = () => toast("아직 수신되지 않은 기록입니다"); el.appendChild(epb);
       // picking a stage never rebuilds the screen: the map glides so the stage sits left of the panel, and the panel slides in
-      const home = () => Math.max(0, X0 + Math.max(0, TD.STAGES.findIndex((q, i) => !cleared(i))) * GAP - (strip.clientWidth / 2 - 90));
+      const home = () => Math.max(0, X0 + Math.max(0, TD.STAGES.findIndex((q, i) => isMain(i) && !cleared(i))) * GAP - (strip.clientWidth / 2 - 90));
       let cur = -1, panel = null;
       const pick = (i, anim) => {
         if (i === cur) return;
         cur = i; route.arg = i;
         nodes.forEach((nd, k) => nd && nd.classList.toggle("sel", k === i));
         epb.classList.add("hide");
-        const left = Math.max(0, X0 + i * GAP - 330);
+        const left = Math.max(0, nx(i) - 330);
         if (anim) strip.scrollTo({ left, behavior: "smooth" }); else requestAnimationFrame(() => { strip.scrollLeft = left; });
         const np = stagePanel(el, i); np.classList.add(anim ? (panel ? "swap" : "in") : "now");
         if (panel) { const old = panel; old.classList.add("out"); setTimeout(() => old.remove(), 260); }
