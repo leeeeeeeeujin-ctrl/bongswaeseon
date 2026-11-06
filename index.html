@@ -4023,7 +4023,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
       if (this.stage.march) { this.stage = Object.assign({}, this.stage); this.march = { def: this.stage.march, n: 0, route: [] }; this.loadPart(this.stage.march.start); }
       this.deployLimit = this.stage.deployLimit || CFG.deployLimit;
     }
-    get deployed() { return this.units.filter((u) => !u.summoned).length; }
+    get deployed() { return this.units.filter((u) => !u.clone).length; }   // a drawn summon takes a place too; only a skill's short-lived double does not
     unitAt(x, y) { return this.units.find((u) => u.x === x && u.y === y); }
     canDeployAt(card, x, y) {
       if (this.onlyTile && (x !== this.onlyTile[0] || y !== this.onlyTile[1])) return false;
@@ -4039,6 +4039,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
         if (!card.active) return "소환사 없음";
         if (card.charges <= 0) return card.chargeT.length ? "재배치 대기 중" : "남은 소환물 없음";
         if (card.placeT > 0) return "재배치 대기 중";
+        if (this.deployed >= this.deployLimit && !this.stage.sandbox) return "배치 가능 인원 부족";
         if (this.cost < this.costOf(card)) return "코스트 부족";
         return null;
       }
@@ -4060,7 +4061,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
         card.placeT = d.redeploy;   // the next drawing needs a moment
         const o = card.owner;
         const s = { id: this.uid++, card: cardIdx, def: d, skill: d.skills[0], x, y, dir, hp: d.hp, maxHp: d.hp, sp: 0, skillT: 0, stored: 0,
-          atkT: d.interval * 0.5, blocked: [], buff: {}, flash: 0, swing: 0, born: this.t, summoned: true, owner: o };
+          atkT: d.interval * 0.5, blocked: [], buff: {}, flash: 0, swing: 0, born: this.t, summoned: true, owner: o, seq: (this.deploySeq = (this.deploySeq || 0) + 1) };
         this.units.push(s);
         this.fx.push({ k: "draw", x, y, ox: o.x, oy: o.y, t: 0, life: 0.7 });
         return s;
@@ -4532,7 +4533,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
       if (e.scan) {   // the sweep runs left to right across the whole field; nothing interrupts it
         const sc = e.scan; sc.t += dt;
         if (!sc.marks && sc.t >= S.sweep) {
-          sc.marks = this.units.filter((u) => !u.def.unseen && !u.summoned).sort(e.scanNear ? (a, b) => Math.hypot(a.x - e.x, a.y - e.y) - Math.hypot(b.x - e.x, b.y - e.y) || a.y - b.y : (a, b) => a.x - b.x || a.y - b.y).slice(0, e.scanEvery ? Math.max(0, Math.min(3, NEY_ROUNDS - (e.spent || 0))) : 3).map((u) => ({ u, x: u.x, y: u.y }));
+          sc.marks = this.units.filter((u) => !u.def.unseen).sort(e.scanNear ? (a, b) => Math.hypot(a.x - e.x, a.y - e.y) - Math.hypot(b.x - e.x, b.y - e.y) || a.y - b.y : (a, b) => a.x - b.x || a.y - b.y).slice(0, e.scanEvery ? Math.max(0, Math.min(3, NEY_ROUNDS - (e.spent || 0))) : 3).map((u) => ({ u, x: u.x, y: u.y }));
           sc.marks.forEach((m, i) => this.fx.push({ k: "neymark", e, u: m.u, x: m.x, y: m.y, t: 0, life: S.mark + i * S.gap + 0.1 }));
         }
         if (sc.marks) while (sc.fired < sc.marks.length && sc.t >= S.sweep + S.mark + sc.fired * S.gap) {
@@ -4556,7 +4557,8 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
       if (e.atkT <= 0) {
         const pool = this.units.filter((u) => !u.def.unseen);
         const tgt = e.blockedBy && this.units.includes(e.blockedBy) ? e.blockedBy
-          : pool.sort((a, b) => this.stat(b, "atk") - this.stat(a, "atk") || a.x - b.x)[0];   // he hunts the hardest hitter on the field
+          : e.perchFire ? pool.sort((a, b) => (b.seq || 0) - (a.seq || 0))[0]   // from the lighthouse: as any marksman, the one put down last (a summon too)
+          : pool.sort((a, b) => (this.stat(b, "atk") || 0) - (this.stat(a, "atk") || 0) || a.x - b.x)[0];   // he hunts the hardest hitter on the field
         if (!tgt) { e.atkT = 0.3; return !!e.perchFire; }
         e.shots++;
         if (e.shots % d.sniper.every === 0) { e.aim = { u: tgt, t: 0 }; this.fx.push({ k: "neyaim", e, u: tgt, t: 0, life: d.sniper.aim }); return true; }
@@ -4627,7 +4629,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
       const c = B.cur; c.t += dt;
       if (!c.tgts && c.t >= BARRAGE.sweep) {
         const foes = this.enemies.filter((e) => !e.dead && e.hp > 0 && !e.def.flying && !e.hired).sort((a, b) => b.hp - a.hp).slice(0, BARRAGE.n);
-        const ops = foes.length < BARRAGE.n ? this.units.filter((u) => !u.def.unseen && !u.summoned).sort((a, b) => b.hp - a.hp).slice(0, BARRAGE.n - foes.length) : [];
+        const ops = foes.length < BARRAGE.n ? this.units.filter((u) => !u.def.unseen).sort((a, b) => b.hp - a.hp).slice(0, BARRAGE.n - foes.length) : [];
         c.tgts = foes.concat(ops).map((q, i) => ({ q, x: q.x, y: q.y }));
         if (!c.tgts.length) { B.cur = null; B.next = this.t + P.every; return; }
         c.tgts.forEach((m, i) => this.fx.push({ k: "nbmark", e: m.q, op: !m.q.isEnemy, x: m.x, y: m.y, t: 0, life: BARRAGE.mark + BARRAGE.gap * i + 0.15 }));
@@ -8200,7 +8202,8 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
   function neyPose(e) {
     if (e._dieU !== undefined) return e._dieU < 0.3 ? 0 : 7;
     const ft = game.t - (e.fireT === undefined ? -9 : e.fireT);
-    if (e.scan) return !e.scan.marks ? 6 : ft < 0.14 ? 4 : 3;
+    if (e.scan) return !e.scan.marks ? 6 : ft < 0.16 ? 4 : 3;
+    if (e.perchFire) return e.aim ? 5 : ft < 0.16 ? 4 : (ft < 0.9 || e.atkT < 0.7) ? 3 : 0;   // the lighthouse: sights up before a shot, the kick, the gun held on them after
     if (e.perched) return 5;
     if (e.aim || (e.fireKind === "s" && ft < 0.6)) return 5;
     if (ft < 0.14) return 4;
@@ -8268,9 +8271,11 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
     g.strokeStyle = "rgba(210,220,235,.55)"; g.lineWidth = 1.2; g.beginPath(); g.ellipse(tx, ty + kt * 0.02, wt * 1.45, wt * 0.42, 0, 0, Math.PI * 2); g.stroke();
     for (let i = 0; i < 9; i++) { const a = (i / 9) * Math.PI * 2, x = tx + Math.cos(a) * wt * 1.45, y = ty + kt * 0.06 + Math.sin(a) * wt * 0.42; g.beginPath(); g.moveTo(x, y); g.lineTo(x, y - kt * 0.1); g.stroke(); }
     const pulse = 0.75 + 0.25 * Math.sin(t * 1.7), lx = tx - (e.face || 1) * wt * 0.4, ly = ty - kt * 0.25;
-    g.globalCompositeOperation = "lighter"; g.globalAlpha = vis * 0.55 * pulse;
-    g.drawImage(tinted(TEX.glow, NEY_BLUE), lx - kt * 1.1, ly - kt * 0.9, kt * 2.2, kt * 1.8);
-    g.globalAlpha = vis * 0.12 * pulse;   // the beam turning out over the field
+    const fl = e._lampT !== undefined ? Math.max(0, 1 - (game.t - e._lampT) / 0.5) : 0;   // it flares with each shot and each sweep
+    const lit = e._lampOut !== undefined ? Math.min(1, Math.max(0, 1 - (game.t - e._lampOut) / 0.6)) : 1;   // and gutters out when he falls
+    g.globalCompositeOperation = "lighter"; g.globalAlpha = Math.min(1, vis * lit * (0.55 * pulse + 0.7 * fl));
+    g.drawImage(tinted(TEX.glow, NEY_BLUE), lx - kt * 1.1 * (1 + fl), ly - kt * 0.9 * (1 + fl), kt * 2.2 * (1 + fl), kt * 1.8 * (1 + fl));
+    g.globalAlpha = vis * lit * (0.12 * pulse + 0.25 * fl);   // the beam turning out over the field
     const ba = t * 0.6; g.fillStyle = NEY_BLUE; g.beginPath(); g.moveTo(lx, ly); g.lineTo(lx + Math.cos(ba) * kt * 9, ly + Math.sin(ba) * kt * 1.6 - kt * 0.4); g.lineTo(lx + Math.cos(ba + 0.12) * kt * 9, ly + Math.sin(ba + 0.12) * kt * 1.6 - kt * 0.4); g.closePath(); g.fill();
     g.restore();
   }
@@ -8288,7 +8293,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
     let vis = 1;
     if (e.stealth) vis = 0.2 + 0.06 * Math.sin(t * 3 + e.id) + (ft < 0.45 ? 0.45 * (1 - ft / 0.45) : 0);
     else if (e.revealT !== undefined && game.t - e.revealT < 0.7) vis = 0.15 + 0.85 * ease((game.t - e.revealT) / 0.7);
-    if (e._dieU !== undefined) vis = e._dieU < 0.55 ? 1 : Math.max(0, 1 - (e._dieU - 0.55) / 0.45);
+    if (e._dieU !== undefined) vis = e._dieU < 0.7 ? 1 : Math.max(0, 1 - (e._dieU - 0.7) / 0.3);
     g.save();
     g.globalAlpha *= Math.min(1, vis + 0.3);
     g.fillStyle = "rgba(0,0,0,.4)"; g.beginPath(); g.ellipse(sx, sy, k * 0.34, k * 0.09, 0, 0, Math.PI * 2); g.fill();
@@ -8298,9 +8303,11 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
       const o = Math.sin(t * 7 + e.id) * k * 0.04; g.save(); g.globalAlpha = Math.min(1, g.globalAlpha * 1.6); if ("filter" in g) g.filter = "saturate(1.6) brightness(1.3)";
       NPUP.draw(g, sx + o, sy, k * 1.18, { p: e._pp, face: f, t }); g.restore();
     }
-    NPUP.draw(g, sx, sy, k * 1.18, { p: e._pp, face: f, t, flash: e.flash, glowTex, out });   // a head taller than the men he leads
+    const kick = ft < 0.18 && e.fireKind ? (1 - ft / 0.18) * k * (e.fireKind === "n" ? 0.05 : 0.11) : 0;   // the recoil throws him back a step
+    const K = e.perchFire ? k * 1.32 : k;   // up on the tower he would be lost at the field's scale
+    NPUP.draw(g, sx - f * kick, sy, K * 1.18, { p: e._pp, face: f, t, flash: e.flash, glowTex, out });   // a head taller than the men he leads
     e._mz = out.muzzle;   // where the muzzle is, for the tracer
-    neyFlair(g, e, out, k, t, ft, vis);
+    neyFlair(g, e, out, K, t, ft, vis);
     if (e.enraged && e._dieU === undefined) {   // on his last legs: the blue in the barrel runs hot
       g.globalCompositeOperation = "lighter"; g.globalAlpha = vis * (0.35 + 0.2 * Math.sin(t * 6));
       g.drawImage(tinted(TEX.glow, "#ff5a6a"), sx - k * 0.55, sy - k * 1.2, k * 1.1, k * 1.2);
@@ -8330,9 +8337,9 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
           ctx.globalAlpha = 0.16 * (1 - i / 6) * (1 - q * 0.5); ctx.strokeStyle = NEY_BLUE; ctx.lineWidth = Math.max(1, a[2] * 0.03);
           ctx.beginPath(); ctx.moveTo(c[0], c[1]); ctx.lineTo(dd[0], dd[1]); ctx.stroke();
         }
-        const gr = ctx.createLinearGradient(0, b[1], 0, b2[1]); gr.addColorStop(0, "rgba(196,255,154,.38)"); gr.addColorStop(1, "rgba(196,255,154,0)");
+        const gr = ctx.createLinearGradient(0, b[1], 0, b2[1]); gr.addColorStop(0, "rgba(140,205,255,.42)"); gr.addColorStop(1, "rgba(140,205,255,0)");
         ctx.globalAlpha = 1; ctx.fillStyle = gr; ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.lineTo(b2[0], b2[1]); ctx.lineTo(a2[0], a2[1]); ctx.closePath(); ctx.fill();
-        ctx.globalAlpha = 0.95; ctx.strokeStyle = "#f2ffe8"; ctx.lineWidth = Math.max(1.5, b[2] * 0.035); ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke();
+        ctx.globalAlpha = 0.95; ctx.strokeStyle = "#eaf6ff"; ctx.lineWidth = Math.max(1.5, b[2] * 0.035); ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke();
         ctx.globalAlpha = 0.5; ctx.strokeStyle = NEY_BLUE; ctx.lineWidth = Math.max(3, b[2] * 0.12); ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke();
         for (const u of game.units) if (!o.seen.has(u.id) && u.x <= x) {   // each one it passes is noted
           o.seen.add(u.id); const [ux, uy, uk] = SP(u.x, u.y, 0);
@@ -8376,7 +8383,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
         ctx.globalAlpha = 0.9 * (1 - q); ctx.strokeStyle = "#f4ffe8"; ctx.lineWidth = Math.max(1, w); ctx.beginPath(); ctx.moveTo(o.x0, o.y0); ctx.lineTo(o.x1, o.y1); ctx.stroke();
         ctx.globalCompositeOperation = "source-over";
       } else if (o.k === "last") {   // the seventh round: it comes back round for the man who fired it
-        const e = o.e, [ex, ey, k] = P(e.x, e.y, 0), cy = ey - k * 0.62;
+        const e = o.e, [ex, ey, k] = P(e.x, e.y, e._z || 0), cy = ey - k * 0.62;
         const R = k * (1.6 - 1.5 * ease(Math.min(1, q / 0.95))), ang = -Math.PI * 0.2 + q * Math.PI * 3.2;
         const pts = []; for (let i = 0; i < 12; i++) { const qq = Math.max(0, q - i * 0.012), RR = k * (1.6 - 1.5 * ease(Math.min(1, qq / 0.95))), aa = -Math.PI * 0.2 + qq * Math.PI * 3.2; pts.push([ex + Math.cos(aa) * RR, cy + Math.sin(aa) * RR * 0.45]); }
         if (q < 0.97) {
@@ -10494,6 +10501,9 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
     },
     neyscan(f) {
       neyFx.push({ k: "scan", born: game.t, life: f.life + 0.3, seen: new Set() });
+      if (f.e) { f.e._lampT = game.t; f.e._scanT = game.t; const [gx, gy, gk] = SP(f.e.x, f.e.y, f.e._z || 0);
+        for (let i = 0; i < 3; i++) setTimeout(() => emit({ x: gx, y: gy, vx: 0, vy: 0, life: 0.9, tex: TEX.ring, col: NEY_BLUE, size: gk * 0.5, grow: 6, flat: 0.4, add: true, alpha: 0.7 }), i * 220);
+        shake = Math.max(shake, 0.15); }
       const [x, y, k] = f.e._mz ? [f.e._mz[0], f.e._mz[1], P(f.x, f.y, 0)[2]] : SP(f.x, f.y, 1);
       emit({ x, y, vx: 0, vy: 0, life: 0.6, tex: TEX.glow, col: NEY_BLUE, size: k * 1.2, grow: 0.3, add: true, alpha: 0.8 });
     },
@@ -10517,6 +10527,11 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
       for (let i = 0; i < 4; i++) emit({ x: x0, y: y0, vx: rr(-30, 30), vy: rr(-50, -10), life: rr(0.5, 0.9), tex: smokeTex(), col: "#9aa6b4", size: k * rr(0.15, 0.25), grow: 1.2, alpha: 0.35, drag: 2 });
       if (f.miss) { for (let i = 0; i < 6; i++) emit({ x: x1, y: y1, vx: rr(-60, 60), vy: rr(-140, -40), life: rr(0.3, 0.6), tex: smokeTex(), col: "#b0a894", size: k * rr(0.15, 0.3), grow: 1, alpha: 0.5, grav: 300 }); emit({ x: x1, y: y1, vx: 0, vy: 0, life: 0.2, tex: TEX.glow, col: NEY_BLUE, size: k * 0.6, add: true }); return; }
       neyImpact(x1, y1, k, big);
+      { const [mx, my] = [x0, y0], dir = Math.sign((x1 - x0) || 1);   // at the gun: a ring of shock, and smoke thrown forward then hanging
+        emit({ x: mx, y: my, vx: 0, vy: 0, life: big ? 0.45 : 0.28, tex: TEX.ring, col: NEY_BLUE, size: k * (big ? 0.35 : 0.22), grow: big ? 3.2 : 2.2, add: true, alpha: 0.9 });
+        for (let i = 0; i < (big ? 9 : 5); i++) emit({ x: mx, y: my, vx: dir * rr(60, 220), vy: rr(-60, 20), life: rr(0.6, 1.2), tex: smokeTex(), col: "#b8c4d2", size: k * rr(0.12, 0.26), grow: 1.6, alpha: 0.4, drag: 3 });
+        for (let i = 0; i < (big ? 10 : 4); i++) emit({ x: mx, y: my, vx: dir * rr(150, 420), vy: rr(-120, 80), life: rr(0.15, 0.35), tex: TEX.core, col: "#dff3ff", size: k * rr(0.02, 0.04), add: true, drag: 2 });
+        if (f.e) f.e._lampT = game.t; }
       if (f.kind === "x") { shake = Math.max(shake, 0.22); const [gx, gy] = SP(f.x1, f.y1, 0); emit({ x: gx, y: gy, vx: 0, vy: 0, life: 0.6, tex: TEX.ring, col: NEY_BLUE, size: k * 0.5, grow: 2.4, flat: 0.34, add: true, layer: "floor" }); }
       else if (big) shake = Math.max(shake, 0.12);
     },
@@ -10541,6 +10556,17 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
     },
     die(f) {   // ash soldiers crumble into ash and embers
       const [x, y, k] = SP(f.x, f.y, 0.5), big = f.boss ? 2 : 1;
+      if (f.e && f.e.type === "ney" && f.e.perchFire) {
+        const [nx, ny, nk] = SP(f.e.x, f.e.y, (f.e._z || 0) + 0.6);
+        setTimeout(() => {   // as the seventh round strikes: a blue burst, then the ghost-fire leaving him in a column
+          emit({ x: nx, y: ny, vx: 0, vy: 0, life: 0.7, tex: TEX.glow, col: NEY_BLUE, size: nk * 3, grow: 0.5, add: true, alpha: 0.95 });
+          emit({ x: nx, y: ny, vx: 0, vy: 0, life: 0.9, tex: TEX.ring, col: "#dff3ff", size: nk * 0.5, grow: 5, add: true, alpha: 0.9 });
+          for (let i = 0; i < 40; i++) { const a = rr(0, 6.28), v = rr(80, 320); emit({ x: nx, y: ny, vx: Math.cos(a) * v, vy: Math.sin(a) * v * 0.7 - 60, life: rr(0.6, 1.3), tex: TEX.core, col: i % 3 ? NEY_BLUE : "#ffffff", size: nk * rr(0.03, 0.07), add: true, drag: 1.5 }); }
+          shake = Math.max(shake, 0.9); flashWhite = Math.max(flashWhite || 0, 0.35);
+        }, 950);
+        for (let i = 0; i < 26; i++) setTimeout(() => emit({ x: nx + rr(-nk * 0.25, nk * 0.25), y: ny + rr(-nk * 0.1, nk * 0.3), vx: rr(-20, 20), vy: rr(-140, -60), life: rr(1.2, 2.2), tex: i % 2 ? TEX.core : smokeTex(), col: i % 2 ? NEY_BLUE : "#5a7088", size: nk * (i % 2 ? rr(0.03, 0.06) : rr(0.2, 0.4)), grow: i % 2 ? 0 : 1.4, add: i % 2 === 1, alpha: 0.7 }), 1100 + i * 70);
+        f.e._lampOut = game.t + 1.0;
+      }
       if (f.e && f.e.type === "ney") { foeDead.push({ e: f.e, start: game.t, life: 3.2, ney: true }); neyFx = neyFx.filter((o) => o.k === "trail"); neyFx.push({ k: "last", born: game.t, life: 1.0, e: f.e }); return; }
       if (f.e) foeDead.push({ e: f.e, start: game.t, life: f.boss ? 1.4 : f.e.type === "airship" ? 1.8 : f.e.type === "drone" ? 1.0 : EN_POSED[f.e.type] ? 1.0 : 0.7 });
       emit({ x, y, vx: 0, vy: 0, life: 0.3, tex: TEX.glow, col: "#ffb070", size: k * 1.1 * big, grow: 0.4, add: true, alpha: 0.6 });
