@@ -11633,8 +11633,9 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
   }
 
   // ---------- frame ----------
+  let panelOn = false;   // the operator panel is up this frame: the terminal's lines move over to its right
   function render(dtReal) {
-    buttons.length = 0;
+    buttons.length = 0; panelOn = false;
     ctx.setTransform(scale * dpr, 0, 0, scale * dpr, 0, 0);
     let ox = 0, oy = 0;
     if (shake > 0 && !reduceMotion) { ox = (Math.random() - .5) * shake * 10; oy = (Math.random() - .5) * shake * 10; }
@@ -11899,7 +11900,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
       buttons.push({ x: tx, y: ty, w: tw, h: th, act: () => { showSkillRange = !showSkillRange; } });
       }
       // retreat
-      const rx = Math.max(380, sx - k * 1.0), ry = sy - k * 1.25;
+      const rx = Math.max(500, sx - k * 1.0), ry = sy - k * 1.25;   // clear of the operator panel
       ctx.fillStyle = "#121317"; ctx.beginPath(); ctx.arc(rx, ry, 26, 0, Math.PI * 2); ctx.fill(); ctx.strokeStyle = "#ff6b6b"; ctx.lineWidth = 2.5; ctx.stroke();
       ctx.beginPath(); ctx.moveTo(rx - 8, ry - 8); ctx.lineTo(rx + 8, ry + 8); ctx.moveTo(rx + 8, ry - 8); ctx.lineTo(rx - 8, ry + 8); ctx.stroke();
       if (!u.summoned) { const c = game.cards[u.card], first = Math.max(1, u.def.cost + window.TD.eliteCost(u.def, c.elite) - (c.pot ? c.pot.cost : 0)); text(`+${u.def.fullRefund ? first : Math.floor((u.paid || first) * CFG.retreatRefund)}`, rx, ry + 44, 15, "#fff", { align: "center", font: FONT_NUM, shadow: true }); }
@@ -12028,7 +12029,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
 
   // the operator panel, after the original: the illustration large down the left, fading into the field; over it the class,
   // the name, the numbers, the reach, a long health bar, and the skill in readable type — all above the card row
-  const PANEL_ART = {};
+  const PANEL_ART = {}, statRects = {};
   function panelArt(d, card) {
     const art = artOf(d, card, "e"); if (!ready(art)) return null;
     const key = d.id + ":" + (card ? card.elite : 0); if (PANEL_ART[key] && PANEL_ART[key].src === art) return PANEL_ART[key].c;
@@ -12043,6 +12044,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
   }
   function drawPanel(d, u, card) {
     const PW = 480, CW = 440;   // the panel, and the width its text keeps to
+    panelOn = true;
     buttons.push({ x: 0, y: 0, w: PW - 40, h: VH - (TOUCH ? 170 : 130), act: () => {} });   // the panel swallows taps (not the card row under it)
     const col = CLS_COL[d.id];
     const bg = ctx.createLinearGradient(0, 0, PW, 0);
@@ -12082,6 +12084,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
       ["저지", blk], ["재배치", (d.redeploy - (card && card.pot ? card.pot.redeploy : 0)) + "s"], u ? ["배치", Math.round(game.t - u.born) + "s"] : ["코스트", game.costOf(card)]];
     stats.forEach(([k, v], i) => {
       const x = 22 + Math.floor(i / 3) * 170, y = 292 + (i % 3) * 28;
+      statRects[k] = { x: x - 6, y: y - 21, w: 162, h: 30 };   // for a lesson that points at one
       text(k, x, y, 16, "#b4b9c2", { weight: 600, shadow: true });
       text(String(v), x + 150, y, 20, "#fff", { align: "right", font: FONT_NUM, weight: 500, shadow: true });
     });
@@ -12638,7 +12641,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
     ],
   };
   function makeStageScript(code) {
-    const steps = STAGE_SCRIPT[code], SS = { i: -1, t: 0, freeze: false, line: null, dark: 0, cardIdx: -1, name: "" };
+    const steps = STAGE_SCRIPT[code], SS = { i: -1, t: 0, freeze: false, line: null, dark: 0, cardIdx: -1, name: "", steps };
     const next = () => {
       SS.i++; SS.t = 0; SS.line = null; SS.freeze = false;
       const st = steps[SS.i];
@@ -12731,7 +12734,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
       if (st && st.deployCls && cardRects[SS.cardIdx] && pending !== SS.cardIdx && !drag && !aim) { const r = cardRects[SS.cardIdx]; hand(r.x + r.w / 2, r.y - 90, r.x + r.w / 2, r.y + r.h / 2); }
       if (st && st.kwSub && kwRects[SS.sub]) { const r = kwRects[SS.sub]; holes([r]); hand(r.x + r.w / 2, r.y + r.h + 70, r.x + r.w / 2, r.y + r.h / 2); }
       if (st && (st.card || st.cardSub || st.cardAir) && cardRects[SS.cardIdx]) { const r = cardRects[SS.cardIdx]; holes([{ x: r.x, y: r.y, w: r.w, h: r.h }]); hand(r.x + r.w / 2, r.y - 90, r.x + r.w / 2, r.y + r.h / 2); }
-      if (st && st.hl === "block") holes([{ x: 16, y: 458, w: 176, h: 30 }]);
+      if (st && st.hl === "block" && statRects["저지"]) holes([statRects["저지"]]);
       if (SS.line) panel(SS.line);
     };
     return SS;
@@ -12830,7 +12833,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
   }
   function panel(ln) {
     const lines = ln.txt.split("\n"), size = 21, lh = 40;
-    const w = 820, h = 50 + lines.length * lh, x = (VW - w) / 2;
+    const w = panelOn ? Math.min(820, VW - 506) : 820, h = 50 + lines.length * lh, x = panelOn ? 490 : (VW - w) / 2;
     const y = ln.at === "top" ? 92 : ln.at === "mid" ? 250 : VH - 150 - h - 20;
     const a = Math.min(1, ln.t * 5);
     ctx.save(); ctx.globalAlpha = a;
@@ -13207,6 +13210,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
   window.__tdSelect = (i) => { selected = i < 0 ? null : game.units[i]; };   // test hook: pick an operator as a tap would
   window.__tdSw = () => swooshes.map((w) => [+(game.t - w.born).toFixed(2), w.a0, w.a1, w.ring ? 1 : 0]);
   window.__tdScreen = (x, y) => { const q = P(x, y, zOf(x, y)); const c = camApply(q[0], q[1]); return [c[0] * scale, c[1] * scale, q[2] * scale]; };
+  window.__tdSS = () => { if (!sscr || !sscr.steps) return null; const st = sscr.steps[sscr.i]; return st ? { i: sscr.i, cards: cardRects, scale, card: (st.card || st.cardSub || st.cardAir) ? sscr.cardIdx : null, kw: st.kwSub ? kwRects[sscr.sub] || null : null } : null; };   // for tests
   window.__tdTut = () => tut && { step: tut.step, freeze: tut.freeze, rbtn: tut.rbtn, cards: cardRects, P: (x, y) => { const q = P(x, y, zOf(x, y)); return camApply(q[0], q[1]); }, scale };   // for debugging from the console
   newGame();
   if (document.getElementById("meta")) phase = "idle";   // the lobby opens first
