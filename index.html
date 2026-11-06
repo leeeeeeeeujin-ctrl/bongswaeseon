@@ -322,12 +322,23 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
     drawMesh(g, im, M, W) {
       const verts = this.meshVerts(M);
       const P = verts.map((v) => { let x = 0, y = 0; for (const [n, w, ox, oy] of v.ws) { const q = apply(W[n], ox, oy); x += q[0] * w; y += q[1] * w; } return [x, y]; });
-      const C = M.cols + 1;
-      for (let r = 0; r < M.rows; r++) for (let c = 0; c < M.cols; c++) {
-        const i0 = r * C + c, i1 = i0 + 1, i2 = i0 + C, i3 = i2 + 1;
-        this.tri(g, im, verts[i0], verts[i1], verts[i2], P[i0], P[i1], P[i2]);
-        this.tri(g, im, verts[i1], verts[i3], verts[i2], P[i1], P[i3], P[i2]);
+      const C = M.cols + 1, iw = im.naturalWidth, ih = im.naturalHeight, base = g.getTransform();
+      // each cell drawn as the parallelogram that best fits its four corners, from just its own patch of the picture:
+      // no clipping per triangle (that was the cost on phones), cells overlap a hair so no seams show
+      const L = this.lod || 1;   // phones: cells two rows tall, half the draws
+      const LC = M.cols > 2 ? L : 1;
+      for (let r = 0; r < M.rows; r += L) for (let c = 0; c < M.cols; c += LC) {
+        const r2 = Math.min(M.rows, r + L), c2 = Math.min(M.cols, c + LC), i0 = r * C + c, i1 = r * C + c2, i2 = r2 * C + c, i3 = r2 * C + c2;
+        const u0 = verts[i0].u, v0 = verts[i0].v, cw = verts[i1].u - u0, ch = verts[i2].v - v0; if (cw <= 0 || ch <= 0) continue;
+        const A = P[i0], B = P[i1], D = P[i2], E = P[i3];
+        const ax = (B[0] - A[0] + E[0] - D[0]) / 2 / cw, ay = (B[1] - A[1] + E[1] - D[1]) / 2 / cw;   // along u
+        const bx = (D[0] - A[0] + E[0] - B[0]) / 2 / ch, by = (D[1] - A[1] + E[1] - B[1]) / 2 / ch;   // along v
+        const mx = (A[0] + B[0] + D[0] + E[0]) / 4, my = (A[1] + B[1] + D[1] + E[1]) / 4;
+        g.setTransform(base); g.transform(ax, ay, bx, by, mx - ax * (u0 + cw / 2) - bx * (v0 + ch / 2), my - ay * (u0 + cw / 2) - by * (v0 + ch / 2));
+        const pu = Math.min(1.5, u0), pv = Math.min(1.5, v0), sw = Math.min(iw - u0 + pu, cw + pu + 1.5), sh = Math.min(ih - v0 + pv, ch + pv + 1.5);
+        g.drawImage(im, u0 - pu, v0 - pv, sw, sh, u0 - pu, v0 - pv, sw, sh);
       }
+      g.setTransform(base);
     }
     tri(g, im, a, b, c, A, B, Cc) {
       const ux = a.u, uy = a.v, vx1 = b.u - ux, vy1 = b.v - uy, vx2 = c.u - ux, vy2 = c.v - uy;
@@ -7681,6 +7692,10 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
   function drawYui(g, sx, sy, k, o) {
     if (!YRIG) return;
     const st = o.state || YRIG.evaluate(YC.idle, (o.t || 0) % YC.idle.dur);
+    if (st.extra.tint > 0) {   // the black silhouette she lands as: drawn plain, then darkened as one piece
+      const st2 = Object.assign({}, st, { extra: Object.assign({}, st.extra, { tint: 0 }) });
+      return drawLit(g, sx, sy, k, (og) => drawYui(og, sx, sy, k, Object.assign({}, o, { state: st2, flash: false })), `rgba(0,0,0,${(st.extra.tint * 0.97).toFixed(3)})`);
+    }
     const sc = (ART.y_rig.height ? 1.28 * 760 / ART.y_rig.height : 1.28) * k / 620, flip = o.face === -1 ? -1 : 1;   // the art faces right
     g.save(); g.translate(sx, sy);
     if (o.alpha !== undefined) g.globalAlpha = o.alpha;
@@ -7710,6 +7725,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
     const w = wrap.clientWidth;
     scale = w / VW;
     dpr = Math.min(window.devicePixelRatio || 1, DPR_Q[Q]);
+    if (typeof YRIG !== "undefined" && YRIG) YRIG.lod = Q < 2 ? 2 : 1;
     canvas.width = Math.round(VW * scale * dpr);
     canvas.height = Math.round(VH * scale * dpr);
     canvas.style.height = (VH * scale) + "px";
@@ -8085,7 +8101,23 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
     sunae: 1.24, eungyeol: 1.2, teka: 1.1, hiro: 0.96, lilith: 0.71, ayaki: 0.92, tao: 1.1, falchion: 1.16, veil: 1.12, geomseon: 1.08,
     angelina: 1.04, piania: 0.92, silphy: 0.94, bongeun: 1.12, jayeon: 0.8,
   };
+  // a figure drawn once to a scratch sheet, then laid down in one piece, with a wash over just its own pixels:
+  // a hit's warm flash or a silhouette costs one blend, not a filter on every part (that was what stalled phones)
+  const LIT = { c: null };
+  function drawLit(g, sx, sy, k, fn, wash, op = "source-atop") {
+    const m = g.getTransform(), ds = Math.sqrt(Math.abs(m.a * m.d - m.b * m.c)) || 1;
+    const S = Math.min(1400, Math.ceil(k * 3.4 * ds)), oy = S * 0.74;
+    const c = LIT.c || (LIT.c = document.createElement("canvas")); if (c.width < S) { c.width = c.height = S; }
+    const og = c.getContext("2d");
+    og.setTransform(1, 0, 0, 1, 0, 0); og.globalAlpha = 1; og.globalCompositeOperation = "source-over"; og.filter = "none"; og.clearRect(0, 0, S, S);
+    const dx = m.a * sx + m.c * sy + m.e, dy = m.b * sx + m.d * sy + m.f;
+    og.setTransform(m.a, m.b, m.c, m.d, S / 2 - dx + m.e, oy - dy + m.f);   // the same view, slid so the figure's feet sit at (S/2, oy)
+    fn(og);
+    og.setTransform(1, 0, 0, 1, 0, 0); og.globalAlpha = 1; og.globalCompositeOperation = op; og.fillStyle = wash; og.fillRect(0, 0, S, S); og.globalCompositeOperation = "source-over";
+    g.save(); g.setTransform(1, 0, 0, 1, 0, 0); g.drawImage(c, 0, 0, S, S, dx - S / 2, dy - oy, S, S); g.restore();
+  }
   function drawOperator(g, id, sx, sy, k, o = {}) {
+    if (o.flash && !o._raw) return drawLit(g, sx, sy, k * (SD_SCALE[id] || 1), (og) => drawOperator(og, id, sx, sy, k, Object.assign({}, o, { flash: false, _raw: true })), "rgba(255,190,120,.42)");
     if (SD_SCALE[id]) k *= SD_SCALE[id];
     if (id === "yui") return drawYui(g, sx, sy, k, o);
     if (id === "atat") return drawAtat(g, sx, sy, k, o);
@@ -13019,6 +13051,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
 
   // the lobby drives battles through this
   window.TDB = {
+    __setLod(l) { if (YRIG) YRIG.lod = l; },
     start(stage, squad, cb, opt) {
       stageIdx = stage; squadOverride = squad; onEnd = cb; endSent = false; startOpt = opt || {};
       newGame(); resize(); phase = "play"; paused = false; if (!tut && !(game && game.stage.sandbox)) banner("작전 개시", "OPERATION START", "op");
