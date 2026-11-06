@@ -8197,6 +8197,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
   const NEY = { h: 1.42, px: 455, rects: [[0, 0, 391, 455], [393, 0, 348, 458], [743, 0, 346, 456], [1091, 0, 425, 449], [1518, 0, 521, 450], [2041, 0, 476, 387], [2519, 0, 310, 449], [2831, 0, 454, 396]],   // the half-demon: horns and black fire make him taller than the men he leads
     ground: [[172, 448], [196, 450], [192, 448], [145, 441], [175, 442], [172, 380], [186, 441], [160, 389]],
     tip: [[380, 70], [341, 221], [339, 222], [417, 139], [372, 100], [469, 146], [105, 7], [447, 338]] };
+  const NEY_GUN_SGN = -1;
   const NEY_BLUE = "#9fdcff", NEY_DEEP = "#2f6fd8", NEY_RED = "#ff2f45";   // the marksman's colours: cold blue ghost-fire, and blood red for the seventh
   function neyPose(e) {
     if (e._dieU !== undefined) return e._dieU < 0.3 ? 0 : 7;
@@ -8286,6 +8287,15 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
     e._ph = (e._ph || 0) + Math.min(0.5, d) * 9; e._amp = (e._amp || 0) + ((moving ? 1 : 0) - (e._amp || 0)) * 0.15;
     const st = NEY_STATE[neyPose(e)];
     const tgt = NEYP.target(st, t + e.id * 0.37, e._ph);
+    if (st === "aim" || st === "fire" || st === "kneel") {   // the barrel follows whoever he means to hit: down off the tower at them, not level into the air
+      const sc = e.scan && e.scan.marks, m = sc && (sc[Math.min(sc.length - 1, e.scan.fired)] || sc[sc.length - 1]);
+      const who = e.aim ? e.aim.u : m ? m : game.units.filter((u) => !u.def.unseen).sort((a, b) => (b.seq || 0) - (a.seq || 0))[0];
+      if (who) {
+        const [tx, ty] = P(who.x, who.y, 0.5), dx = Math.abs(tx - sx), dy = ty - (sy - k * 0.95);
+        e.face = tx >= sx ? 1 : -1;
+        tgt.gun += NEY_GUN_SGN * Math.max(-0.3, Math.min(1.1, Math.atan2(dy, Math.max(1, dx))));
+      }
+    }
     e._pp = NEYP.blend(e._pp, tgt, st === "fire" ? 0.7 : st === "fallen" ? 0.08 : 0.22);
     const ft = game.t - (e.fireT === undefined ? -9 : e.fireT);
     // how much of him shows: a heat-haze ghost while unseen, flaring when he fires; fading in when he is found
@@ -8378,6 +8388,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
       } else if (o.k === "trail") {   // the line the round cut through the air, fading
         const w = o.w * (1 - q);
         ctx.globalCompositeOperation = "lighter"; ctx.lineCap = "round";
+        if (o.e && o.e._mz && !o.e.dead && game.enemies.includes(o.e) && age < 0.12) { o.x0 = o.e._mz[0]; o.y0 = o.e._mz[1]; }   // out of the barrel as it is drawn
         ctx.globalAlpha = 0.5 * (1 - q); ctx.strokeStyle = NEY_DEEP; ctx.lineWidth = w * 3; ctx.beginPath(); ctx.moveTo(o.x0, o.y0); ctx.lineTo(o.x1, o.y1); ctx.stroke();
         ctx.globalAlpha = 0.9 * (1 - q); ctx.strokeStyle = "#f4ffe8"; ctx.lineWidth = Math.max(1, w); ctx.beginPath(); ctx.moveTo(o.x0, o.y0); ctx.lineTo(o.x1, o.y1); ctx.stroke();
         ctx.globalCompositeOperation = "source-over";
@@ -10521,7 +10532,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
     neyaim(f) { neyFx.push({ k: "aim", born: game.t, life: f.life, u: f.u, e: f.e }); },
     neyshot(f) {   // the round: a white-hot line from the barrel, blue fire round it, and it is there before you see it go
       const big = f.kind !== "n", [x0, y0] = neyMuzzle(f.e, f.x0, f.y0), [x1, y1, k] = SP(f.x1, f.y1, f.miss ? 0.05 : 0.55);
-      neyFx.push({ k: "trail", born: game.t, life: big ? 0.5 : 0.28, x0, y0, x1, y1, w: k * (big ? 0.07 : 0.035) });
+      neyFx.push({ k: "trail", born: game.t, life: big ? 0.5 : 0.28, x0, y0, x1, y1, w: k * (big ? 0.07 : 0.035), e: f.e });
       emit({ x: x0, y: y0, vx: 0, vy: 0, life: 0.14, tex: TEX.glow, col: NEY_BLUE, size: k * (big ? 1.0 : 0.6), add: true });
       for (let i = 0; i < 4; i++) emit({ x: x0, y: y0, vx: rr(-30, 30), vy: rr(-50, -10), life: rr(0.5, 0.9), tex: smokeTex(), col: "#9aa6b4", size: k * rr(0.15, 0.25), grow: 1.2, alpha: 0.35, drag: 2 });
       if (f.miss) { for (let i = 0; i < 6; i++) emit({ x: x1, y: y1, vx: rr(-60, 60), vy: rr(-140, -40), life: rr(0.3, 0.6), tex: smokeTex(), col: "#b0a894", size: k * rr(0.15, 0.3), grow: 1, alpha: 0.5, grav: 300 }); emit({ x: x1, y: y1, vx: 0, vy: 0, life: 0.2, tex: TEX.glow, col: NEY_BLUE, size: k * 0.6, add: true }); return; }
