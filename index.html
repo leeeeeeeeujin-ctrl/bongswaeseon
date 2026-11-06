@@ -3693,28 +3693,29 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
   // then the next part — the player picks which way where the road forks. The horde behind follows into the next part; the life is shared.
   // Ney is out of sight until the last part: every so often he sweeps the field and puts three rounds around the biggest foe on the ground.
   const BARRAGE = { sweep: 1.6, mark: 1.0, gap: 0.45, n: 3, r: 1.05, dmg: 900 };
+  // the parts sit side by side on one big field: "at" is each part's corner on it
   const MARCH7 = { start: "p0", window: 10, parts: {
-    p0: { name: "진창 강둑", en: "MUDBANK", hold: 45, next: ["p1a", "p1b"], rear: [0, 1, 2], barrage: { first: 9, every: 16 },
+    p0: { at: [0, 3], name: "진창 강둑", en: "MUDBANK", hold: 45, next: ["p1a", "p1b"], rear: [0, 1, 2], barrage: { first: 9, every: 16 },
       map: ["S,,,,hh,,,#", ",,..,,,.,hh", "S,,h,,,,..B", ",,.,,hh,.,,", "S,,,,,,,,hh", "##hh,,#####"],
       waves: [[4, "strag", 1, 2, 1.4], [10, "soldier", 0, 1, 3], [14, "strag", 2, 3, 1.2], [20, "dog", 1, 2, 1], [25, "soldier", 2, 1, 2.5], [28, "strag", 0, 3, 1],
         [34, "soldier", 1, 2, 2], [38, "dog", 0, 1, 0.9], [40, "strag", 1, 3, 0.9], [42, "heavy", 1]] },
-    p1a: { name: "지붕길", en: "ROOFTOPS", desc: "고지대가 많고 길이 좁습니다. 머리 위로 드론이 넘어옵니다.", hold: 55, next: ["p2a", "p2b"], rear: [0, 1], barrage: { first: 8, every: 15 },
+    p1a: { at: [11, 0], name: "지붕길", en: "ROOFTOPS", desc: "고지대가 많고 길이 좁습니다. 머리 위로 드론이 넘어옵니다.", hold: 55, next: ["p2a", "p2b"], rear: [0, 1], barrage: { first: 8, every: 15 },
       map: ["#hhh#hhhh##", "S...,..,..h", "#hh#hh#h,.B", "S,..,..,..h", "#hhh#hhhh##"],
       waves: [[2, "soldier", 0, 2, 2.5], [6, "strag", 1, 3, 1.2], [12, "drone", 0, 2, 3], [18, "soldier", 1, 2, 2], [24, "heavy", 0], [28, "strag", 0, 4, 1],
         [34, "drone", 1, 3, 2], [38, "soldier", 0, 2, 2], [44, "hexer", 1, 2, 3], [48, "strag", 1, 4, 0.9], [52, "heavy", 1]] },
-    p1b: { name: "선착장", en: "DOCKS", desc: "넓은 땅에 진창이 많습니다. 사냥개 무리가 쏟아집니다.", hold: 55, next: ["p2a", "p2b"], rear: [0, 1, 2], barrage: { first: 8, every: 15 },
+    p1b: { at: [11, 5], name: "선착장", en: "DOCKS", desc: "넓은 땅에 진창이 많습니다. 사냥개 무리가 쏟아집니다.", hold: 55, next: ["p2a", "p2b"], rear: [0, 1, 2], barrage: { first: 8, every: 15 },
       map: ["S,,,..,,,,h", ",,..,,..,,,", "S,,,,hh,,.B", ",,.,,,,..,,", "S,,,..,,,,h", "hh,,hh,,hhh"],
       waves: [[2, "dog", 1, 3, 0.8], [6, "strag", 0, 3, 1.2], [10, "soldier", 2, 2, 2.5], [16, "dog", 0, 3, 0.7], [20, "heavy", 1], [26, "dog", 2, 4, 0.7],
         [30, "strag", 1, 4, 1], [36, "soldier", 0, 2, 2], [42, "dog", 1, 4, 0.6], [48, "heavy", 2], [50, "strag", 0, 4, 0.9]] },
-    p2a: { name: "다리", en: "BRIDGE", desc: "좁은 두 갈래 다리입니다. 앞에서 정규군 중장병과 방패병이 밀고 옵니다.", hold: 60, next: ["p3"], rear: [0, 2], front: [1, 3], barrage: { first: 8, every: 14 },
+    p2a: { at: [22, 0], name: "다리", en: "BRIDGE", desc: "좁은 두 갈래 다리입니다. 앞에서 정규군 중장병과 방패병이 밀고 옵니다.", hold: 60, next: ["p3"], rear: [0, 2], front: [1, 3], barrage: { first: 8, every: 14 },
       map: ["hh,,hh###hh,,", "S,..,,,.,,,,S", "##h##h.B,h#h#", "S,..,,,.,,,,S", "hh,,hh###hh,,"],
       waves: [[2, "strag", 0, 4, 1], [6, "soldier", 2, 2, 2.5], [10, "shield", 1], [12, "hexer", 3], [16, "dog", 0, 2, 1], [24, "heavy", 1], [28, "strag", 2, 4, 1],
         [30, "shield", 3], [34, "hexer", 1, 2, 3], [40, "soldier", 0, 3, 2], [46, "heavy", 3], [50, "shield", 1], [52, "strag", 0, 4, 0.8], [56, "dog", 2, 3, 0.8]] },
-    p2b: { name: "창고가", en: "WAREHOUSES", desc: "창고 사이 골목입니다. 정규군 척후병이 앞쪽에서 쏘아 댑니다.", hold: 60, next: ["p3"], rear: [0, 2, 3], front: [1, 4], barrage: { first: 8, every: 14 },
+    p2b: { at: [22, 5], name: "창고가", en: "WAREHOUSES", desc: "창고 사이 골목입니다. 정규군 척후병이 앞쪽에서 쏘아 댑니다.", hold: 60, next: ["p3"], rear: [0, 2, 3], front: [1, 4], barrage: { first: 8, every: 14 },
       map: ["S,,.#hh#,.h,S", ",.,h#..#h,,,,", "S,,.,,B,.,h,#", ",.,h#..#h,,,,", "S,,.#hh#,.h,S"],
       waves: [[2, "strag", 0, 4, 1], [6, "soldier", 2, 2, 2.5], [10, "hexer", 1, 2, 3], [14, "shield", 4], [18, "dog", 3, 2, 1], [24, "heavy", 0], [28, "hexer", 4, 2, 3],
         [30, "strag", 2, 4, 1], [36, "shield", 1], [40, "soldier", 3, 3, 2], [46, "hexer", 1, 2, 2.5], [50, "heavy", 2], [52, "strag", 0, 4, 0.8], [56, "shield", 4]] },
-    p3: { name: "등대 아래", en: "THE LIGHTHOUSE", final: true, rear: [], front: [0, 1],
+    p3: { at: [35, 2], name: "등대 아래", en: "THE LIGHTHOUSE", final: true, rear: [], front: [0, 1],
       map: ["##hh,,,,hh,S", "B,..,,.,,,,#", "#,hh,,hh,,h#", "#,..,,,.,,,#", "##hh,,,,hh,S"],
       waves: [[0, "ney", 0, 1, 0, { perch: [10, 2], seen: true, scanEvery: 28, atk: 0.6 }], [6, "shield", 0], [9, "hexer", 1], [16, "soldier", 0, 2, 2.5], [24, "shield", 1], [28, "hexer", 0, 2, 3],
         [36, "heavy", 1], [44, "soldier", 0, 3, 2], [54, "shield", 0], [56, "hexer", 1], [66, "heavy", 0], [74, "soldier", 1, 3, 2], [84, "shield", 1], [88, "hexer", 0, 2, 3], [100, "heavy", 1]] },
@@ -4576,11 +4577,23 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
     // ---------- the march (BL-07) ----------
     loadPart(id) {
       const M = this.march, P = M.def.parts[id];
+      if (!M.big) {   // the whole field, every part stamped at its place (what is drawn)
+        let BW = 0, BH = 0; for (const q of Object.values(M.def.parts)) { BW = Math.max(BW, q.at[0] + q.map[0].length); BH = Math.max(BH, q.at[1] + q.map.length); }
+        const g = Array.from({ length: BH }, () => Array(BW).fill("#"));
+        for (const q of Object.values(M.def.parts)) q.map.forEach((row, y) => [...row].forEach((c, x) => { g[q.at[1] + y][q.at[0] + x] = c; }));
+        M.big = g.map((r) => r.join("")); M.bigW = BW; M.bigH = BH;
+      }
       M.id = id; M.part = P; M.n++; M.route.push(id); M.t0 = this.t; M.phase = "fight"; M.choose = null; M.moveAt = P.hold ? this.t + P.hold : null;
-      this.stage.map = P.map; this.stage.bg = P.bg || "-"; this.stage.cam = P.cam; this.stage.hz = P.hz;   // no painting yet: the plain board
-      setMap(P.map);
+      M.rect = [P.at[0], P.at[1], P.map[0].length, P.map.length];
+      // the field the game plays on: only this part is open, everything else is out of bounds
+      const lg = Array.from({ length: M.bigH }, () => Array(M.bigW).fill("#"));
+      P.map.forEach((row, y) => [...row].forEach((c, x) => { lg[P.at[1] + y][P.at[0] + x] = c; }));
+      const logic = lg.map((r) => r.join(""));
+      this.stage.map = logic; this.stage.bg = P.bg || "-"; this.stage.cam = P.cam; this.stage.hz = P.hz;   // no painting yet: the plain board
+      setMap(logic);
       if (this.waves.length > this.waveIdx) this.total -= this.waves.length - this.waveIdx;   // what never came of the last part's waves
-      this.waves = W1(P.waves.map((w) => [w[0] + this.t].concat(w.slice(1)))); this.waveIdx = 0; this.total += this.waves.length;
+      const off = (o) => o && o.perch ? Object.assign({}, o, { perch: [o.perch[0] + P.at[0], o.perch[1] + P.at[1]] }) : o;
+      this.waves = W1(P.waves.map((w) => [w[0] + this.t, w[1], w[2], w[3], w[4], off(w[5])].filter((v, i) => i < 4 || v !== undefined))); this.waveIdx = 0; this.total += this.waves.length;
       this.bar = P.barrage ? { next: this.t + P.barrage.first, cur: null } : null;
       // the horde from the part before comes on behind, a few at a time
       const carry = M.carry || []; M.carry = null;
@@ -4609,21 +4622,22 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
         B.cur = { t: 0, tgt: null, fired: 0 }; this.fx.push({ k: "nbscan", t: 0, life: BARRAGE.sweep });
       }
       const c = B.cur; c.t += dt;
-      if (!c.tgt && c.t >= BARRAGE.sweep) {
-        c.tgt = this.enemies.filter((e) => !e.dead && e.hp > 0 && !e.def.flying && !e.hired).sort((a, b) => b.hp - a.hp)[0];
-        if (!c.tgt) { B.cur = null; B.next = this.t + P.every; return; }
-        this.fx.push({ k: "nbmark", e: c.tgt, x: c.tgt.x, y: c.tgt.y, t: 0, life: BARRAGE.mark + BARRAGE.gap * (BARRAGE.n - 1) + 0.2 });
-        c.lx = c.tgt.x; c.ly = c.tgt.y;
+      if (!c.tgts && c.t >= BARRAGE.sweep) {
+        const foes = this.enemies.filter((e) => !e.dead && e.hp > 0 && !e.def.flying && !e.hired).sort((a, b) => b.hp - a.hp).slice(0, BARRAGE.n);
+        const ops = foes.length < BARRAGE.n ? this.units.filter((u) => !u.def.unseen && !u.summoned).sort((a, b) => b.hp - a.hp).slice(0, BARRAGE.n - foes.length) : [];
+        c.tgts = foes.concat(ops).map((q, i) => ({ q, x: q.x, y: q.y }));
+        if (!c.tgts.length) { B.cur = null; B.next = this.t + P.every; return; }
+        c.tgts.forEach((m, i) => this.fx.push({ k: "nbmark", e: m.q, op: !m.q.isEnemy, x: m.x, y: m.y, t: 0, life: BARRAGE.mark + BARRAGE.gap * i + 0.15 }));
       }
-      if (c.tgt) {
-        if (!c.tgt.dead && this.enemies.includes(c.tgt)) { c.lx = c.tgt.x; c.ly = c.tgt.y; }   // the rounds follow it while it lives
-        while (c.fired < BARRAGE.n && c.t >= BARRAGE.sweep + BARRAGE.mark + c.fired * BARRAGE.gap) {
-          const k = c.fired++, a = k * 2.1, off = k ? 0.35 : 0, x = c.lx + Math.cos(a) * off, y = c.ly + Math.sin(a) * off * 0.6;
+      if (c.tgts) {
+        for (const m of c.tgts) if (!m.q.dead && (this.enemies.includes(m.q) || this.units.includes(m.q))) { m.x = m.q.x; m.y = m.q.y; }   // each round follows its mark while it lives
+        while (c.fired < c.tgts.length && c.t >= BARRAGE.sweep + BARRAGE.mark + c.fired * BARRAGE.gap) {
+          const m = c.tgts[c.fired++], x = m.x, y = m.y;
           this.fx.push({ k: "nbshell", x, y, t: 0, life: 0.7 });
           for (const e of this.enemies) if (!e.dead && !e.def.flying && Math.hypot(e.x - x, e.y - y) <= BARRAGE.r) { this.damage(e, BARRAGE.dmg, "true", null); e.flash = 0.2; }
           for (const u of this.units) if (Math.hypot(u.x - x, u.y - y) <= BARRAGE.r) { this.damage(u, BARRAGE.dmg, "true", null); u.flash = 0.2; }
         }
-        if (c.fired >= BARRAGE.n) { B.cur = null; B.next = this.t + P.every; }
+        if (c.fired >= c.tgts.length) { B.cur = null; B.next = this.t + P.every; }
       }
     }
     // the original's rule: of those in range, the one deployed last draws the fire (the unseen only when nothing else is there)
@@ -5492,15 +5506,23 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
   // a smaller board is brought closer, so every map fills about the same part of the screen
   const camZoom = (w, h) => Math.max(1, Math.min(1.3, 13 / w, 7 / h));
   // a stage whose ground was painted first carries the camera fitted to that painting: [tilt, distance, focal, centre x, centre y]
+  let VCX = null, VCY = null, pan = null;   // the point of the field the camera centres on (null: the middle of the board)
   function syncBoard() {
     W = window.TD.W; H = window.TD.H;
-    const c = game && game.stage.cam;
+    const c = game && game.stage.cam, M = game && game.march;
     if (c) [PHI, D, F, CX, CY] = c; else { PHI = PHI0; D = D0; F = F0 * camZoom(W, H); CX = CX0; CY = CY0; }
+    VCX = VCY = null;
+    if (M && M.rect) {   // the march: frame the part being fought, the rest of the field around it
+      const [ax, ay, aw, ah] = M.rect, to = [ax + (aw - 1) / 2, ay + (ah - 1) / 2, F0 * camZoom(aw, ah) * 0.94];
+      if (pan && pan.to) { pan = { from: [pan.cur[0], pan.cur[1], pan.cur[2]], to, t: 0 }; }
+      else pan = { from: to, to, t: 1, cur: to };
+      [VCX, VCY, F] = pan.cur || to;
+    }
     HZ = (game && game.stage.hz) || HZ0;
     sP = Math.sin(PHI); cP = Math.cos(PHI);
   }
   function P(x, y, z = 0) {
-    const X = x - (W - 1) / 2, Y = (H - 1) / 2 - y;
+    const X = x - (VCX === null ? (W - 1) / 2 : VCX), Y = (VCY === null ? (H - 1) / 2 : VCY) - y;
     z += GZ;
     const yc = Y * sP + z * cP, zc = D + Y * cP - z * sP;
     return [CX + F * X / zc, CY - F * yc / zc, F / zc];
@@ -7688,23 +7710,27 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
       }
       return c;
     }
+    // the march (BL-07): the whole field is drawn, the part being fought lit and edged, the rest in shadow
+    const MB = game && game.march && game.march.big, MR = MB && game.march.rect;
+    const dimT = (x, y) => !!MR && (x < MR[0] || y < MR[1] || x >= MR[0] + MR[2] || y >= MR[1] + MR[3]);
+    const T = MB ? (x, y) => { if (x < 0 || y < 0 || x >= W || y >= H) return "#"; const c = MB[y][x]; return (c === "S" || c === "B") && dimT(x, y) ? "," : c; } : tileAt;   // a part not yet reached shows no gates
     const bg = g.createLinearGradient(0, 0, 0, VH);
     bg.addColorStop(0, "#15171b"); bg.addColorStop(0.5, "#202329"); bg.addColorStop(1, "#121316");
     g.fillStyle = bg; g.fillRect(0, 0, VW, VH);
     // under-board slab
     poly(g, [P(-0.7, -0.7, -0.25), P(W - 0.3, -0.7, -0.25), P(W - 0.3, H - 0.3, -0.25), P(-0.7, H - 0.3, -0.25)]);
     g.fillStyle = "#0c0d10"; g.fill();
-    const cx = (W - 1) / 2;
+    const cx = VCX === null ? (W - 1) / 2 : VCX;
     for (let y = 0; y < H; y++) {
       // outside-in so faces nearer the middle draw last
       const xs = [...Array(W).keys()].sort((a, b) => Math.abs(b - cx) - Math.abs(a - cx));
       for (const x of xs) {
-        const ch = tileAt(x, y);
+        const ch = T(x, y);
         if (ch === "h") continue;
         const q = quad(x, y, ch === "#" ? -0.04 : 0);
         poly(g, q);
         if (ch === "#") {
-          g.fillStyle = "#1d1f24"; g.fill();
+          g.fillStyle = "#1d1f24"; g.fill(); if (dimT(x, y)) { g.fillStyle = "rgba(6,7,9,.55)"; g.fill(); }
           g.save(); poly(g, q); g.clip(); g.strokeStyle = "#26292f"; g.lineWidth = 1.2;
           const [a, , , d] = q;
           for (let i = -6; i < 8; i++) { const t0 = P(x - .5 + i * .18, y + .5, -0.04), t1 = P(x - .5 + i * .18 + .8, y - .5, -0.04); g.beginPath(); g.moveTo(t0[0], t0[1]); g.lineTo(t1[0], t1[1]); g.stroke(); }
@@ -7716,7 +7742,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
         else if (ch === "B") { gr.addColorStop(0, "#1f3f6a"); gr.addColorStop(1, "#2b5a92"); }
         else if (ch === ",") { gr.addColorStop(0, "#3a3532"); gr.addColorStop(1, "#45403b"); }   // walkable, not for standing on
         else { gr.addColorStop(0, "#4a4e56"); gr.addColorStop(1, "#565b64"); }
-        g.fillStyle = gr; g.fill();
+        g.fillStyle = gr; g.fill(); if (dimT(x, y)) { g.fillStyle = "rgba(6,7,9,.62)"; g.fill(); }
         g.strokeStyle = "rgba(0,0,0,.55)"; g.lineWidth = 1.5; g.stroke();
         poly(g, quad(x, y, 0).map((p, i) => { const ctr = P(x, y, 0); return [ctr[0] + (p[0] - ctr[0]) * 0.9, ctr[1] + (p[1] - ctr[1]) * 0.9]; }));
         g.strokeStyle = "rgba(255,255,255,.07)"; g.lineWidth = 1; g.stroke();
@@ -7732,18 +7758,23 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
       }
       // high ground blocks of this row
       for (const x of xs) {
-        if (tileAt(x, y) !== "h") continue;
+        if (T(x, y) !== "h") continue;
         const top = quad(x, y, HZ), bot = quad(x, y, 0);
-        const side = (i, j, col) => { poly(g, [top[i], top[j], bot[j], bot[i]]); g.fillStyle = col; g.fill(); g.strokeStyle = "rgba(0,0,0,.6)"; g.lineWidth = 1; g.stroke(); };
-        if (x < cx && tileAt(x + 1, y) !== "h") side(1, 2, "#5d626b");
-        if (x > cx && tileAt(x - 1, y) !== "h") side(3, 0, "#5d626b");
-        if (tileAt(x, y + 1) !== "h") side(2, 3, "#6e737c");
+        const dm = dimT(x, y), side = (i, j, col) => { poly(g, [top[i], top[j], bot[j], bot[i]]); g.fillStyle = col; g.fill(); if (dm) { g.fillStyle = "rgba(6,7,9,.62)"; g.fill(); } g.strokeStyle = "rgba(0,0,0,.6)"; g.lineWidth = 1; g.stroke(); };
+        if (x < cx && T(x + 1, y) !== "h") side(1, 2, "#5d626b");
+        if (x > cx && T(x - 1, y) !== "h") side(3, 0, "#5d626b");
+        if (T(x, y + 1) !== "h") side(2, 3, "#6e737c");
         poly(g, top);
         const gr = g.createLinearGradient(0, top[0][1], 0, top[2][1]);
         gr.addColorStop(0, "#8d929b"); gr.addColorStop(1, "#a0a5ae");
-        g.fillStyle = gr; g.fill(); g.strokeStyle = "rgba(0,0,0,.5)"; g.lineWidth = 1.5; g.stroke();
+        g.fillStyle = gr; g.fill(); if (dm) { g.fillStyle = "rgba(6,7,9,.62)"; g.fill(); } g.strokeStyle = "rgba(0,0,0,.5)"; g.lineWidth = 1.5; g.stroke();
         g.beginPath(); g.moveTo(top[3][0], top[3][1]); g.lineTo(top[2][0], top[2][1]); g.strokeStyle = "rgba(255,255,255,.35)"; g.lineWidth = 1.5; g.stroke();
       }
+    }
+    if (MR) {   // the edge of the part being fought
+      const [ax, ay, aw, ah] = MR, pts = [P(ax - .5, ay - .5, 0), P(ax + aw - .5, ay - .5, 0), P(ax + aw - .5, ay + ah - .5, 0), P(ax - .5, ay + ah - .5, 0)];
+      poly(g, pts); g.strokeStyle = "rgba(150,210,255,.25)"; g.lineWidth = 8; g.stroke();
+      poly(g, pts); g.strokeStyle = "rgba(235,245,255,.85)"; g.lineWidth = 2; g.stroke();
     }
     return c;
   }
@@ -8160,7 +8191,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
         }
         ctx.globalCompositeOperation = "source-over";
       } else if (o.k === "emark") {   // the reticle on the biggest foe: it follows him until the rounds come
-        const alive = game.enemies.includes(o.e) && !o.e.dead, [x, y, k] = SP(alive ? o.e.x : o.x, alive ? o.e.y : o.y, 0);
+        const alive = (game.enemies.includes(o.e) || game.units.includes(o.e)) && !o.e.dead, [x, y, k] = SP(alive ? o.e.x : o.x, alive ? o.e.y : o.y, 0);
         if (alive) { o.x = o.e.x; o.y = o.e.y; }
         const tight = ease(Math.min(1, age / 0.6)), r = k * (1.35 - 0.3 * tight), pulse = 0.75 + 0.25 * Math.sin(age * 14);
         ctx.globalCompositeOperation = "lighter"; ctx.globalAlpha = 0.85 * Math.min(1, age * 5) * (q > 0.9 ? (1 - q) / 0.1 : 1) * pulse;
@@ -8407,7 +8438,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
   const buttons = [];       // hit areas rebuilt each frame
 
   function newGame() {
-    game = new Game(stageIdx, squadOverride); syncBoard(); drag = null; T_SKIP = false; tut = game.stage.tutorial ? makeTutorial() : null;
+    game = new Game(stageIdx, squadOverride); pan = null; syncBoard(); drag = null; T_SKIP = false; tut = game.stage.tutorial ? makeTutorial() : null;
     foeNotes = []; foeShown = {}; cardGlow = new Set(); sscr = !tut && STAGE_SCRIPT[game.stage.code] && (game.stage.branch !== undefined || !((startOpt.seen || {})[game.stage.code + ":op"])) ? makeStageScript(game.stage.code) : null;
     if (canvas.width) terrain = drawTerrain(); pending = -1; inspect = -1; aim = null; selected = null; banners = []; routes = []; neyFx = []; inks = []; letters = []; roars = []; foeDead = []; corpses = [];
     seenSpawn = new Set(); bossSeen = false; paused = false; partN = game.march ? game.march.n : 0; partFade = 0;
@@ -8415,17 +8446,21 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
   // BL-07: a new part of the march — the board is swapped under a short fade, and the new part's roads are shown
   let partN = 0, partFade = 0;
   function onPart() {
-    partN = game.march.n; syncBoard(); if (canvas.width) terrain = drawTerrain();
+    partN = game.march.n; syncBoard(); if (canvas.width) terrain = drawTerrain();   // the camera glides over to the new part
     routes = []; seenSpawn = new Set(); selected = null; aim = null; drag = null; pending = -1; inspect = -1; corpses = []; foeDead = [];
-    if (partN > 1) partFade = 1;
   }
   function drawMarch() {
     const M = game.march; if (!M) return;
-    partFade = Math.max(0, partFade - 1 / 60 * 1.4);
-    if (partFade > 0) rect(0, 0, VW, VH, `rgba(0,0,0,${partFade})`);
+    if (M.choose && pan && !pan.wide) pan = { from: pan.cur, to: [pan.cur[0], pan.cur[1], pan.cur[2] * 0.72], t: 0, wide: true };   // the fork: pull back to see where the roads go
+    if (pan && pan.t < 1) {
+      pan.t = Math.min(1, pan.t + 1 / 60 / 0.9); const e = ease(pan.t);
+      pan.cur = pan.from.map((v, i) => v + (pan.to[i] - v) * e); [VCX, VCY, F] = pan.cur;
+      if (canvas.width) terrain = drawTerrain();
+    }
     const P = M.part, y = 92;
     let label, sub = null, col = "rgba(255,255,255,.9)";
-    if (M.phase === "move") { const s = Math.max(0, Math.ceil(M.moveEnd - game.t)); label = `방어 지점 이동 · ${s}`; sub = "남아 있는 가사인격은 반환 없이 빠집니다"; col = "#ffcf6a"; }
+    if (M.choose) label = "진행 방향 선택";
+    else if (M.phase === "move") { const s = Math.max(0, Math.ceil(M.moveEnd - game.t)); label = `방어 지점 이동 · ${s}`; sub = "남아 있는 가사인격은 반환 없이 빠집니다"; col = "#ffcf6a"; }
     else if (M.moveAt !== null) { const s = Math.max(0, Math.ceil(M.moveAt - game.t)); label = `${P.name} · 이동까지 ${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`; }
     else label = P.name;
     ctx.font = `700 17px ${FONT_KR}`; const w = ctx.measureText(label).width + 44;
@@ -8434,21 +8469,26 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
     text(label, VW / 2, y + 6, 17, col, { align: "center", weight: 700 });
     if (sub) text(sub, VW / 2, y + 34, 14, "rgba(255,220,150,.85)", { align: "center", weight: 500 });
   }
-  // the road forks: two parts to pick from, everything waits until one is taken
+  // the road forks: an arrow off the edge of the part for each way on; everything waits until one is taken
   function drawRoute(M) {
-    rect(0, 0, VW, VH, "rgba(6,7,9,.86)");
-    text("ROUTE", VW / 2, 150, 15, "#8a8f99", { align: "center", font: FONT_NUM, weight: 600 });
-    text("다음 구간을 선택하십시오", VW / 2, 186, 30, "#fff", { align: "center", weight: 900 });
-    text(M.route.map((id) => M.def.parts[id].name).join("  ›  ") + "  ›  ?", VW / 2, 222, 15, "#aab0ba", { align: "center", weight: 500 });
-    const n = M.choose.length, cw = 400, gap = 40, x0 = VW / 2 - (n * cw + (n - 1) * gap) / 2;
-    M.choose.forEach((id, i) => {
-      const P = M.def.parts[id], x = x0 + i * (cw + gap), y = 262, h = 230;
-      ctx.fillStyle = "rgba(28,30,35,.95)"; ctx.fillRect(x, y, cw, h); ctx.fillStyle = "#fff"; ctx.fillRect(x, y, cw, 3);
-      text(P.en, x + 28, y + 44, 14, "#8a8f99", { font: FONT_NUM, weight: 600 });
-      text(P.name, x + 28, y + 86, 34, "#fff", { weight: 900 });
-      wrapText(P.desc || "", x + 28, y + 128, cw - 56, 16, "#c8ccd4", 26);
-      text("선택  ›", x + cw - 28, y + h - 24, 16, "#fff", { align: "right", weight: 700 });
-      buttons.push({ x, y, w: cw, h, act: () => game.marchGo(id) });
+    const [ax, ay, aw, ah] = M.rect, cx = ax + (aw - 1) / 2, cy = ay + (ah - 1) / 2;
+    text("진행할 방향을 선택하십시오", VW / 2, 150, 24, "#fff", { align: "center", weight: 900, shadow: true });
+    M.choose.forEach((id) => {
+      const Q = M.def.parts[id], tx = Q.at[0] + (Q.map[0].length - 1) / 2, ty = Q.at[1] + (Q.map.length - 1) / 2;
+      let dx = tx - cx, dy = ty - cy; const L = Math.hypot(dx, dy) || 1; dx /= L; dy /= L;
+      const t = Math.min(dx ? (aw / 2) / Math.abs(dx) : 1e9, dy ? (ah / 2) / Math.abs(dy) : 1e9);
+      const [px, py] = P(cx + dx * (t + 0.9), cy + dy * (t + 0.9), 0), [qx, qy] = P(cx + dx * (t + 1.6), cy + dy * (t + 1.6), 0);
+      const ang = Math.atan2(qy - py, qx - px), pulse = 1 + 0.08 * Math.sin(clock * 5);
+      ctx.save(); ctx.translate(px, py);
+      ctx.fillStyle = "rgba(10,12,16,.82)"; ctx.beginPath(); ctx.arc(0, 0, 40, 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = "rgba(235,245,255,.9)"; ctx.lineWidth = 2; ctx.stroke();
+      ctx.rotate(ang); ctx.scale(pulse, pulse); ctx.fillStyle = "#fff";
+      ctx.beginPath(); ctx.moveTo(18, 0); ctx.lineTo(-8, -16); ctx.lineTo(-2, 0); ctx.lineTo(-8, 16); ctx.closePath(); ctx.fill();
+      ctx.restore();
+      const below = Math.sin(ang) > -0.3, ly = py + (below ? 66 : -58);
+      text(Q.name, px, ly, 20, "#fff", { align: "center", weight: 900, shadow: true });
+      if (Q.desc) text(Q.desc, px, ly + 22, 13, "#c8ccd4", { align: "center", weight: 500, shadow: true });
+      buttons.push({ x: px, y: py, r: 48, act: () => game.marchGo(id) });
     });
   }
   function banner(text, sub, kind) { banners.push({ text, sub, kind, t: 0, life: kind === "warn" ? 2.6 : kind === "op" ? 1.9 : 2.2 }); }
@@ -11520,7 +11560,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
     if (sscr) sscr.draw();
     if (game.stage.sandbox) drawSim();
     drawBanners();
-    if (phase === "play" && game.march && game.march.choose) drawRoute(game.march);   // the fork covers everything
+    if (phase === "play" && game.march && game.march.choose) drawRoute(game.march);   // the ways on, over everything
     if ((selected || inspect >= 0) && phase === "play") drawKwTip(); else kwTip = null;
     if (paused && phase === "play" && !quitAsk) {
       // after the original: a big pale PAUSE over the field, which stays visible
