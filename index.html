@@ -3860,6 +3860,11 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
       waves: W1([[4, "soldier", 0, 1], [12, "soldier", 0, 2, 4], [24, "hexer", 0, 1], [34, "soldier", 0, 2, 3], [44, "hexer", 0, 1], [52, "soldier", 0, 2, 3], [60, "hexer", 0, 2, 4], [72, "soldier", 0, 3, 2.5]]),
       boss: ["", ""], desc: "중장으로 길을 막고, 의무로 버티게 하는 법을 익힙니다. 원거리 적은 가장 마지막에 배치된 가사인격을 먼저 노립니다.",
       lose: "중장 뒤에 의무를 두고, 원거리 적이 나오면 중장을 마지막에 배치해 표적을 넘기세요." },
+    // a side branch under BL-05: casters against armour, and slowing what runs
+    { code: "TR-02", name: "화력 학습", map: MAP_C1.alley, bg: "bg_c1_alley", cam: [0.8368, 14.6214, 1553.44, 640.28, 285.49], hz: 0.5, branch: 4, startCost: 40, mul: { hp: 0.45, atk: 0.45, def: 1 },   // the armour stays whole: that is the lesson
+      waves: W1([[4, "soldier", 0, 1], [12, "heavy", 0, 1], [32, "soldier", 0, 2, 3], [42, "dog", 0, 3, 1.4], [56, "heavy", 0, 1], [62, "dog", 0, 4, 1.1], [76, "soldier", 0, 2, 3], [80, "heavy", 0, 1], [86, "dog", 0, 4, 1]]),
+      boss: ["", ""], desc: "방어력이 높은 적은 술사의 마법으로, 빠른 적은 감속자로 늦춰 잡는 법을 익힙니다.",
+      lose: "척탄병은 물리 공격이 거의 통하지 않습니다. 술사를 고지대에 두고, 감속자로 사냥개의 발을 묶으세요." },
   ];
   // level-0 training: no timed waves (the tutorial script spawns and paces everything), no passive cost
   const TUTORIAL = { code: "TR-00", name: "링크 학습", map: MAP_TUT, waves: [], holo: true, tutorial: true, costRate: 0, mul: { hp: 0.45, atk: 0.8, def: 0.3 },
@@ -8264,7 +8269,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
 
   function newGame() {
     game = new Game(stageIdx, squadOverride); syncBoard(); drag = null; T_SKIP = false; tut = game.stage.tutorial ? makeTutorial() : null;
-    foeNotes = []; foeShown = {}; cardGlow = new Set(); sscr = !tut && STAGE_SCRIPT[game.stage.code] && !((startOpt.seen || {})[game.stage.code + ":op"]) ? makeStageScript(game.stage.code) : null;
+    foeNotes = []; foeShown = {}; cardGlow = new Set(); sscr = !tut && STAGE_SCRIPT[game.stage.code] && (game.stage.branch !== undefined || !((startOpt.seen || {})[game.stage.code + ":op"])) ? makeStageScript(game.stage.code) : null;
     if (canvas.width) terrain = drawTerrain(); pending = -1; inspect = -1; aim = null; selected = null; banners = []; routes = []; neyFx = []; inks = []; letters = []; roars = []; foeDead = []; corpses = [];
     seenSpawn = new Set(); bossSeen = false; paused = false;
   }
@@ -11983,6 +11988,21 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
       { deployCls: "중장", say: "공격을 받아낼 중장을 마지막에 배치하면 표적이 넘어갑니다.\n「{op}」를 길 위에 배치하십시오." },
       { say: "표적이 「{last}」(으)로 바뀌었습니다. 배치 순서가 곧 방어선입니다.", tap: true },
     ],
+    // TR-02 (the branch under BL-05): arts against armour, and the slowers against what runs
+    "TR-02": [
+      { wait: 0.4 },
+      { say: "단말 학습 기록, 화력 편. 적의 방어와 속도에 맞서는 법을 확인합니다.", tap: true },
+      { deployCls: "중장", say: "먼저 길을 막습니다.\n「{op}」를 길 위에 배치하십시오." },
+      { waitFoe: "heavy" }, { wait: 1.2 },
+      { focusFoe: "heavy", say: "중장갑 개체. 방어력이 매우 높아, 물리 공격은 거의 통하지 않습니다.", tap: true, at: "bottom" },
+      { deployCls: "술사", say: "술사의 마법 공격은 방어력을 무시하고, 마법 저항으로만 줄어듭니다.\n「{op}」를 길이 닿는 고지대에 배치하십시오." },
+      { say: "방어력이 높은 적에게는 마법을, 마법 저항이 높은 적에게는 물리를.\n공격 유형을 맞추십시오.", tap: true },
+      { deployCls: "의무", say: "중장갑 개체의 공격은 무겁습니다.\n「{op}」를 중장 뒤쪽 고지대에 배치하십시오." },
+      { waitFoe: "dog" }, { wait: 0.8 },
+      { focusFoe: "dog", say: "고속 개체. 화력이 닿기 전에 저지선까지 파고듭니다.", tap: true, at: "bottom" },
+      { deployCls: "보조", say: "감속자는 공격한 적의 이동을 늦춥니다.\n「{op}」를 길이 보이는 고지대에 배치하십시오." },
+      { say: "느려진 적은 사거리 안에 더 오래 머뭅니다. 화력이 닿는 시간을 늘리십시오.", tap: true },
+    ],
   };
   function makeStageScript(code) {
     const steps = STAGE_SCRIPT[code], SS = { i: -1, t: 0, freeze: false, line: null, dark: 0, cardIdx: -1, name: "" };
@@ -12909,24 +12929,28 @@ window.BSL_STORIES = {
     { nar: "진창에 찍힌 발자국은 하나같이 서쪽을 향하고 있었다. 우리는 그 반대로 걷는다." },
     { show: "yui", at: "c" },
     { me: "이쪽이면 저것들이랑 마주칠 일은 없겠지." },
-    { say: "yui", ruby: "가사인격체 — 범용", tone: "cold", text: "확률상으로는." },
+    { say: "yui", ruby: "가사인격체 — 범용", tone: "cold", text: "확률상으로는 그렇습니다." },
     { nar: "골목 끝에서, 행렬 하나가 멈춰 서 있었다." },
     { nar: "서쪽으로 가던 하얀 가면들이, 한 사람씩 고개를 돌린다. 이쪽으로." },
     { me: "……돌아오는데?" },
+    { say: "yui", ruby: "가사인격체 — 범용", tone: "cold", text: "전방 개체군, 진로를 반전했습니다. 선두가 마탄의 사수의 사거리에 진입한 직후입니다." },
+    { me: "그 저격수가…… 길을 막고 있다는 거야?" },
+    { say: "yui", ruby: "가사인격체 — 범용", tone: "cold", text: "사거리에 들어선 선두 개체는 전원 소멸. 행렬은 그 선을 넘지 못합니다." },
     { say: "yui", ruby: "가사인격체 — 범용", tone: "cold", text: "후방에도 동일 개체군. 접근 중입니다." },
     { nar: "뒤를 돌아본다. 방금 지나온 골목 입구를, 다른 행렬이 메우고 있었다." },
     { nar: "앞과 뒤. 같은 군복, 같은 걸음." },
     { wait: 0.5 },
     { nar: "그 사이 길바닥에 낙오병 하나가 엎드려 있었다. 아직 꿈틀거린다." },
-    { nar: "앞서 오던 병사 하나가 그 위로 몸을 숙였다. 쓰러진 자의 가슴께에서, 하얗고 희미한 무언가를 끌어낸다. 숨결 같은 것." },
-    { nar: "그것을 삼키자, 낙오병은 재가 되어 무너졌다. 삼킨 쪽 가면의 금이, 조금 메워졌다." },
-    { me: "……방금 뭘, 먹은 거야?" },
-    { say: "yui", ruby: "가사인격체 — 범용", tone: "cold", text: "영혼으로 추정. 망령은 다른 영혼을 섭취해 존재를 유지합니다." },
+    { nar: "앞서 오던 병사 하나가 그 위로 몸을 숙였다." },
+    { nar: "얼어붙은 몸이 서리처럼 부서져, 가면의 틈으로 빨려 들어간다. 낙오병은 흔적도 남지 않았다." },
+    { nar: "삼킨 쪽 가면의 금이, 조금 메워졌다." },
+    { me: "……방금, 먹은 거야?" },
+    { say: "yui", ruby: "가사인격체 — 범용", tone: "cold", text: "섭취입니다. 망령은 다른 영체를 먹어 존재를 유지합니다." },
     { say: "yui", ruby: "가사인격체 — 범용", tone: "cold", text: "섭취하지 못한 개체는 서서히 마모되어 소멸합니다. 이 전장에 아직 이만큼의 개체가 남아 있는 이유입니다." },
     { me: "서로를 먹으면서…… 버티고 있다는 거야?" },
     { say: "yui", ruby: "가사인격체 — 범용", tone: "cold", text: "그렇습니다." },
     { nar: "광장에서 들었던 말이 떠올랐다. 이동 경로 위에 수신자가 있을 뿐이라고." },
-    { nar: "그런데 지금, 앞의 행렬은 가던 길을 버리고 되돌아오고 있다." },
+    { nar: "그런데 지금, 앞의 행렬은 막힌 길 앞에서 돌아서서 곧장 이쪽으로 오고 있다. 다른 길도 많은데." },
     { me: "……그럼 저것들이 쫓아오는 건, 나야?" },
     { wait: 0.6 },
     { say: "yui", ruby: "가사인격체 — 범용", tone: "cold", text: "정정합니다." },
@@ -12970,6 +12994,8 @@ window.BSL_OPTEXT = {"alpha": {"illustrator": "", "basic": [["코드네임", "�
     { cost: 12, first: { orb: 2400 }, coin: 2000, exp: 140, rec: "정예화 1 · Lv.1" },
     { cost: 3, first: { orb: 600 }, coin: 600, exp: 40, rec: "고정 편성", branch: 0,   // TR-01: a side lesson hanging under BL-01
       fixed: [["yui", 0, 30], ["ayaki", 0, 30], ["sunae", 0, 30], ["alpha", 0, 30]] },   // a fixed squad, as the original's lessons: [id, elite, level], owned or not
+    { cost: 3, first: { orb: 600 }, coin: 600, exp: 40, rec: "고정 편성", branch: 4,   // TR-02: casters and slowers, under BL-05
+      fixed: [["sunae", 0, 30], ["lilith", 0, 30], ["teka", 0, 30], ["ayaki", 0, 30]] },
   ].map((m, i) => Object.assign(m, { unlock: m.branch !== undefined ? (s) => ((s.stages[TD.STAGES[m.branch].code] || {}).stars || 0) > 0
     : i === 0 ? () => true : (s) => ((s.stages[TD.STAGES[i - 1].code] || {}).stars || 0) > 0 }));
   const POOL = { 6: ["rabi6", "veil", "eungyeol", "smoqueen", "angelina"], 5: ["geomseon", "belina", "yui", "rabi", "piania", "silphy", "bongeun", "alpha2", "skakea2"], 4: ["falchion", "atat", "hakuren", "miho", "lulu", "irins", "alpha", "skakea", "ker", "sunae", "teka"], 3: ["brick", "jayeon", "capy", "hiro", "lilith", "ayaki", "nana", "tao"] };
