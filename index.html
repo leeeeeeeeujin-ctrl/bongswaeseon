@@ -16,7 +16,8 @@
   html, body { height: 100%; overflow: hidden; }
   body { padding: 0 !important; display: grid; place-items: center; background: #000 !important; }
   .wrap { max-width: none !important; width: 100%; gap: 0 !important; }
-  #stagewrap { width: min(100vw, calc(100dvh * 16 / 9)) !important; border-radius: 0 !important; }
+  #stagewrap { --fill: 1; width: 100vw !important; height: 100dvh !important; border-radius: 0 !important; display: grid; align-content: center; background: #000;
+    padding-left: env(safe-area-inset-left, 0px); padding-right: env(safe-area-inset-right, 0px); }
   .note, .rotate { display: none !important; }
 }
 </style>
@@ -37,9 +38,21 @@ body { font-family: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans
   padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 16px; }
 .wrap { max-width: 1280px; margin: 0 auto; display: grid; gap: 10px; }
 #stagewrap { position: relative; width: min(100%, calc((100dvh - 32px) * 16 / 9)); margin: 0 auto; background: #111215; border-radius: 6px; overflow: hidden; touch-action: none; user-select: none; -webkit-user-select: none; }
-#stagewrap:fullscreen { border-radius: 0; display: grid; place-items: center; background: #000; }
-#stagewrap:fullscreen canvas { max-height: 100vh; }
-canvas { display: block; width: 100%; }
+canvas { display: block; width: 100%; margin: 0 auto; }
+/* filling the screen: full screen, or a phone held sideways — the stage takes the whole screen, menus centred in it */
+html:fullscreen body, html:-webkit-full-screen body { padding: 0; margin: 0; height: 100vh; overflow: hidden; background: #000; }
+html:fullscreen .wrap, html:-webkit-full-screen .wrap { max-width: none; gap: 0; }
+html:fullscreen #stagewrap, html:-webkit-full-screen #stagewrap { --fill: 1; width: 100vw; height: 100vh; border-radius: 0; display: grid; align-content: center; background: #000;
+  padding-left: env(safe-area-inset-left, 0px); padding-right: env(safe-area-inset-right, 0px); }
+html:fullscreen .note, html:fullscreen .rotate { display: none; }
+@media (pointer: coarse) and (orientation: landscape) and (max-height: 600px) {
+  html, body { height: 100%; overflow: hidden; }
+  body { padding: 0; margin: 0; background: #000; }
+  .wrap { max-width: none; gap: 0; }
+  #stagewrap { --fill: 1; width: 100vw; height: 100dvh; border-radius: 0; display: grid; align-content: center; background: #000;
+    padding-left: env(safe-area-inset-left, 0px); padding-right: env(safe-area-inset-right, 0px); }
+  .note, .rotate { display: none; }
+}
 .note { color: var(--muted); font-size: 12px; }
 .rotate { display: none; color: var(--muted); font-size: 13px; }
 @media (orientation: portrait) and (max-width: 700px) { .rotate { display: block; } }
@@ -5546,7 +5559,8 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
   "use strict";
   const { Game, UNITS, CFG, STAGES, PATHS, AIR_PATHS, SPAWNS, tileAt, rotate, RANGE } = window.TD;
   let W = window.TD.W, H = window.TD.H;   // refreshed whenever a battle sets up its board
-  const VW = 1280, VH = 720;
+  const VWB = 1280, VH = 720;
+  let VW = VWB, OX = 0;   // a wide phone screen gets a wider stage: the field stays centred, OX to the right
   const canvas = document.getElementById("stage"), ctx = canvas.getContext("2d");
   const wrap = document.getElementById("stagewrap");
   const reduceMotion = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -5580,7 +5594,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
     const X = x - (VCX === null ? (W - 1) / 2 : VCX), Y = (VCY === null ? (H - 1) / 2 : VCY) - y;
     z += GZ;
     const yc = Y * sP + z * cP, zc = D + Y * cP - z * sP;
-    return [CX + F * X / zc, CY - F * yc / zc, F / zc];
+    return [CX + OX + F * X / zc, CY - F * yc / zc, F / zc];
   }
   const zOf = (x, y) => tileAt(x, y) === "h" ? HZ : 0;
   const quad = (x, y, z) => [P(x - .5, y - .5, z), P(x + .5, y - .5, z), P(x + .5, y + .5, z), P(x - .5, y + .5, z)];
@@ -7718,12 +7732,18 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
   let scale = 1, dpr = 1, terrain = null;
   // render quality: 2 full, 1 for phones and tablets, 0 when a device can't keep up (fewer particles, no soft blurs, fewer pixels)
   const TOUCH = window.matchMedia && matchMedia("(pointer: coarse)").matches;
+  const COST_Y = () => TOUCH ? 452 : 512;   // the cost box sits higher over the larger cards on a touch screen
   let Q = (() => { try { const v = localStorage.getItem("bsl_q"); if (v !== null) return +v; } catch (e) {} return TOUCH ? 1 : 2; })();
   const DPR_Q = [1, 1.5, 2];
   function setQuality(q) { if (q === Q) return; Q = q; try { localStorage.setItem("bsl_q", q); } catch (e) {} ATM.flakes.length = [40, 90, 160][Q]; ATM.dust.length = [2, 4, 7][Q]; resize(); }
   function resize() {
-    const w = wrap.clientWidth;
-    scale = w / VW;
+    // filling the screen (phones, full screen, the installed app): as tall as the screen, as wide as it is, up to a wide phone's
+    const cs = getComputedStyle(wrap), fill = cs.getPropertyValue("--fill").trim() === "1";
+    const w = wrap.clientWidth - (parseFloat(cs.paddingLeft) || 0) - (parseFloat(cs.paddingRight) || 0), hh = wrap.clientHeight - (parseFloat(cs.paddingTop) || 0) - (parseFloat(cs.paddingBottom) || 0);
+    if (fill && hh > 50) { scale = hh / VH; VW = Math.round(Math.min(VWB * 1.4, w / scale)); if (VW < VWB) { VW = VWB; scale = w / VWB; } }
+    else { VW = VWB; scale = w / VWB; }
+    OX = (VW - VWB) / 2;
+    canvas.style.width = (VW * scale) + "px";
     dpr = Math.min(window.devicePixelRatio || 1, DPR_Q[Q]);
     if (typeof YRIG !== "undefined" && YRIG) YRIG.lod = Q < 2 ? 2 : 1;
     canvas.width = Math.round(VW * scale * dpr);
@@ -7756,7 +7776,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
     const M = game.march, MB = M.big, MR = M.rect;
     const dimT = (x, y) => x < MR[0] || y < MR[1] || x >= MR[0] + MR[2] || y >= MR[1] + MR[3];
     const T = (x, y) => (x < 0 || y < 0 || x >= W || y >= H) ? "#" : dimT(x, y) ? MB[y][x] : tileAt(x, y);   // where parts share ground, the part being fought decides
-    g.fillStyle = "#0b0c0e"; g.fillRect(0, 0, VW, VH);
+    { const gr = g.createRadialGradient(VW / 2, VH * 0.5, VH * 0.2, VW / 2, VH * 0.5, VW * 0.7); gr.addColorStop(0, "#2a1d16"); gr.addColorStop(1, "#0d0a09"); g.fillStyle = gr; g.fillRect(0, 0, VW, VH); }   // past the field's edge: dark smoke, not a black hole
     const cx = VCX === null ? (W - 1) / 2 : VCX, onScreen = (q) => q.some((p) => p[0] > -80 && p[0] < VW + 80 && p[1] > -80 && p[1] < VH + 80);
     for (let y = 0; y < H; y++) {
       const xs = [...Array(W).keys()].sort((a, b) => Math.abs(b - cx) - Math.abs(a - cx));
@@ -7830,7 +7850,11 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
     if (game && game.march && game.march.big && ready(IMG[game.march.def.tex])) { drawFieldTex(g, IMG[game.march.def.tex]); return c; }
     const BG = IMG[(game && game.stage.bg) || "bg"];
     if (ready(BG)) {
-      g.drawImage(BG, 0, 0, VW, VH);
+      if (OX > 0) {   // the sides past the painting: the painting itself, widened, dimmed and soft, with the seams shaded
+        const sc = VW / VWB; g.save(); if ("filter" in g) g.filter = "blur(10px) brightness(.55)"; g.drawImage(BG, 0, (VH - VH * sc) / 2, VW, VH * sc); g.restore();
+        g.drawImage(BG, OX, 0, VWB, VH);
+        for (const [x0, dir] of [[OX, 1], [OX + VWB, -1]]) { const gr = g.createLinearGradient(x0, 0, x0 + dir * 70, 0); gr.addColorStop(0, "rgba(8,9,11,.6)"); gr.addColorStop(1, "rgba(8,9,11,0)"); g.fillStyle = gr; g.fillRect(Math.min(x0, x0 + dir * 70), 0, 70, VH); }
+      } else g.drawImage(BG, 0, 0, VW, VH);
       // ground nobody can stand on: deep slush and churned mud (the rasputitsa), so it reads as no place to put anyone
       for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) if (tileAt(x, y) === ",") drawMud(g, x, y);
       // faint tile edges, the way the original marks deployable squares
@@ -8765,7 +8789,15 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
   function unitScreen(u) { return P(u.x, u.y, zOf(u.x, u.y)); }
   // close-up camera on the selected operator: zoom in, pull it toward the free side of the screen, tilt a little
   const CAM = { a: 0, e: 0, F: [VW / 2, VH / 2] };
+  // the player's own zoom and pan (pinch, wheel), laid over everything else the camera does
+  const UZ = { z: 1, x: 0, y: 0 };
+  function clampUZ() { UZ.z = Math.max(1, Math.min(2.4, UZ.z)); UZ.x = Math.min(0, Math.max(VW * (1 - UZ.z), UZ.x)); UZ.y = Math.min(0, Math.max(VH * (1 - UZ.z), UZ.y)); }
   function camM() {
+    const m = camM0(), z = UZ.z; if (z === 1 && !UZ.x && !UZ.y) return m;
+    return [m[0] * z, m[1] * z, m[2] * z, m[3] * z, m[4] * z + UZ.x, m[5] * z + UZ.y];
+  }
+  const camScale = () => { const m = camM(); return Math.sqrt(Math.abs(m[0] * m[3] - m[1] * m[2])); };
+  function camM0() {
     const a = CAM.a, e = CAM.e || 0; if (a < 0.002 && e < 0.002) return [1, 0, 0, 1, 0, 0];
     // e: the turn at the end of an operation, about the middle of the field
     const z = 1 + 0.24 * a + 0.1 * e, sy = 1 + 0.07 * a - 0.07 * e, rot = -0.04 * a - 0.07 * e, [fx, fy] = e > 0.002 ? [VW / 2, VH * 0.46] : CAM.F;
@@ -8783,9 +8815,22 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
     return Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 0 : 2) : (dy > 0 ? 1 : 3);
   }
   let aimDown = false;
+  const PTR = new Map(); let pinch = null, eat = false, panDrag = null;
+  const midOf = () => { const v = [...PTR.values()]; return [(v[0][0] + v[1][0]) / 2, (v[0][1] + v[1][1]) / 2, Math.hypot(v[0][0] - v[1][0], v[0][1] - v[1][1])]; };
+  canvas.addEventListener("wheel", (ev) => {
+    if (phase !== "play") return; ev.preventDefault();
+    const [mx, my] = toV(ev), z0 = UZ.z, z = Math.max(1, Math.min(2.4, z0 * Math.exp(-ev.deltaY * 0.0015)));
+    UZ.x = mx - (mx - UZ.x) * z / z0; UZ.y = my - (my - UZ.y) * z / z0; UZ.z = z; clampUZ();
+  }, { passive: false });
   canvas.addEventListener("pointerdown", (ev) => {
     ev.preventDefault();
     canvas.setPointerCapture && canvas.setPointerCapture(ev.pointerId);
+    if (ev.isPrimary) { PTR.clear(); pinch = null; eat = false; panDrag = null; }   // a new gesture: forget any finger whose lift was never reported
+    PTR.set(ev.pointerId, toV(ev));
+    if (PTR.size >= 2) {   // a second finger: zoom and pan the field, and drop whatever the first finger had started
+      if (PTR.size === 2 && phase === "play") { const [mx, my, d] = midOf(); pinch = { d0: Math.max(20, d), z0: UZ.z, q: [(mx - UZ.x) / UZ.z, (my - UZ.y) / UZ.z] }; drag = null; aimDown = false; panDrag = null; eat = true; }
+      return;
+    }
     let [vx, vy] = toV(ev);
     const b = hitButton(vx, vy), hadTip = kwTip; kwTip = null;
     if (!paused && tut && tut.gate(b)) return;   // the pause menu is never held up by a script
@@ -8818,11 +8863,19 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
     }
     const u = t && game.unitAt(t.x, t.y);
     selected = u || null;
+    if (!u && UZ.z > 1.01) { const [rx, ry] = toV(ev); panDrag = { sx: rx, sy: ry, x0: UZ.x, y0: UZ.y, moved: false }; }   // zoomed in: drag the empty field to look around
     if (!u && t && phase === "play" && !game.over) { const si = SPAWNS.findIndex((q) => q[0] === t.x && q[1] === t.y); if (si >= 0) replayRoutes(si); }
   });
   canvas.addEventListener("pointermove", (ev) => {
+    if (PTR.has(ev.pointerId)) PTR.set(ev.pointerId, toV(ev));
+    if (pinch && PTR.size >= 2) {
+      const [mx, my, d] = midOf(); UZ.z = Math.max(1, Math.min(2.4, pinch.z0 * d / pinch.d0));
+      UZ.x = mx - UZ.z * pinch.q[0]; UZ.y = my - UZ.z * pinch.q[1]; clampUZ(); return;
+    }
+    if (panDrag) { const [rx, ry] = toV(ev); if (Math.hypot(rx - panDrag.sx, ry - panDrag.sy) > 8) panDrag.moved = true; if (panDrag.moved) { UZ.x = panDrag.x0 + rx - panDrag.sx; UZ.y = panDrag.y0 + ry - panDrag.sy; clampUZ(); } return; }
     const [vx, vy] = camInv(...toV(ev));
     if (drag) {
+      [drag.rx, drag.ry] = toV(ev);
       drag.vx = vx; drag.vy = vy;
       if (Math.hypot(vx - drag.x0, vy - drag.y0) > 10) drag.moved = true;
       const t = pick(vx, vy);
@@ -8833,6 +8886,10 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
     }
   });
   canvas.addEventListener("pointerup", (ev) => {
+    PTR.delete(ev.pointerId);
+    if (PTR.size < 2) pinch = null;
+    if (eat) { if (!PTR.size) eat = false; return; }
+    if (panDrag) { panDrag = null; return; }
     const [vx, vy] = camInv(...toV(ev));
     if (drag) {
       const d = drag; drag = null;
@@ -8854,7 +8911,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
       }
     }
   });
-  canvas.addEventListener("pointercancel", () => { drag = null; aimDown = false; });
+  canvas.addEventListener("pointercancel", (ev) => { PTR.delete(ev.pointerId); if (PTR.size < 2) pinch = null; if (!PTR.size) eat = false; panDrag = null; drag = null; aimDown = false; });
   window.addEventListener("keydown", (ev) => {
     if (ev.key === "Escape") { aim = null; drag = null; pending = -1; inspect = -1; selected = null; }
     if (ev.code === "Space" && phase === "play" && !quitAsk) { ev.preventDefault(); paused = !paused; }
@@ -11801,7 +11858,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
       const bx = sx + R * 0.95, by = sy - R * 0.95;
       ctx.fillStyle = "#1a1c20"; ctx.beginPath(); ctx.arc(bx, by, 18, 0, Math.PI * 2); ctx.fill(); ctx.strokeStyle = "#fff"; ctx.lineWidth = 2; ctx.stroke();
       ctx.beginPath(); ctx.moveTo(bx - 6, by - 6); ctx.lineTo(bx + 6, by + 6); ctx.moveTo(bx + 6, by - 6); ctx.lineTo(bx - 6, by + 6); ctx.stroke();
-      buttons.push({ x: bx, y: by, r: 22, act: () => { aim = null; } });
+      { const [qx, qy] = camApply(bx, by); buttons.push({ x: qx, y: qy, r: 22 * camScale(), act: () => { aim = null; } }); }
     }
 
     // selected operator: dim, range, panel, skill / retreat buttons
@@ -11820,7 +11877,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
     ctx.restore();
     drawRoars();   // screen-space crowd: over the field, under the operator panel and HUD
     if (selected) {
-      const u = selected, [sx0, sy0, k0] = unitScreen(u), [sx, sy] = camApply(sx0, sy0), k = k0 * (1 + 0.24 * CAM.a);
+      const u = selected, [sx0, sy0, k0] = unitScreen(u), [sx, sy] = camApply(sx0, sy0), k = k0 * camScale();
       drawPanel(u.def, u, game.cards[u.card]);
       // skill button
       const s = u.skill, ready = u.sp >= s.sp && u.skillT <= 0;
@@ -12309,7 +12366,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
     drawHudTop();
 
     // cost, after the original: the number with its mark, a bar filling under it, the deploy count in a dark box below
-    const cX = VW - 164, cY = 512;
+    const cX = VW - 164, cY = COST_Y();
     ctx.fillStyle = "rgba(14,15,18,.8)"; ctx.beginPath(); ctx.moveTo(cX + 18, cY); ctx.lineTo(VW, cY); ctx.lineTo(VW, cY + 56); ctx.lineTo(cX, cY + 56); ctx.closePath(); ctx.fill();
     ctx.save(); ctx.translate(cX + 40, cY + 28); ctx.fillStyle = "#fff"; ctx.beginPath(); ctx.moveTo(0, -14); ctx.lineTo(12, -7); ctx.lineTo(12, 7); ctx.lineTo(0, 14); ctx.lineTo(-12, 7); ctx.lineTo(-12, -7); ctx.closePath(); ctx.fill();
     ctx.fillStyle = "#0b0c0e"; ctx.beginPath(); ctx.arc(0, 0, 5, 0, Math.PI * 2); ctx.fill(); ctx.restore();
@@ -12324,7 +12381,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
     // laid out from the right, dearest first, so the cheapest end up on the left
     const cards = game.cards.map((c, i) => ({ c, i, k: game.costOf(c) })).filter(({ c }) => !c.deployed && c.active !== false).sort((a, b) => b.k - a.k || a.i - b.i);
     // keep the deck clear of the info panel on the left: narrower cards when the squad is large
-    const gap = 6, ch = 112, cw = Math.min(88, Math.floor((VW - 8 - 404) / Math.max(1, cards.length)) - gap);
+    const gap = 6, cw = Math.min(TOUCH ? 118 : 88, Math.floor((VW - 8 - (TOUCH ? 210 : 404)) / Math.max(1, cards.length)) - gap), ch = TOUCH ? Math.round(cw * 1.28) : 112;
     cards.forEach(({ c, i }, n) => {
       const x = VW - 8 - (n + 1) * (cw + gap) + gap, y = VH - ch - 6 + (drag && drag.card === i ? -16 : pending === i || inspect === i ? -12 : 0);
       drawCard(c, i, x, y, cw, ch);
@@ -12332,8 +12389,8 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
     // dragged ghost
     if (drag && drag.moved) {
       const c = game.cards[drag.card];
-      if (drag.tile) { const [sx, sy, k] = P(drag.tile.x, drag.tile.y, zOf(drag.tile.x, drag.tile.y)); drawOperator(ctx, c.def.id, sx, sy, k * 0.8, { t: clock, alpha: 0.8, elite: c.elite }); }
-      else drawOperator(ctx, c.def.id, drag.vx, drag.vy + 30, 80, { t: clock, alpha: 0.7, elite: c.elite });
+      if (drag.tile) { const [sx0, sy0, k] = P(drag.tile.x, drag.tile.y, zOf(drag.tile.x, drag.tile.y)), [sx, sy] = camApply(sx0, sy0); drawOperator(ctx, c.def.id, sx, sy, k * 0.8 * camScale(), { t: clock, alpha: 0.8, elite: c.elite }); }
+      else drawOperator(ctx, c.def.id, drag.rx !== undefined ? drag.rx : drag.vx, (drag.ry !== undefined ? drag.ry : drag.vy) + 30, 80, { t: clock, alpha: 0.7, elite: c.elite });
     }
     if (pending >= 0) text("배치할 칸을 누르세요", VW / 2, VH - 150, 18, "#fff", { align: "center", shadow: true, weight: 700 });
   }
@@ -12933,7 +12990,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
         vg.addColorStop(0, "rgba(140,0,10,0)"); vg.addColorStop(1, `rgba(140,0,10,${(0.15 + 0.35 * p) * (0.7 + 0.3 * Math.sin(clock * (4 + p * 6)))})`);
         ctx.fillStyle = vg; ctx.fillRect(0, 0, VW, VH);
         if (s === "nocost") {
-          const cX = VW - 196, cY = 520, pulse = 0.5 + 0.5 * Math.sin(clock * 6);
+          const cX = VW - 196, cY = COST_Y() + 8, pulse = 0.5 + 0.5 * Math.sin(clock * 6);
           ctx.strokeStyle = `rgba(127,227,255,${pulse})`; ctx.lineWidth = 2.5; ctx.strokeRect(cX - 4, cY - 4, VW - cX, 70);
         }
       } else if (s === "stop") {
@@ -12985,7 +13042,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
   function toggleFullscreen() {
     try {
       if (document.fullscreenElement) document.exitFullscreen();
-      else if (wrap.requestFullscreen) wrap.requestFullscreen().catch(() => {});
+      else { const el = document.documentElement; if (el.requestFullscreen) el.requestFullscreen({ navigationUI: "hide" }).catch(() => {}); else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen(); }   // the whole page, so the stage lays itself out to fill the screen
     } catch (e) { /* not available here */ }
   }
 
@@ -13053,6 +13110,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
   window.TDB = {
     __setLod(l) { if (YRIG) YRIG.lod = l; },
     start(stage, squad, cb, opt) {
+      UZ.z = 1; UZ.x = 0; UZ.y = 0;
       stageIdx = stage; squadOverride = squad; onEnd = cb; endSent = false; startOpt = opt || {};
       newGame(); resize(); phase = "play"; paused = false; if (!tut && !(game && game.stage.sandbox)) banner("작전 개시", "OPERATION START", "op");
     },
@@ -13934,7 +13992,7 @@ window.BSL_ECON = (() => {
 
   // ---------- styles ----------
   const css = `
-  #meta { position:absolute; inset:0; overflow:hidden; z-index:5; }
+  #meta { position:absolute; inset:0; overflow:hidden; z-index:5; background:#08090b; }
   #meta[hidden] { display:none !important; }
   .sheet { position:absolute; left:0; top:0; width:${VW}px; height:${VH}px; transform-origin:0 0; color:#e8eaee; font-family:"Noto Sans KR",sans-serif; overflow:hidden; background:#121316; }
   .sheet * { box-sizing:border-box; } .sheet { touch-action:none; -webkit-user-drag:none; } .sheet img { -webkit-user-drag:none; user-select:none; }
@@ -14780,9 +14838,9 @@ window.BSL_ECON = (() => {
   const st = document.createElement("style"); st.textContent = css; document.head.appendChild(st);
 
   const sheet = h("div", "sheet"); host.appendChild(sheet);
-  function fit() {
-    const wrap = host.parentElement, w = wrap.clientWidth;
-    sheet.style.transform = `scale(${w / VW})`;
+  function fit() {   // the menus keep their 16:9 page, as large as fits, centred (a wide phone shows dark bars at the sides)
+    const w = host.clientWidth, hh = host.clientHeight, sc = hh > 50 ? Math.min(w / VW, hh / VH) : w / VW;
+    sheet.style.transform = `translate(${Math.max(0, (w - VW * sc) / 2)}px, ${hh > 50 ? Math.max(0, (hh - VH * sc) / 2) : 0}px) scale(${sc})`;
   }
   window.addEventListener("resize", fit); if (window.ResizeObserver) new ResizeObserver(fit).observe(host.parentElement);
 
