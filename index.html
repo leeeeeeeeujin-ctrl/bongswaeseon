@@ -3688,6 +3688,37 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
     [[0, "heavy", 0], [2, "hound", 1], [2.8, "hound", 1], [3.6, "hound", 1], [6, "hexer", 0], [8, "hexer", 1], [10, "soldier", 0], [11.5, "soldier", 1], [13, "soldier", 0], [14.5, "soldier", 1]],
   ];
   const RAGE = { at: 0.3, atk: 1.3 };
+  // BL-07, the march to the lighthouse: a big field fought one part at a time. Each part is held for a while, then the defence point
+  // moves on: a short window to pull operators back (whoever is still out is pulled out by force, no refund, the redeploy timer running),
+  // then the next part — the player picks which way where the road forks. The horde behind follows into the next part; the life is shared.
+  // Ney is out of sight until the last part: every so often he sweeps the field and puts three rounds around the biggest foe on the ground.
+  const BARRAGE = { sweep: 1.6, mark: 1.0, gap: 0.45, n: 3, r: 1.05, dmg: 900 };
+  const MARCH7 = { start: "p0", window: 10, parts: {
+    p0: { name: "진창 강둑", en: "MUDBANK", hold: 45, next: ["p1a", "p1b"], rear: [0, 1, 2], barrage: { first: 9, every: 16 },
+      map: ["S,,,,hh,,,#", ",,..,,,.,hh", "S,,h,,,,..B", ",,.,,hh,.,,", "S,,,,,,,,hh", "##hh,,#####"],
+      waves: [[4, "strag", 1, 2, 1.4], [10, "soldier", 0, 1, 3], [14, "strag", 2, 3, 1.2], [20, "dog", 1, 2, 1], [25, "soldier", 2, 1, 2.5], [28, "strag", 0, 3, 1],
+        [34, "soldier", 1, 2, 2], [38, "dog", 0, 1, 0.9], [40, "strag", 1, 3, 0.9], [42, "heavy", 1]] },
+    p1a: { name: "지붕길", en: "ROOFTOPS", desc: "고지대가 많고 길이 좁습니다. 머리 위로 드론이 넘어옵니다.", hold: 55, next: ["p2a", "p2b"], rear: [0, 1], barrage: { first: 8, every: 15 },
+      map: ["#hhh#hhhh##", "S...,..,..h", "#hh#hh#h,.B", "S,..,..,..h", "#hhh#hhhh##"],
+      waves: [[2, "soldier", 0, 2, 2.5], [6, "strag", 1, 3, 1.2], [12, "drone", 0, 2, 3], [18, "soldier", 1, 2, 2], [24, "heavy", 0], [28, "strag", 0, 4, 1],
+        [34, "drone", 1, 3, 2], [38, "soldier", 0, 2, 2], [44, "hexer", 1, 2, 3], [48, "strag", 1, 4, 0.9], [52, "heavy", 1]] },
+    p1b: { name: "선착장", en: "DOCKS", desc: "넓은 땅에 진창이 많습니다. 사냥개 무리가 쏟아집니다.", hold: 55, next: ["p2a", "p2b"], rear: [0, 1, 2], barrage: { first: 8, every: 15 },
+      map: ["S,,,..,,,,h", ",,..,,..,,,", "S,,,,hh,,.B", ",,.,,,,..,,", "S,,,..,,,,h", "hh,,hh,,hhh"],
+      waves: [[2, "dog", 1, 3, 0.8], [6, "strag", 0, 3, 1.2], [10, "soldier", 2, 2, 2.5], [16, "dog", 0, 3, 0.7], [20, "heavy", 1], [26, "dog", 2, 4, 0.7],
+        [30, "strag", 1, 4, 1], [36, "soldier", 0, 2, 2], [42, "dog", 1, 4, 0.6], [48, "heavy", 2], [50, "strag", 0, 4, 0.9]] },
+    p2a: { name: "다리", en: "BRIDGE", desc: "좁은 두 갈래 다리입니다. 앞에서 정규군 중장병과 방패병이 밀고 옵니다.", hold: 60, next: ["p3"], rear: [0, 2], front: [1, 3], barrage: { first: 8, every: 14 },
+      map: ["hh,,hh###hh,,", "S,..,,,.,,,,S", "##h##h.B,h#h#", "S,..,,,.,,,,S", "hh,,hh###hh,,"],
+      waves: [[2, "strag", 0, 4, 1], [6, "soldier", 2, 2, 2.5], [10, "shield", 1], [12, "hexer", 3], [16, "dog", 0, 2, 1], [24, "heavy", 1], [28, "strag", 2, 4, 1],
+        [30, "shield", 3], [34, "hexer", 1, 2, 3], [40, "soldier", 0, 3, 2], [46, "heavy", 3], [50, "shield", 1], [52, "strag", 0, 4, 0.8], [56, "dog", 2, 3, 0.8]] },
+    p2b: { name: "창고가", en: "WAREHOUSES", desc: "창고 사이 골목입니다. 정규군 척후병이 앞쪽에서 쏘아 댑니다.", hold: 60, next: ["p3"], rear: [0, 2, 3], front: [1, 4], barrage: { first: 8, every: 14 },
+      map: ["S,,.#hh#,.h,S", ",.,h#..#h,,,,", "S,,.,,B,.,h,#", ",.,h#..#h,,,,", "S,,.#hh#,.h,S"],
+      waves: [[2, "strag", 0, 4, 1], [6, "soldier", 2, 2, 2.5], [10, "hexer", 1, 2, 3], [14, "shield", 4], [18, "dog", 3, 2, 1], [24, "heavy", 0], [28, "hexer", 4, 2, 3],
+        [30, "strag", 2, 4, 1], [36, "shield", 1], [40, "soldier", 3, 3, 2], [46, "hexer", 1, 2, 2.5], [50, "heavy", 2], [52, "strag", 0, 4, 0.8], [56, "shield", 4]] },
+    p3: { name: "등대 아래", en: "THE LIGHTHOUSE", final: true, rear: [], front: [0, 1],
+      map: ["##hh,,,,hh,S", "B,..,,.,,,,#", "#,hh,,hh,,h#", "#,..,,,.,,,#", "##hh,,,,hh,S"],
+      waves: [[0, "ney", 0, 1, 0, { perch: [10, 2], seen: true, scanEvery: 28, atk: 0.6 }], [6, "shield", 0], [9, "hexer", 1], [16, "soldier", 0, 2, 2.5], [24, "shield", 1], [28, "hexer", 0, 2, 3],
+        [36, "heavy", 1], [44, "soldier", 0, 3, 2], [54, "shield", 0], [56, "hexer", 1], [66, "heavy", 0], [74, "soldier", 1, 3, 2], [84, "shield", 1], [88, "hexer", 0, 2, 3], [100, "heavy", 1]] },
+  } };
   const SQ_RAIN = { n: 4, per: 0.2, first: 0.22, gap: 0.08 };   // 죽음의 성좌: four clinkers a mark, a fifth of her attack each   // every boss: on its last legs it hits harder
 
   // [time, enemy, spawn]
@@ -3856,9 +3887,9 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
         [48, "airship", 0, 1, 0, AIR.b], [58, "heavy", 1], [70, "airship", 0, 1, 0, AIR.c], [84, "soldier", 1, 3, 2], [100, "airship", 0, 1, 0, AIR.e], [108, "dog", 1, 2, 1]]),
       boss: ["", ""], desc: "땅길이 막히자 정규군이 비행선으로 넘어옵니다. 지상에 설 수 있는 자리는 몇 곳뿐이고, 비행선은 그 곁마다 방패병과 척후병을 내려놓습니다. 방패병은 사거리 안 가사인격의 공격을 먼저 받아 냅니다.",
       lose: "비행선은 저격으로 미리 떨어뜨리고, 방패병은 술사의 마법으로 뚫으세요. 착지 지점 곁의 자리는 내리기 전에 먼저 차지해 두세요." },
-    { code: "BL-07", name: "봉쇄선", waves: WAVES_NEY, mul: { hp: 0.5, atk: 0.6, def: 0.7 }, boss: ["경고: 마탄의 사수", "미셸 네 · WARNING"],
-      desc: "보이지 않는 저격수가 언덕 위에서 전장을 내려다보고 있습니다. 은신한 적은 저지한 가사인격만 공격할 수 있습니다. 체력이 3분의 1씩 깎일 때마다 전장 전체를 훑고, 가장 앞선 가사인격 셋을 저격합니다.",
-      lose: "조준선이 지나가면 맨 앞(왼쪽) 셋이 노려집니다. 중장은 버티고, 딜러는 미리 퇴각시키거나 보호막을 씌우세요." },
+    { code: "BL-07", name: "봉쇄선", march: MARCH7, waves: [], startCost: 25, costRate: 1.4, mul: { hp: 0.42, atk: 0.55, def: 0.7 }, boss: ["경고: 마탄의 사수", "미셸 네 · WARNING"],
+      desc: "뒤에서 몰려오는 물량과 함께 마탄의 사수가 지키는 선을 넘습니다. 한 구간을 버티면 방어 지점이 다음 구간으로 옮겨 가고, 갈림길에서는 길을 고를 수 있습니다. 마탄의 사수는 주기적으로 전장을 훑어 가장 큰 적 주위에 포격을 가합니다.",
+      lose: "포격은 가장 체력이 많은 적 주위에 떨어집니다. 그 적을 막고 있는 가사인격은 포격 전에 빼 두세요. 구간 이동 전에 퇴각시키면 코스트를 돌려받습니다." },
     // a side branch under BL-01: the terminal's lesson on defenders, medics and who the ranged foes shoot at
     { code: "TR-01", name: "방어선 학습", map: MAP_C1.alley, bg: "bg_c1_alley", cam: [0.8368, 14.6214, 1553.44, 640.28, 285.49], hz: 0.5, branch: 0, startCost: 45, mul: { hp: 0.45, atk: 0.5, def: 0.3 },   // a lesson: few and soft, spaced out, no heavies
       waves: W1([[4, "soldier", 0, 1], [12, "soldier", 0, 2, 4], [24, "hexer", 0, 1], [34, "soldier", 0, 2, 3], [44, "hexer", 0, 1], [52, "soldier", 0, 2, 3], [60, "hexer", 0, 2, 4], [72, "soldier", 0, 3, 2.5]]),
@@ -3987,6 +4018,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
       this.hold = !!(this.stage.tutorial || this.stage.sandbox);
       if (this.stage.sandbox) { this.life = 99; this.cost = CFG.maxCost; }   // a scripted stage ends only when its script lets go; the training room never ends
       this.killed = 0; this.leaked = 0; this.total = this.waves.length; this.over = null;
+      if (this.stage.march) { this.stage = Object.assign({}, this.stage); this.march = { def: this.stage.march, n: 0, route: [] }; this.loadPart(this.stage.march.start); }
       this.deployLimit = this.stage.deployLimit || CFG.deployLimit;
     }
     get deployed() { return this.units.filter((u) => !u.summoned).length; }
@@ -4068,6 +4100,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
       const first = Math.max(1, u.def.cost + eliteCost(u.def, card.elite) - (card.pot ? card.pot.cost : 0));
       card.level++;
       if (refund) this.cost = Math.min(CFG.maxCost, this.cost + (u.def.fullRefund ? first : Math.floor((u.paid || first) * CFG.retreatRefund)));   // a killbang gets back what its first deployment cost
+      if (refund && this.march && this.march.phase === "move") card.cooldown = Math.min(card.cooldown, 5);   // pulled back in good order while the line moves: ready again by the next part
       this.fx.push({ k: refund ? "retreat" : "down", el: card.elite, x: u.x, y: u.y, id: u.def.id, dir: u.dir, t: 0, life: 0.6 });
     }
     // standing on a ground tile right now (she steps down during her second skill)
@@ -4459,12 +4492,16 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
       if (o && o.pre) { this.advance(e, o.pre.adv); e.hold = true; e.holdUntil = o.pre.until; }   // already out on the square when the operation opens: they stand there until the column comes   // a drone carrying a man: it sets him down and is gone
       if (d.charge) e.chargeCD = d.charge.every * 0.6;
       if (d.perch) {   // he starts up on the rise and later walks down onto the nearest road
-        const [px, py] = d.perch.at; let best = null;
+        const [px, py] = (o && o.perch) || d.perch.at; let best = null;
         PATHS.forEach((pp) => pp.forEach((q, j) => { const dd = Math.hypot(q[0] - px, q[1] - py) + segLen(pp.slice(j)); if (!best || dd < best.d) best = { d: dd, pp, j }; }));   // the shortest way from the rise to the base
         e.path = [[px, py], ...best.pp.slice(best.j)]; e.x = px; e.y = py; e.remain = segLen(e.path);
-        e.perched = true; e.perchUntil = this.t + d.perch.until;
+        e.perched = true; e.perchUntil = this.t + (o && o.perch ? 1e9 : d.perch.until);
+        if (o && o.perch) { e.perchFire = true; e.path = [[px, py], [px, py]]; e.remain = 99; }   // the lighthouse: he never comes down, and shoots from up there
       }
-      if (d.stealth) { e.stealth = true; e.mins = 0; }
+      if (d.stealth && !(o && o.seen)) { e.stealth = true; e.mins = 0; }
+      else if (d.boss && o && o.seen) this.bossRevealT = this.t;   // in plain sight from the start: the warning comes at once
+      if (o && o.scanEvery) { e.scanEvery = o.scanEvery; e.nextScan = this.t + o.scanEvery * 0.6; }
+      if (o && o.atk) e.atkMul = (e.atkMul || 1) * o.atk;
       if (d.sniper) { e.shots = 0; e.scanned = 0; e.scanQ = 0; e.atkT = d.interval; }
       if (!d.boss) for (const q of this.enemies) if (q.stealth && !q.dead && q !== e && ++q.mins >= q.def.stealth.reveal) this.reveal(q);
       return e;
@@ -4483,6 +4520,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
         this.extra = (this.extra || []).concat(NEY_CALL[i].map(([dt2, ty, sp]) => [this.t + 1.5 + dt2, ty, sp])).sort((a, b) => a[0] - b[0]);
         this.total += NEY_CALL[i].length;
       }
+      if (e.scanEvery && this.t >= e.nextScan) { e.scanQ++; e.nextScan = this.t + e.scanEvery; }   // the lighthouse: a sweep every so often
       if (!e.scan && e.scanQ > 0) {
         e.scanQ--; e.scan = { t: 0, marks: null, fired: 0 }; e.aim = null;
         this.fx.push({ k: "neyscan", e, x: e.x, y: e.y, t: 0, life: S.sweep });
@@ -4490,7 +4528,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
       if (e.scan) {   // the sweep runs left to right across the whole field; nothing interrupts it
         const sc = e.scan; sc.t += dt;
         if (!sc.marks && sc.t >= S.sweep) {
-          sc.marks = this.units.filter((u) => !u.def.unseen && !u.summoned).sort((a, b) => a.x - b.x || a.y - b.y).slice(0, 3).map((u) => ({ u, x: u.x, y: u.y }));
+          sc.marks = this.units.filter((u) => !u.def.unseen && !u.summoned).sort((a, b) => Math.hypot(a.x - e.x, a.y - e.y) - Math.hypot(b.x - e.x, b.y - e.y) || a.y - b.y).slice(0, 3).map((u) => ({ u, x: u.x, y: u.y }));
           sc.marks.forEach((m, i) => this.fx.push({ k: "neymark", e, u: m.u, x: m.x, y: m.y, t: 0, life: S.mark + i * S.gap + 0.1 }));
         }
         if (sc.marks) while (sc.fired < sc.marks.length && sc.t >= S.sweep + S.mark + sc.fired * S.gap) {
@@ -4499,7 +4537,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
         if (sc.marks && sc.fired >= sc.marks.length && sc.t >= S.sweep + S.mark + sc.marks.length * S.gap + 0.4) { e.scan = null; e.atkT = d.interval * 0.6; }
         return true;
       }
-      if (e.perched) {   // up on the rise, waiting; then he climbs down
+      if (e.perched && !e.perchFire) {   // up on the rise, waiting; then he climbs down
         if (this.t < e.perchUntil) return true;
         e.perched = false; this.fx.push({ k: "neydown", e, x: e.x, y: e.y, t: 0, life: 0.8 });
       }
@@ -4515,12 +4553,12 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
         const pool = this.units.filter((u) => !u.def.unseen);
         const tgt = e.blockedBy && this.units.includes(e.blockedBy) ? e.blockedBy
           : pool.sort((a, b) => this.stat(b, "atk") - this.stat(a, "atk") || a.x - b.x)[0];   // he hunts the hardest hitter on the field
-        if (!tgt) { e.atkT = 0.3; return false; }
+        if (!tgt) { e.atkT = 0.3; return !!e.perchFire; }
         e.shots++;
         if (e.shots % d.sniper.every === 0) { e.aim = { u: tgt, t: 0 }; this.fx.push({ k: "neyaim", e, u: tgt, t: 0, life: d.sniper.aim }); return true; }
         this.neyFire(e, tgt, "n"); e.atkT = d.interval;
       }
-      return false;
+      return !!e.perchFire;   // on the lighthouse he never walks
     }
     neyFire(e, u, kind, mx, my) {
       e.face = (u ? u.x : mx) >= e.x ? 1 : -1; e.fireT = this.t; e.fireKind = kind;
@@ -4533,7 +4571,60 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
       if (kind === "x") {   // the sweep's rounds: a defender is left hanging on, anyone else is gone
         const dmg = u.def.cls === "중장" ? Math.max(0, u.hp - u.maxHp * e.def.scan.near) : u.hp + u.maxHp;
         this.damage(u, dmg, "true", null, e);
-      } else this.damage(u, e.def.atk * (kind === "s" ? e.def.sniper.strong : 1) * rage * (e.weakT > 0 ? 1 - e.weakAmt : 1), "phys", null, e);
+      } else this.damage(u, e.def.atk * (kind === "s" ? e.def.sniper.strong : 1) * rage * (e.weakT > 0 ? 1 - e.weakAmt : 1) * (e.atkMul || 1), "phys", null, e);
+    }
+    // ---------- the march (BL-07) ----------
+    loadPart(id) {
+      const M = this.march, P = M.def.parts[id];
+      M.id = id; M.part = P; M.n++; M.route.push(id); M.t0 = this.t; M.phase = "fight"; M.choose = null; M.moveAt = P.hold ? this.t + P.hold : null;
+      this.stage.map = P.map; this.stage.bg = P.bg || "-"; this.stage.cam = P.cam; this.stage.hz = P.hz;   // no painting yet: the plain board
+      setMap(P.map);
+      if (this.waves.length > this.waveIdx) this.total -= this.waves.length - this.waveIdx;   // what never came of the last part's waves
+      this.waves = W1(P.waves.map((w) => [w[0] + this.t].concat(w.slice(1)))); this.waveIdx = 0; this.total += this.waves.length;
+      this.bar = P.barrage ? { next: this.t + P.barrage.first, cur: null } : null;
+      // the horde from the part before comes on behind, a few at a time
+      const carry = M.carry || []; M.carry = null;
+      if (carry.length && P.rear.length) {
+        this.extra = (this.extra || []).concat(carry.map((ty, k) => [this.t + 6 + k * 0.9, ty, P.rear[k % P.rear.length]])).sort((a, b) => a[0] - b[0]);
+      } else this.total -= carry.length;   // the last part: what followed them falls away
+    }
+    marchStep() {
+      const M = this.march, P = M.part;
+      if (M.phase === "fight" && M.moveAt !== null && this.t >= M.moveAt) { M.phase = "move"; M.moveEnd = this.t + M.def.window; this.fx.push({ k: "mmove", t: 0, life: 2.2 }); }
+      if (M.phase === "move" && this.t >= M.moveEnd) {
+        for (const u of this.units.slice()) if (!u.summoned && !u.clone && this.units.includes(u)) this.retreat(u, false);   // still out: pulled out, nothing back
+        for (const u of this.units.slice()) this.retreat(u, false);
+        M.carry = this.enemies.filter((e) => !e.dead && !e.def.boss && !e.hired).map((e) => e.type);
+        this.enemies = []; this.extra = [];
+        M.phase = "choose";
+        if (P.next.length === 1) this.loadPart(P.next[0]); else M.choose = P.next.slice();
+      }
+    }
+    marchGo(id) { const M = this.march; if (!M || !M.choose || !M.choose.includes(id)) return; this.loadPart(id); }
+    // Ney's barrage: a sweep over the whole field, then three rounds around the biggest foe on the ground
+    barrageStep(dt) {
+      const B = this.bar, P = this.march.part.barrage;
+      if (!B.cur) {
+        if (this.t < B.next || this.march.phase !== "fight") return;
+        B.cur = { t: 0, tgt: null, fired: 0 }; this.fx.push({ k: "nbscan", t: 0, life: BARRAGE.sweep });
+      }
+      const c = B.cur; c.t += dt;
+      if (!c.tgt && c.t >= BARRAGE.sweep) {
+        c.tgt = this.enemies.filter((e) => !e.dead && e.hp > 0 && !e.def.flying && !e.hired).sort((a, b) => b.hp - a.hp)[0];
+        if (!c.tgt) { B.cur = null; B.next = this.t + P.every; return; }
+        this.fx.push({ k: "nbmark", e: c.tgt, x: c.tgt.x, y: c.tgt.y, t: 0, life: BARRAGE.mark + BARRAGE.gap * (BARRAGE.n - 1) + 0.2 });
+        c.lx = c.tgt.x; c.ly = c.tgt.y;
+      }
+      if (c.tgt) {
+        if (!c.tgt.dead && this.enemies.includes(c.tgt)) { c.lx = c.tgt.x; c.ly = c.tgt.y; }   // the rounds follow it while it lives
+        while (c.fired < BARRAGE.n && c.t >= BARRAGE.sweep + BARRAGE.mark + c.fired * BARRAGE.gap) {
+          const k = c.fired++, a = k * 2.1, off = k ? 0.35 : 0, x = c.lx + Math.cos(a) * off, y = c.ly + Math.sin(a) * off * 0.6;
+          this.fx.push({ k: "nbshell", x, y, t: 0, life: 0.7 });
+          for (const e of this.enemies) if (!e.dead && !e.def.flying && Math.hypot(e.x - x, e.y - y) <= BARRAGE.r) { this.damage(e, BARRAGE.dmg, "true", null); e.flash = 0.2; }
+          for (const u of this.units) if (Math.hypot(u.x - x, u.y - y) <= BARRAGE.r) { this.damage(u, BARRAGE.dmg, "true", null); u.flash = 0.2; }
+        }
+        if (c.fired >= BARRAGE.n) { B.cur = null; B.next = this.t + P.every; }
+      }
     }
     // the original's rule: of those in range, the one deployed last draws the fire (the unseen only when nothing else is there)
     rangedTarget(e) {
@@ -4922,7 +5013,9 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
     }
     update(dt) {
       if (this.over) return;
+      if (this.march && this.march.choose) return;   // the road forks: everything waits for the choice
       this.t += dt;
+      if (this.march) { this.marchStep(); if (this.march.choose) return; if (this.bar) this.barrageStep(dt); }
       // cost
       this.costAcc += dt * this.costRate;
       while (this.costAcc >= 1) { this.costAcc -= 1; if (this.cost < CFG.maxCost) this.cost++; }
@@ -5326,7 +5419,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
       for (const f of this.fx) f.t += dt;
       this.fx = this.fx.filter((f) => f.t < f.life);
       if (this.life <= 0) { this.life = 0; this.over = "lose"; }
-      else if (this.waveIdx >= this.waves.length && !(this.extra && this.extra.length) && this.enemies.length === 0 && !this.hold) this.over = "win";
+      else if (this.waveIdx >= this.waves.length && !(this.extra && this.extra.length) && this.enemies.length === 0 && !this.hold && !(this.march && !this.march.part.final)) this.over = "win";
     }
   }
 
@@ -8066,6 +8159,17 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
           emit({ x: ux, y: uy, vx: 0, vy: 0, life: 0.5, tex: TEX.ring, col: NEY_BLUE, size: uk * 0.5, grow: 1.4, flat: 0.34, add: true, alpha: 0.8, layer: "floor" });
         }
         ctx.globalCompositeOperation = "source-over";
+      } else if (o.k === "emark") {   // the reticle on the biggest foe: it follows him until the rounds come
+        const alive = game.enemies.includes(o.e) && !o.e.dead, [x, y, k] = SP(alive ? o.e.x : o.x, alive ? o.e.y : o.y, 0);
+        if (alive) { o.x = o.e.x; o.y = o.e.y; }
+        const tight = ease(Math.min(1, age / 0.6)), r = k * (1.35 - 0.3 * tight), pulse = 0.75 + 0.25 * Math.sin(age * 14);
+        ctx.globalCompositeOperation = "lighter"; ctx.globalAlpha = 0.85 * Math.min(1, age * 5) * (q > 0.9 ? (1 - q) / 0.1 : 1) * pulse;
+        ctx.strokeStyle = NEY_BLUE; ctx.lineWidth = Math.max(1.5, k * 0.03);
+        ctx.save(); ctx.translate(x, y); ctx.scale(1, 0.36); ctx.rotate(age * 0.8);
+        ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI * 2); ctx.stroke();
+        for (let i = 0; i < 4; i++) { ctx.rotate(Math.PI / 2); ctx.beginPath(); ctx.moveTo(r * 0.7, 0); ctx.lineTo(r * 1.15, 0); ctx.stroke(); }
+        ctx.restore();
+        ctx.globalCompositeOperation = "source-over";
       } else if (o.k === "mark") {   // the reticle closes on its man
         const alive = game.units.includes(o.u), [x, y, k] = SP(alive ? o.u.x : o.x, alive ? o.u.y : o.y, 0.55);
         const tight = ease(Math.min(1, age / 0.5)), r = k * (0.75 - 0.4 * tight), rot = (1 - tight) * 1.6 + age * 0.6;
@@ -8306,7 +8410,46 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
     game = new Game(stageIdx, squadOverride); syncBoard(); drag = null; T_SKIP = false; tut = game.stage.tutorial ? makeTutorial() : null;
     foeNotes = []; foeShown = {}; cardGlow = new Set(); sscr = !tut && STAGE_SCRIPT[game.stage.code] && (game.stage.branch !== undefined || !((startOpt.seen || {})[game.stage.code + ":op"])) ? makeStageScript(game.stage.code) : null;
     if (canvas.width) terrain = drawTerrain(); pending = -1; inspect = -1; aim = null; selected = null; banners = []; routes = []; neyFx = []; inks = []; letters = []; roars = []; foeDead = []; corpses = [];
-    seenSpawn = new Set(); bossSeen = false; paused = false;
+    seenSpawn = new Set(); bossSeen = false; paused = false; partN = game.march ? game.march.n : 0; partFade = 0;
+  }
+  // BL-07: a new part of the march — the board is swapped under a short fade, and the new part's roads are shown
+  let partN = 0, partFade = 0;
+  function onPart() {
+    partN = game.march.n; syncBoard(); if (canvas.width) terrain = drawTerrain();
+    routes = []; seenSpawn = new Set(); selected = null; aim = null; drag = null; pending = -1; inspect = -1; corpses = []; foeDead = [];
+    if (partN > 1) partFade = 1;
+  }
+  function drawMarch() {
+    const M = game.march; if (!M) return;
+    partFade = Math.max(0, partFade - 1 / 60 * 1.4);
+    if (partFade > 0) rect(0, 0, VW, VH, `rgba(0,0,0,${partFade})`);
+    const P = M.part, y = 92;
+    let label, sub = null, col = "rgba(255,255,255,.9)";
+    if (M.phase === "move") { const s = Math.max(0, Math.ceil(M.moveEnd - game.t)); label = `방어 지점 이동 · ${s}`; sub = "남아 있는 가사인격은 반환 없이 빠집니다"; col = "#ffcf6a"; }
+    else if (M.moveAt !== null) { const s = Math.max(0, Math.ceil(M.moveAt - game.t)); label = `${P.name} · 이동까지 ${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`; }
+    else label = P.name;
+    ctx.font = `700 17px ${FONT_KR}`; const w = ctx.measureText(label).width + 44;
+    ctx.fillStyle = "rgba(14,15,18,.72)"; ctx.fillRect(VW / 2 - w / 2, y - 16, w, 32);
+    ctx.fillStyle = col; ctx.fillRect(VW / 2 - w / 2, y - 16, 3, 32);
+    text(label, VW / 2, y + 6, 17, col, { align: "center", weight: 700 });
+    if (sub) text(sub, VW / 2, y + 34, 14, "rgba(255,220,150,.85)", { align: "center", weight: 500 });
+  }
+  // the road forks: two parts to pick from, everything waits until one is taken
+  function drawRoute(M) {
+    rect(0, 0, VW, VH, "rgba(6,7,9,.86)");
+    text("ROUTE", VW / 2, 150, 15, "#8a8f99", { align: "center", font: FONT_NUM, weight: 600 });
+    text("다음 구간을 선택하십시오", VW / 2, 186, 30, "#fff", { align: "center", weight: 900 });
+    text(M.route.map((id) => M.def.parts[id].name).join("  ›  ") + "  ›  ?", VW / 2, 222, 15, "#aab0ba", { align: "center", weight: 500 });
+    const n = M.choose.length, cw = 400, gap = 40, x0 = VW / 2 - (n * cw + (n - 1) * gap) / 2;
+    M.choose.forEach((id, i) => {
+      const P = M.def.parts[id], x = x0 + i * (cw + gap), y = 262, h = 230;
+      ctx.fillStyle = "rgba(28,30,35,.95)"; ctx.fillRect(x, y, cw, h); ctx.fillStyle = "#fff"; ctx.fillRect(x, y, cw, 3);
+      text(P.en, x + 28, y + 44, 14, "#8a8f99", { font: FONT_NUM, weight: 600 });
+      text(P.name, x + 28, y + 86, 34, "#fff", { weight: 900 });
+      wrapText(P.desc || "", x + 28, y + 128, cw - 56, 16, "#c8ccd4", 26);
+      text("선택  ›", x + cw - 28, y + h - 24, 16, "#fff", { align: "right", weight: 700 });
+      buttons.push({ x, y, w: cw, h, act: () => game.marchGo(id) });
+    });
   }
   function banner(text, sub, kind) { banners.push({ text, sub, kind, t: 0, life: kind === "warn" ? 2.6 : kind === "op" ? 1.9 : 2.2 }); }
 
@@ -10143,6 +10286,17 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
       emit({ x, y, vx: 0, vy: 0, life: 0.6, tex: TEX.glow, col: NEY_BLUE, size: k * 1.2, grow: 0.3, add: true, alpha: 0.8 });
     },
     neymark(f) { neyFx.push({ k: "mark", born: game.t, life: f.life, u: f.u, x: f.x, y: f.y }); },
+    // BL-07's march: the marshal's sweep from out of sight, the reticle on the biggest foe, and his rounds coming down round it
+    nbscan(f) { neyFx.push({ k: "scan", born: game.t, life: f.life + 0.3, seen: new Set() }); },
+    nbmark(f) { neyFx.push({ k: "emark", born: game.t, life: f.life, e: f.e, x: f.x, y: f.y }); },
+    nbshell(f) {
+      const [x, y, k] = SP(f.x, f.y, 0.3), [gx, gy] = SP(f.x, f.y, 0);
+      neyFx.push({ k: "trail", born: game.t, life: 0.3, x0: x + k * 0.9, y0: y - k * 5, x1: x, y1: y, w: k * 0.07 });   // down from the sky, out of the lighthouse's side
+      neyImpact(x, y, k, true);
+      emit({ x: gx, y: gy, vx: 0, vy: 0, life: 0.6, tex: TEX.ring, col: NEY_BLUE, size: k * 0.8, grow: 2.2, flat: 0.34, add: true, layer: "floor" });
+      shake = Math.max(shake, 0.3);
+    },
+    mmove() { banner("방어 지점 이동", "DEFENSE POINT MOVING"); },
     neyaim(f) { neyFx.push({ k: "aim", born: game.t, life: f.life, u: f.u, e: f.e }); },
     neyshot(f) {   // the round: a white-hot line from the barrel, blue fire round it, and it is there before you see it go
       const big = f.kind !== "n", [x0, y0] = neyMuzzle(f.e, f.x0, f.y0), [x1, y1, k] = SP(f.x1, f.y1, f.miss ? 0.05 : 0.55);
@@ -11360,11 +11514,13 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
     if (flashWhite > 0) { ctx.fillStyle = `rgba(255,255,255,${0.85 * flashWhite * flashWhite})`; ctx.fillRect(0, 0, VW, VH); }
     if (inspect >= 0 && !selected && !aim && !(drag && drag.moved) && phase === "play") drawPanel(game.cards[inspect].def, null, game.cards[inspect]);
     drawHud();
+    if (phase === "play") drawMarch();
     if (tut) tut.draw();
     if (phase === "play") drawFoeNotes();
     if (sscr) sscr.draw();
     if (game.stage.sandbox) drawSim();
     drawBanners();
+    if (phase === "play" && game.march && game.march.choose) drawRoute(game.march);   // the fork covers everything
     if ((selected || inspect >= 0) && phase === "play") drawKwTip(); else kwTip = null;
     if (paused && phase === "play" && !quitAsk) {
       // after the original: a big pale PAUSE over the field, which stays visible
@@ -12502,6 +12658,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
         left -= st;
       }
       for (const r of routes) r.t += real;
+      if (game.march && game.march.n !== partN) onPart();
       if (game.leaked > before) { flashLeak = 1; shake = 0.7; }
       for (const f of game.fx) if (f.k === "shock" && !f.seen) { f.seen = true; shake = 1.4; flashWhite = 0.7; }
     }
@@ -13046,6 +13203,36 @@ window.BSL_STORIES = {
     { say: "yui", ruby: "가사인격체 — 범용", tone: "cold", text: "착지 지점, 이쪽 일대. 배치 가능한 위치 대부분에 이미 적이 있습니다." },
     { say: "alpha", text: "봐, 내 말이 맞지? 저격수보다 저게 먼저야. 수당은 나중에 따로 얘기하고." },
     { me: "……살아남으면 얼마든지." },
+    { black: true },
+  ],
+  "BL-06:after": [
+    { black: true },
+    { bg: "war", cut: true },
+    { place: "낙하 지점" },
+    { black: false, slow: 0.9 },
+    { nar: "마지막 방패가 진창에 엎어졌다." },
+    { nar: "숨을 고를 틈도 없이, 뒤쪽에서 발소리가 다시 차오른다. 아까보다 무겁고, 아까보다 많다." },
+    { show: "yui", at: "c" },
+    { say: "yui", ruby: "가사인격체 — 범용", tone: "cold", text: "후방 개체군 재집결. 규모, 직전의 세 배 이상." },
+    { me: "시트러스! 저쪽에 한 방——" },
+    { nar: "청동 야포의 포신이 들리는 순간, 시트러스의 머리 위에서 병아리가 날개를 퍼덕였다." },
+    { shake: 1 },
+    { nar: "삑. 삑삑삑삑삑삑!" },
+    { nar: "시트러스는 포 위에 앉은 채 꿈쩍도 하지 않는다. 선글라스 너머로, 등대 쪽을 보고 있을 뿐이다." },
+    { me: "……왜 안 쏴?" },
+    { say: "alpha", text: "……아, 그런 거구만." },
+    { say: "alpha", text: "저 등대 위 양반, 아까부터 뭘 쏘는지 봤어? 제일 덩치 큰 놈. 제일 시끄러운 놈." },
+    { say: "alpha", text: "여기서 대포 한 방 날리면, 다음 차례는 우리야." },
+    { say: "yui", ruby: "가사인격체 — 범용", tone: "cold", text: "관측 기록과 일치합니다. 마탄의 사수는 전장에서 가장 큰 개체를 우선 조준합니다." },
+    { me: "그럼 어쩌라고. 앞에는 저격수, 뒤에는 저 물량인데." },
+    { say: "alpha", text: "간단하지. 뒤의 저 물량이랑 '같이' 가는 거야." },
+    { say: "alpha", text: "저격수 눈엔 저쪽이 훨씬 크게 보일 테니까. 우린 그 그늘에 붙어서 선을 넘는 거고." },
+    { me: "저것들한테 쫓기면서…… 저것들을 방패 삼아서?" },
+    { say: "yui", ruby: "가사인격체 — 범용", tone: "cold", text: "성공 확률, 산출 불가. 다만 이 자리에 남는 경우보다는 높습니다." },
+    { say: "alpha", text: "그럼 결정이네. 수당은 두 배로." },
+    { wait: 0.5 },
+    { nar: "병아리가 그제야 조용해졌다." },
+    { nar: "시트러스는 길게 하품을 하더니, 포에서 내려와 등대 쪽으로 느릿느릿 걷기 시작했다." },
     { black: true },
   ],
 };
@@ -14956,7 +15143,8 @@ window.BSL_OPTEXT = {"alpha": {"illustrator": "", "basic": [["코드네임", "�
 
   // ---------- the enemy file: who walks on in a stage, and how hard they hit ----------
   function foeKinds(s) {   // the kinds in a stage, in the order they first appear, with how many of each
-    const out = []; for (const w of s.waves) { let f = out.find((q) => q.k === w[1]); if (!f) out.push(f = { k: w[1], n: 0 }); f.n++; }
+    const out = [], ws = s.march ? Object.values(s.march.parts).flatMap((p) => p.waves.flatMap((w) => Array(w[3] || 1).fill(w))) : s.waves;   // the march: every part's foes
+    for (const w of ws) { let f = out.find((q) => q.k === w[1]); if (!f) out.push(f = { k: w[1], n: 0 }); f.n++; }
     return out;
   }
   const foeIco = (k, seen, cls = "") => { const d = TD.ENEMIES[k] || {}; return `<div class="fi${d.boss ? " boss" : ""} ${cls}"><i class="${seen ? "" : "sil"}" style="background-image:url(${B.foeIcon ? B.foeIcon(k) : ""})"></i></div>`; };
