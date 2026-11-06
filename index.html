@@ -6373,7 +6373,8 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
   const C3PUP = {}; if (window.CHIBI3) for (const id of CHIBI3_IDS) C3PUP[id] = new CHIBI3.Puppet(IMG, id);
   function drawChibi3(g, id, sx, sy, k, o) {
     let P = C3PUP[id]; if (!P) return;
-    if (id === "geomseon" && o.unit && game.cards[o.unit.card] && game.cards[o.unit.card].elite < 2) P = C3PUP.geomseon0;   // the old hermit until 반로환동
+    const gel = o.unit && game.cards[o.unit.card] ? game.cards[o.unit.card].elite : o.elite;
+    if (id === "geomseon" && gel !== undefined && gel < 2) P = C3PUP.geomseon0;   // the old hermit until 반로환동, also while being dragged in   // the old hermit until 반로환동
     const u = o.unit, C = CHIBI3.CLIPS, opt = { face: o.face, alpha: o.alpha, flash: o.flash, out: o.out || {} };
     if (u) {
       const now = game.t, age = now - u.born;
@@ -11751,7 +11752,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
         ctx.beginPath(); ctx.moveTo(cx + v[0] * a, cy + v[1] * a); ctx.lineTo(cx - v[1] * a * 0.8, cy + v[0] * a * 0.8); ctx.lineTo(cx + v[1] * a * 0.8, cy - v[0] * a * 0.8); ctx.closePath(); ctx.fill();
       }
       ctx.restore();
-      drawOperator(ctx, def.id, sx, sy, k * 0.8 * BODY, { face: aim.dir === 2 ? -1 : 1, t: clock, alpha: 0.85 });
+      drawOperator(ctx, def.id, sx, sy, k * 0.8 * BODY, { face: aim.dir === 2 ? -1 : 1, t: clock, alpha: 0.85, elite: game.cards[aim.card] ? game.cards[aim.card].elite : undefined });
       text("방향을 정하세요", sx, sy - R - k * 0.45, 18, "#fff", { align: "center", shadow: true, weight: 700 });
       // cancel
       const bx = sx + R * 0.95, by = sy - R * 0.95;
@@ -12288,8 +12289,8 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
     // dragged ghost
     if (drag && drag.moved) {
       const c = game.cards[drag.card];
-      if (drag.tile) { const [sx, sy, k] = P(drag.tile.x, drag.tile.y, zOf(drag.tile.x, drag.tile.y)); drawOperator(ctx, c.def.id, sx, sy, k * 0.8, { t: clock, alpha: 0.8 }); }
-      else drawOperator(ctx, c.def.id, drag.vx, drag.vy + 30, 80, { t: clock, alpha: 0.7 });
+      if (drag.tile) { const [sx, sy, k] = P(drag.tile.x, drag.tile.y, zOf(drag.tile.x, drag.tile.y)); drawOperator(ctx, c.def.id, sx, sy, k * 0.8, { t: clock, alpha: 0.8, elite: c.elite }); }
+      else drawOperator(ctx, c.def.id, drag.vx, drag.vy + 30, 80, { t: clock, alpha: 0.7, elite: c.elite });
     }
     if (pending >= 0) text("배치할 칸을 누르세요", VW / 2, VH - 150, 18, "#fff", { align: "center", shadow: true, weight: 700 });
   }
@@ -14591,32 +14592,65 @@ window.BSL_ECON = (() => {
   .itm-rf .idot { width:58px; height:58px; padding:11px; } .itm-rf .idot > b { font-size:12px; } .itm-rf .ar { font-style:normal; font-size:20px; color:#c8ccd4; }
   .itm-rf .rf { height:32px; padding:0 14px; display:grid; place-items:center; font-size:13px; font-weight:900; background:#e8eaee; color:#16171a; } .itm-rf .rf:first-of-type { margin-left:auto; }
   .itm-rf .rf.dis { background:#3a3c42; color:#7d828b; }
+  /* chips: the die with its class's mark */
+  .chipc { position:relative; display:block; width:100%; height:100%; filter:drop-shadow(0 1px 2px rgba(0,0,0,.45)); }
+  .chipc svg { display:block; width:100%; height:100%; }
+  .chipc img { position:absolute; left:34.4%; top:34.4%; width:31.2%; height:31.2%; background:#26343e; }
+  .chipc.t2 img { left:43.8%; top:28.1%; width:31.2%; height:28.1%; background:#3a2a08; object-fit:contain; }
   /* 자원 수집 */
-  .sp-hd { position:absolute; left:40px; top:84px; color:#fff; text-shadow:0 2px 8px rgba(0,0,0,.6); }
-  .sp-hd small { display:block; font-size:12px; letter-spacing:.2em; opacity:.8; } .sp-hd > b { display:block; font-size:36px; font-weight:900; line-height:1.15; }
-  .sp-hd span { font-size:13px; color:#d8dbe0; } .sp-hd span b { color:#ffd27a; }
-  .sp-row { position:absolute; left:292px; top:150px; display:flex; gap:12px; transition:left .38s cubic-bezier(.2,.7,.2,1); }
-  .sp-row.side { left:30px; }
-  .sp-card { position:relative; width:165px; height:400px; overflow:hidden; background:#16171a; box-shadow:0 6px 16px rgba(0,0,0,.5); border-top:3px solid #f2f3f5; }
-  .sp-card .im { position:absolute; inset:0; background:center/cover; filter:brightness(.55) saturate(.7); }
-  .sp-card .cd { position:absolute; left:14px; top:12px; font-size:30px; font-weight:800; color:#fff; opacity:.9; }
-  .sp-card .n { position:absolute; left:14px; top:50px; font-size:19px; font-weight:900; color:#fff; text-shadow:0 1px 4px #000; }
-  .sp-card .cl { position:absolute; left:14px; top:80px; display:flex; gap:4px; } .sp-card .cl span { padding:1px 7px; font-size:12px; font-weight:700; background:rgba(255,255,255,.88); color:#1a1b1e; }
-  .sp-card .dy { position:absolute; left:14px; right:14px; top:110px; font-size:12px; color:#c8ccd4; display:flex; gap:8px; align-items:center; }
-  .sp-card .dy b { padding:1px 7px; background:#23a3e6; color:#fff; font-size:12px; }
-  .sp-card.shut .dy b { background:#55585f; } .sp-card.shut .im { filter:brightness(.3) saturate(0); } .sp-card.shut .n, .sp-card.shut .cd { opacity:.5; }
-  .sp-card .tiers { position:absolute; left:10px; right:10px; bottom:12px; display:flex; flex-direction:column; gap:8px; }
-  .sp-card .tr { height:58px; padding:0 12px; display:flex; flex-direction:column; justify-content:center; background:rgba(242,243,245,.92); color:#1a1b1e; border-left:5px solid #23a3e6; }
-  .sp-card .tr b { font-size:20px; font-weight:700; line-height:1; } .sp-card .tr small { font-size:11px; font-weight:700; color:#55585f; margin-top:3px; }
-  .sp-card .tr.clr { border-left-color:#f2b600; } .sp-card .tr.sel { background:#fff; outline:2px solid #23a3e6; }
-  .sp-card .tr.lk { background:rgba(40,42,46,.85); color:#7d828b; border-left-color:#55585f; } .sp-card .tr.lk small { color:#7d828b; }
-  .sp-card.shut .tr { background:rgba(40,42,46,.85); color:#7d828b; border-left-color:#55585f; } .sp-card.shut .tr small { color:#7d828b; }
+  .sp-bg { position:absolute; inset:0; background:radial-gradient(ellipse at 50% 45%, #e9eaec 0, #cfd1d4 62%, #a9acb1 100%); }
+  .sp-bg::after { content:""; position:absolute; inset:0; opacity:.5; background:repeating-radial-gradient(circle at 20% 30%, rgba(0,0,0,.025) 0 1px, transparent 1px 7px), repeating-radial-gradient(circle at 70% 60%, rgba(0,0,0,.02) 0 1px, transparent 1px 11px); }
+  .sp-week { position:absolute; left:50%; top:22px; transform:translateX(-50%); display:flex; align-items:center; gap:8px; }
+  .sp-week > div { position:relative; width:32px; height:32px; display:grid; place-items:center; border:3px solid #3a3c40; background:#f2f3f4; }
+  .sp-week > div b { font-size:13px; font-weight:900; color:#3a3c40; }
+  .sp-week > div.sat { border-color:#c99a10; } .sp-week > div.sat b { color:#a07a00; }
+  .sp-week > div.on { background:#f6c21c; border-color:#f6c21c; box-shadow:0 0 0 2px #fff, 0 2px 6px rgba(0,0,0,.3); } .sp-week > div.on b { color:#1a1a1a; }
+  .sp-week > div i { position:absolute; top:36px; left:50%; transform:translateX(-50%); font-style:normal; font-size:10px; font-weight:800; color:#3a3c40; letter-spacing:.05em; }
+  .sp-week > span { margin-left:12px; font-size:15px; font-weight:800; color:#3a3c40; letter-spacing:.04em; }
+  .sp-row2 { position:absolute; left:50%; top:100px; transform:translateX(-50%); display:flex; gap:24px; }
+  .sp-c { position:relative; width:236px; height:500px; overflow:hidden; background:#38393d; box-shadow:0 8px 18px rgba(0,0,0,.35); }
+  .sp-c .art { position:absolute; left:0; right:0; top:0; height:330px; overflow:hidden; background:var(--c0); }
+  .sp-c .tiles { position:absolute; left:-130px; top:-110px; width:500px; transform:rotate(-30deg); display:flex; flex-wrap:wrap; gap:10px; }
+  .sp-c .pl { width:110px; height:72px; position:relative; background:var(--c1); box-shadow:0 2px 4px rgba(0,0,0,.35); overflow:hidden; }
+  .sp-c .pl:nth-child(4n+2) { background:var(--c2); } .sp-c .pl:nth-child(5n) { background:var(--c3); }
+  .sp-c .pl i { position:absolute; left:6px; top:8px; width:52px; height:52px; display:block; }
+  .sp-c .pl b { position:absolute; right:6px; top:6px; font-size:14px; font-weight:800; color:var(--tx); opacity:.85; }
+  .sp-c .pl span { position:absolute; right:6px; bottom:6px; font-size:11px; font-weight:900; color:var(--tx); opacity:.7; }
+  .sp-c.am { --c0:#f2a20c; --c1:#1d1d1f; --c2:#f7b52a; --c3:#2b2b2e; --tx:#ffd23c; }
+  .sp-c.fh { --c0:#e8e6e2; --c1:#d93a46; --c2:#f4f3f0; --c3:#b82734; --tx:#2a2a2a; }
+  .sp-c.cb { --c0:#1a6f8c; --c1:#20a7d6; --c2:#0f4f66; --c3:#7fdcff; --tx:#e8fbff; }
+  .sp-c.ar { --c0:#463a86; --c1:#6c5cc8; --c2:#2c2458; --c3:#a99af0; --tx:#f1edff; }
+  .sp-c .art::after { content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,0,0,0) 55%, rgba(0,0,0,.35)); }
+  .sp-c .bd { position:absolute; left:0; right:0; top:306px; height:34px; display:flex; align-items:center; justify-content:center; gap:8px; font-size:17px; font-weight:900; z-index:1; }
+  .sp-c .bd.on { background:#2aa7ec; color:#fff; } .sp-c .bd.sat { background:linear-gradient(90deg,#fff07a,#f6c21c 50%,#fff07a); color:#3a2c00; }
+  .sp-c .bd.sat i { width:22px; height:22px; border-radius:50%; background:#e0a400; color:#fff; font-style:normal; font-size:13px; display:grid; place-items:center; }
+  .sp-c .bd.off, .sp-c .bd.lk { background:#55575c; color:#d8dbe0; }
+  .sp-c .ft { position:absolute; left:0; right:0; top:340px; bottom:0; display:flex; flex-direction:column; align-items:center; padding-top:12px; color:#fff; }
+  .sp-c .ft .cl { display:flex; gap:8px; margin-bottom:6px; } .sp-c .ft .cl img { width:28px; height:28px; padding:3px; border:1.5px solid rgba(255,255,255,.7); }
+  .sp-c .ft b { font-size:30px; font-weight:900; letter-spacing:.02em; } .sp-c .ft span { margin-top:4px; font-size:16px; font-weight:700; color:#e2e5ea; }
+  .sp-c .dots { display:flex; gap:3px; margin-top:12px; } .sp-c .dots i { width:9px; height:9px; border:1.5px solid #9a9da3; } .sp-c .dots i.o { background:#e2e5ea; border-color:#e2e5ea; } .sp-c .dots i.t { background:#f6c21c; border-color:#f6c21c; }
+  .sp-c.shut .art { filter:grayscale(.85) brightness(.6); } .sp-c.shut .ft { opacity:.6; }
+  .sp-c:not(.shut):hover { box-shadow:0 0 0 3px #fff, 0 8px 18px rgba(0,0,0,.35); }
+  .sm-bg { filter:blur(1.5px) brightness(.62) saturate(.75); transform:scale(1.03); }
+  .sm-name { position:absolute; left:40px; top:84px; color:#fff; text-shadow:0 2px 8px rgba(0,0,0,.6); }
+  .sm-name small { display:block; font-size:12px; letter-spacing:.2em; opacity:.85; } .sm-name b { display:block; font-size:38px; font-weight:900; line-height:1.15; } .sm-name span { font-size:14px; color:#d8dbe0; }
+  .sm-map { position:absolute; inset:0; transition:transform .38s cubic-bezier(.2,.7,.2,1); }
+  .sm-map svg { position:absolute; left:0; top:0; pointer-events:none; filter:drop-shadow(0 1px 3px rgba(0,0,0,.5)); }
+  .sm-map.side { transform:translateX(-200px); }
+  .sm-map .node { transform:scale(1.25); transform-origin:left center; } .sm-map .node.lk { filter:grayscale(1) brightness(.7); }
   /* 창고 */
-  .dp-tabs { position:absolute; left:40px; top:96px; display:flex; flex-direction:column; gap:8px; }
-  .dp-tabs > div { width:120px; height:44px; display:grid; place-items:center; font-size:15px; font-weight:900; background:rgba(40,42,46,.85); color:#c8ccd4; }
-  .dp-tabs > div.on { background:#f2f3f5; color:#1a1b1e; }
-  .dp-grid { position:absolute; left:200px; right:40px; top:96px; bottom:30px; overflow-y:auto; display:flex; flex-wrap:wrap; align-content:flex-start; gap:22px 18px; padding:10px 6px; }
-  .dp-it span { color:#2a2b2e; font-weight:700; } .dp-it { width:96px; } .dp-it .ci { width:80px; height:80px; padding:15px; } .dp-it b { top:56px; font-size:15px; }
+  .dp-bg { position:absolute; inset:0; background:linear-gradient(160deg,#2b2d32,#17181b 70%); }
+  .dp-wm { position:absolute; right:30px; bottom:10px; font-size:120px; font-weight:800; color:rgba(255,255,255,.04); letter-spacing:.05em; }
+  .dp-tabs { position:absolute; left:28px; top:96px; display:flex; flex-direction:column; gap:8px; }
+  .dp-tabs > div { width:120px; height:46px; display:grid; place-items:center; font-size:16px; font-weight:900; background:rgba(255,255,255,.07); color:#c8ccd4; border-left:4px solid transparent; }
+  .dp-tabs > div.on { background:#f2f3f5; color:#16171a; border-left-color:#23a3e6; }
+  .dp-grid { position:absolute; left:180px; right:30px; top:90px; bottom:24px; overflow-y:auto; display:flex; flex-wrap:wrap; align-content:flex-start; gap:18px 14px; padding:10px 6px; }
+  .dp-it { width:112px; display:flex; flex-direction:column; align-items:center; }
+  .dp-it .ci { position:relative; width:96px; height:96px; border-radius:50%; padding:18px; background:radial-gradient(circle at 50% 38%, #6a6f7a, #2a2c31 72%); box-shadow:0 0 0 3px var(--tr,#c9a64a), 0 4px 10px rgba(0,0,0,.5); }
+  .dp-it.t1 { --tr:#a7adb6; } .dp-it.t2 { --tr:#7ccf3e; } .dp-it.t3 { --tr:#3fa7f0; }
+  .dp-it .ci b { position:absolute; right:-6px; bottom:-2px; min-width:34px; padding:1px 7px; text-align:center; background:#0d0e10; color:#fff; font-size:15px; font-weight:500; border:1px solid rgba(255,255,255,.25); }
+  .dp-it > span { margin-top:10px; font-size:13px; font-weight:700; color:#eceef2; text-align:center; line-height:1.3; }
+  .dp-it:hover .ci { box-shadow:0 0 0 3px #fff, 0 4px 10px rgba(0,0,0,.5); }
   .dp-none { width:100%; padding-top:120px; text-align:center; color:#9aa0aa; font-size:15px; }
   .tm-bts { position:absolute; right:36px; bottom:28px; display:flex; filter:drop-shadow(0 4px 8px rgba(0,0,0,.5)); }
   .tm-bts .wm { position:absolute; left:-30px; top:4px; width:170px; height:70px; opacity:.16; transform:rotate(-8deg); } .tm-bts .wm svg { width:100%; height:100%; }
@@ -14809,7 +14843,7 @@ window.BSL_ECON = (() => {
   let route = { name: "lobby" };
   // moving to another screen is never a cut: the old one fades out as the new one fades in
   let wipe = false;
-  const toStage = (i) => go(STAGE_META[i].supply ? "supply" : "terminal", i);   // back to the map an operation was picked from
+  const toStage = (i) => go(STAGE_META[i].supply ? "supplymap" : "terminal", i);   // back to the map an operation was picked from
   const shutToday = (i) => !!STAGE_META[i].supply && !EC.OPEN[new Date().getDay()].includes(STAGE_META[i].supply);
   function go(name, arg) { wipe = route.name !== name; if (!/^(roster|opdetail|levelup|promote)$/.test(name)) rsMark = null; route = { name, arg }; render(); }
   function render() {
@@ -14990,57 +15024,68 @@ window.BSL_ECON = (() => {
       if (sel >= 0) pick(sel, false); else requestAnimationFrame(() => { strip.scrollLeft = home(); });
     },
 
-    // 자원 수집: four sites, two open on a weekday and all four on Saturday; each has a -1 (chips) and a -2 (chip packs)
-    supply(el, sel = -1) {
-      const bg = h("div", "term-bg"); bg.style.backgroundImage = `url(${ART.st_war || ART.bg})`; el.appendChild(bg);
-      el.appendChild(h("div", "term-shade"));
+    // 자원 수집, after the original's 물자 비축: a pale concrete room, the week across the top, a tall card per site —
+    // its chips laid out in rows on the art, a band when it is open, its name and its days below
+    supply(el) {
+      el.appendChild(h("div", "sp-bg"));
       el.appendChild(topBar("", "", () => go("ops"), { res: false }));
+      const DAYN = "일월화수목금토", WEEK = [1, 2, 3, 4, 5, 6, 0], today = new Date().getDay(), open = EC.OPEN[today];
+      el.appendChild(h("div", "sp-week", WEEK.map((d) => `<div class="${d === today ? "on" : ""}${d === 6 ? " sat" : ""}"><b>${DAYN[d]}</b>${d === today ? '<i class="en">TODAY</i>' : ""}</div>`).join("") + `<span class="en">SCHEDULE</span>`));
+      const row = h("div", "sp-row2"); el.appendChild(row);
+      const idxOf = (site, tier) => TD.STAGES.findIndex((q) => q.supply === site && q.tier === tier);
+      for (const site of ["AM", "FH", "CB", "AR"]) {
+        const sp = EC.SUPPLY[site], on = open.includes(site), i1 = idxOf(site, 1), unlocked = STAGE_META[i1].unlock(S);
+        const days = WEEK.filter((d) => EC.OPEN[d].includes(site));
+        const reps = sp.cls.map((c) => CLS_REP[c]);
+        // the art: chip plates in slanted rows, the two classes taking turns
+        let plates = ""; for (let k = 0; k < 28; k++) { const t = (k + Math.floor(k / 4)) % 2; plates += `<div class="pl"><i>${icn("chipc-" + (k % 3 === 0 ? 2 : 1) + "-" + reps[t])}</i><b class="en">${site}-${k % 3 === 0 ? 2 : 1}</b><span>${sp.cls[t]}</span></div>`; }
+        const band = !unlocked ? `<div class="bd lk">${esc(STAGE_META[i1].unlockAt)} 클리어 후 개방</div>` : today === 6 ? `<div class="bd sat"><i class="en">S</i>토요일 전체 개방</div>` : on ? `<div class="bd on">오늘 개방</div>` : `<div class="bd off">오늘 닫힘</div>`;
+        const c = h("div", "btn sp-c " + site.toLowerCase() + (on && unlocked ? "" : " shut"), `<div class="art"><div class="tiles">${plates}</div></div>${band}
+          <div class="ft"><div class="cl">${reps.map((r, k) => `<img src="${clsIcon(r, 30)}" alt="${sp.cls[k]}">`).join("")}</div><b>${esc(sp.n)}</b><span>${days.map((d) => DAYN[d]).join("")}요일 개방</span>
+          <div class="dots">${WEEK.map((d) => `<i class="${days.includes(d) ? "o" : ""}${d === today ? " t" : ""}"></i>`).join("")}</div></div>`);
+        c.onclick = () => { if (!unlocked) return toast(`${STAGE_META[i1].unlockAt} 클리어 후 열립니다`); if (!on) return toast(`오늘은 닫혀 있습니다 · ${days.map((d) => DAYN[d]).join("")}요일 개방`); go("supplymap", site); };
+        row.appendChild(c);
+      }
+      opsNav(el, "supply");
+    },
+
+    // one supply site: its ground, blurred, the -1 and -2 joined by a line; picking one slides in the operation panel
+    supplymap(el, arg) {
+      const site = typeof arg === "string" ? arg : STAGE_META[arg] && STAGE_META[arg].supply, sel = typeof arg === "number" ? arg : -1;
+      const ids = [1, 2].map((t) => TD.STAGES.findIndex((q) => q.supply === site && q.tier === t));
+      const bg = h("div", "term-bg sm-bg"); bg.style.backgroundImage = `url(${ART[{ AM: "st_war", FH: "st_underpass", CB: "st_lane", AR: "st_room" }[site]] || ART.bg})`; el.appendChild(bg);
+      el.appendChild(h("div", "term-shade"));
+      el.appendChild(topBar("", "", () => go("supply"), { res: false }));
       tickStamina();
       const stb = h("div", "btn tm-stam", `<i>${icn("it-stam")}</i><b class="en">${S.res.stam}/${stamMax()}</b>`); stb.onclick = () => itemInfo("stam", S.res.stam); el.appendChild(stb);
-      const DAYN = "일월화수목금토", today = new Date().getDay(), open = EC.OPEN[today];
-      el.appendChild(h("div", "sp-hd", `<small class="en">SUPPLY OPERATION</small><b>자원 수집</b><span>오늘 <b>${DAYN[today]}요일</b> · 토요일에는 모두 열립니다</span>`));
-      const row = h("div", "sp-row"); el.appendChild(row);
-      const idxOf = (site, tier) => TD.STAGES.findIndex((q) => q.supply === site && q.tier === tier);
-      const btns = {};
+      el.appendChild(h("div", "sm-name", `<small class="en">SUPPLY · ${site}</small><b>${esc(EC.SUPPLY[site].n)}</b><span>${EC.SUPPLY[site].cls.join(" · ")} 칩</span>`));
+      const map = h("div", "sm-map"); el.appendChild(map);
+      const POS = [[300, 400], [760, 230]];
+      map.innerHTML = `<svg width="1280" height="720"><path d="M${POS[0][0] + 50} ${POS[0][1] + 26} L${POS[1][0] + 50} ${POS[1][1] + 26}" stroke="rgba(255,255,255,.9)" stroke-width="3"/></svg>`;
+      const nodes = ids.map((i, k) => {
+        const m = STAGE_META[i], ok = m.unlock(S), st = (S.stages[TD.STAGES[i].code] || {}).stars || 0;
+        const nd = h("div", "btn node" + (st ? " clear" : " next") + (ok ? "" : " lk"), `<div class="lab en">OPERATION</div><div class="box"><div class="hx"><i></i></div><div class="c en">${TD.STAGES[i].code}</div></div>`);
+        Object.assign(nd.style, { left: POS[k][0] + "px", top: POS[k][1] + "px" });
+        nd.onclick = (e) => { e.stopPropagation(); if (!ok) return toast(`${m.unlockAt} 클리어 후 열립니다`); pick(i, true); };
+        map.appendChild(nd); return nd;
+      });
       let cur = -1, panel = null;
       const pick = (i, anim) => {
         if (i === cur) return; cur = i; route.arg = i;
-        for (const k in btns) btns[k].classList.toggle("sel", +k === i);
-        row.classList.add("side");
+        nodes.forEach((nd, k) => nd.classList.toggle("sel", ids[k] === i));
+        map.classList.add("side");
         const np = stagePanel(el, i); np.classList.add(anim ? (panel ? "swap" : "in") : "now");
         if (panel) { const old = panel; old.classList.add("out"); setTimeout(() => old.remove(), 260); }
         el.appendChild(np); panel = np;
       };
-      const unpick = () => {
-        if (cur < 0) return; cur = -1; route.arg = -1; row.classList.remove("side");
-        for (const k in btns) btns[k].classList.remove("sel");
-        const old = panel; panel = null; old.classList.add("out"); setTimeout(() => old.remove(), 260);
-      };
-      bg.onclick = unpick; row.onclick = (e) => { if (e.target === row) unpick(); };
-      for (const site of ["AM", "FH", "CB", "AR"]) {
-        const sp = EC.SUPPLY[site], on = open.includes(site), i1 = idxOf(site, 1);
-        const days = Object.keys(EC.OPEN).filter((d) => d !== "6" && EC.OPEN[d].includes(site)).map((d) => DAYN[d]).join("·") + "·토";
-        const c = h("div", "sp-card" + (on ? "" : " shut"), `<div class="im" style="background-image:url(${ART[TD.STAGES[i1].bg] || ART.bg})"></div>
-          <div class="cd en">${site}</div><div class="n">${esc(sp.n)}</div><div class="cl">${sp.cls.map((k) => `<span>${k}</span>`).join("")}</div>
-          <div class="dy">${on ? "<b>개방 중</b>" : "<b>닫힘</b>"}<span>${days}</span></div><div class="tiers"></div>`);
-        c.onclick = (e) => { e.stopPropagation(); if (!on) toast(`오늘은 닫혀 있습니다 · ${days}요일 개방`); };
-        const ts = c.querySelector(".tiers");
-        for (const tier of [1, 2]) {
-          const i = idxOf(site, tier), m = STAGE_META[i], ok = m.unlock(S), st = (S.stages[TD.STAGES[i].code] || {}).stars || 0;
-          const b = h("div", "btn tr" + (ok ? "" : " lk") + (st ? " clr" : ""), `<b class="en">${site}-${tier}</b><small>${ok ? (tier === 1 ? "칩" : "칩 팩") : esc(m.unlockAt) + " 클리어"}</small>`);
-          b.onclick = (e) => { e.stopPropagation(); if (!ok) return toast(`${m.unlockAt} 클리어 후 열립니다`); if (!on) return toast(`오늘은 닫혀 있습니다 · ${days}요일 개방`); pick(i, true); };
-          btns[i] = b; ts.appendChild(b);
-        }
-        row.appendChild(c);
-      }
-      opsNav(el, "supply");
-      if (sel >= 0 && STAGE_META[sel] && STAGE_META[sel].supply) pick(sel, false);
+      map.onclick = () => { if (cur < 0) return; cur = -1; route.arg = site; nodes.forEach((nd) => nd.classList.remove("sel")); map.classList.remove("side"); const old = panel; panel = null; old.classList.add("out"); setTimeout(() => old.remove(), 260); };
+      if (sel >= 0) pick(sel, false);
     },
 
     // 창고: everything the growth economy has handed out, by kind; materials refine here
     depot(el, tab = "all") {
-      el.appendChild(h("div", "lt-bg")); el.appendChild(h("div", "lt-wm en", "DEPOT"));
-      el.appendChild(topBar("창고", "DEPOT", () => go("lobby")));
+      el.appendChild(h("div", "dp-bg")); el.appendChild(h("div", "dp-wm en", "DEPOT"));
+      el.appendChild(topBar("", "", () => go("lobby"), { res: false }));
       if (S.econGiftNew) { S.econGiftNew = 0; save(); toast("성장 재료 첫 보급이 창고에 도착했습니다"); }
       const TABS = [["all", "전체"], ["grow", "육성"], ["chip", "칩"], ["mat", "재료"]];
       const kind = (k) => /^(rec|bk)/.test(k) ? "grow" : /^(chip|pack)_/.test(k) ? "chip" : "mat";
@@ -15052,7 +15097,7 @@ window.BSL_ECON = (() => {
       keys.sort((a, b) => order(a) - order(b));
       if (!keys.length) grid.appendChild(h("div", "dp-none", "보관 중인 물품이 없습니다"));
       for (const k of keys) {
-        const c = h("div", "btn rw-it dp-it t" + (ITEM[k].tier || 1), `<div class="ci">${icn(ITEM[k].ic)}</div><b class="en">${fmt(inv(k))}</b><span>${esc(ITEM[k].n)}</span>`);
+        const c = h("div", "btn dp-it t" + (ITEM[k].tier || 1), `<div class="ci">${icn(ITEM[k].ic)}<b class="en">${fmt(inv(k))}</b></div><span>${esc(ITEM[k].n)}</span>`);
         c.onclick = () => itemInfo(k, inv(k), () => render());
         grid.appendChild(c);
       }
@@ -15652,7 +15697,12 @@ window.BSL_ECON = (() => {
   const EMBLEM_SVG = `<svg viewBox="-100 -100 200 200"><path d="M0-96 83-48v96L0 96-83 48v-96z" fill="#0b0c0e" stroke="#fff" stroke-width="4"/><path d="M0-83 72-41.5v83L0 83-72 41.5v-83z" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="1.5"/>
     <path d="M0-49 33-16 0 17-33-16z" fill="none" stroke="#fff" stroke-width="7.5"/><path d="M0-28.5 12.5-16 0-3.5-12.5-16z" fill="#fff"/><rect x="-66" y="-18.5" width="24" height="5" fill="#fff"/><rect x="42" y="-18.5" width="24" height="5" fill="#fff"/>
     <text x="0" y="48" fill="#fff" font-family="Oswald, sans-serif" font-weight="700" font-size="20" text-anchor="middle">BLOCKADE</text><text x="0" y="64" fill="rgba(255,255,255,.75)" font-family="Oswald, sans-serif" font-weight="500" font-size="9" text-anchor="middle">TEOHI ARCHIVE · LINE 0614</text></svg>`;
-  const icn = (id, cls = "") => `<svg class="icn ${cls}" viewBox="0 0 64 64"><use href="#${id}"/></svg>`;
+  const icn = (id, cls = "") => {
+    if (id.startsWith("chipc-")) { const [, t, rep] = id.split("-");   // a chip: the chip, with its class's mark on the die
+      return `<span class="icn chipc t${t} ${cls}"><svg viewBox="0 0 64 64"><use href="#it-chip${t}"/></svg><img src="${clsIcon(rep, 48, t === "2" ? "#ffe08a" : "#9feaff")}" alt=""></span>`; }
+    return `<svg class="icn ${cls}" viewBox="0 0 64 64"><use href="#${id}"/></svg>`;
+  };
+  const CLS_REP = { 선봉: "vanguard", 근위: "guard", 중장: "defender", 저격: "sniper", 술사: "caster", 의무: "medic", 보조: "supporter", 특수: "specialist" };
   const ITEM = {
     orb: { n: "합성옥", ic: "it-orb", d: "아카이브에서 가사인격체와 링크할 때 쓰는 결정. 600개로 링크 1회를 실행할 수 있다.", src: "작전 첫 클리어 · 수신 선물" },
     coin: { n: "주화", ic: "it-coin", d: "가사인격의 레벨업과 정예화에 드는 통화.", src: "작전 클리어 · 받은 별이 많을수록 더 많이" },
@@ -15683,7 +15733,7 @@ window.BSL_ECON = (() => {
   const HAVE = { orb: () => S.res.orb, coin: () => S.res.coin, stam: () => S.res.stam, ticket: () => S.res.ticket, start: () => S.res.start, exp: () => S.exp };
   // ---------- the growth economy: records, books, chips, materials ----------
   const EC = window.BSL_ECON;
-  const icOf = (k, it) => k.startsWith("rec") ? "it-rec" + it.tier : k.startsWith("bk") ? "it-book" + it.tier : k.startsWith("chip_") ? "it-chip1" : k.startsWith("pack_") ? "it-chip2" : "it-" + k.slice(3) + it.tier;
+  const icOf = (k, it) => k.startsWith("rec") ? "it-rec" + it.tier : k.startsWith("bk") ? "it-book" + it.tier : k.startsWith("chip_") ? "chipc-1-" + CLS_REP[it.cls] : k.startsWith("pack_") ? "chipc-2-" + CLS_REP[it.cls] : "it-" + k.slice(3) + it.tier;
   for (const k in EC.ITEMS) { ITEM[k] = Object.assign({}, EC.ITEMS[k], { ic: icOf(k, EC.ITEMS[k]) }); HAVE[k] = () => inv(k); }
   const inv = (k) => (S.inv && S.inv[k]) || 0;
   const addItems = (list) => { S.inv = S.inv || {}; for (const [k, n] of list) if (k && n) S.inv[k] = (S.inv[k] || 0) + n; };
