@@ -3718,7 +3718,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
         [30, "strag", 2, 4, 1], [36, "shield", 1], [40, "soldier", 2, 3, 2], [46, "hexer", 1, 2, 2.5], [50, "heavy", 2], [52, "strag", 0, 4, 0.8], [56, "shield", 1]] },
     p3: { at: [19, 7], name: "등대 아래", en: "THE LIGHTHOUSE", final: true, rear: [], front: [0, 1],
       map: ["############", "#########,h#", ",,hh,..,,,#S", "B,..,,,,,,,S", "#.,h#####hh#"],
-      waves: [[0, "ney", 0, 1, 0, { perch: [10, 1], seen: true, scanEvery: 36, atk: 0.3 }], [8, "shield", 0], [12, "hexer", 1], [20, "soldier", 0, 2, 3], [30, "shield", 1], [36, "hexer", 0],
+      waves: [[0, "ney", 0, 1, 0, { perch: [10, 1], seen: true, scanEvery: 36, atk: 0.45 }], [8, "shield", 0], [12, "hexer", 1], [20, "soldier", 0, 2, 3], [30, "shield", 1], [36, "hexer", 0],
         [44, "heavy", 1], [54, "soldier", 0, 2, 3], [64, "shield", 0], [70, "hexer", 1], [82, "soldier", 1, 2, 3], [94, "shield", 1], [100, "hexer", 0], [110, "heavy", 0]] },
   } };
   const SQ_RAIN = { n: 4, per: 0.2, first: 0.22, gap: 0.08 };   // 죽음의 성좌: four clinkers a mark, a fifth of her attack each   // every boss: on its last legs it hits harder
@@ -4576,7 +4576,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
       if (kind === "x") {   // the sweep's rounds: a defender is left hanging on, anyone else is gone
         const dmg = u.def.cls === "중장" ? Math.max(0, u.hp - u.maxHp * e.def.scan.near) : u.hp + u.maxHp;
         this.damage(u, dmg, "true", null, e);
-      } else this.damage(u, e.def.atk * (kind === "s" ? e.def.sniper.strong : 1) * rage * (e.weakT > 0 ? 1 - e.weakAmt : 1) * (e.atkMul || 1), "phys", null, e);
+      } else this.damage(u, e.def.atk * (kind === "s" ? e.def.sniper.strong : 1) * rage * (e.weakT > 0 ? 1 - e.weakAmt : 1) * (e.atkMul || 1), "arts", null, e);   // blue ghost-fire: armour does not stop it, magic resistance does
     }
     // ---------- the march (BL-07) ----------
     loadPart(id) {
