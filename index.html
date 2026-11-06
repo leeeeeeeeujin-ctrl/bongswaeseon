@@ -15981,7 +15981,7 @@ window.BSL_ECON = (() => {
       <div class="row2">${keys.length ? `<div class="btn storyb"><div class="ic">${icn("ic-story")}</div><div class="t">▶스토리</div></div>` : ""}
         <div class="tx"><div class="recbar">추천 평균 레벨<b>${m.rec || "LV.1"}</b></div><p>${esc(s.desc)}</p></div></div>
       <div class="intel"><div class="btn ibox foes"><div class="h">적 정보</div><div class="th">${kinds.slice(0, 3).map(({ k }) => `<span style="background-image:url(${B.foeIcon(k)});${seen(k) ? "" : "filter:brightness(0)"}"></span>`).join("")}</div><i class="lens">${icn("ic-lens")}</i></div>
-        <div class="btn ibox map"><div class="h">맵</div><div class="th" style="background-image:url(${ART[s.bg] || ART.bg})"></div><i class="lens">${icn("ic-lens")}</i></div></div>
+        <div class="btn ibox map"><div class="h">맵</div><div class="th" style="background-image:url(${mapImg(s)})"></div><i class="lens">${icn("ic-lens")}</i></div></div>
       <div class="rwrow"><div class="btn l"><span>보상</span><i>${icn("ic-lens")}</i></div>
         ${m.first.orb ? `<div class="btn rwc${rec.clears ? " got" : ""}" data-k="orb"><i>${icn("it-orb")}</i><b class="en">${fmt(m.first.orb)}</b><em>${rec.clears ? "획득 완료" : "첫 클리어"}</em></div>` : ""}
         <div class="btn rwc" data-k="coin"><i>${icn("it-coin")}</i><b class="en">${fmt(m.coin)}+</b></div>
@@ -16182,7 +16182,7 @@ window.BSL_ECON = (() => {
   function foeSheet(el, s, pick = 0, tab = "all") {
     const o = h("div", "fs"), seen = (k) => !!(S.seen || {})["foe:" + k];
     const all = foeKinds(s), kinds = all.filter(({ k }) => { const d = TD.ENEMIES[k]; return tab === "all" || (tab === "elite" ? d.elite && !d.boss : d.boss); });
-    o.innerHTML = `<div class="blur" style="background-image:url(${ART[s.bg] || ART.bg})"></div><div class="fsep"></div>`;
+    o.innerHTML = `<div class="blur" style="background-image:url(${mapImg(s)})"></div><div class="fsep"></div>`;
     const bk = h("div", "btn bk", "‹"); bk.onclick = () => o.remove(); o.appendChild(bk);
     const tabs = h("div", "ftabs"); [["all", "전체"], ["elite", "정예"], ["boss", "리더"]].forEach(([k, t]) => { const b = h("div", "btn" + (tab === k ? " on" : ""), t); b.onclick = () => { o.remove(); foeSheet(el, s, 0, k); }; tabs.appendChild(b); });
     o.appendChild(tabs);
@@ -16203,11 +16203,13 @@ window.BSL_ECON = (() => {
     show(Math.min(pick, kinds.length - 1));
   }
   const MAP_EN = { "BL-01": "BURNING-BACKSTREET", "BL-02": "COLLAPSED-UNDERPASS", "BL-03": "DRY-FOUNTAIN-SQUARE", "BL-04": "WATCHTOWER-PARK", "BL-05": "MART-LOADING-DOCK", "BL-06": "STATION-FORECOURT", "BL-07": "THE-BLOCKADE-LINE" };
+  // the picture of an operation's ground: its painting, or for the march (BL-07) the whole field it crosses
+  const mapImg = (s) => (s.march && ART[s.march.tex]) || ART[s.bg] || ART.bg;
   function mapSheet(el, s) {
     const o = h("div", "fs"), idx = TD.STAGES.indexOf(s), K = 1000 / 1280;
-    const pts = (B.points ? B.points(idx) : []).map(([ch, x, y]) => { const [px, py] = B.project(idx, x, y); return `<div class="mpt ${ch === "S" ? "r" : "b"}" style="left:${px * K}px;top:${py * K}px"></div>`; }).join("");
-    o.innerHTML = `<div class="blur" style="background-image:url(${ART[s.bg] || ART.bg})"></div><div class="stripes"></div>
-      <div class="mframe" style="background-image:url(${ART[s.bg] || ART.bg})">${pts}<div class="cd">//${s.code}-${String(idx * 37 + 109).padStart(3, "0")}</div><div class="cap">//${MAP_EN[s.code] || s.code}</div></div>`;
+    const img = mapImg(s), pts = (s.march ? [] : B.points ? B.points(idx) : []).map(([ch, x, y]) => { const [px, py] = B.project(idx, x, y); return `<div class="mpt ${ch === "S" ? "r" : "b"}" style="left:${px * K}px;top:${py * K}px"></div>`; }).join("");
+    o.innerHTML = `<div class="blur" style="background-image:url(${img})"></div><div class="stripes"></div>
+      <div class="mframe" style="background-image:url(${img})${s.march ? ";background-size:contain;background-repeat:no-repeat" : ""}">${pts}<div class="cd">//${s.code}-${String(idx * 37 + 109).padStart(3, "0")}</div><div class="cap">//${MAP_EN[s.code] || s.code}</div></div>`;
     o.onclick = () => o.remove();
     el.appendChild(o);
   }
