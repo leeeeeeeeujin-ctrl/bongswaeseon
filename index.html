@@ -5324,6 +5324,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
   // every operator's 세부 분류
   const SUBOF = {"belina": "척후병", "tao": "척후병", "rabi6": "돌격수", "falchion": "돌격수", "hakuren": "기수", "veil": "로드", "geomseon": "로드", "rabi": "파이터", "lulu": "소드마스터", "hiro": "공격수", "yui": "가디언", "sunae": "프로텍터", "ker": "프로텍터", "eungyeol": "저거너트", "brick": "프로텍터", "bongeun": "명사수", "alpha": "명사수", "nana": "저격수", "capy": "포격사수", "skakea2": "코어 캐스터", "irins": "코어 캐스터", "lilith": "코어 캐스터", "piania": "멀티 타겟 메딕", "angelina": "멀티 타겟 메딕", "miho": "메딕", "ayaki": "메딕", "teka": "감속자", "jayeon": "감속자", "atat": "소환사", "silphy": "약화자", "smoqueen": "약화자", "skakea": "푸쉬마스터", "alpha2": "처형자"};
   for (const d of UNITS) if (SUBOF[d.id]) d.sub = SUBOF[d.id];
+  for (const d of UNITS) if (d.cls === "저격" && d.sub !== "저격수" && d.sub !== "포격사수") d.airFirst = true;   // the marksmen take what flies first; the long rifles and the guns keep to their own
   for (const d of UNITS) { if (d.talents) d.talent = d.talents[0]; else if (d.talent) d.talents = [Object.assign({ elite: 0 }, d.talent)]; }   // 제1·제2 재능: every operator has a list; the second opens at the second promotion
   const HOLY = { max: 1000, dur: 10, dps: 100, onHit: 0.1 };
   const ERODE = { max: 1000, burst: 1500, dur: 8, resDown: 25 };
@@ -8155,7 +8156,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
   let inspect = -1;         // card whose info panel is open (tap, before deploying)
   let aim = null;           // {card, x, y, dir}
   let selected = null;
-  let stageIdx = 0, squadOverride = null, onEnd = null, endSent = false, tut = null, startOpt = {}, T_SKIP = false, sscr = null, foeNotes = [], foeShown = {}, cardGlow = new Set();
+  let stageIdx = 0, squadOverride = null, onEnd = null, endSent = false, tut = null, startOpt = {}, T_SKIP = false, sscr = null, foeNotes = [], foeShown = {}, cardGlow = new Set(), kwRects = {};
   const cardRects = {};
   let flashWhite = 0;
   const SHOW_NUMBERS = false;
@@ -11461,7 +11462,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
         if (kw) {
           rect(cx, yy + 3, sw, 1, c);
           const bx = cx, by = yy;
-          buttons.push({ x: bx - 2, y: by - size - 2 + oy, w: sw + 4, h: size + 8, act: () => { kwTip = { name: kw, x: bx, y: by + 8 + oy }; } });
+          buttons.push({ x: bx - 2, y: by - size - 2 + oy, w: sw + 4, h: size + 8, kw, act: () => { kwTip = { name: kw, x: bx, y: by + 8 + oy }; } }); kwRects[kw] = { x: bx - 4, y: by - size - 4 + oy, w: sw + 8, h: size + 12 };
         }
         ctx.font = `500 ${size}px ${FONT_KR}`; cx += sw; i = j;
       }
@@ -11862,7 +11863,15 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
       { wait: 0.6 },
       { say: "방어선 구축이 늦었습니다. 가사인격의 효율적 배치를 요망.", tap: true },
       { subs: ["포격사수", "공격수"], say: "포격사수, 공격수의 가시성 향상. 해당 직군은 다수와의 전투를 상정해 존재합니다.", tap: true },
-      { cardSub: ["포격사수", "공격수"], say: "세부 직군의 설명은 해당 정보를 확인하십시오." },
+      { cardSub: ["공격수", "포격사수"], say: "세부 직군의 설명은 해당 정보를 확인하십시오." },
+      { kwSub: true, say: "「{sub}」 항목을 터치하십시오." },
+    ],
+    // 감시탑 아래: no story; when the first drone comes over, the terminal points at a sniper
+    "BL-04": [
+      { waitFoe: "drone" }, { wait: 0.4 },
+      { say: "공중 개체 접근. 근거리 가사인격은 공중 개체를 저지할 수 없습니다.", tap: true },
+      { cardAir: true, say: "저격 가사인격은 공중 개체를 우선 공격합니다. 「{op}」 카드를 터치하십시오." },
+      { say: "고지대에 배치해, 드론의 비행 경로를 사거리에 넣으십시오.", tap: true },
     ],
   };
   function makeStageScript(code) {
@@ -11882,8 +11891,18 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
         for (const k of idx) cardGlow.add(k);
         SS.subIdx = idx;
       }
-      if (st.cardSub) {   // point at the first card of these sub-classes (none in the squad: nothing to point at)
-        SS.cardIdx = game.cards.findIndex((c) => st.cardSub.includes(c.def.sub) && !c.deployed);
+      if (st.cardSub) {   // point at a card of these sub-classes, in the order given (none in the squad: nothing to point at)
+        SS.cardIdx = -1; for (const sb of st.cardSub) { const k = game.cards.findIndex((c) => c.def.sub === sb && !c.deployed); if (k >= 0) { SS.cardIdx = k; break; } }
+        if (SS.cardIdx < 0) return next();
+        SS.name = TD.nameOf(game.cards[SS.cardIdx].def, game.cards[SS.cardIdx].elite).main; SS.sub = game.cards[SS.cardIdx].def.sub;
+      }
+      if (st.kwSub) {   // the panel of the card just touched: its sub-class word
+        if (!SS.sub || inspect !== SS.cardIdx) return next();
+        kwTip = null;
+      }
+      if (st.cardAir) {   // a sniper that shoots fliers first (else any sniper)
+        SS.cardIdx = game.cards.findIndex((c) => c.def.airFirst && !c.deployed);
+        if (SS.cardIdx < 0) SS.cardIdx = game.cards.findIndex((c) => c.def.cls === "저격" && !c.deployed);
         if (SS.cardIdx < 0) return next();
         SS.name = TD.nameOf(game.cards[SS.cardIdx].def, game.cards[SS.cardIdx].elite).main;
       }
@@ -11893,7 +11912,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
         if (SS.cardIdx < 0) return next();
         SS.name = TD.nameOf(game.cards[SS.cardIdx].def, game.cards[SS.cardIdx].elite).main;
       }
-      if (st.say) { SS.freeze = true; SS.line = { txt: st.say.replace("{op}", SS.name), t: 0, tap: !!st.tap, at: st.at || "top" }; }
+      if (st.say) { SS.freeze = true; SS.line = { txt: st.say.replace("{op}", SS.name).replace("{sub}", SS.sub || ""), t: 0, tap: !!st.tap, at: st.at || "top" }; }
     };
     SS.update = (real) => {
       SS.t += real; SS.dark = Math.max(0, SS.dark - real * 0.45);
@@ -11902,11 +11921,16 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
       if (SS.i < 0) { if (game.t >= 0) next(); return; }
       if (!st) return;
       if (st.wait !== undefined && SS.t >= st.wait) next();
-      if ((st.card || st.cardSub) && (pending === SS.cardIdx || inspect === SS.cardIdx)) next();
+      if ((st.card || st.cardSub || st.cardAir) && (pending === SS.cardIdx || inspect === SS.cardIdx)) next();
+      if (st.kwSub && kwTip && kwTip.name === SS.sub) next();
+      if (st.kwSub && inspect !== SS.cardIdx) { inspect = SS.cardIdx; }   // the panel stays open until the word is touched
+      if (st.waitFoe && game.enemies.some((e) => e.type === st.waitFoe && !e.dead)) next();
     };
     SS.gate = (b) => {
       const st = steps[SS.i]; if (!st) return false;
-      if (st.card || st.cardSub) return !(b && b.card && cardRects[SS.cardIdx] && b.x === cardRects[SS.cardIdx].x);   // only her card
+      if (st.card || st.cardSub || st.cardAir) return !(b && b.card && cardRects[SS.cardIdx] && b.x === cardRects[SS.cardIdx].x);   // only her card
+      if (st.kwSub) return !(b && b.kw === SS.sub);   // only the word
+      if (st.waitFoe) return false;
       if (SS.line && SS.line.tap) {
         if (SS.line.t < 0.35) return true;
         if (reveal(SS.line) < 1) { SS.line.t = 99; return true; }
@@ -11918,7 +11942,8 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
       const st = steps[SS.i];
       if (SS.dark > 0) { ctx.save(); ctx.globalAlpha = Math.min(0.85, SS.dark); ctx.fillStyle = "#000"; ctx.fillRect(0, 0, VW, VH); ctx.restore(); }
       if (st && st.subs && SS.subIdx) holes(SS.subIdx.filter((k) => cardRects[k]).map((k) => cardRects[k]));
-      if (st && (st.card || st.cardSub) && cardRects[SS.cardIdx]) { const r = cardRects[SS.cardIdx]; holes([{ x: r.x, y: r.y, w: r.w, h: r.h }]); hand(r.x + r.w / 2, r.y - 90, r.x + r.w / 2, r.y + r.h / 2); }
+      if (st && st.kwSub && kwRects[SS.sub]) { const r = kwRects[SS.sub]; holes([r]); hand(r.x + r.w / 2, r.y + r.h + 70, r.x + r.w / 2, r.y + r.h / 2); }
+      if (st && (st.card || st.cardSub || st.cardAir) && cardRects[SS.cardIdx]) { const r = cardRects[SS.cardIdx]; holes([{ x: r.x, y: r.y, w: r.w, h: r.h }]); hand(r.x + r.w / 2, r.y - 90, r.x + r.w / 2, r.y + r.h / 2); }
       if (st && st.hl === "block") holes([{ x: 16, y: 458, w: 176, h: 30 }]);
       if (SS.line) panel(SS.line);
     };
@@ -12376,6 +12401,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
   window.__tdDrawOp = (g, id, x, y, k, o) => drawOperator(g, id, x, y, k, o || {});
   window.__tdUI = () => ({ aim, drag, pending, inspect });
   window.__tdInspect = (i) => { inspect = i; };
+  window.__tdKw = () => kwRects; window.__tdCards = () => cardRects; window.__tdScript = () => (sscr ? true : false);
   window.__tdSelect = (i) => { selected = i < 0 ? null : game.units[i]; };   // test hook: pick an operator as a tap would
   window.__tdSw = () => swooshes.map((w) => [+(game.t - w.born).toFixed(2), w.a0, w.a1, w.ring ? 1 : 0]);
   window.__tdScreen = (x, y) => { const q = P(x, y, zOf(x, y)); const c = camApply(q[0], q[1]); return [c[0] * scale, c[1] * scale, q[2] * scale]; };
