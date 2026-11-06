@@ -13954,7 +13954,7 @@ window.BSL_OPTEXT = {"alpha": {"illustrator": "", "basic": [["코드네임", "�
   .rz-it .icn { width:28px; height:28px; } .rz-it b { font-size:18px; font-weight:500; }
   .rz-tap { position:absolute; inset:0; }
   .toast { position:absolute; left:50%; top:90px; transform:translateX(-50%); background:rgba(0,0,0,.85); border:1px solid rgba(255,255,255,.2); padding:10px 22px; font-size:15px; z-index:9; animation:fl 2.4s forwards; pointer-events:none; }
-  .modal { position:absolute; inset:0; background:rgba(0,0,0,.7); display:grid; place-items:center; z-index:8; }
+  .modal { position:absolute; inset:0; background:rgba(0,0,0,.7); display:grid; place-items:center; z-index:40; }
   .modal .box { width:520px; background:#16171a; border:1px solid rgba(255,255,255,.2); padding:24px 28px; } .modal .box h3 { margin:0 0 10px; font-size:22px; } .modal .box p { color:#c8ccd4; line-height:1.7; }
   .modal .row { display:flex; gap:10px; margin-top:16px; } .modal .row div { flex:1; height:44px; display:grid; place-items:center; background:#e8eaee; color:#111; font-weight:900; } .modal .row div.n { background:#3a3b40; color:#ddd; }
 
@@ -14369,6 +14369,10 @@ window.BSL_OPTEXT = {"alpha": {"illustrator": "", "basic": [["코드네임", "�
   .tm-bts .wm { position:absolute; left:-30px; top:4px; width:170px; height:70px; opacity:.16; transform:rotate(-8deg); } .tm-bts .wm svg { width:100%; height:100%; }
   .tm-pr { position:relative; overflow:hidden; width:150px; height:76px; display:flex; flex-direction:column; justify-content:center; align-items:flex-end; padding-right:16px;
     background:linear-gradient(115deg, transparent 62%, rgba(255,255,255,.5) 62% 66%, transparent 66%), linear-gradient(180deg,#f6f6f7,#cfd1d5); color:#2a2b2e; }
+  .tm-pr.sw .a { font-size:22px; }
+  .sw-box .sw-n { display:flex; align-items:center; gap:12px; margin:14px 0 10px; } .sw-box .sw-n b { font-size:34px; min-width:46px; text-align:center; } .sw-box .sw-n span { color:#9aa0aa; margin-left:-6px; }
+  .sw-box .sw-b { width:44px; height:40px; display:grid; place-items:center; background:#2a2c31; border:1px solid rgba(255,255,255,.2); font-size:22px; font-weight:900; } .sw-box .sw-max { width:auto; padding:0 14px; font-size:14px; }
+  .sw-box .sw-r { display:flex; gap:22px; color:#c8ccd4; font-size:15px; } .sw-box .sw-r b { color:#fff; font-size:18px; } .sw-box .sw-r small { color:#8a8f99; }
   .tm-pr .wm { color:#2a2b2e; } .tm-pr .a { position:relative; font-size:26px; font-weight:900; letter-spacing:.02em; } .tm-pr .b { position:relative; font-size:11px; font-weight:700; color:#6b6f77; } .tm-pr.dis { filter:grayscale(1); opacity:.55; }
   .tm-bts .go { position:relative; right:auto; bottom:auto; overflow:hidden; width:236px; height:76px; padding-right:18px; align-items:flex-end;
     background:linear-gradient(115deg, transparent 58%, rgba(255,255,255,.18) 58% 63%, transparent 63%), linear-gradient(180deg,#2fb0f0,#0f78bf 70%,#0b64a3); color:#fff; box-shadow:inset 0 1px 0 rgba(255,255,255,.35); }
@@ -15319,6 +15323,34 @@ window.BSL_OPTEXT = {"alpha": {"illustrator": "", "basic": [["코드네임", "�
     w.querySelectorAll(".rw-it").forEach((c) => c.onclick = () => itemInfo(c.dataset.k, HAVE[c.dataset.k]()));
     sheet.appendChild(w);
   }
+  // 반복 소탕: an operation already won with three stars, cleared again without playing — stamina in, the usual rewards out
+  function sweepBox(sel) {
+    tickStamina();
+    const s = TD.STAGES[sel], m = STAGE_META[sel], rec = S.stages[s.code] || {};
+    const most = Math.min(10, Math.floor(S.res.stam / m.cost));
+    if (most < 1) return toast(`기력이 부족합니다 (필요 ${m.cost})`);
+    let n = Math.min(most, 1);
+    const per = m.coin + 3 * 200;
+    const mo = h("div", "modal"), bx = h("div", "box sw-box");
+    const paint = () => {
+      bx.innerHTML = `<h3>반복 소탕 <span class="en" style="color:#9aa0aa;font-size:15px;margin-left:8px">${s.code} ${esc(s.name)}</span></h3>
+        <p>별 3개로 클리어한 작전을 다시 치르지 않고 마칩니다. 보상은 별 3개 클리어와 같습니다.</p>
+        <div class="sw-n"><div class="btn sw-b" data-d="-1">−</div><b class="en">${n}</b><span>회</span><div class="btn sw-b" data-d="1">+</div><div class="btn sw-b sw-max" data-d="99">최대</div></div>
+        <div class="sw-r"><span>기력 <b class="en">-${m.cost * n}</b> <small>(${S.res.stam} 보유)</small></span><span>주화 <b class="en">+${fmt(per * n)}</b></span><span>경험 <b class="en">+${fmt(m.exp * n)}</b></span></div>`;
+      const row = h("div", "row"), no = h("div", "btn n", "취소"), ok = h("div", "btn", "소탕 시작");
+      no.onclick = () => mo.remove();
+      ok.onclick = () => {
+        mo.remove(); tickStamina(); if (S.res.stam < m.cost * n) return toast("기력이 부족합니다");
+        S.res.stam -= m.cost * n; S.res.coin += per * n; S.exp += m.exp * n;
+        let lv = false; while (S.exp >= playerExpNeed()) { S.exp -= playerExpNeed(); S.lvl++; lv = true; S.res.stam = Math.max(S.res.stam, stamMax()); }
+        rec.clears = (rec.clears || 0) + n; S.stages[s.code] = rec; save();
+        toast(`소탕 ${n}회 완료 · 주화 +${fmt(per * n)} · 경험 +${fmt(m.exp * n)}${lv ? " · 레벨 업" : ""}`); render();
+      };
+      row.append(no, ok); bx.appendChild(row);
+      bx.querySelectorAll(".sw-b").forEach((b) => b.onclick = () => { n = Math.max(1, Math.min(most, +b.dataset.d === 99 ? most : n + +b.dataset.d)); paint(); });
+    };
+    paint(); mo.appendChild(bx); mo.onclick = (e) => { if (e.target === mo) mo.remove(); }; sheet.appendChild(mo);
+  }
   // the operation panel, after the original
   function stagePanel(el, sel) {
     const s = TD.STAGES[sel], m = STAGE_META[sel], rec = S.stages[s.code] || {};
@@ -15355,8 +15387,10 @@ window.BSL_OPTEXT = {"alpha": {"illustrator": "", "basic": [["코드네임", "�
       sb.appendChild(pop);
     };
     const bts = h("div", "tm-bts");
-    const pr = h("div", "btn tm-pr" + (rec.clears ? "" : " dis"), `<i class="wm"><svg viewBox="0 0 120 50"><use href="#wm-net"/></svg></i><div class="a">연습</div><div class="b">기력 소모 없음</div>`);
-    pr.onclick = () => rec.clears ? go("prep", { sel, practice: true }) : toast("한 번 클리어한 작전만 연습할 수 있습니다");
+    // before three stars: practise for free; at three stars the left button sweeps the operation instead, as many times as the stamina allows
+    const sweep = (rec.stars || 0) >= 3;
+    const pr = h("div", "btn tm-pr" + (sweep ? " sw" : ""), `<i class="wm"><svg viewBox="0 0 120 50"><use href="#wm-net"/></svg></i><div class="a">${sweep ? "반복 소탕" : "연습"}</div><div class="b">${sweep ? `기력 -${m.cost} / 회` : "기력 소모 없음"}</div>`);
+    pr.onclick = () => sweep ? sweepBox(sel) : go("prep", { sel, practice: true });
     const g = h("div", "btn go", `<i class="wm"><svg viewBox="0 0 120 50"><use href="#wm-net"/></svg></i><div class="a">작전개시</div><div class="b"><i>${icn("it-stam")}</i><span class="en">-${m.cost}</span></div>`);
     g.onclick = () => go("prep", sel);
     bts.append(pr, g); d.appendChild(bts);
