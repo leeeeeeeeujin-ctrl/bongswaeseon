@@ -8877,7 +8877,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
     if (drag) {
       [drag.rx, drag.ry] = toV(ev);
       drag.vx = vx; drag.vy = vy;
-      if (Math.hypot(vx - drag.x0, vy - drag.y0) > 10) drag.moved = true;
+      if (Math.hypot(drag.rx - drag.x0, drag.ry - drag.y0) * scale > 14) drag.moved = true;   // a finger wobbles: only a real pull (in screen pixels) counts as a drag
       const t = pick(vx, vy);
       drag.tile = t && game.canDeployAt(game.cards[drag.card], t.x, t.y) ? t : null;
     } else if (aim && (aimDown || ev.pointerType === "mouse")) {
@@ -8893,8 +8893,9 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
     const [vx, vy] = camInv(...toV(ev));
     if (drag) {
       const d = drag; drag = null;
-      if (d.tile) { aim = { card: d.card, x: d.tile.x, y: d.tile.y, dir: 0 }; inspect = -1; return; }
-      if (!d.moved) {
+      const back = d.cr && d.rx >= d.cr.x && d.rx <= d.cr.x + d.cr.w && d.ry >= d.cr.y - 10;   // let go over its own card: a tap after all
+      if (d.tile && !back) { aim = { card: d.card, x: d.tile.x, y: d.tile.y, dir: 0 }; inspect = -1; return; }
+      if (!d.moved || back) {
         if (d.was) { pending = -1; inspect = -1; }
         else { pending = d.card; inspect = d.card; selected = null; }
       }
@@ -12470,7 +12471,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
       selected = null; aim = null;
       const why2 = game.deployCheck(c);
       if (why2) { pending = -1; inspect = inspect === i ? -1 : i; if (inspect >= 0 && !sscr) banner(why2, null, "small"); return; }
-      drag = { card: i, x0: vx, y0: vy, vx, vy, tile: null, moved: false, was: pending === i };
+      drag = { card: i, x0: vx, y0: vy, rx: vx, ry: vy, vx, vy, tile: null, moved: false, was: pending === i, cr: { x, y, w, h } };
       pending = -1;
     } });
   }
