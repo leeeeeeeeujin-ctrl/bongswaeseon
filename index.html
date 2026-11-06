@@ -14538,6 +14538,15 @@ window.BSL_OPTEXT = {"alpha": {"illustrator": "", "basic": [["코드네임", "�
     }
     fit();
     if (S.guide) runGuide();
+    else if (route.name === "lobby" && S.startDone && !S.lv45Asked) offerLv45();
+  }
+  // a one-time offer (the BL-07 retune is aimed at E0 Lv.45): every owned operator to promotion 0, level 45 (or that rarity's cap)
+  function offerLv45() {
+    S.lv45Asked = 1; save();
+    confirmBox("레벨 일괄 조정", "보유한 가사인격 전원을 <b>정예화 0 · Lv.45</b>로 맞춥니다.<br>3성은 최대치인 Lv.40까지입니다. 정예화가 높은 가사인격은 0으로 내려갑니다.", "맞추기", () => {
+      for (const id of Object.keys(S.ops)) { const o = S.ops[id]; o.elite = 0; o.lvl = Math.min(45, maxLv(id, 0)); o.skill = 0; if (o.exp !== undefined) o.exp = 0; }
+      save(); render();
+    });
   }
   const opArt = (id, kind) => B.portrait(id, kind, S.ops[id] ? S.ops[id].elite : 0);
   const nm = (id) => TD.nameOf(def(id), S.ops[id] ? S.ops[id].elite : 0);
