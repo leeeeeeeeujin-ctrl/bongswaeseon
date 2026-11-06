@@ -4557,8 +4557,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
       if (e.atkT <= 0) {
         const pool = this.units.filter((u) => !u.def.unseen);
         const tgt = e.blockedBy && this.units.includes(e.blockedBy) ? e.blockedBy
-          : e.perchFire ? pool.sort((a, b) => (b.seq || 0) - (a.seq || 0))[0]   // from the lighthouse: as any marksman, the one put down last (a summon too)
-          : pool.sort((a, b) => (this.stat(b, "atk") || 0) - (this.stat(a, "atk") || 0) || a.x - b.x)[0];   // he hunts the hardest hitter on the field
+          : pool.sort((a, b) => (b.seq || 0) - (a.seq || 0))[0];   // as any marksman: the one put down last draws his fire (a summon too)
         if (!tgt) { e.atkT = 0.3; return !!e.perchFire; }
         e.shots++;
         if (e.shots % d.sniper.every === 0) { e.aim = { u: tgt, t: 0 }; this.fx.push({ k: "neyaim", e, u: tgt, t: 0, life: d.sniper.aim }); return true; }
