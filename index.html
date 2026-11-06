@@ -3688,6 +3688,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
     [[0, "heavy", 0], [3, "hound", 1], [4, "hound", 0], [8, "hexer", 1], [11, "soldier", 0], [14, "soldier", 1]],
   ];
   const RAGE = { at: 0.3, atk: 1.3 };
+  const NEY_ROUNDS = 6;   // BL-07: the marked rounds he has at the lighthouse — a revolver's cylinder; the seventh is not his
   // BL-07, the march to the lighthouse: a big field fought one part at a time. Each part is held for a while, then the defence point
   // moves on: a short window to pull operators back (whoever is still out is pulled out by force, no refund, the redeploy timer running),
   // then the next part — the player picks which way where the road forks. The horde behind follows into the next part; the life is shared.
@@ -4523,6 +4524,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
         this.total += NEY_CALL[i].length;
       }
       if (e.scanEvery && this.t >= e.nextScan) { e.scanQ++; e.nextScan = this.t + e.scanEvery; }   // the lighthouse: a sweep every so often
+      if (e.scanEvery && (e.spent || 0) >= NEY_ROUNDS) e.scanQ = 0;   // the lighthouse's magic rounds are six: once they are spent, no more sweeps
       if (!e.scan && e.scanQ > 0) {
         e.scanQ--; e.scan = { t: 0, marks: null, fired: 0 }; e.aim = null;
         this.fx.push({ k: "neyscan", e, x: e.x, y: e.y, t: 0, life: S.sweep });
@@ -4530,7 +4532,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
       if (e.scan) {   // the sweep runs left to right across the whole field; nothing interrupts it
         const sc = e.scan; sc.t += dt;
         if (!sc.marks && sc.t >= S.sweep) {
-          sc.marks = this.units.filter((u) => !u.def.unseen && !u.summoned).sort(e.scanNear ? (a, b) => Math.hypot(a.x - e.x, a.y - e.y) - Math.hypot(b.x - e.x, b.y - e.y) || a.y - b.y : (a, b) => a.x - b.x || a.y - b.y).slice(0, 3).map((u) => ({ u, x: u.x, y: u.y }));
+          sc.marks = this.units.filter((u) => !u.def.unseen && !u.summoned).sort(e.scanNear ? (a, b) => Math.hypot(a.x - e.x, a.y - e.y) - Math.hypot(b.x - e.x, b.y - e.y) || a.y - b.y : (a, b) => a.x - b.x || a.y - b.y).slice(0, e.scanEvery ? Math.max(0, Math.min(3, NEY_ROUNDS - (e.spent || 0))) : 3).map((u) => ({ u, x: u.x, y: u.y }));
           sc.marks.forEach((m, i) => this.fx.push({ k: "neymark", e, u: m.u, x: m.x, y: m.y, t: 0, life: S.mark + i * S.gap + 0.1 }));
         }
         if (sc.marks) while (sc.fired < sc.marks.length && sc.t >= S.sweep + S.mark + sc.fired * S.gap) {
@@ -13043,7 +13045,7 @@ window.BSL_STORIES = {
     { nar: "연기 속에서 총검을 꽂은 병사 하나가 고개를 돌렸다. 하얀 가면 같은 얼굴이, 정확히 이쪽을 보고 있다." },
     { flash: "rgba(255,90,60,.35)" },
     { shake: 1 },
-    { me: "아니, 아니아니아니—" },
+    { me: "아니, 아니아니아니——" },
     { black: true, slow: 0.2 },
     { bg: "room", cut: true },
     { black: false, slow: 0.2 },
@@ -13059,7 +13061,7 @@ window.BSL_STORIES = {
       ["비상구로 달려간다.", [{ nar: "온몸으로 들이받는다. 한 번, 두 번." }, { shake: 1 }, { nar: "꿈쩍도 하지 않는다. 바깥에서 무언가가 단단히 막고 있다." }]],
       ["소리친다.", [{ me: "누, 누구 없어요?!" }, { shake: 2 }, { nar: "대답 대신 문이 한 번 더 울렸다." }]],
       ["무기가 될 만한 걸 찾는다.", [{ nar: "손에 잡히는 건 끊어진 전선 한 가닥뿐이다." }, { me: "……장난해?" }]],
-      ["기계를 미친 듯이 두드린다.", [{ me: "뭐라도— 뭐라도 켜져!" }], true],
+      ["기계를 미친 듯이 두드린다.", [{ me: "뭐라도—— 뭐라도 켜져!" }], true],
     ], loop: true },
     { nar: "꺼진 화면을 내리치고, 스위치를 올리고, 레버를 당긴다." },
     { shake: 2 },
@@ -13098,7 +13100,7 @@ window.BSL_STORIES = {
     { wait: 0.4 },
     { cg: "cg_eye", zoom: 1.06, speed: 8 },
     { wait: 0.8 },
-    { say: "yui", ruby: "가사인격체 — 범용", tone: "cold", text: "----서브테러 수신자 확인." },
+    { say: "yui", ruby: "가사인격체 — 범용", tone: "cold", text: "——서브테러 수신자 확인." },
     { say: "yui", ruby: "가사인격체 — 범용", tone: "cold", text: "정화 작업을 시작합니다." },
     { wait: 0.8 },
     { cg: null },
@@ -13124,9 +13126,9 @@ window.BSL_STORIES = {
     { nar: "이 와중에도, 배는 고팠다." },
     { me: "……배고파." },
     { say: "yui", ruby: "가사인격체 — 범용", tone: "cold", text: "수신자의 요구 확인." },
-    { say: "yui", ruby: "가사인격체 — 범용", tone: "cold", text: "식량----적출 대상, 인간, 마트. 인간을 우선합니다." },
+    { say: "yui", ruby: "가사인격체 — 범용", tone: "cold", text: "식량——적출 대상, 인간, 마트. 인간을 우선합니다." },
     { me: "아니아니, 인간이라니? 어째서. 마트가 있어? 주변에?" },
-    { say: "yui", ruby: "가사인격체 — 범용", tone: "cold", text: "수신자의 자산 현황---매우 열악, 적법한 절차를 통해 식량을 구할 수 없습니다." },
+    { say: "yui", ruby: "가사인격체 — 범용", tone: "cold", text: "수신자의 자산 현황——매우 열악, 적법한 절차를 통해 식량을 구할 수 없습니다." },
     { me: "그래서 사람을 어쩌겠다고?!?" },
     { wait: 0.3 },
     { say: "yui", ruby: "가사인격체 — 범용", tone: "cold", text: "적출합니다." },
@@ -13143,10 +13145,10 @@ window.BSL_STORIES = {
     { nar: "조금 전까지 비좁게 북적이던 목소리들은 흔적도 없다." },
     { me: "……저기, 아까 그 녀석들은 어디에 있는 거야?" },
     { show: "yui", at: "c" },
-    { say: "yui", ruby: "가사인격체 — 범용", tone: "cold", text: "좁은 공간에서 수신한 연유로 대부분의 가사인격체가 전투불능 상태입니다." },
-    { say: "yui", ruby: "가사인격체 — 범용", tone: "cold", text: "얼마는 단말로 되돌아갔지만, 전투 시에는 불러낼 수 있습니다." },
-    { say: "teka", text: "치료비를 녀석에게 청구할 수 있을까?" },
-    { say: "yui", ruby: "가사인격체 — 범용", tone: "cold", text: "가사인격체의 인권을 보장하는 법률단체 검색 중----" },
+    { say: "yui", ruby: "가사인격체 — 범용", tone: "cold", text: "좁은 공간에 한꺼번에 수신된 탓에, 대부분의 가사인격체가 전투불능 상태입니다." },
+    { say: "yui", ruby: "가사인격체 — 범용", tone: "cold", text: "일부는 단말로 되돌아갔지만, 전투 시에는 불러낼 수 있습니다." },
+    { say: "teka", text: "치료비, 불러낸 쪽에 청구할 수 있나?" },
+    { say: "yui", ruby: "가사인격체 — 범용", tone: "cold", text: "가사인격체의 인권을 보장하는 법률단체 검색 중——" },
     { wait: 0.4 },
     { me: "……아냐. 내 인권부터 챙겨줘. 마트로 가자." },
     { black: true, slow: 0.8 },
@@ -13168,7 +13170,7 @@ window.BSL_STORIES = {
     { nar: "개 짖는 소리." },
     { show: "dog", at: "rr", face: -1 },
     { flash: "rgba(120,240,255,.5)" },
-    { nar: "연기를 가르고 잿빛 사냥개들이 뛰쳐나온다. 하얀 도자기 가면 너머, 눈구멍마다 푸른 불이 일렁인다." },
+    { nar: "연기를 가르고 잿빛 사냥개들이 뛰쳐나온다. 눈이 있어야 할 자리마다 푸른 불이 일렁인다." },
     { show: "soldier", at: "r", face: -1 },
     { nar: "그 뒤로 북소리. 총검을 세운 병사들이 대열을 맞춰 걸어 나온다. 이백 년 전의 군복에, 얼굴은 하얀 도자기 가면." },
     { say: "soldier", text: "황제 폐하 만세! 길을 막는 자는 모두 쏴라!" },
@@ -13247,14 +13249,14 @@ window.BSL_STORIES = {
     { nar: "소리가 먼저 돌아왔다. 귀 안쪽에서 길게 울리는, 쇳소리 같은 이명." },
     { nar: "그다음은 먼지. 입 안 가득 서걱거린다." },
     { black: false, slow: 1.4 },
-    { nar: "눈을 뜨자 천장이 반쯤 내려앉아 있었다. 그리고 그 아래—" },
+    { nar: "눈을 뜨자 천장이 반쯤 내려앉아 있었다. 그리고 그 아래——" },
     { show: "yui", at: "c" },
     { nar: "십자가가 비스듬히 박혀 무너진 콘크리트를 받치고 있었다. 그 끝을 쥔 서브테러의 팔에는 흔들림 하나 없다." },
     { say: "yui", ruby: "가사인격체 — 범용", tone: "cold", text: "수신자의 생존을 확인했습니다." },
-    { me: "콜록…… 어째서 폭탄이 터지는 건데----" },
+    { me: "콜록…… 어째서 폭탄이 터지는 건데——" },
     { say: "yui", ruby: "가사인격체 — 범용", tone: "cold", text: "교차로에서 발각된 것이 원인으로 추정. 다만 한 가지는 정정해야 합니다." },
     { me: "뭔데?" },
-    { say: "yui", ruby: "가사인격체 — 범용", tone: "cold", text: "궤적을 계산해 투척된 폭탄으로 추정하였으나, 출처 불명의 탄환으로 생각해야 합니다. ---서브명, 마탄의 사수." },
+    { say: "yui", ruby: "가사인격체 — 범용", tone: "cold", text: "궤적을 계산해 투척된 폭탄으로 추정하였으나, 출처 불명의 탄환으로 생각해야 합니다. ——서브명, 마탄의 사수." },
     { me: "……탄환? 그게 총알 한 발이었다고?" },
     { say: "yui", ruby: "가사인격체 — 범용", tone: "cold", text: "지면을 관통한 뒤 내부에서 기폭. 총알이 할 수 있는 일은 아닙니다." },
     { hide: "yui" },
@@ -13265,7 +13267,7 @@ window.BSL_STORIES = {
     { black: false, slow: 0.6 },
     { nar: "연기, 불티. 그 너머로 아득히 솟은 첨탑 하나." },
     { nar: "그 꼭대기에 누군가 서 있었다." },
-    { nar: "어깨에 걸친 긴 총. 열풍에 부푸는 코트 자락. 얼굴은 그림자 속에 묻혀 있는데—" },
+    { nar: "어깨에 걸친 긴 총. 열풍에 부푸는 코트 자락. 얼굴은 그림자 속에 묻혀 있는데——" },
     { flash: "rgba(90,170,255,.35)" },
     { nar: "눈만이, 푸르게 타고 있었다." },
     { nar: "몇백 미터는 떨어져 있을 텐데. 그런데도 알 수 있었다." },
@@ -13333,7 +13335,7 @@ window.BSL_STORIES = {
     { say: "yui", ruby: "가사인격체 — 범용", tone: "cold", text: "다수 개체 출현. 개별 전투력은 낮으나 수량이 많습니다. 여럿을 함께 타격하는 편성을 권장합니다." },
     { me: "저것도 우리를 노리는 거야?" },
     { say: "yui", ruby: "가사인격체 — 범용", tone: "cold", text: "아닙니다. 이동 경로 위에 수신자가 있을 뿐입니다." },
-    { me: "……오늘만 그 말 두 번째 듣는다." },
+    { me: "……휘말렸을 뿐이라는 말, 오늘만 두 번째 듣는다." },
     { say: "yui", ruby: "가사인격체 — 범용", tone: "cold", text: "비켜 줄 공간이 없습니다. 방어선을 구축합니다." },
     { black: true },
   ],
@@ -13343,7 +13345,7 @@ window.BSL_STORIES = {
     { place: "갈림길" },
     { black: false, slow: 0.9 },
     { nar: "분수 광장을 벗어나, 행렬이 지나간 자국을 피해 골목을 골랐다." },
-    { nar: "진창에 찍힌 발자국은 하나같이 서쪽을 향하고 있었다. 우리는 그 반대로 걷는다." },
+    { nar: "진창에 찍힌 발자국은 하나같이 서쪽을 향하고 있었다. 우리는 그 길을 피해, 한 블록 옆 골목으로 걸었다." },
     { show: "yui", at: "c" },
     { me: "이쪽이면 저것들이랑 마주칠 일은 없겠지." },
     { say: "yui", ruby: "가사인격체 — 범용", tone: "cold", text: "확률상으로는 그렇습니다." },
@@ -13392,6 +13394,7 @@ window.BSL_STORIES = {
     { nar: "벽 너머 저 멀리, 강가에 등대 하나가 서 있었다." },
     { cg: "cg_lighthouse", zoom: 2.0, origin: "100% 0%", speed: 5 },
     { nar: "그 꼭대기에 그가 있었다. 긴 총을 등에 멘 채, 아래를 내려다보는 그림자 하나." },
+    { nar: "지하보도의 무너진 틈으로 보았던, 그 그림자였다." },
     { nar: "총을 겨누지도 않는다. 그저 보고 있을 뿐이다." },
     { nar: "그런데도 그 아래로는, 아무것도 지나가지 못했다." },
     { say: "yui", ruby: "가사인격체 — 범용", tone: "cold", text: "마탄의 사수 확인. 사거리 추정 완료. 등대를 중심으로 하천 일대 전역입니다." },
@@ -13435,11 +13438,11 @@ window.BSL_STORIES = {
     { nar: "숨을 고를 틈도 없이, 뒤쪽에서 발소리가 다시 차오른다. 아까보다 무겁고, 아까보다 많다." },
     { show: "yui", at: "c" },
     { say: "yui", ruby: "가사인격체 — 범용", tone: "cold", text: "후방 개체군 재집결. 규모, 직전의 세 배 이상." },
-    { me: "시트러스! 저쪽에 한 방——" },
-    { nar: "청동 야포의 포신이 들리는 순간, 시트러스의 머리 위에서 병아리가 날개를 퍼덕였다." },
+    { me: "카피바라! 저쪽에 한 방——" },
+    { nar: "청동 야포의 포신이 들리는 순간, 카피바라의 머리 위에서 병아리가 날개를 퍼덕였다." },
     { shake: 1 },
     { nar: "삑. 삑삑삑삑삑삑!" },
-    { nar: "시트러스는 포 위에 앉은 채 꿈쩍도 하지 않는다. 선글라스 너머로, 등대 쪽을 보고 있을 뿐이다." },
+    { nar: "카피바라는 포 위에 앉은 채 꿈쩍도 하지 않는다. 선글라스 너머로, 등대 쪽을 보고 있을 뿐이다." },
     { me: "……왜 안 쏴?" },
     { say: "alpha", text: "……아, 그런 거구만." },
     { say: "alpha", text: "저 등대 위 양반, 아까부터 뭘 쏘는지 봤어? 제일 덩치 큰 놈. 제일 시끄러운 놈." },
@@ -13453,7 +13456,7 @@ window.BSL_STORIES = {
     { say: "alpha", text: "그럼 결정이네. 수당은 두 배로." },
     { wait: 0.5 },
     { nar: "병아리가 그제야 조용해졌다." },
-    { nar: "시트러스는 길게 하품을 하더니, 포에서 내려와 등대 쪽으로 느릿느릿 걷기 시작했다." },
+    { nar: "카피바라는 길게 하품을 하더니, 포에서 내려와 등대 쪽으로 느릿느릿 걷기 시작했다." },
     { black: true },
   ],
   // the line: the march with the horde at their heels, toward the lighthouse — the reenactment's last stop
@@ -13482,15 +13485,16 @@ window.BSL_STORIES = {
     { nar: "강이 보였다. 얼어붙은 강 너머로, 국경 같은 어둠이 길게 누워 있다." },
     { nar: "교과서 한 귀퉁이가 떠올랐다. 1812년 12월, 코브노. 니에멘 강." },
     { nar: "대육군의 마지막 후위. 머스킷을 직접 들고 끝까지 남아 싸웠다는 원수가 있었다." },
-    { nar: "러시아를 떠난, 마지막 프랑스인." },
+    { nar: "미셸 네. 러시아를 떠난, 마지막 프랑스인." },
     { me: "……저 사람, 후위구나." },
+    { say: "yui", ruby: "가사인격체 — 범용", tone: "cold", text: "추정 일치. 마탄의 사수, 개체명 미셸 네." },
     { me: "도망치는 쪽을 지키는 게 아니라. 그 뒤를 아무도 못 넘게 막고 있는 거야." },
     { say: "yui", ruby: "가사인격체 — 범용", tone: "cold", text: "재현의 종점입니다. 저 선을 넘으면, 이 재현은 끝납니다." },
     { me: "넘을 수 있으면, 이겠지." },
     { wait: 0.6 },
     { cg: "cg_lighthouse", zoom: 2.2, origin: "100% 0%", speed: 3 },
-    { nar: "등대 꼭대기의 그림자가, 처음으로 고개를 돌렸다." },
-    { nar: "행렬이 아니라 나를. 푸른 눈 두 개가 정확히 이쪽에 멈춘다." },
+    { nar: "등대 꼭대기의 그림자가 고개를 돌렸다." },
+    { nar: "이번에는 행렬이 아니라, 나를. 푸른 눈 두 개가 정확히 이쪽에 멈춘다." },
     { wait: 0.8 },
     { nar: "그 목소리는 강 건너에서가 아니라, 바로 귀 옆에서 들렸다." },
     { say: "ney", ruby: "마탄의 사수", tone: "cold", text: "적이 아니라면, 이 이상은 넘지 말도록." },
@@ -13562,7 +13566,7 @@ window.BSL_STORIES = {
     { cg: "cg_bl7", cell: [1, 1], zoom: 1.6, origin: "66% 14%", speed: 6 },
     { nar: "자신이 쏜 탄환에." },
     { me: "어째서? 스스로의 머리를——" },
-    { say: "yui", ruby: "가사인격체 — 범용", tone: "cold", text: "이곳에 존재하는 [인간|악마]종은 수신자와 저뿐. 그중 순수 인간종은 수신자뿐입니다." },
+    { say: "yui", ruby: "가사인격체 — 범용", tone: "cold", text: "이곳에 존재하는 [인간|악마]종은 수신자와 본 개체뿐. 그중 순수 인간종은 수신자뿐입니다." },
     { say: "yui", ruby: "가사인격체 — 범용", tone: "cold", text: "[인간|악마]은, 스스로 죽기를 원하지 않습니다." },
     { say: "yui", ruby: "가사인격체 — 범용", tone: "cold", text: "그것은 공격자의 피살을 뜻합니다." },
     { me: "……" },
