@@ -4502,6 +4502,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
       if (d.stealth && !(o && o.seen)) { e.stealth = true; e.mins = 0; }
       else if (d.boss && o && o.seen) this.bossRevealT = this.t;   // in plain sight from the start: the warning comes at once
       if (o && o.scanEvery) { e.scanEvery = o.scanEvery; e.nextScan = this.t + o.scanEvery * 0.6; }
+      if (o && o.scanNear) e.scanNear = true;   // BL-07's lighthouse: the three nearest him, not the three furthest along
       if (o && o.atk) e.atkMul = (e.atkMul || 1) * o.atk;
       if (d.sniper) { e.shots = 0; e.scanned = 0; e.scanQ = 0; e.atkT = d.interval; }
       if (!d.boss) for (const q of this.enemies) if (q.stealth && !q.dead && q !== e && ++q.mins >= q.def.stealth.reveal) this.reveal(q);
@@ -4529,7 +4530,7 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
       if (e.scan) {   // the sweep runs left to right across the whole field; nothing interrupts it
         const sc = e.scan; sc.t += dt;
         if (!sc.marks && sc.t >= S.sweep) {
-          sc.marks = this.units.filter((u) => !u.def.unseen && !u.summoned).sort((a, b) => Math.hypot(a.x - e.x, a.y - e.y) - Math.hypot(b.x - e.x, b.y - e.y) || a.y - b.y).slice(0, 3).map((u) => ({ u, x: u.x, y: u.y }));
+          sc.marks = this.units.filter((u) => !u.def.unseen && !u.summoned).sort(e.scanNear ? (a, b) => Math.hypot(a.x - e.x, a.y - e.y) - Math.hypot(b.x - e.x, b.y - e.y) || a.y - b.y : (a, b) => a.x - b.x || a.y - b.y).slice(0, 3).map((u) => ({ u, x: u.x, y: u.y }));
           sc.marks.forEach((m, i) => this.fx.push({ k: "neymark", e, u: m.u, x: m.x, y: m.y, t: 0, life: S.mark + i * S.gap + 0.1 }));
         }
         if (sc.marks) while (sc.fired < sc.marks.length && sc.t >= S.sweep + S.mark + sc.fired * S.gap) {
