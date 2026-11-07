@@ -14331,6 +14331,25 @@ window.BSL_ECON = (() => {
   .bs-q { position:absolute; left:470px; top:34px; width:34px; height:34px; border-radius:50%; border:1.5px solid rgba(255,255,255,.5); display:grid; place-items:center; font-size:19px; font-weight:900; color:#d8dbe0; }
   .bs-help { width:640px !important; } .bs-help p { margin:8px 0; font-size:16px; } .bs-help p b { color:#8fd3ff; margin-right:6px; }
   .bs-all { width:200px; height:100%; background:linear-gradient(90deg,#118bc4,#24a8e8); display:grid; place-items:center; font-size:20px; font-weight:900; }
+  .bm-pin { position:absolute; width:22px; height:22px; margin:-11px 0 0 -11px; transform:rotate(45deg); background:#4fb8ff; border:2px solid #e8f6ff; box-shadow:0 0 10px rgba(79,184,255,.8); z-index:2; }
+  .bm-pin.home { background:#ffb35a; border-color:#fff3e0; box-shadow:0 0 12px rgba(255,180,90,.9); width:26px; height:26px; margin:-13px 0 0 -13px; }
+  .bm-pin.lk { background:#4a2a2a; border-color:#a05050; box-shadow:none; cursor:default; }
+  .bm-lk { position:absolute; width:120px; text-align:center; font-size:14px; color:#c88; text-shadow:0 1px 3px #000; } .bm-lk b { display:block; font-size:17px; color:#e9b0a8; }
+  .bm-c { position:absolute; width:230px; padding:8px 10px 8px; background:rgba(12,16,20,.86); border:1px solid rgba(120,190,230,.35); box-shadow:0 6px 14px rgba(0,0,0,.5); z-index:3; backdrop-filter:blur(2px); }
+  .bm-c::after { content:""; position:absolute; left:114px; width:1px; height:18px; background:rgba(120,190,230,.6); }
+  .bm-c.up::after { bottom:-19px; } .bm-c.dn::after { top:-19px; } .bm-c.dorm { width:220px; border-color:rgba(255,190,110,.45); } .bm-c.dorm::after { left:109px; top:-21px; height:20px; background:rgba(255,190,110,.6); }
+  .bm-c .hd { display:flex; align-items:baseline; gap:6px; font-size:17px; font-weight:900; white-space:nowrap; } .bm-c .hd b { font-size:14px; color:#8fd3ff; } .bm-c .hd span { margin-left:auto; font-size:14px; color:#9aa0aa; font-weight:700; }
+  .bm-c.dorm .hd b { font-size:18px; color:#ffcf8a; } .bm-c.dorm .hd small { font-size:14px; color:#c8ccd4; }
+  .bm-c .pr { display:flex; align-items:center; gap:6px; margin-top:6px; } .bm-c .pr > i { width:26px; height:26px; flex:none; display:grid; place-items:center; } .bm-c .pr > i svg { width:100%; height:100%; }
+  .bm-c .pr .cn { font-style:normal; font-size:16px; font-weight:900; color:#ffd36a; background:radial-gradient(#5a4a1c,#2a220c); border-radius:50%; border:1.5px solid #d9b24a; }
+  .bm-c .pr .bar { flex:1; height:6px; background:rgba(255,255,255,.12); } .bm-c .pr .bar i { display:block; height:100%; background:linear-gradient(90deg,#2aa7ec,#7fd4ff); } .bm-c .pr em { font-style:normal; font-size:15px; font-weight:700; min-width:44px; text-align:right; }
+  .bm-c .gd { display:flex; align-items:center; gap:6px; margin-top:7px; }
+  .bm-c .gd > i { width:34px; height:34px; border-radius:50%; background:#2a2c31 center 12%/cover; position:relative; flex:none; }
+  .bm-c .gd > i:not(.e)::after { content:""; position:absolute; inset:-3px; border-radius:50%; background:conic-gradient(var(--c) var(--f), rgba(255,255,255,.12) 0); -webkit-mask:radial-gradient(circle, transparent 17px, #000 18px); mask:radial-gradient(circle, transparent 17px, #000 18px); }
+  .bm-c .gd > i.e { border:1.5px dashed rgba(255,255,255,.25); } .bm-c .gd > i.out { filter:grayscale(1) brightness(.55); }
+  .bm-c .st { font-size:12px; font-weight:900; padding:1px 6px; margin-left:2px; white-space:nowrap; } .bm-c .st.on { background:#2fa84f; } .bm-c .st.stop { background:#d23b3b; } .bm-c .st.off { background:#55575c; }
+  .bm-c .wn { margin-left:auto; text-align:right; line-height:1; } .bm-c .wn b { font-size:19px; display:block; } .bm-c .wn small { font-size:11px; color:#8a909a; }
+  .bm-c .ft { margin-top:6px; font-size:14px; color:#c8ccd4; }
   /* a zone or the dorm, the scene behind the panel */
   .bz-cv { position:absolute; inset:0; width:1280px; height:720px; }
   .bz-pn { position:absolute; right:0; top:0; bottom:0; width:470px; background:linear-gradient(90deg,rgba(10,11,13,0),rgba(10,11,13,.88) 12%,rgba(10,11,13,.94)); padding:80px 28px 20px 70px; transition:transform .3s, opacity .3s; overflow:hidden; }
@@ -15340,30 +15359,30 @@ window.BSL_ECON = (() => {
     // 기반시설: the shelter on the left, the zones won back on the right, each with what it is making, who is on guard and how a raid would go
     base(el) {
       baseTick(); const b = baseState(); b.seen = Date.now(); save();
-      el.appendChild(h("div", "bs-bg"));
+      // the city as a field map: the shelter, the zones won back along the line of advance, the fog where the dead still are
+      const MP = BMAP_POS, open = BZ.filter(zoneOpen).map((z) => z.code);
+      const live = baseMapLive(el, open, (code) => { const s = b.z[code], act = activeG(code); return { on: act.length > 0, stop: s.g.length > 0 && !act.length, risk: s.g.length > 0 && zWin(code, act) < 0.6 }; });
       el.appendChild(topBar("", "", () => go("lobby"), { stam: false }));
-      el.appendChild(h("div", "bs-ttl", `<small class="en">BASE · RECLAIMED ZONES</small><b>탈환 구역</b>`));
-      // the dorm
-      const dc = h("div", "btn bs-dorm", `<div class="im" style="background-image:url(${ART.base_dorm || ART.st_room})"></div><div class="sh"></div>
-        <div class="tp"><small class="en">DORMITORY</small><b>숙소</b><span class="lv en">Lv.${b.dorm.lv}</span></div>
-        <div class="rs">${Array.from({ length: BB.DORM_SLOTS[b.dorm.lv - 1] }, (_, k) => { const id = b.dorm.rest[k]; return id ? `<div class="r"><i style="background-image:url(${opArt(id, "card")})"></i><div class="fb"><b style="width:${fatOf(id) / BB.FAT * 100}%;background:${fatCol(fatOf(id))}"></b></div></div>` : `<div class="r e"><i></i></div>`; }).join("")}</div>
-        <div class="ft">피로 회복 <b class="en">${BB.REST[b.dorm.lv - 1]}</b>/시간 · 정원 <b class="en">${b.dorm.rest.length}/${BB.DORM_SLOTS[b.dorm.lv - 1]}</b></div>`);
-      dc.onclick = () => go("dorm"); el.appendChild(dc);
-      // the zones
-      const grid = h("div", "bs-grid"); el.appendChild(grid);
-      for (const z of BZ) {
-        const i = zoneIdx(z.code), open = zoneOpen(z), s = b.z[z.code];
-        if (!open) { grid.appendChild(h("div", "bs-z lk", `<div class="im" style="background-image:url(${ART[TD.STAGES[i].bg] || ART.bg})"></div><div class="lkt"><b class="en">${z.code}</b>클리어 시 탈환</div>`)); continue; }
-        const act = activeG(z.code), rate = zRate(z.code, act), cap = zCap(z.code), win = zWin(z.code, act);
+      el.appendChild(h("div", "bs-ttl", `<small class="en">BASE · FIELD MAP</small><b>탈환 구역</b>`));
+      // the shelter
+      const dc = h("div", "btn bm-c dorm", `<div class="hd"><b>피난처</b><small>숙소</small><span class="en">Lv.${b.dorm.lv}</span></div>
+        <div class="gd">${Array.from({ length: BB.DORM_SLOTS[b.dorm.lv - 1] }, (_, k) => { const id = b.dorm.rest[k]; return id ? `<i style="background-image:url(${opArt(id, "card")});--f:${fatOf(id) / BB.FAT * 360}deg;--c:${fatCol(fatOf(id))}"></i>` : `<i class="e"></i>`; }).join("")}</div>
+        <div class="ft">회복 <b class="en">${BB.REST[b.dorm.lv - 1]}</b>/시간</div>`);
+      Object.assign(dc.style, { left: MP.dorm[0] - 110 + "px", top: MP.dorm[1] + 34 + "px" }); dc.onclick = () => go("dorm"); el.appendChild(dc);
+      const dn = h("div", "btn bm-pin home"); Object.assign(dn.style, { left: MP.dorm[0] + "px", top: MP.dorm[1] + "px" }); dn.onclick = () => go("dorm"); el.appendChild(dn);
+      BZ.forEach((z, n) => {
+        const [x, y] = MP[z.code], up = n % 2 === 0, s = b.z[z.code], isOpen = zoneOpen(z);
+        const pin = h("div", "btn bm-pin" + (isOpen ? "" : " lk")); Object.assign(pin.style, { left: x + "px", top: y + "px" }); el.appendChild(pin);
+        if (!isOpen) { const t = h("div", "bm-lk", `<b class="en">${z.code}</b>미탈환`); Object.assign(t.style, { left: x - 60 + "px", top: (up ? y - 62 : y + 26) + "px" }); el.appendChild(t); return; }
+        const act = activeG(z.code), cap = zCap(z.code), win = zWin(z.code, act);
         const stt = !s.g.length ? ["경계 없음", "off"] : !act.length ? ["생산 정지", "stop"] : ["생산 중", "on"];
-        const c = h("div", "btn bs-z", `<div class="im" style="background-image:url(${ART[TD.STAGES[i].bg] || ART.bg})"></div>
-          <div class="st ${stt[1]}">${stt[0]}</div><div class="lv en">Lv.${s.lv}</div>
-          <div class="nm"><b class="en">${z.code}</b>${esc(z.n)}</div>
-          <div class="pr">${outIc(z.out)}<div class="bar"><i style="width:${Math.min(100, s.store / cap * 100)}%"></i></div><span class="en">${numF(s.store, z.out)}<small>/${numF(cap, z.out)}</small></span></div>
+        const c = h("div", "btn bm-c " + (up ? "up" : "dn"), `<div class="hd"><b class="en">${z.code}</b>${esc(z.n)}<span class="en">Lv.${s.lv}</span></div>
+          <div class="pr">${outIc(z.out)}<div class="bar"><i style="width:${Math.min(100, s.store / cap * 100)}%"></i></div><em class="en">${numF(s.store, z.out)}</em></div>
           <div class="gd">${Array.from({ length: BB.SLOTS }, (_, k) => { const id = s.g[k]; return id ? `<i class="${fatOf(id) <= 0 ? "out" : ""}" style="background-image:url(${opArt(id, "card")});--f:${fatOf(id) / BB.FAT * 360}deg;--c:${fatCol(fatOf(id))}"></i>` : `<i class="e"></i>`; }).join("")}
-          <div class="wn ${s.g.length ? (win >= 1 ? "ok" : win >= 0.6 ? "mid" : "bad") : "bad"}"><small>방어</small><b class="en">${s.g.length ? Math.round(win * 100) : 0}%</b></div></div>`);
-        c.onclick = () => go("zone", z.code); grid.appendChild(c);
-      }
+            <div class="st ${stt[1]}">${stt[0]}</div><div class="wn ${s.g.length ? (win >= 1 ? "ok" : win >= 0.6 ? "mid" : "bad") : "bad"}"><b class="en">${s.g.length ? Math.round(win * 100) : 0}%</b><small>방어</small></div></div>`);
+        Object.assign(c.style, { left: x - 115 + "px", top: (up ? y - 150 : y + 30) + "px" });
+        c.onclick = pin.onclick = () => go("zone", z.code); el.appendChild(c);
+      });
       // collect everything, and the last thing that happened
       const ft = h("div", "bs-ft"); el.appendChild(ft);
       const lg = b.log[0];
@@ -15410,12 +15429,12 @@ window.BSL_ECON = (() => {
     // the dorm: whoever is resting goes about their day in the shelter
     dorm(el) {
       baseTick(); save(); const b = baseState(), cap = BB.DORM_SLOTS[b.dorm.lv - 1];
-      const rr = (a, c) => a + Math.random() * (c - a), FLOOR = [560, 690];
-      const depth = (y) => 0.82 + (y - FLOOR[0]) / (FLOOR[1] - FLOOR[0]) * 0.3;
-      livingScene(el, { bg: ART.base_dorm || ART.st_room, fx: "dust", k: 150, speed: 70, chat: true,
-        tint: ART.base_dorm ? null : "rgba(120,70,20,.22)", lamp: ART.base_dorm ? (window.BASE_LAMPS || []) : [[260, 200, 260], [980, 260, 300]],
-        actors: b.dorm.rest.map((id, k) => { const y = rr(FLOOR[0], FLOOR[1]); return { id, x: 140 + (k + 0.5) * (620 / Math.max(1, b.dorm.rest.length)), y, sc: depth(y) }; }),
-        next: (a) => { const y = rr(FLOOR[0], FLOOR[1]); a.sc = depth(y); return [rr(110, 790), y]; } });   // left of the panel
+      // the residents start at different places on the plan and go from one to another: a nap on a bunk, a meal, the lounge, the bench
+      const spots = DORM_SPOTS.slice().sort(() => Math.random() - 0.5), taken = new Set();
+      const pickSpot = () => { const free = DORM_SPOTS.filter((p) => !taken.has(p)); const p = free[Math.floor(Math.random() * free.length)] || DORM_SPOTS[0]; return p; };
+      livingScene(el, { bgCanvas: dormArt(), zoom: 0.93, fx: "dust", k: 92, speed: 80, chat: true, lamp: DORM_LAMPS,
+        actors: b.dorm.rest.map((id, k) => { const p = spots[k % spots.length]; taken.add(p); return { id, x: p.x, y: p.y, spot: p }; }),
+        next: (a) => { taken.delete(a.spot); const p = pickSpot(); taken.add(p); a.spot = p; return [p.x + (Math.random() - 0.5) * 16, p.y + (Math.random() - 0.5) * 8, p.a]; } });
       el.appendChild(topBar("", "", () => go("base"), { res: false }));
       const pn = h("div", "bz-pn dorm"); el.appendChild(pn);
       const eye = h("div", "btn bz-eye", "◐"); eye.onclick = () => el.classList.toggle("bz-hide"); el.appendChild(eye);
@@ -16328,13 +16347,161 @@ window.BSL_ECON = (() => {
     row.append(n, y); bx.appendChild(row); mo.appendChild(bx); mo.onclick = (e) => { if (e.target === mo) mo.remove(); }; sheet.appendChild(mo);
   }
 
+  // ---------- the base's field map: drawn once from a fixed seed, then kept alive with a sweep, pulses and supply runs ----------
+  const BMAP_POS = { dorm: [210, 400], "BL-01": [370, 300], "BL-02": [520, 470], "BL-03": [690, 280], "BL-04": [850, 470], "BL-05": [1000, 270], "BL-06": [1130, 470], front: [1228, 340] };
+  let BMAP_ART = null;
+  function baseMapArt() {
+    if (BMAP_ART) return BMAP_ART;
+    const c = document.createElement("canvas"); c.width = 1280; c.height = 720; const g = c.getContext("2d");
+    let sd = 1907; const rnd = () => (sd = (sd * 16807) % 2147483647) / 2147483647;
+    g.fillStyle = "#0a1014"; g.fillRect(0, 0, 1280, 720);
+    // the river: a slow bend from the north down through the middle
+    const river = (off) => { g.beginPath(); g.moveTo(560 + off, -20); g.bezierCurveTo(660 + off, 180, 520 + off, 380, 640 + off, 520); g.bezierCurveTo(700 + off, 610, 660 + off, 680, 700 + off, 740); };
+    const inRiver = (x, y) => { const t = y / 720, cx = 560 + (1 - t) * 0 + t * 140 + Math.sin(t * 6.3) * 40; return Math.abs(x - cx) < 52; };
+    // city blocks with their buildings, the streets left between them
+    for (let gy = 0; gy < 720; gy += 58) for (let gx = 0; gx < 1280; gx += 74) {
+      const x = gx + 7, y = gy + 7, w = 60, hh = 44; if (inRiver(x + w / 2, y + hh / 2)) continue;
+      g.fillStyle = "#121a1f"; g.fillRect(x, y, w, hh);
+      const nb = 2 + Math.floor(rnd() * 4);
+      for (let k = 0; k < nb; k++) { const bw = 10 + rnd() * 22, bh = 8 + rnd() * 16, bx = x + 3 + rnd() * (w - bw - 6), by = y + 3 + rnd() * (hh - bh - 6);
+        g.fillStyle = rnd() < 0.12 ? "#2a1a16" : "#18232a"; g.fillRect(bx, by, bw, bh); g.strokeStyle = "#22313a"; g.lineWidth = 1; g.strokeRect(bx + 0.5, by + 0.5, bw - 1, bh - 1); }
+    }
+    // the avenues
+    g.strokeStyle = "#24323a"; g.lineCap = "round";
+    for (const [w, pts] of [[9, [[0, 410], [1280, 330]]], [7, [[0, 180], [1280, 210]]], [7, [[0, 600], [1280, 560]]], [8, [[300, 0], [420, 720]]], [7, [[930, 0], [880, 720]]], [6, [[120, 720], [700, 0]]]]) { g.lineWidth = w; g.beginPath(); g.moveTo(...pts[0]); g.lineTo(...pts[1]); g.stroke(); }
+    // water
+    river(0); g.lineTo(-20, 740); g.lineTo(-20, -20); g.closePath();
+    g.save(); river(0); g.lineWidth = 92; g.strokeStyle = "#0d2a36"; g.stroke(); g.lineWidth = 92; g.strokeStyle = "rgba(0,0,0,0)"; g.restore();
+    g.save(); river(-46); g.lineWidth = 2; g.strokeStyle = "#1e5466"; g.stroke(); river(46); g.stroke(); g.setLineDash([10, 16]); river(0); g.strokeStyle = "rgba(90,170,200,.25)"; g.lineWidth = 1.5; g.stroke(); g.restore();
+    // bridges
+    g.fillStyle = "#2a3a42"; for (const [bx, by, a] of [[620, 300, -0.05], [652, 560, 0.1], [596, 120, -0.1]]) { g.save(); g.translate(bx, by); g.rotate(a); g.fillRect(-64, -8, 128, 16); g.strokeStyle = "#3d525c"; g.strokeRect(-64, -8, 128, 16); g.restore(); }
+    // the fountain square's park
+    g.fillStyle = "#0f1d18"; g.beginPath(); g.roundRect(720, 210, 150, 120, 14); g.fill();
+    for (let k = 0; k < 40; k++) { g.fillStyle = "#16301f"; g.beginPath(); g.arc(726 + rnd() * 138, 216 + rnd() * 108, 2 + rnd() * 4, 0, 6.29); g.fill(); }
+    g.strokeStyle = "#2c5a52"; g.lineWidth = 2; g.beginPath(); g.arc(690, 280, 22, 0, 6.29); g.stroke(); g.beginPath(); g.arc(690, 280, 9, 0, 6.29); g.stroke();
+    // the rail line into the station
+    g.strokeStyle = "#3a3f44"; g.lineWidth = 3; g.beginPath(); g.moveTo(860, 740); g.lineTo(1130, 500); g.lineTo(1290, 380); g.stroke();
+    g.lineWidth = 1.5; for (let t = 0; t < 1; t += 0.02) { const x = 860 + (1130 - 860) * t, y = 740 + (500 - 740) * t; g.beginPath(); g.moveTo(x - 5, y - 6); g.lineTo(x + 5, y + 6); g.stroke(); }
+    g.fillStyle = "#1d262c"; g.fillRect(1090, 440, 90, 34); g.strokeStyle = "#3a4a54"; g.strokeRect(1090, 440, 90, 34);
+    // the watchtower, the mart's long roof and its lot
+    g.fillStyle = "#1d262c"; g.fillRect(838, 458, 24, 24); g.strokeStyle = "#4a5a64"; g.strokeRect(838, 458, 24, 24); g.beginPath(); g.arc(850, 470, 30, 0, 6.29); g.setLineDash([3, 5]); g.stroke(); g.setLineDash([]);
+    g.fillStyle = "#1a2328"; g.fillRect(960, 230, 90, 44); g.strokeRect(960, 230, 90, 44); g.strokeStyle = "#2a363d"; for (let k = 0; k < 7; k++) { g.beginPath(); g.moveTo(962 + k * 13, 282); g.lineTo(962 + k * 13, 300); g.stroke(); }
+    // the underpass: a dashed run under the avenue
+    g.strokeStyle = "#4a5a64"; g.setLineDash([6, 6]); g.lineWidth = 2; g.beginPath(); g.moveTo(470, 470); g.lineTo(570, 470); g.stroke(); g.setLineDash([]);
+    // a map's grid and its margins
+    g.strokeStyle = "rgba(140,200,220,.06)"; g.lineWidth = 1;
+    for (let x = 0; x <= 1280; x += 80) { g.beginPath(); g.moveTo(x + 0.5, 0); g.lineTo(x + 0.5, 720); g.stroke(); }
+    for (let y = 0; y <= 720; y += 80) { g.beginPath(); g.moveTo(0, y + 0.5); g.lineTo(1280, y + 0.5); g.stroke(); }
+    g.fillStyle = "rgba(140,200,220,.3)"; g.font = "11px sans-serif"; for (let k = 0; k < 16; k++) g.fillText("ABCDEFGHIJKLMNOP"[k], k * 80 + 4, 712); for (let k = 1; k < 9; k++) g.fillText(String(k), 4, k * 80 - 4);
+    return (BMAP_ART = c);
+  }
+  // the living layer: fog over what is still theirs, the route of the advance, supply runs out of the shelter, pulses at each zone, a radar sweep
+  function baseMapLive(el, open, stat) {
+    const cv = h("canvas", "bz-cv"); el.appendChild(cv);
+    const q = Math.min(1.5, window.devicePixelRatio || 1); cv.width = Math.round(1280 * q); cv.height = Math.round(720 * q);
+    const g = cv.getContext("2d"), art = baseMapArt(), MP = BMAP_POS;
+    // fog with the won ground cut out of it (made once per visit)
+    const fog = document.createElement("canvas"); fog.width = 1280; fog.height = 720; const f = fog.getContext("2d");
+    f.fillStyle = "rgba(14,6,8,.78)"; f.fillRect(0, 0, 1280, 720);
+    f.strokeStyle = "rgba(120,30,30,.18)"; f.lineWidth = 2; for (let x = -720; x < 1280; x += 18) { f.beginPath(); f.moveTo(x, 720); f.lineTo(x + 720, 0); f.stroke(); }
+    f.globalCompositeOperation = "destination-out";
+    const hole = (x, y, r) => { const gr = f.createRadialGradient(x, y, r * 0.55, x, y, r); gr.addColorStop(0, "#000"); gr.addColorStop(1, "rgba(0,0,0,0)"); f.fillStyle = gr; f.fillRect(x - r, y - r, r * 2, r * 2); };
+    hole(...MP.dorm, 190); open.forEach((c) => hole(...MP[c], 175));
+    const route = ["dorm", ...BZ.map((z) => z.code), "front"].map((k) => MP[k]);
+    const won = (k) => k === 0 || open.includes(BZ[k - 1] && BZ[k - 1].code);
+    const runs = open.filter((c) => stat(c).on).map((c, k) => ({ c, t: k * 0.37 }));
+    let last = performance.now(), clock = 0, acc = 0;
+    const along = (to, t) => {   // a point along the route from the shelter to zone index `to`
+      const segs = route.slice(0, to + 2); let L = 0; const ls = []; for (let k = 1; k < segs.length; k++) { const d = Math.hypot(segs[k][0] - segs[k - 1][0], segs[k][1] - segs[k - 1][1]); ls.push(d); L += d; }
+      let s = t * L; for (let k = 0; k < ls.length; k++) { if (s <= ls[k]) { const a = s / ls[k]; return [segs[k][0] + (segs[k + 1][0] - segs[k][0]) * a, segs[k][1] + (segs[k + 1][1] - segs[k][1]) * a]; } s -= ls[k]; }
+      return segs[segs.length - 1];
+    };
+    const frame = (now) => {
+      if (!cv.isConnected) return; requestAnimationFrame(frame);
+      const dt = Math.min(0.1, (now - last) / 1000); last = now; acc += dt; if (acc < 1 / 30) return; clock += acc; acc = 0;
+      g.setTransform(q, 0, 0, q, 0, 0); g.drawImage(art, 0, 0); g.drawImage(fog, 0, 0);
+      // the line of advance: blue where it is held, red and broken beyond
+      g.lineCap = "round";
+      for (let k = 1; k < route.length; k++) {
+        const held = k < route.length - 1 && won(k); g.setLineDash(held ? [] : [8, 8]); g.lineDashOffset = held ? 0 : -clock * 20;
+        g.strokeStyle = held ? "rgba(79,184,255,.85)" : "rgba(255,80,70,.6)"; g.lineWidth = held ? 3 : 2;
+        g.beginPath(); g.moveTo(...route[k - 1]); g.lineTo(...route[k]); g.stroke();
+      }
+      g.setLineDash([]);
+      // the front itself: a red pulse past the last zone
+      const [fx, fy] = MP.front, pf = (clock % 2) / 2; g.strokeStyle = `rgba(255,60,50,${0.8 * (1 - pf)})`; g.lineWidth = 2; g.beginPath(); g.arc(fx, fy, 10 + pf * 30, 0, 6.29); g.stroke();
+      g.fillStyle = "#ff4a3a"; g.font = "bold 13px sans-serif"; g.textAlign = "center"; g.fillText("봉쇄선", fx, fy + 26); g.textAlign = "left";
+      // supply runs: little lights from the shelter out to each working zone and back
+      for (const r of runs) {
+        const to = BZ.findIndex((z) => z.code === r.c) + 1, u = ((clock * 0.12 + r.t) % 1), tt = u < 0.5 ? u * 2 : 2 - u * 2, [x, y] = along(to - 1 + 1 - 1 + 0, tt);
+        g.fillStyle = "rgba(150,230,255,.95)"; g.beginPath(); g.arc(x, y, 3, 0, 6.29); g.fill();
+        const gr = g.createRadialGradient(x, y, 0, x, y, 12); gr.addColorStop(0, "rgba(120,210,255,.45)"); gr.addColorStop(1, "rgba(120,210,255,0)"); g.fillStyle = gr; g.fillRect(x - 12, y - 12, 24, 24);
+      }
+      // pulses at the zones: blue while working, amber when stopped, red when a raid would likely break through
+      open.forEach((c, k) => { const s = stat(c), [x, y] = MP[c], p = ((clock + k * 0.3) % 2.4) / 2.4, col = s.risk ? "255,80,70" : s.stop ? "255,190,70" : s.on ? "79,184,255" : "160,170,180";
+        g.strokeStyle = `rgba(${col},${0.7 * (1 - p)})`; g.lineWidth = 2; g.beginPath(); g.arc(x, y, 12 + p * 34, 0, 6.29); g.stroke(); });
+      { const p = (clock % 3) / 3, [x, y] = MP.dorm; g.strokeStyle = `rgba(255,200,120,${0.6 * (1 - p)})`; g.lineWidth = 2; g.beginPath(); g.arc(x, y, 14 + p * 36, 0, 6.29); g.stroke(); }
+      // the radar sweep from the shelter
+      const a = clock * 0.6, [sx, sy] = MP.dorm; g.save(); g.translate(sx, sy); g.rotate(a);
+      const sg = g.createLinearGradient(0, 0, 0, -1100); sg.addColorStop(0, "rgba(79,184,255,.10)"); sg.addColorStop(1, "rgba(79,184,255,0)");
+      g.fillStyle = sg; g.beginPath(); g.moveTo(0, 0); g.arc(0, 0, 1400, -Math.PI / 2 - 0.35, -Math.PI / 2); g.closePath(); g.fill(); g.restore();
+      const vg = g.createRadialGradient(640, 360, 360, 640, 360, 820); vg.addColorStop(0, "rgba(0,0,0,0)"); vg.addColorStop(1, "rgba(0,0,0,.6)"); g.fillStyle = vg; g.fillRect(0, 0, 1280, 720);
+    };
+    requestAnimationFrame(frame);
+    return cv;
+  }
+  // the shelter drawn as its own floor plan: bunks, the mess table, the lounge, the workshop; where the residents go and what they do there
+  const DORM_SPOTS = [
+    { x: 130, y: 250, a: "z" }, { x: 230, y: 250, a: "z" }, { x: 330, y: 250, a: "z" },            // bunks
+    { x: 500, y: 215, a: "♪" }, { x: 600, y: 215, a: "♪" }, { x: 700, y: 215, a: "♪" }, { x: 560, y: 330, a: "…" },   // the mess
+    { x: 160, y: 560, a: "…" }, { x: 260, y: 570, a: "♪" }, { x: 380, y: 480, a: "?" },             // the lounge
+    { x: 560, y: 560, a: "!" }, { x: 700, y: 520, a: "…" }, { x: 640, y: 640, a: "!" },             // the workshop
+  ];
+  const DORM_LAMPS = [[230, 200, 190], [600, 210, 210], [250, 540, 220], [630, 540, 200]];
+  let DORM_ART = null;
+  function dormArt() {
+    if (DORM_ART) return DORM_ART;
+    const c = document.createElement("canvas"); c.width = 1280; c.height = 720; const g = c.getContext("2d");
+    g.fillStyle = "#0b1115"; g.fillRect(0, 0, 1280, 720);
+    g.strokeStyle = "rgba(140,200,220,.05)"; g.lineWidth = 1; for (let x = 0; x <= 1280; x += 20) { g.beginPath(); g.moveTo(x + 0.5, 0); g.lineTo(x + 0.5, 720); g.stroke(); } for (let y = 0; y <= 720; y += 20) { g.beginPath(); g.moveTo(0, y + 0.5); g.lineTo(1280, y + 0.5); g.stroke(); }
+    // floors: planks in the bunk room, tiles in the mess, a rug in the lounge, concrete in the workshop
+    const room = (x, y, w, hh, col) => { g.fillStyle = col; g.fillRect(x, y, w, hh); };
+    room(70, 110, 320, 270, "#1b1712"); room(390, 110, 400, 270, "#161b1e"); room(70, 380, 400, 310, "#181513"); room(470, 380, 320, 310, "#15181a");
+    g.strokeStyle = "rgba(255,255,255,.035)"; for (let y = 118; y < 380; y += 16) { g.beginPath(); g.moveTo(70, y); g.lineTo(390, y); g.stroke(); }
+    for (let x = 390; x < 790; x += 28) for (let y = 110; y < 380; y += 28) { g.strokeRect(x + 0.5, y + 0.5, 28, 28); }
+    g.fillStyle = "#3a2420"; g.beginPath(); g.roundRect(120, 470, 260, 150, 10); g.fill(); g.strokeStyle = "#6a4030"; g.lineWidth = 3; g.beginPath(); g.roundRect(132, 482, 236, 126, 6); g.stroke();
+    // furniture, as a plan shows it
+    const box = (x, y, w, hh, f, s) => { g.fillStyle = f; g.fillRect(x, y, w, hh); g.strokeStyle = s || "#5a7884"; g.lineWidth = 1.5; g.strokeRect(x + 0.5, y + 0.5, w, hh); };
+    for (const bx of [100, 200, 300]) { box(bx, 130, 64, 100, "#2a3238"); box(bx + 6, 136, 52, 22, "#d8d2c4", "#8a8478"); box(bx + 4, 162, 56, 62, "#34505c"); }   // bunks: pillow, blanket
+    box(450, 240, 300, 46, "#4a3626", "#8a6a4a");   // the mess table and its stools
+    for (let k = 0; k < 6; k++) { g.fillStyle = "#3a2a1e"; g.beginPath(); g.arc(475 + k * 50, 228, 8, 0, 6.29); g.fill(); g.beginPath(); g.arc(475 + k * 50, 298, 8, 0, 6.29); g.fill(); }
+    box(400, 120, 380, 30, "#2a2e32"); for (let k = 0; k < 3; k++) { g.strokeStyle = "#7a8a94"; g.beginPath(); g.arc(440 + k * 40, 135, 9, 0, 6.29); g.stroke(); }   // the counter and the stove
+    box(100, 410, 170, 44, "#3c4a5a", "#7890a8"); box(100, 410, 170, 14, "#4a5c70", "#7890a8");   // the sofa, a low table, the old television, the shelf
+    box(150, 500, 90, 50, "#4a3626", "#8a6a4a"); box(390, 400, 60, 20, "#111", "#8a94a0"); box(76, 600, 30, 80, "#3a2a1e", "#8a6a4a");
+    for (let k = 0; k < 5; k++) box(78, 604 + k * 15, 26, 10, ["#8a3a3a", "#3a6a8a", "#8a7a3a", "#4a7a4a", "#6a4a8a"][k], "rgba(0,0,0,.3)");
+    box(500, 400, 160, 50, "#3a3f44", "#8a94a0");   // the workbench, crates, the radio with its aerial
+    for (const [x, y] of [[700, 420], [740, 420], [720, 460], [700, 600], [740, 640]]) { box(x, y, 36, 36, "#5a4630", "#9a7a50"); g.strokeStyle = "rgba(0,0,0,.35)"; g.beginPath(); g.moveTo(x, y); g.lineTo(x + 36, y + 36); g.moveTo(x + 36, y); g.lineTo(x, y + 36); g.stroke(); }
+    box(500, 620, 60, 40, "#2a3a30", "#6a9a7a"); g.strokeStyle = "#6a9a7a"; g.beginPath(); g.moveTo(552, 620); g.lineTo(570, 596); g.stroke();
+    // walls, with the doorways left open
+    g.strokeStyle = "#8fd3ff"; g.lineWidth = 5; g.lineCap = "square";
+    const wall = (pts) => { g.beginPath(); g.moveTo(...pts[0]); for (const p of pts.slice(1)) g.lineTo(...p); g.stroke(); };
+    wall([[70, 110], [790, 110], [790, 690], [70, 690], [70, 110]]);
+    g.lineWidth = 3; wall([[390, 110], [390, 200]]); wall([[390, 290], [390, 380]]); wall([[70, 380], [180, 380]]); wall([[280, 380], [560, 380]]); wall([[660, 380], [790, 380]]); wall([[470, 380], [470, 470]]); wall([[470, 570], [470, 690]]);
+    g.fillStyle = "#0b1115"; g.fillRect(380, 682, 120, 16); g.strokeStyle = "#ffb35a"; g.lineWidth = 3; g.beginPath(); g.moveTo(380, 690); g.lineTo(500, 690); g.setLineDash([6, 6]); g.stroke(); g.setLineDash([]);   // the way out
+    // the labels a plan has
+    g.fillStyle = "rgba(143,211,255,.55)"; g.font = "bold 14px sans-serif";
+    g.fillText("침실", 80, 372); g.fillText("식당", 400, 372); g.fillText("휴게실", 116, 682 - 8); g.fillText("작업실", 480, 682 - 8);
+    g.fillStyle = "rgba(255,179,90,.8)"; g.font = "12px sans-serif"; g.fillText("출입구", 418, 710);
+    g.fillStyle = "rgba(143,211,255,.4)"; g.font = "11px sans-serif"; g.fillText("SHELTER · FLOOR PLAN · B1", 76, 102);
+    return (DORM_ART = c);
+  }
   // ---------- the living picture behind a zone or the dorm ----------
   // a painting that breathes (a slow drift, a little parallax under the finger), weather of embers and smoke or dust in the lamplight,
   // and the operators themselves: guards on the zone's own ground, residents going about the dorm
   function livingScene(el, opt) {
     const cv = h("canvas", "bz-cv"); el.appendChild(cv);
     const q = Math.min(1.5, (window.devicePixelRatio || 1)); cv.width = Math.round(1280 * q); cv.height = Math.round(720 * q);
-    const g = cv.getContext("2d"), img = new Image(); img.src = opt.bg;
+    const g = cv.getContext("2d"), img = opt.bgCanvas || new Image(); if (!opt.bgCanvas) img.src = opt.bg;
     const rr = (a, b) => a + Math.random() * (b - a);
     const actors = opt.actors.map((a, i) => Object.assign({ face: Math.random() < 0.5 ? 1 : -1, t0: rr(0, 10), mode: "idle", until: rr(1, 4), tx: a.x, ty: a.y, bub: null }, a));
     const parts = [];
@@ -16354,7 +16521,7 @@ window.BSL_ECON = (() => {
       if (a.bub) { a.bub.t -= dt; if (a.bub.t <= 0) a.bub = null; }
       if (a.mode === "walk") {
         const dx = a.tx - a.x, dy = a.ty - a.y, d = Math.hypot(dx, dy), sp = (opt.speed || 60) * (a.sc || 1);
-        if (d < 2) { a.mode = "idle"; a.until = a.pal ? 0 : rr(2, 6); } else { a.x += dx / d * Math.min(d, sp * dt); a.y += dy / d * Math.min(d, sp * dt); a.face = dx >= 0 ? 1 : -1; }
+        if (d < 2) { a.mode = "idle"; a.until = a.pal ? 0 : rr(3, 7); if (a.act) { a.bub = { c: a.act, t: 2.6 }; a.act = null; } } else { a.x += dx / d * Math.min(d, sp * dt); a.y += dy / d * Math.min(d, sp * dt); a.face = dx >= 0 ? 1 : -1; }
         return;
       }
       if (a.until > 0 || a.tired) return;
@@ -16368,7 +16535,7 @@ window.BSL_ECON = (() => {
         const o = others[Math.floor(Math.random() * others.length)], side = o.x > 450 ? -1 : 1;
         a.tx = o.x + side * (opt.k || 120) * 0.55 * (o.sc || 1); a.ty = o.y + rr(-6, 6); a.pal = o; a.mode = "walk"; return;
       }
-      const n = opt.next(a); if (n) { a.tx = n[0]; a.ty = n[1]; a.mode = "walk"; } else a.until = rr(2, 5);
+      const n = opt.next(a); if (n) { a.tx = n[0]; a.ty = n[1]; a.act = n[2] || null; a.mode = "walk"; } else a.until = rr(2, 5);
       if (opt.chat && Math.random() < 0.15) a.bub = { c: ["♪", "…"][Math.floor(Math.random() * 2)], t: 2 };
     };
     const bubble = (x, y, c) => {
@@ -16386,9 +16553,9 @@ window.BSL_ECON = (() => {
       for (let i = 0; i < (opt.fx === "fire" ? 2 : 1); i++) spawn();
       g.setTransform(q, 0, 0, q, 0, 0); g.fillStyle = "#08090b"; g.fillRect(0, 0, 1280, 720);
       // the painting: a slow breath of scale and a drift, the finger's parallax on top
-      const sc = 1.06 + Math.sin(clock * 0.13) * 0.012, ox = Math.sin(clock * 0.07) * 10 - px * 14, oy = Math.cos(clock * 0.09) * 6 - py * 8;
+      const sc = (opt.zoom || 1.06) + Math.sin(clock * 0.13) * 0.012 * (opt.zoom ? 0.4 : 1), ox = Math.sin(clock * 0.07) * 10 - px * 14, oy = Math.cos(clock * 0.09) * 6 - py * 8;
       g.save(); g.translate(640 + ox, 360 + oy); g.scale(sc, sc); g.translate(-640, -360);
-      if (img.complete && img.naturalWidth) g.drawImage(img, 0, 0, 1280, 720);
+      if (opt.bgCanvas || (img.complete && img.naturalWidth)) g.drawImage(img, 0, 0, 1280, 720);
       if (opt.tint) { g.fillStyle = opt.tint; g.fillRect(0, 0, 1280, 720); }
       if (opt.lamp) {   // warm pools of light that breathe a little, like lamps on a weak line
         g.globalCompositeOperation = "lighter";
