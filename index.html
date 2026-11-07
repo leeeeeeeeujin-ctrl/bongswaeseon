@@ -14643,21 +14643,26 @@ window.BSL_ECON = (() => {
   .ms-bg { position:absolute; inset:0; background:linear-gradient(rgba(0,0,0,.045) 1px, transparent 1px) 0 0/40px 40px, linear-gradient(90deg, rgba(0,0,0,.045) 1px, transparent 1px) 0 0/40px 40px, linear-gradient(90deg,#26282c 0,#26282c 250px,#e4e5e8 250px); }
   .ms-side { position:absolute; left:0; top:96px; width:250px; }
   .ms-tab { position:relative; height:96px; padding:20px 26px; color:#c8ccd4; border-bottom:1px solid rgba(255,255,255,.06); }
-  .ms-tab small { display:block; font-size:12px; letter-spacing:.2em; color:#6f747d; } .ms-tab b { font-size:24px; font-weight:900; }
+  .ms-tab small { display:block; font-size:13px; letter-spacing:.2em; color:#8a8f98; } .ms-tab b { font-size:26px; font-weight:900; color:#fff; } .ms-tab.on b { color:#1b1c1f; }
   .ms-tab.on { background:#e4e5e8; color:#1b1c1f; box-shadow:inset 6px 0 #2aa7ec; } .ms-tab.on small { color:#2aa7ec; }
   .ms-tab .dot { position:absolute; right:22px; top:34px; min-width:26px; height:26px; border-radius:13px; background:#d8423c; color:#fff; font-style:normal; font-size:16px; display:grid; place-items:center; padding:0 6px; }
   .ms-hd { position:absolute; left:280px; right:36px; top:90px; height:56px; display:flex; align-items:center; gap:20px; color:#1b1c1f; }
-  .ms-hd .tt b { font-size:28px; font-weight:900; } .ms-hd .tt span { margin-left:10px; font-size:20px; color:#6f747d; }
-  .ms-hd .rs { font-size:16px; color:#4a4d52; } .ms-hd .rs b { color:#1b1c1f; }
+  .ms-hd .tt b { font-size:30px; font-weight:900; } .ms-hd .tt span { margin-left:10px; font-size:22px; color:#4a4d52; font-weight:700; }
+  .ms-hd .rs { font-size:18px; color:#2a2c30; background:#fff; border:1px solid #c9cbcf; padding:4px 12px; } .ms-hd .rs b { color:#1b1c1f; }
   .ms-all { margin-left:auto; height:48px; padding:0 30px; display:grid; place-items:center; background:linear-gradient(90deg,#118bc4,#24a8e8); color:#fff; font-size:19px; font-weight:900; } .ms-all.dis { background:#b8bbc0; color:#eee; }
-  .ms-list { position:absolute; left:280px; right:36px; top:158px; bottom:20px; overflow-y:auto; display:flex; flex-direction:column; gap:10px; padding-right:4px; }
-  .ms-row { position:relative; flex:none; height:106px; background:#2a2c30; color:#fff; display:flex; align-items:center; gap:18px; padding:0 18px 0 30px; box-shadow:0 2px 6px rgba(0,0,0,.2); }
-  .ms-row .bar { position:absolute; left:0; top:0; bottom:0; width:10px; background:#6f747d; } .ms-row.ready .bar { background:#2aa7ec; } .ms-row.done { opacity:.55; } .ms-row.done .bar { background:#3a3c41; }
-  .ms-row .tx { flex:1; min-width:0; } .ms-row .tx b { display:block; font-size:21px; font-weight:900; } .ms-row .tx span { display:block; font-size:15px; color:#b8bcc4; margin-top:2px; }
-  .ms-row .pg { display:flex; align-items:center; gap:10px; margin-top:8px; } .ms-row .pb { flex:1; max-width:360px; height:6px; background:rgba(255,255,255,.15); } .ms-row .pb i { display:block; height:100%; background:#4fb8ff; } .ms-row .pg em { font-style:normal; font-size:16px; color:#c8ccd4; }
-  .ms-row .rw { display:flex; gap:8px; } .ms-row .rw .idot { width:62px; height:62px; } 
-  .ms-row .act { width:128px; height:56px; display:grid; place-items:center; font-size:19px; font-weight:900; background:#45484e; color:#e8eaee; }
-  .ms-row.ready .act { background:linear-gradient(90deg,#118bc4,#24a8e8); color:#fff; animation:msPulse 1.6s ease-in-out infinite; } .ms-row.done .act { background:transparent; color:#8a8d92; }
+  .ms-list { position:absolute; left:280px; right:36px; top:158px; bottom:20px; overflow-y:auto; display:flex; flex-direction:column; gap:12px; padding-right:4px; }
+  .ms-row { position:relative; flex:none; min-height:118px; background:#fbfbfc; color:#1b1c1f; display:flex; align-items:center; gap:20px; padding:12px 18px 12px 34px; border:1px solid #c9cbcf; box-shadow:0 2px 0 #c9cbcf; }
+  .ms-row .bar { position:absolute; left:0; top:0; bottom:0; width:12px; background:#9a9da3; }
+  .ms-row.ready { background:#e6f4fd; border-color:#2aa7ec; box-shadow:0 2px 0 #2aa7ec; } .ms-row.ready .bar { background:#2aa7ec; }
+  .ms-row.done { background:#dcdde0; border-color:#c4c6ca; box-shadow:none; } .ms-row.done .bar { background:#b4b6ba; } .ms-row.done .tx, .ms-row.done .rw { opacity:.45; }
+  .ms-row .tx { flex:1; min-width:0; } .ms-row .tx b { display:block; font-size:24px; font-weight:900; line-height:1.2; } .ms-row .tx span { display:block; font-size:17px; color:#4a4d52; margin-top:3px; }
+  .ms-row .pg { display:flex; align-items:center; gap:12px; margin-top:10px; } .ms-row .pb { flex:1; max-width:380px; height:12px; background:#d4d6da; border-radius:6px; overflow:hidden; } .ms-row .pb i { display:block; height:100%; background:linear-gradient(90deg,#1a8fd6,#4fb8ff); border-radius:6px; }
+  .ms-row.ready .pb i { background:linear-gradient(90deg,#14a06a,#3fd39a); } .ms-row .pg em { font-style:normal; font-size:22px; font-weight:800; color:#1b1c1f; min-width:90px; } .ms-row .pg em small { font-size:16px; color:#6f747d; font-weight:600; }
+  .ms-row .rw { display:flex; gap:10px; } .ms-row .rw .idot { width:74px; height:74px; } .ms-row .rw .idot b { font-size:16px !important; }
+  .ms-row .act { width:150px; height:64px; display:grid; place-items:center; font-size:22px; font-weight:900; background:#3a3c41; color:#fff; }
+  .ms-row.ready .act { background:linear-gradient(90deg,#118bc4,#24a8e8); animation:msPulse 1.6s ease-in-out infinite; }
+  .ms-row.done .act { background:transparent; color:#2fa84f; border:3px solid #2fa84f; transform:rotate(-8deg); width:120px; height:52px; font-size:20px; }
+  .ms-sum { position:absolute; left:280px; top:90px; } 
   @keyframes msPulse { 50% { filter:brightness(1.2); } }
   /* public link */
   .rc-bg { position:absolute; inset:0; background:radial-gradient(ellipse at 70% 40%, rgba(42,167,236,.18), transparent 60%), repeating-linear-gradient(0deg, rgba(143,211,255,.05) 0 1px, transparent 1px 6px), #0e1216; }
@@ -15719,9 +15724,9 @@ window.BSL_ECON = (() => {
       for (const { q, p, c } of rows) {
         const ok = p >= q.goal && !c;
         const r = h("div", "ms-row" + (c ? " done" : ok ? " ready" : ""), `<div class="bar"></div><div class="tx"><b>${esc(q.n)}</b><span>${esc(q.d)}</span>
-          <div class="pg"><div class="pb"><i style="width:${p / q.goal * 100}%"></i></div><em class="en">${fmt(p)}/${fmt(q.goal)}</em></div></div>
+          <div class="pg"><div class="pb"><i style="width:${p / q.goal * 100}%"></i></div><em class="en">${fmt(p)}<small>/${fmt(q.goal)}</small></em></div></div>
           <div class="rw">${q.rw.map(([k, n]) => itemDot(k, n, { text: fmt(n) })).join("")}</div>
-          <div class="btn act">${c ? "✓ 완료" : ok ? "수령" : q.go ? "이동" : "진행 중"}</div>`);
+          <div class="btn act">${c ? "완료" : ok ? "보상 수령" : q.go ? "이동 ›" : "진행 중"}</div>`);
         wireDots(r);
         r.querySelector(".act").onclick = () => {
           if (c) return; if (ok) { claimMis(q, tab); save(); render(); gainToast(q.rw); return; }
