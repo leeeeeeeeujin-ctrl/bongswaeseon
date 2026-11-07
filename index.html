@@ -14543,9 +14543,9 @@ window.BSL_ECON = (() => {
   .zm { position:absolute; inset:0; z-index:70; background:#0c0d10; overflow:hidden; }
   .zm .zm-ln { display:none; }
   .zm .zm-strip { top:150px; }
-  .zm .node.plain { opacity:.55; pointer-events:none; transform:scale(.86); transform-origin:left center; } .zm .node.plain .box { background:linear-gradient(90deg,#9a9ca0,#7d7f84); }
+  .zm .node.plain { opacity:.5; pointer-events:none; filter:grayscale(.6); } .zm .node.plain .box { background:linear-gradient(90deg,#9a9ca0,#7d7f84); }
   .zm .node.site { z-index:2; } .zm .node.site .box { box-shadow:0 0 0 2px #2aa7ec, 0 0 16px rgba(42,167,236,.6); }
-  .zm .node .zys { position:absolute; right:-70px; top:42px; display:flex; gap:2px; } .zm .node .zys i { width:24px; height:24px; border-radius:50%; background:#1b1c1f; border:1.5px solid #8a8d92; display:grid; place-items:center; } .zm .node .zys svg { width:18px; height:18px; }
+  .zm .node .zys { position:absolute; right:-36px; top:46px; display:flex; gap:3px; } .zm .node .zys i { width:28px; height:28px; border-radius:50%; background:radial-gradient(#4a4d53,#26282c 70%); border:1.5px solid #b8bcc4; display:grid; place-items:center; } .zm .node .zys svg { width:22px; height:22px; }
   .zm-pn .gt .lb span { font-weight:500; color:#7f8590; margin-left:6px; font-size:12px; }
   .zm-pn .gt .it { margin-top:6px; } .zm-pn .gt .it.sub > i { width:40px; height:40px; } .zm-pn .gt .it.sub > i svg { width:28px; height:28px; } .zm-pn .gt .it em { margin-left:auto; font-style:normal; font-size:20px; color:#4fb8ff; white-space:nowrap; } .zm-pn .gt .it em small { font-size:12px; color:#7f8590; }
   .zm-pn .gt .it.sub b { font-size:16px; } .zm-pn .row3 b { font-size:18px !important; color:#ffb48a !important; } .zm-pn .row3 i { display:block; margin:2px 0 0 !important; }
@@ -14555,7 +14555,7 @@ window.BSL_ECON = (() => {
   .zm .node.lk { filter:grayscale(1) brightness(.6); } .zm .node.lk .box { background:linear-gradient(90deg,#6a6c70,#55575c); color:#ddd; }
   .zm .node.here .hx { background:linear-gradient(#ffcf5a,#e09a10); } .zm .node.here .hx i { background:#f5b52a; box-shadow:inset 0 0 0 2px #fff; }
   .zm .node .dm .cn { font-style:normal; font-size:26px; font-weight:900; color:#ffd36a; }
-  .zm .zt { position:absolute; left:18px; top:50px; font-size:13px; font-weight:900; background:#3a3c41; color:#fff; padding:2px 8px; white-space:nowrap; } .zm .zt.on { background:#e09a10; color:#221400; } .zm .zt.lk { background:#7a2a2a; }
+  .zm .zt { position:absolute; left:18px; top:52px; font-size:13px; font-weight:900; background:#3a3c41; color:#fff; padding:2px 8px; white-space:nowrap; } .zm .zt.on { background:#e09a10; color:#221400; } .zm .zt.lk { background:#7a2a2a; }
   .zm-pn { position:absolute; right:0; top:0; bottom:0; width:470px; background:linear-gradient(90deg,rgba(10,11,13,.6),rgba(10,11,13,.94) 14%,rgba(10,11,13,.97)); padding:24px 30px 24px 56px; color:#fff; transition:transform .24s, opacity .24s; }
   .zm-pn.in { animation:zmIn .26s ease both; } .zm-pn.swap { animation:zmSw .22s ease both; } .zm-pn.out { opacity:0; transform:translateX(30px); }
   @keyframes zmIn { from { transform:translateX(100%); } } @keyframes zmSw { from { opacity:0; transform:translateX(24px); } }
@@ -14572,8 +14572,8 @@ window.BSL_ECON = (() => {
   /* the room's corner card names where it gathers, and opens the map */
   .rv-cd.site { cursor:pointer; } .rv-cd .site { position:absolute; left:0; right:0; top:0; height:30px; background:var(--sbg) center/cover; } .rv-cd .site::after { content:""; position:absolute; inset:0; background:linear-gradient(90deg,rgba(38,40,44,.95),rgba(38,40,44,.4)); }
   .rv-cd .site span { position:relative; z-index:1; display:flex; align-items:center; gap:8px; height:100%; padding-left:38px; font-size:14px; font-weight:800; color:#e8eaee; } .rv-cd .site span b { color:#8fd3ff; } .rv-cd .site span i { font-style:normal; margin-left:auto; margin-right:14px; color:#8fd3ff; }
-  .rv-cd .sub { position:absolute; left:146px; top:120px; display:flex; gap:12px; } .rv-cd .sub span { display:flex; align-items:center; gap:4px; } .rv-cd .sub i { width:26px; height:26px; display:grid; place-items:center; } .rv-cd .sub svg { width:100%; height:100%; } .rv-cd .sub b { font-size:16px; color:#c8ccd4; }
-  .rv-cd.site .ic { top:40px; } .rv-cd.site .tx { top:68px; } .rv-cd.site .rt { top:38px; }
+  .rv-cd .sub { position:absolute; left:146px; bottom:40px; display:flex; gap:14px; } .rv-cd .sub span { display:flex; align-items:center; gap:4px; } .rv-cd .sub i { width:26px; height:26px; display:grid; place-items:center; } .rv-cd .sub svg { width:100%; height:100%; } .rv-cd .sub b { font-size:16px; color:#c8ccd4; }
+  .rv-cd.site .ic { top:42px; } .rv-cd.site .tx { top:48px; } .rv-cd.site .tx span { display:block; font-size:17px; margin-top:2px; } .rv-cd.site .rt { top:40px; }
   /* a zone or the dorm, the scene behind the panel */
   .bz-cv { position:absolute; inset:0; width:1280px; height:720px; }
   .bz-pn { position:absolute; right:0; top:0; bottom:0; width:470px; background:linear-gradient(90deg,rgba(10,11,13,0),rgba(10,11,13,.88) 12%,rgba(10,11,13,.94)); padding:80px 28px 20px 70px; transition:transform .3s, opacity .3s; overflow:hidden; }
