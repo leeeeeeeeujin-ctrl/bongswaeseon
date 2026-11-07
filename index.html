@@ -13922,6 +13922,29 @@ window.BSL_STORIES = {
     { black: true, slow: 1.6 },
     { cg: null, cut: true },
   ],
+  // after chapter 1: the way past the lighthouse is shut for now, so the ground already taken is put to work (leads into the base guide)
+  "BASE:intro": [
+    { black: true },
+    { bg: "room", cut: true },
+    { place: "탈환 구역 · 임시 거점" },
+    { black: false, slow: 1.2 },
+    { nar: "등대에서 돌아온 지 하루. 아무도 그 너머의 풍경에 대해 말하지 않았다." },
+    { me: "……그래서, 이제 어떡하지. 저 너머로 가야 하는 거야?" },
+    { show: "yui", at: "c" },
+    { say: "yui", ruby: "가사인격체 — 범용", tone: "cold", text: "당장은 불가능합니다. 현재 보급으로는 그 전장에서 사흘을 버티지 못합니다." },
+    { say: "yui", ruby: "가사인격체 — 범용", tone: "cold", text: "대신, 지금까지 지나온 구역이 있습니다." },
+    { say: "yui", ruby: "가사인격체 — 범용", tone: "cold", text: "뒷골목, 지하보도, 분수 광장, 감시탑. 망령을 몰아낸 땅은 다시 쓸 수 있습니다." },
+    { say: "alpha", text: "고물상엔 아직 쓸 만한 게 굴러다니고, 감시탑엔 기록이 산더미였지. 누가 지키고만 있으면." },
+    { say: "yui", ruby: "가사인격체 — 범용", tone: "cold", text: "망령은 빈 땅으로 돌아옵니다. 지키는 자가 있어야 합니다." },
+    { say: "yui", ruby: "가사인격체 — 범용", tone: "cold", text: "구역마다 [파견실|DISPATCH ROOM]을 두고, 가사인격을 보내 경계를 세우십시오. 경계가 서 있는 동안 그곳의 물자가 쌓입니다." },
+    { me: "교대는? 계속 서 있을 순 없잖아." },
+    { say: "yui", ruby: "가사인격체 — 범용", tone: "cold", text: "가사인격도 지칩니다. 지친 개체는 숙소로 돌려 쉬게 하십시오." },
+    { say: "yui", ruby: "가사인격체 — 범용", tone: "cold", text: "아무도 서 있지 않은 구역은, 채집도 멈춥니다." },
+    { say: "alpha", text: "그리고 가끔 놈들이 쳐들어와. 약한 애들만 세워 두면 쌓아 둔 걸 그대로 털리고." },
+    { me: "……결국 여기서도 사람 관리구나." },
+    { say: "yui", ruby: "가사인격체 — 범용", tone: "cold", text: "기반시설 단말을 개방했습니다. 안내하겠습니다, 수신자." },
+    { black: true, slow: 1.0 },
+  ],
 };
 
 // operator files, from the file editor (opedit)
@@ -14864,6 +14887,10 @@ window.BSL_ECON = (() => {
   .guide .gbox .gt { font-size:21px; font-weight:600; color:#eef6fa; line-height:1.9; }
   .guide .gbox ruby rt { font-size:13px; color:#7fe3ff; } .guide .gbox ruby { color:#7fe3ff; font-weight:700; }
   .guide .gbox .ar { position:absolute; right:20px; bottom:10px; color:#7fe3ff; font-size:15px; animation:gpulse 1s infinite; }
+  .ghint { position:absolute; inset:0; z-index:96; pointer-events:none; } .ghint .gbox { position:absolute; left:40px; width:760px; top:118px; padding:24px 34px 16px 86px; background:linear-gradient(90deg, rgba(6,18,26,.96), rgba(6,14,20,.9)); border-top:2px solid rgba(127,227,255,.75); border-left:5px solid #7fe3ff; }
+  .ghint .lt { position:absolute; left:86px; top:6px; font-size:13px; color:rgba(127,227,255,.8); letter-spacing:.06em; } .ghint .gt { font-size:19px; font-weight:600; color:#eef6fa; line-height:1.8; } .ghint ruby rt { font-size:12px; color:#7fe3ff; } .ghint ruby { color:#7fe3ff; font-weight:700; }
+  .ghint.side .gbox { left:24px; width:400px; top:236px; padding:22px 20px 14px 70px; } .ghint.side .lt { left:70px; } .ghint.side .gt { font-size:16px; } .ghint.side .hex { left:16px; width:34px; height:34px; margin-top:-17px; }
+  .ghint .hex { position:absolute; left:22px; top:50%; width:40px; height:40px; margin-top:-20px; }
   .guide .gbox .hex { position:absolute; left:26px; top:50%; width:44px; height:44px; margin-top:-22px; }
   .gift { position:absolute; inset:0; z-index:10; background:rgba(0,0,0,.72); display:grid; place-items:center; }
   .gift .gb { width:640px; background:#121418; border-top:3px solid #7fe3ff; padding:24px 30px 28px; text-align:center; animation:gin .35s ease-out; }
@@ -15723,6 +15750,7 @@ window.BSL_ECON = (() => {
     }
     fit();
     if (S.guide) runGuide();
+    else if (S.bguide) runBaseGuide();
     else if (route.name === "lobby" && S.startDone && !S.lv45Asked && !sheet.querySelector(".story")) offerLv45();   // never over a scene
   }
   // a one-time offer (the BL-07 retune is aimed at E0 Lv.45): every owned operator to promotion 0, level 45 (or that rarity's cap)
@@ -15797,7 +15825,7 @@ window.BSL_ECON = (() => {
       sb.onclick = (e) => { e.stopPropagation(); go("gacha"); };
       rec.append(sa, sb);
       { const nm2 = misReady("day").length + misReady("week").length + misReady("main").length; tile("", 0, 496, 236, 128, `<div class="bar"></div><div class="emb" style="width:90px">${ICON.task}</div><div class="lb"><small>MISSION</small>임무</div>${nm2 ? `<i class="badge en" style="right:6px;top:6px">${nm2}</i>` : ""}`, () => go("missions")); }
-      if (baseOpen()) { baseTick(); tile("", 246, 496, 230, 128, `<div class="bar"></div><div class="emb" style="width:90px">${ICON.base}</div><div class="lb"><small>BASE</small>기반시설</div>${baseAlert() ? '<i class="badge en" style="right:6px;top:6px">!</i>' : ""}`, () => go("base")); }
+      if (baseOpen()) { baseTick(); tile("lt-base", 246, 496, 230, 128, `<div class="bar"></div><div class="emb" style="width:90px">${ICON.base}</div><div class="lb"><small>BASE</small>기반시설</div>${baseAlert() ? '<i class="badge en" style="right:6px;top:6px">!</i>' : ""}`, () => go("base")); }
       else tile("lock", 246, 496, 230, 128, `<div class="bar"></div><div class="emb" style="width:90px">${ICON.base}</div><div class="lb"><small>BASE</small>기반시설</div><div class="lk en">LOCKED</div>`, () => toast("BL-01을 클리어하면 열립니다"));
       tile("", 486, 496, 124, 128, `<div class="emb" style="width:70px;right:14px">${ICON.depot}</div><div class="lb" style="font-size:21px"><small>DEPOT</small>창고</div>${S.econGiftNew ? '<i class="badge en" style="right:6px;top:6px">N</i>' : ""}`, () => go("depot"));
     },
@@ -16000,7 +16028,7 @@ window.BSL_ECON = (() => {
       item(tired, `${tired}명 탈진`, "교체 필요", () => { const r = b.rooms.findIndex((R, k) => roomAvail(k) && working(R) && R.g.some((id) => fatOf(id) <= 0)); go("room", r); }, "warn");
       item(empty, `${empty}곳 공백`, "경계 공백", () => { const r = b.rooms.findIndex((R, k) => roomAvail(k) && R.built && (!R.zone || !R.g.length)); go("room", r); }, "warn");
       item(lost, `${lost}건`, "습격 피해", () => baseLog(), "bad");
-      if (!b.intro) { b.intro = 1; save(); baseHelp(); }
+      if (!b.intro) { b.intro = 1; save(); if (!S.bguide) baseHelp(); }   // the guide explains it as it goes
     },
 
     // a room, after the original: the room itself framed in the middle, its neighbours showing round it,
@@ -16931,7 +16959,7 @@ window.BSL_ECON = (() => {
   const BZ = EC.ZONES, BB = EC.BASE, HR = 3600e3, ROOMS = 9, CHAPTERS = 1;   // three rooms for each chapter; only the first chapter is out
   const zoneIdx = (code) => TD.STAGES.findIndex((q) => q.code === code);
   const zoneOpen = (z) => ((S.stages[z.code] || {}).stars || 0) > 0;
-  const baseOpen = () => BZ.some(zoneOpen);
+  const baseOpen = () => BZ.some(zoneOpen) && (((S.stages["BL-07"] || {}).stars || 0) > 0 || !!(S.base && S.base.intro));
   const zDef = (code) => BZ.find((z) => z.code === code);
   const roomCh = (r) => Math.floor(r / 3) + 1;
   const roomAvail = (r) => roomCh(r) <= CHAPTERS && baseOpen();
@@ -17226,8 +17254,8 @@ window.BSL_ECON = (() => {
       <p><b>경계 배치</b> 가사인격을 경계에 세워야 생산이 진행됩니다. 인원이 많고 적합 직군일수록 빨라집니다. 경계 중에도 작전에는 그대로 데려갈 수 있습니다.</p>
       <p><b>피로</b> 경계 중에는 피로가 시간당 ${BB.DRAIN}씩 줄어듭니다. 0이 되면 탈진해서 경계를 서지 못하고, 전원이 탈진하면 생산이 멈춥니다. 숙소로 교체해 쉬게 하세요.</p>
       <p><b>습격</b> 몇 시간마다 습격이 옵니다. 경계 인원의 평균 육성도(정예화·레벨, 방어 스킬 포함)가 채집지의 권장 육성도보다 낮으면 격퇴 확률이 떨어지고, 뚫리면 보관 물자 절반을 잃습니다.</p>
-      <p><b>건설과 강화</b> 자원 수집의 「자재 야적장」에서 얻는 보강 자재·강화 골조로 합니다. 강화하면 생산량이 늘지만 위험도도 올라갑니다.</p>`), row = h("div", "row"), ok = h("div", "btn", "확인");
-    ok.onclick = () => mo.remove(); row.appendChild(ok); bx.appendChild(row); mo.appendChild(bx); mo.onclick = (e) => { if (e.target === mo) mo.remove(); }; sheet.appendChild(mo);
+      <p><b>건설과 강화</b> 자원 수집의 「자재 야적장」에서 얻는 보강 자재·강화 골조로 합니다. 강화하면 생산량이 늘지만 위험도도 올라갑니다.</p>`), row = h("div", "row"), ok = h("div", "btn", "확인"), rp = h("div", "btn", "튜토리얼 다시 보기");
+    ok.onclick = () => mo.remove(); rp.onclick = () => { mo.remove(); S.bguide = 2; save(); go("base"); }; row.append(rp, ok); bx.appendChild(row); mo.appendChild(bx); mo.onclick = (e) => { if (e.target === mo) mo.remove(); }; sheet.appendChild(mo);
   }
   function baseLog() {
     const b = baseState(); b.seen = Date.now(); save();
@@ -18084,7 +18112,7 @@ window.BSL_ECON = (() => {
     };
   }
   // items shown in a reward box: [kind, amount, label]
-  const ITEM_ICON = { orb: `<i class="gi">${icn("it-orb")}</i>`, coin: `<i class="gi">${icn("it-coin")}</i>`, ticket: `<i class="gi">${icn("it-ticket")}</i>`, start: `<i class="gi">${icn("it-ticket")}</i>` };
+  const ITEM_ICON = { bm1: `<i class="gi">${icn("it-bm1")}</i>`, orb: `<i class="gi">${icn("it-orb")}</i>`, coin: `<i class="gi">${icn("it-coin")}</i>`, ticket: `<i class="gi">${icn("it-ticket")}</i>`, start: `<i class="gi">${icn("it-ticket")}</i>` };
   function giftBox(title, items, done) {
     const m = h("div", "gift"); sheet.appendChild(m);
     m.innerHTML = `<div class="gb"><div class="gh en">RECEIVED</div><div class="gtt">${esc(title)}</div><div class="its">${items.map(([k, n, lab]) => `<div class="it"><div class="ic">${ITEM_ICON[k] || ""}</div><div class="n en">×${fmt(n)}</div><div class="l">${esc(lab)}</div></div>`).join("")}</div><div class="btn ok">수령</div></div>`;
@@ -18096,9 +18124,65 @@ window.BSL_ECON = (() => {
       if (i >= steps.length) return done && done();
       const s = steps[i++];
       if (s.gift) giftBox(s.gift[0], s.gift[1], () => { s.apply && s.apply(); nx(); });
-      else guideStep(Object.assign({ tap: true, next: nx }, s));
+      else guideStep(Object.assign({ tap: true, next: nx }, s.target && !s.onTarget ? { onTarget: nx } : {}, s));   // a lit step moves on when its target is touched
     };
     nx();
+  }
+  // ---------- the base's guide, straight after chapter 1's last scene: the base tile, room 1, a site, guards, then what to watch ----------
+  function startBaseGuide() {
+    playStory("BASE:intro", () => { const b = baseState(); b.intro = 1; S.bguide = 1; save(); go("lobby"); });
+  }
+  function guideHint(text, pos) {   // a line that stays up while a picker is open and lets every touch through
+    const o = sheet.querySelector(".ghint"); if (o) o.remove();
+    const d = h("div", "ghint" + (pos ? " " + pos : ""), `<div class="gbox"><svg class="hex" viewBox="-22 -22 44 44"><polygon points="0,-20 17.3,-10 17.3,10 0,20 -17.3,10 -17.3,-10" fill="none" stroke="#7fe3ff" stroke-width="2.5"/><circle r="6" fill="#7fe3ff"/></svg><div class="lt en">LINK TERMINAL</div><div class="gt">${rubyHtml(text)}</div></div>`); sheet.appendChild(d);
+    const t = setInterval(() => { if (!d.isConnected) return clearInterval(t); if (!sheet.querySelector(".zm, .bz-sel, .modal")) { clearInterval(t); d.remove(); runBaseGuide(); } }, 300);   // the picker went away without a render
+  }
+  function runBaseGuide() {
+    const g = S.bguide, r = route.name, q = (sel) => sheet.querySelector(sel);
+    const oh = q(".ghint"); if (oh) oh.remove();
+    requestAnimationFrame(() => {
+      if (S.bguide !== g || route.name !== r || q(".story")) return;
+      const b = baseState(), R0 = b.rooms[0], to = (n) => { S.bguide = n; save(); };
+      const room1 = () => [...sheet.querySelectorAll(".ib-rm")].find((t) => !t.classList.contains("dorm"));
+      if (r === "lobby") {
+        guideStep({ target: q(".lt-base"), text: g === 1 ? "탈환 구역 관리를 위한 [기반시설|BASE] 단말이 개방되었습니다." : "[기반시설|BASE]로 이동합니다.", onTarget: () => { if (g < 2) to(2); go("base"); } });
+      } else if (r === "base" && g <= 2) {
+        to(2);
+        seq([
+          { text: "장마다 [파견실|DISPATCH ROOM] 3칸과 숙소 하나가 열립니다.\n첫 파견실은 바로 쓸 수 있습니다." },
+          { text: "파견실 하나가 탈환 구역 하나를 맡습니다.\n그 구역을 지키는 동안, 그곳의 물자가 쌓입니다." },
+        ], () => guideStep({ target: room1(), text: "파견실 1로 들어갑니다.", onTarget: () => { to(3); go("room", 0); } }));
+      } else if (r === "base" && g < 6) {
+        guideStep({ target: room1(), text: "파견실 1로 돌아갑니다.", onTarget: () => go("room", 0) });
+      } else if (r === "base" && g === 6) {
+        const gift = !S.bgGift;
+        seq([
+          { text: "파견실 2, 3은 「보강 자재」로 건설합니다.\n보강 자재는 자원 수집의 「자재 야적장」에서 얻을 수 있습니다." },
+          ...(gift ? [{ gift: ["기반시설 개방 지원", [["bm1", BB.BUILD.items[0][1], "보강 자재"], ["coin", BB.BUILD.coin, "주화"]]], apply: () => { addItems([["bm1", BB.BUILD.items[0][1]]]); S.res.coin += BB.BUILD.coin; S.bgGift = 1; } }, { text: "두 번째 파견실을 지을 수 있는 자재를 지급했습니다." }] : []),
+          { text: "기반시설 안내는 화면 위쪽의 「i」 버튼에서 다시 볼 수 있습니다.\n안내를 종료합니다." },
+        ], () => { S.bguide = 0; save(); render(); });
+      } else if (r === "room" && route.arg === 0) {
+        if (g === 3 && R0.zone) { to(4); return runBaseGuide(); }
+        if (g === 4 && R0.g.length) { to(5); return runBaseGuide(); }
+        if (g === 3) {
+          if (q(".zm, .bz-sel, .modal")) guideHint("먼저 지킬 [채집지|SITE]를 고릅니다.\n지도에서 탈환한 구역을 누르고 「이곳에서 채집」을 선택하십시오.");
+          else guideStep({ target: q(".ib-nz .btn"), text: "먼저 지킬 [채집지|SITE]를 고릅니다.", onTarget: () => q(".ib-nz .btn").click() });
+        } else if (g === 4) {
+          guideStep({ target: q('.rv-tabs .t[data-t="crew"]'), text: "채집지가 정해졌습니다. 이제 경계를 세웁니다.\n[배치 정보|ATTENDANCE]를 엽니다.", onTarget: () => {
+            q('.rv-tabs .t[data-t="crew"]').click();
+            setTimeout(() => guideStep({ target: q(".rv-dw .chg2"), text: "「인원 교체」에서 경계를 설 가사인격을 고릅니다.", onTarget: () => { q(".rv-dw .chg2").click(); setTimeout(() => guideHint("최대 3명까지 세울 수 있습니다.\n많을수록, 적합 직군일수록 채집이 빨라집니다.\n고른 뒤 「확인」을 누르십시오.", "side"), 50); } }), 380);
+          } });
+        } else if (g === 5) {
+          const cd = q(".rv-cd");
+          seq([
+            { target: cd, text: "경계가 서면 채집이 시작됩니다. 쌓인 물자는 여기서 [수령|COLLECT]합니다.\n카드를 누르면 채집지를 바꿀 수 있습니다." },
+            { text: "경계 중에는 [피로|FATIGUE]가 시간당 " + BB.DRAIN + "씩 줄어듭니다.\n0이 되면 탈진하고, 전원이 탈진하면 채집이 멈춥니다." },
+            { text: "지친 가사인격은 숙소로 보내 쉬게 하십시오.\n경계 중에도 작전에는 그대로 데려갈 수 있습니다." },
+            { text: "몇 시간마다 망령의 [습격|RAID]이 옵니다.\n경계 인원이 채집지의 권장 육성도보다 약하면 격퇴 확률이 떨어지고, 뚫리면 보관 물자 절반을 잃습니다." },
+          ], () => guideStep({ target: q(".top .back"), text: "기반시설 화면으로 돌아갑니다.", onTarget: () => { to(6); go("base"); } }));
+        }
+      }
+    });
   }
   function runGuide() {
     const gd = S.guide, r = route.name, q = (sel) => sheet.querySelector(sel);
@@ -18349,7 +18433,7 @@ window.BSL_ECON = (() => {
       if (r.quit) { toStage(sel); if (reward.refund) toast(`기력 ${reward.refund} 반환`); return; }   // giving up goes straight back to the map
       if (practice) return go("result", Object.assign({}, r, { reward }));
       const key = s.code + ":after", res = Object.assign({}, r, { reward });
-      if (r.win && STORIES[key] && !(S.seen || {})[key]) { (S.seen = S.seen || {})[key] = 1; save(); go("result", res); playStory(key); }
+      if (r.win && STORIES[key] && !(S.seen || {})[key]) { (S.seen = S.seen || {})[key] = 1; save(); go("result", res); playStory(key, key === "BL-07:after" ? startBaseGuide : undefined); }
       else go("result", res);
     }, seenOpt);
   }
