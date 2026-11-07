@@ -14134,6 +14134,13 @@ window.BSL_ECON = (() => {
     : i === 0 ? () => true : (s) => ((s.stages[TD.STAGES[i - 1].code] || {}).stars || 0) > 0 }));
   const POOL = { 6: ["rabi6", "veil", "eungyeol", "smoqueen", "angelina"], 5: ["geomseon", "belina", "yui", "rabi", "piania", "silphy", "bongeun", "alpha2", "skakea2"], 4: ["falchion", "atat", "hakuren", "miho", "lulu", "irins", "alpha", "skakea", "ker", "sunae", "teka"], 3: ["brick", "jayeon", "capy", "hiro", "lilith", "ayaki", "nana", "tao"] };
   const PULL = 600, STAM_EVERY = 360;
+  // the archive's banners, after the original's: a standard one with no rate-up, and a pick-up whose featured six and five take half of their rarity;
+  // each keeps its own pity, and on the pick-up 150 links without the featured six make the next six the featured one
+  const BANNERS = {
+    pick: { n: "연막과 총성", tag: "PICK UP", ko: "지정 픽업", col: "#ff8a1f", up: { 6: "smoqueen", 5: "bongeun" }, art: ["bongeun", "smoqueen"], spark: 150 },
+    std: { n: "통상 링크", tag: "STANDARD", ko: "통상", col: "#7fe3ff", up: {}, art: ["angelina"] },
+  };
+  const NEWS = "pick";   // the banner the lobby's news board points at
   // the start link: one fixed ten (placeholders until the new operators and their scripts arrive)
   const START_FIXED = ["hiro", "lilith", "tao", "capy", "ayaki", "hakuren", "sunae", "alpha", "atat", "teka"];   // orb per pull, seconds per stamina point
   const def = (id) => TD.UNITS.find((u) => u.id === id);
@@ -14152,7 +14159,6 @@ window.BSL_ECON = (() => {
   try { S = JSON.parse(localStorage.getItem(SAVE_KEY)) || null; } catch (e) { S = null; }
   if (!S || S.v !== 1) S = freshSave();
   S.inv = S.inv || {};
-  if (!S.econGift && S.startDone) { S.econGift = 1; S.inv = Object.assign({ rec1: 30, rec2: 15, rec3: 6, bk1: 12, bk2: 4, m1_shard: 8, m1_casing: 8, m1_frost: 8, m1_cloth: 8 }, S.inv); S.econGiftNew = 1; }   // the growth materials arrive with this update: a first supply so they can be tried
   for (const id of Object.keys(S.ops)) { if (!def(id)) { delete S.ops[id]; continue; } const o = S.ops[id], mx = MAXLV[def(id).rarity]; o.elite = Math.min(o.elite, mx.length - 1); o.lvl = Math.min(o.lvl, mx[o.elite]); }
   try { localStorage.setItem(SAVE_KEY, JSON.stringify(S)); } catch (e) { /* storage may be off */ }
   function save() { try { localStorage.setItem(SAVE_KEY, JSON.stringify(S)); } catch (e) { /* storage may be off */ } }
@@ -14409,10 +14415,12 @@ window.BSL_ECON = (() => {
   .kwpop b { display: block; margin-bottom: 4px; font-size:16px; }
   /* headhunting */
   .hh-bg { position:absolute; inset:0; background:linear-gradient(110deg,#1a0f08,#08080a 60%); }
-  .hh-art { position:absolute; right:-40px; bottom:-80px; height:840px; }
+  .hh-art { position:absolute; right:-40px; bottom:-80px; height:840px; -webkit-mask:linear-gradient(90deg,transparent,#000 22%); mask:linear-gradient(90deg,transparent,#000 22%); } .hh-shade { position:absolute; inset:0; background:linear-gradient(90deg,rgba(12,12,14,.96) 0,rgba(12,12,14,.85) 38%,rgba(12,12,14,0) 62%); pointer-events:none; } .hh-art.back { right:360px; height:760px; bottom:-60px; filter:brightness(.55) saturate(.8); -webkit-mask:linear-gradient(90deg,transparent,#000 30%,#000 70%,transparent); mask:linear-gradient(90deg,transparent,#000 30%,#000 70%,transparent); }
   .hh-info { position:absolute; left:60px; top:110px; width:560px; }
   .hh-info .t { font-size:54px; font-weight:900; line-height:1.05; } .hh-info .s { color:#ffb36b; font-size:18px; margin:10px 0 20px; }
   .hh-info .rate { font-size:16px; color:#c8ccd4; line-height:1.9; }
+  .hh-info .ups { display:flex; flex-direction:column; gap:8px; margin:14px 0 18px; } .hh-info .up { position:relative; height:62px; padding:6px 10px 6px 74px; background:linear-gradient(90deg,rgba(20,22,26,.92),rgba(20,22,26,.5)); border-left:4px solid #ff8a1f; }
+  .hh-info .up i { position:absolute; left:6px; top:5px; width:52px; height:52px; background:center 15%/cover; } .hh-info .up span { display:block; font-size:12px; color:#ffcf3a; letter-spacing:1px; } .hh-info .up b { font-size:21px; font-weight:900; } .hh-info .up em { position:absolute; right:12px; top:20px; font-style:normal; font-size:15px; color:#ffb36b; }
   .pull { position:absolute; bottom:40px; width:250px; height:86px; display:flex; flex-direction:column; justify-content:center; align-items:center; clip-path:polygon(6% 0,100% 0,94% 100%,0 100%); }
   .pull .a { font-size:26px; font-weight:900; } .pull .b { font-size:16px; }
   .pull.p1 { left:60px; background:#e8eaee; color:#111; } .pull.p10 { left:330px; background:#ff8a1f; color:#111; } .pull.dis { filter:grayscale(1) brightness(.6); }
@@ -15751,16 +15759,8 @@ window.BSL_ECON = (() => {
     fit();
     if (S.guide) runGuide();
     else if (S.bguide) runBaseGuide();
-    else if (route.name === "lobby" && S.startDone && !S.lv45Asked && !sheet.querySelector(".story")) offerLv45();   // never over a scene
   }
-  // a one-time offer (the BL-07 retune is aimed at E0 Lv.45): every owned operator to promotion 0, level 45 (or that rarity's cap)
-  function offerLv45() {
-    S.lv45Asked = 1; save();
-    confirmBox("레벨 일괄 조정", "보유한 가사인격 전원을 <b>정예화 0 · Lv.45</b>로 맞춥니다.<br>3성은 최대치인 Lv.40까지입니다. 정예화가 높은 가사인격은 0으로 내려갑니다.", "맞추기", () => {
-      for (const id of Object.keys(S.ops)) { const o = S.ops[id]; o.elite = 0; o.lvl = Math.min(45, maxLv(id, 0)); o.skill = 0; if (o.exp !== undefined) o.exp = 0; }
-      save(); render();
-    });
-  }
+
   // the wardrobe: which illustration an operator wears (promotion 0 or 2 for now; skins later). "auto" follows the promotion
   const hasE2 = (id) => { const d = def(id); return d && (d.art === true || (d.art && d.art.e2)) || id === "geomseon"; };
   const lookElite = (id) => { const o = S.ops[id]; if (!o) return 0; if (o.look === 0) return 0; if (o.look === 2 && o.elite >= 2) return 2; return o.elite; };
@@ -15798,8 +15798,8 @@ window.BSL_ECON = (() => {
       const sw = h("div", "btn lb-rb", ICON.swap); sw.style.left = (nw + 114) + "px"; sw.onclick = () => go("roster", { pickAssistant: true });
       ui.append(eye, sw);
       // news: the archive's current pick-up
-      const news = h("div", "btn lb-news", `<div class="bn en">BREAKING NEWS</div><div class="tt"><small>아카이브 한정 픽업</small>함성의 행진</div>${S.res.start > 0 ? '<div class="nw en">NEW</div>' : ""}`);
-      news.style.backgroundImage = `url(${opArt("belina", "full")})`; news.onclick = () => go("gacha"); ui.appendChild(news);
+      const nb = BANNERS[NEWS], news = h("div", "btn lb-news", `<div class="bn en">BREAKING NEWS</div><div class="tt"><small>아카이브 ${nb.ko}</small>${esc(nb.n)}</div>${S.res.start > 0 ? '<div class="nw en">NEW</div>' : ""}`);
+      news.style.backgroundImage = `url(${opArt(nb.art[nb.art.length - 1], "full")})`; news.onclick = () => go("gacha", { banner: NEWS }); ui.appendChild(news);
       const s1 = h("div", "btn lb-small", `${ICON.drill}<span>훈련장</span>`); s1.style.top = "578px"; s1.onclick = () => go("sandbox");
       const s2 = h("div", "btn lb-small", `${ICON.file}<span>파일</span>`); s2.style.top = "646px"; s2.onclick = () => filesBox();
       ui.append(s1, s2);
@@ -15813,7 +15813,7 @@ window.BSL_ECON = (() => {
       const ci = curStage(), cs = TD.STAGES[ci], locked = () => toast("아직 접근 권한이 없습니다");
       tile("stam", 0, 0, 176, 178, `<i class="pl">+</i><div class="num en">${S.res.stam}</div><div class="cap">기력<span class="en" style="color:#9aa0aa;font-weight:500">/${stamMax()}</span></div>`, () => toast(`기력은 ${STAM_EVERY / 60}분마다 1 회복됩니다`));
       tile("op lt-op", 186, 0, 250, 178, `<div class="bar"></div><div class="big en">TERMINAL</div><div class="ko">작전</div><div class="cur"><b>현재</b><span class="en">${cs.code}</span>${esc(cs.name)}</div>`, () => go("ops"));
-      const e1 = tile("ev", 446, 0, 164, 84, `<div class="lb" style="font-size:19px"><small>ARCHIVE</small>함성의 행진</div>`, () => go("gacha")); e1.style.backgroundImage = `url(${opArt("belina", "full")})`; e1.style.backgroundPosition = "center 18%";
+      const e1 = tile("ev", 446, 0, 164, 84, `<div class="lb" style="font-size:19px"><small>ARCHIVE</small>${esc(nb.n)}</div>`, () => go("gacha", { banner: NEWS })); e1.style.backgroundImage = `url(${opArt(nb.art[0], "full")})`; e1.style.backgroundPosition = "center 18%";
       const e2 = tile("ev", 446, 94, 164, 84, `<div class="lb" style="font-size:19px"><small>EPISODE 01</small>망자의 행진</div>`, () => go("chapters")); e2.style.backgroundImage = `url(${ART.st_war || ART.bg})`;
       tile("", 0, 192, 296, 140, `<div class="bar"></div><div class="deco en">SQUADS</div><div class="emb">${ICON.squadE}</div><div class="lb"><small>SQUADS</small>편성</div>`, () => go("squads"));
       tile("", 306, 192, 304, 140, `<div class="bar"></div><div class="deco en">OPERATOR</div><div class="emb">${ICON.opE}</div><div class="lb"><small>OPERATOR · ${Object.keys(S.ops).length}</small>가사인격</div>`, () => go("roster"));
@@ -15826,7 +15826,7 @@ window.BSL_ECON = (() => {
       rec.append(sa, sb);
       { const nm2 = misReady("day").length + misReady("week").length + misReady("main").length; tile("", 0, 496, 236, 128, `<div class="bar"></div><div class="emb" style="width:90px">${ICON.task}</div><div class="lb"><small>MISSION</small>임무</div>${nm2 ? `<i class="badge en" style="right:6px;top:6px">${nm2}</i>` : ""}`, () => go("missions")); }
       if (baseOpen()) { baseTick(); tile("lt-base", 246, 496, 230, 128, `<div class="bar"></div><div class="emb" style="width:90px">${ICON.base}</div><div class="lb"><small>BASE</small>기반시설</div>${baseAlert() ? '<i class="badge en" style="right:6px;top:6px">!</i>' : ""}`, () => go("base")); }
-      else tile("lock", 246, 496, 230, 128, `<div class="bar"></div><div class="emb" style="width:90px">${ICON.base}</div><div class="lb"><small>BASE</small>기반시설</div><div class="lk en">LOCKED</div>`, () => toast("BL-01을 클리어하면 열립니다"));
+      else tile("lock", 246, 496, 230, 128, `<div class="bar"></div><div class="emb" style="width:90px">${ICON.base}</div><div class="lb"><small>BASE</small>기반시설</div><div class="lk en">LOCKED</div>`, () => toast("BL-07을 클리어하면 열립니다"));
       tile("", 486, 496, 124, 128, `<div class="emb" style="width:70px;right:14px">${ICON.depot}</div><div class="lb" style="font-size:21px"><small>DEPOT</small>창고</div>${S.econGiftNew ? '<i class="badge en" style="right:6px;top:6px">N</i>' : ""}`, () => go("depot"));
     },
 
@@ -16478,41 +16478,45 @@ window.BSL_ECON = (() => {
 
     gacha(el, arg = {}) {
       const hasStart = !S.startDone && S.res.start > 0;
-      const ban = arg.banner || (hasStart ? "start" : "march");
+      const ban = arg.banner && (arg.banner === "start" || BANNERS[arg.banner]) ? arg.banner : (hasStart ? "start" : NEWS);
       el.appendChild(h("div", "hh-bg"));
-      const a = h("img", "hh-art"); a.src = opArt(ban === "start" ? "atat" : "belina", "full"); el.appendChild(a);
+      const arts = ban === "start" ? ["atat"] : BANNERS[ban].art;
+      arts.forEach((id, i) => { const a = h("img", "hh-art" + (arts.length > 1 && i < arts.length - 1 ? " back" : "")); a.src = opArt(id, "full"); el.appendChild(a); });
+      el.appendChild(h("div", "hh-shade"));
       el.appendChild(topBar("아카이브", "ARCHIVE"));
       const tabs = h("div", "bn-tabs"); el.appendChild(tabs);
-      const tab = (k, t, s) => { const b = h("div", "btn bn" + (ban === k ? " on" : ""), `<div class="s en">${s}</div><div class="t">${t}</div>`); b.onclick = () => go("gacha", { banner: k }); tabs.appendChild(b); };
+      const tab = (k, t, s2) => { const b = h("div", "btn bn" + (ban === k ? " on" : ""), `<div class="s en">${s2}</div><div class="t">${t}</div>`); b.onclick = () => go("gacha", { banner: k }); tabs.appendChild(b); };
       if (hasStart) tab("start", "스타트 링크", "START");
-      tab("march", "함성의 행진", "LIMITED");
+      for (const k of Object.keys(BANNERS)) tab(k, BANNERS[k].n, BANNERS[k].tag);
       if (ban === "start") {
         el.appendChild(h("div", "hh-info", `<div class="s en" style="color:#7fe3ff;font-size:16px;margin:0">START LINK · 1회 한정</div>
           <div class="t">스타트 링크</div><div class="s">수신 중단 보상으로 지급된 스타트 수신권 전용 링크입니다.</div>
           <div class="rate">10회 링크 1회 한정 · 링크 대상 고정<br>스타트 수신권 보유: ${S.res.start}</div>`));
         const p10 = h("div", "btn pull p10 start" + (S.res.start > 0 ? "" : " dis"), `<div class="a">10회</div><div class="b">스타트 수신권 1</div>`);
-        p10.onclick = () => { if (S.res.start <= 0) return; showPulls(el, pullStart(), { banner: "march", start: true }); };
+        p10.onclick = () => { if (S.res.start <= 0) return; showPulls(el, pullStart(), { banner: NEWS, start: true }); };
         el.appendChild(p10);
         return;
       }
-      const info = h("div", "hh-info", `<div class="s en" style="color:#ff8a1f;font-size:16px;margin:0">LIMITED · RATE UP</div>
-        <div class="t">함성의 행진</div><div class="s">적성 링크 ★★★★★ <b>${esc(nm("belina").main)}</b> 출현 확률 상승 (링크 5 중 50%)</div>
-        <div class="rate">적성 링크별 확률 · 6: 2% · 5: 8% · 4: 50% · 3: 40%<br>50회 연속 링크 6이 나오지 않으면 이후 회당 링크 6 확률 +2%<br>${S.newbie > 0 ? "첫 10회 안에 링크 5 이상 1명 확정 · " : ""}중복 획득 시 잠재 +1</div>`);
+      const bn = BANNERS[ban], st = banSt(ban), u6 = bn.up[6], u5 = bn.up[5];
+      const ups = [u6 && `<div class="up"><i style="background-image:url(${opArt(u6, "card")})"></i><span>${"★".repeat(6)}</span><b>${esc(nm(u6).main)}</b><em>링크 6 중 50%</em></div>`, u5 && `<div class="up"><i style="background-image:url(${opArt(u5, "card")})"></i><span>${"★".repeat(5)}</span><b>${esc(nm(u5).main)}</b><em>링크 5 중 50%</em></div>`].filter(Boolean).join("");
+      const info = h("div", "hh-info", `<div class="s en" style="color:${bn.col};font-size:16px;margin:0">${bn.tag} · ${bn.ko}</div>
+        <div class="t">${esc(bn.n)}</div>${ups ? `<div class="ups">${ups}</div>` : `<div class="s">모든 가사인격이 같은 확률로 출현합니다. 확률 상승 대상 없음.</div>`}
+        <div class="rate">적성 링크별 확률 · 6: 2% · 5: 8% · 4: 50% · 3: 40%<br>50회 연속 링크 6이 나오지 않으면 이후 회당 링크 6 확률 +2%<br>배너마다 따로 계산<br>${bn.spark ? `${bn.spark}회 안에 ${esc(nm(u6).main)} 미획득 시 다음 링크 6은 ${esc(nm(u6).main)} 확정${st.gotF ? " (획득 완료)" : ` · 현재 ${Math.min(st.n, bn.spark)}/${bn.spark}`}<br>` : ""}${S.newbie > 0 ? "첫 10회 안에 링크 5 이상 1명 확정 · " : ""}중복 획득 시 잠재 +1</div>`);
       el.appendChild(info);
-      el.appendChild(h("div", "pity", `링크 6 미획득 ${S.pity}회 · 현재 링크 6 확률 ${sixRate()}%`));
+      el.appendChild(h("div", "pity", `링크 6 미획득 ${st.pity}회 · 현재 링크 6 확률 ${sixRate(ban)}%`));
       const can1 = S.res.ticket > 0 || S.res.orb >= PULL, can10 = S.res.orb >= PULL * 10 || S.res.ticket >= 10;
       const p1 = h("div", "btn pull p1" + (can1 ? "" : " dis"), `<div class="a">1회</div><div class="b">${S.res.ticket > 0 ? "아카이브 수신권 1" : "합성옥 " + PULL}</div>`);
       const p10 = h("div", "btn pull p10" + (can10 ? "" : " dis"), `<div class="a">10회</div><div class="b">${S.res.ticket >= 10 ? "수신권 10" : "합성옥 " + fmt(PULL * 10)}</div>`);
-      p1.onclick = () => { if (!can1) return toast("합성옥이 부족합니다"); if (S.res.ticket > 0) S.res.ticket--; else S.res.orb -= PULL; showPulls(el, pullN(1)); };
-      p10.onclick = () => { if (!can10) return toast("합성옥이 부족합니다"); if (S.res.ticket >= 10) S.res.ticket -= 10; else S.res.orb -= PULL * 10; showPulls(el, pullN(10)); };
+      p1.onclick = () => { if (!can1) return toast("합성옥이 부족합니다"); if (S.res.ticket > 0) S.res.ticket--; else S.res.orb -= PULL; showPulls(el, pullN(ban, 1), { banner: ban }); };
+      p10.onclick = () => { if (!can10) return toast("합성옥이 부족합니다"); if (S.res.ticket >= 10) S.res.ticket -= 10; else S.res.orb -= PULL * 10; showPulls(el, pullN(ban, 10), { banner: ban }); };
       el.append(p1, p10);
     },
 
     sandbox(el) {
       el.appendChild(h("div", "lobby-bg"));
       el.appendChild(topBar("훈련장 편성", "TRAINING", () => go("lobby")));
-      const all = TD.UNITS.filter((d) => d.art).map((d) => d.id).reverse().concat(TD.UNITS.filter((d) => !d.art).map((d) => d.id));
-      let sel = (S.sbSquad || []).filter((q) => def(q.id));
+      const all = Object.keys(S.ops).filter((id) => def(id)).sort((a, c) => def(c).rarity - def(a).rarity);   // only who you have
+      let sel = (S.sbSquad || []).filter((q) => def(q.id) && S.ops[q.id]);
       if (!S.sbSquad) sel = all.slice(0, 12).map((id) => ({ id, s: S.ops[id] ? S.ops[id].skill : 0 }));
       const keep = () => { S.sbSquad = sel; save(); };
       const bar = h("div", ""); Object.assign(bar.style, { position: "absolute", left: "40px", right: "40px", bottom: "16px", display: "flex", gap: "10px", alignItems: "center", zIndex: "5" });
@@ -16524,8 +16528,8 @@ window.BSL_ECON = (() => {
       const grid = h("div", "grid"); grid.style.bottom = "76px"; el.appendChild(grid);
       const paint = () => { cnt.textContent = `${sel.length} / 12`; };
       for (const id of all) {
-        const d = def(id), c = h("div", "btn card"), fn = TD.nameOf(d, MAXLV[d.rarity].length - 1);
-        const ns = (d.skills || []).length;
+        const d = def(id), c = h("div", "btn card"), fn = nm(id);
+        const ns = Math.min((d.skills || []).length, S.ops[id].elite + 1);   // skills open with promotion, as everywhere else
         c.innerHTML = `<img class="art" src="${opArt(id, "card")}"><div class="rtop" style="background:${RAR_COL[d.rarity]}"></div><img class="cls" src="${clsIcon(id, 28)}">
           <div class="bar"><div>${stars(d.rarity)}</div><div class="nm">${esc(fn.main)}</div><div class="lv en">${fn.sub ? esc(fn.sub) : ""}</div></div>`;
         const tag = h("div", "tag en", ""); c.appendChild(tag);
@@ -17969,24 +17973,28 @@ window.BSL_ECON = (() => {
   }
 
   // ---------- headhunting ----------
-  function sixRate() { return 2 + Math.max(0, S.pity - 49) * 2; }
-  function pullOne(force5) {
-    const six = sixRate() / 100;
+  const banSt = (k) => { const g = (S.gacha = S.gacha || {}); if (!g[k]) g[k] = { pity: k === "std" ? (S.pity || 0) : 0, n: 0, gotF: 0 }; return g[k]; };
+  function sixRate(k) { return 2 + Math.max(0, banSt(k).pity - 49) * 2; }
+  function pullOne(k, force5) {
+    const bn = BANNERS[k], st = banSt(k), six = sixRate(k) / 100;
     let r = Math.random(), rar;
     if (r < six) rar = 6; else if (r < six + 0.08) rar = 5; else if (r < six + 0.58) rar = 4; else rar = 3;
     if (force5 && rar < 5) rar = 5;
-    if (!POOL[rar].length) rar = 5;   // no link-6 operator exists yet
-    S.pity = rar === 6 ? 0 : S.pity + 1;
+    if (!POOL[rar].length) rar = 5;
+    st.pity = rar === 6 ? 0 : st.pity + 1; st.n++;
     let id;
-    if (rar === 5 && Math.random() < 0.5) id = "belina";
+    const up = bn.up[rar];
+    if (up && rar === 6 && bn.spark && !st.gotF && st.n >= bn.spark) id = up;   // the 150-link promise
+    else if (up && Math.random() < 0.5) id = up;
     else { const p = POOL[rar]; id = p[Math.floor(Math.random() * p.length)]; }
+    if (id === bn.up[6]) st.gotF = 1;
     return id;
   }
-  function pullN(n) {
+  function pullN(k, n) {
     const out = [];
     for (let i = 0; i < n; i++) {
       const force = S.newbie === 1 && !S.newbieGot;   // the first ten pulls always hold a five-star or better
-      const id = pullOne(force);
+      const id = pullOne(k, force);
       if (S.newbie > 0) { S.newbie--; if (def(id).rarity >= 5) S.newbieGot = true; }
       const isNew = !S.ops[id];
       if (isNew) S.ops[id] = { lvl: 1, elite: 0, pot: 1, skill: 0, got: Date.now() };
@@ -18400,8 +18408,8 @@ window.BSL_ECON = (() => {
 
   // the training room: every operator you own, fully promoted, endless cost, foes on demand
   function startSandbox(sel) {
-    // the training room fields whoever was picked on its own squad screen, owned or not, at full promotion
-    const squad = sel.slice(0, 12).map((q) => ({ id: q.id, skillIdx: q.s, mult: 1, elite: MAXLV[def(q.id).rarity].length - 1 }));
+    // the training room fields your own operators as they are now
+    const squad = sel.filter((q) => S.ops[q.id]).slice(0, 12).map((q) => { const o = S.ops[q.id]; return { id: q.id, skillIdx: Math.min(q.s || 0, o.elite, Math.max(0, (def(q.id).skills || []).length - 1)), mult: mult(q.id), elite: o.elite, look: lookElite(q.id), pot: o.pot, slv: o.sl || 1 }; });
     host.hidden = true;
     B.start("sandbox", squad, () => { host.hidden = false; render(); });
   }
