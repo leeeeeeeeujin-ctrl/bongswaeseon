@@ -14723,10 +14723,10 @@ window.BSL_ECON = (() => {
   @keyframes lbDrift { to { transform:translate(-14px,-8px) scale(1.03); } }
   .lb-scene .grade, .lb-scene .over { position:absolute; inset:0; pointer-events:none; } .lb-fx { position:absolute; inset:0; width:1280px; height:720px; pointer-events:none; }
   .lb-art.cut { left:70px; -webkit-mask-image:linear-gradient(180deg,#000 82%,transparent 99%); mask-image:linear-gradient(180deg,#000 82%,transparent 99%); filter:drop-shadow(0 0 2px rgba(0,0,0,.6)) drop-shadow(0 18px 30px rgba(0,0,0,.55)); }
-  .sk-base .lb-vig, .sk-shelter .lb-vig, .sk-archive .lb-vig, .sk-line .lb-vig { background:linear-gradient(90deg,rgba(8,9,11,.55) 0,rgba(8,9,11,0) 30%,rgba(8,9,11,0) 48%,rgba(8,9,11,.45) 62%,rgba(8,9,11,.8) 100%), linear-gradient(180deg,rgba(0,0,0,.5),transparent 18%,transparent 78%,rgba(0,0,0,.55)); }
+  .sk-base .lb-vig, .sk-shelter .lb-vig, .sk-archive .lb-vig, .sk-line .lb-vig { background:linear-gradient(90deg,rgba(8,9,11,.35) 0,rgba(8,9,11,0) 25%,rgba(8,9,11,0) 52%,rgba(8,9,11,.2) 64%,rgba(8,9,11,.45) 100%), linear-gradient(180deg,rgba(0,0,0,.35),transparent 14%,transparent 84%,rgba(0,0,0,.35)); }
   /* 테오히 기본 — the archive terminal: a dim teal room, scan lines, glass tiles with corner brackets */
-  .sk-base .lb-scene .img { background-image:var(--bgimg); filter:brightness(.55) saturate(.7) hue-rotate(-8deg); }
-  .sk-base .lb-scene .grade { background:linear-gradient(120deg,rgba(10,40,44,.55),rgba(4,10,14,.2) 50%,rgba(4,16,20,.7)); }
+  .sk-base .lb-scene .img { background-image:var(--bgimg); filter:brightness(.92) saturate(.85) hue-rotate(-8deg); }
+  .sk-base .lb-scene .grade { background:linear-gradient(120deg,rgba(10,40,44,.25),rgba(4,10,14,0) 50%,rgba(4,16,20,.4)); }
   .sk-base .lb-scene .over { background:repeating-linear-gradient(0deg,rgba(47,208,214,.05) 0 1px,transparent 1px 4px); }
   .sk-base .lb-scene .over::after { content:""; position:absolute; left:0; right:0; height:120px; background:linear-gradient(180deg,transparent,rgba(47,208,214,.08),transparent); animation:lbScan 7s linear infinite; }
   @keyframes lbScan { from { top:-120px; } to { top:720px; } }
@@ -14734,23 +14734,23 @@ window.BSL_ECON = (() => {
   .sk-base .lt::before { content:""; position:absolute; inset:5px; pointer-events:none; background:linear-gradient(var(--acc),var(--acc)) 0 0/14px 2px no-repeat, linear-gradient(var(--acc),var(--acc)) 0 0/2px 14px no-repeat, linear-gradient(var(--acc),var(--acc)) 100% 100%/14px 2px no-repeat, linear-gradient(var(--acc),var(--acc)) 100% 100%/2px 14px no-repeat; opacity:.8; }
   .sk-base .lt.teal { background:linear-gradient(135deg,rgba(31,143,149,.85),rgba(20,90,96,.85)); }
   /* 피난처 — the shelter: the dorm's lamplight behind, tiles like boards pinned to the wall with tape */
-  .sk-shelter .lb-scene .img { background-image:var(--bgimg); filter:brightness(.6) saturate(.9) blur(1.5px); }
-  .sk-shelter .lb-scene .grade { background:radial-gradient(ellipse at 30% 40%,rgba(255,170,80,.18),transparent 60%), linear-gradient(180deg,rgba(30,18,8,.35),rgba(20,12,6,.6)); }
+  .sk-shelter .lb-scene .img { background-image:var(--bgimg); filter:brightness(.95) saturate(1) blur(1px); }
+  .sk-shelter .lb-scene .grade { background:radial-gradient(ellipse at 30% 40%,rgba(255,170,80,.18),transparent 60%), linear-gradient(180deg,rgba(30,18,8,.1),rgba(20,12,6,.35)); }
   .sk-shelter .lt { background:rgba(42,30,20,.86); border:1px solid rgba(242,193,78,.3); border-radius:4px; box-shadow:0 6px 14px rgba(0,0,0,.45); }
   .sk-shelter .lt::before { content:""; position:absolute; left:50%; top:-6px; width:58px; height:16px; transform:translateX(-50%) rotate(-3deg); background:rgba(232,214,170,.55); box-shadow:0 1px 2px rgba(0,0,0,.3); z-index:3; pointer-events:none; }
   .sk-shelter .lt.teal { background:linear-gradient(135deg,rgba(150,108,40,.9),rgba(100,70,22,.9)); }
   .sk-shelter .lt .lb small, .sk-shelter .lt .deco { color:rgba(242,193,78,.75); } .sk-shelter .lt .deco { color:rgba(242,193,78,.18); }
   /* 아카이브 — the archive: an eclipse over the empty station, violet glass with a lattice of glyphs */
-  .sk-archive .lb-scene .img { background-image:var(--bgimg); filter:brightness(.6) saturate(.6) hue-rotate(25deg); }
-  .sk-archive .lb-scene .grade { background:linear-gradient(110deg,rgba(40,20,70,.55),rgba(10,6,20,.15) 45%,rgba(24,12,44,.75)); }
+  .sk-archive .lb-scene .img { background-image:var(--bgimg); filter:brightness(.95) saturate(.75) hue-rotate(25deg); }
+  .sk-archive .lb-scene .grade { background:linear-gradient(110deg,rgba(40,20,70,.3),rgba(10,6,20,0) 45%,rgba(24,12,44,.45)); }
   .sk-archive .lb-scene .over { background:radial-gradient(circle at 18% 22%,rgba(180,138,255,.18),transparent 30%); }
   .sk-archive .lt { background:rgba(22,14,38,.8); border:1px solid rgba(180,138,255,.45); outline:1px solid rgba(180,138,255,.15); outline-offset:3px; backdrop-filter:blur(3px); }
   .sk-archive .lt::before { content:""; position:absolute; inset:0; pointer-events:none; opacity:.35; background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='48'%3E%3Cpath d='M14 0l14 8v16L14 32 0 24V8z' fill='none' stroke='%23b48aff' stroke-opacity='.35'/%3E%3C/svg%3E"); }
   .sk-archive .lt.teal { background:linear-gradient(135deg,rgba(95,67,163,.88),rgba(55,36,110,.88)); }
   .sk-archive .lt .lb small { color:#d6c4ff; } .sk-archive .lt .deco { color:rgba(180,138,255,.22); }
   /* 봉쇄선 — the line: the burning field and the dead army behind, black tiles with hazard tape and cut corners, embers rising */
-  .sk-line .lb-scene .img { background-image:var(--bgimg); filter:brightness(.62) saturate(1.05); }
-  .sk-line .lb-scene .grade { background:linear-gradient(180deg,rgba(40,6,4,.35),rgba(10,2,2,.15) 40%,rgba(30,6,2,.7)); }
+  .sk-line .lb-scene .img { background-image:var(--bgimg); filter:brightness(1) saturate(1.05); }
+  .sk-line .lb-scene .grade { background:linear-gradient(180deg,rgba(40,6,4,.15),rgba(10,2,2,0) 40%,rgba(30,6,2,.4)); }
   .sk-line .lt { background:rgba(14,10,10,.86); border:1px solid rgba(255,122,69,.35); clip-path:polygon(0 0,calc(100% - 16px) 0,100% 16px,100% 100%,16px 100%,0 calc(100% - 16px)); }
   .sk-line .lt::before { content:""; position:absolute; left:0; right:0; top:0; height:6px; background:repeating-linear-gradient(135deg,#ff7a45 0 8px,#1a0c08 8px 16px); opacity:.85; pointer-events:none; z-index:2; }
   .sk-line .lt.teal { background:linear-gradient(135deg,rgba(150,52,30,.9),rgba(96,30,16,.9)); }
