@@ -3328,7 +3328,7 @@ window.BGM = (() => {
     const go = () => { el = new Audio(tr.src); el.loop = true; el.volume = 0; cur = id; const p = el.play(); if (p && p.catch) p.catch(() => { cur = null; }); fade(el, vol, 1200); };
     if (el) { const old = el; el = null; fade(old, 0, 600, () => { old.pause(); go(); }); } else go();
   }
-  function stop() { if (!el) return; const old = el; el = null; cur = null; old.pause(); }
+  function stop() { want = null; if (!el) return; const old = el; el = null; cur = null; old.pause(); }   // forgetting what was wanted, so the next touch doesn't bring it back
   ["pointerdown", "keydown"].forEach((ev) => window.addEventListener(ev, () => { if (want && !cur) play(want); }, { capture: true, passive: true }));   // phones only let it start after a touch
   function setVol(v) { vol = Math.max(0, Math.min(1, v)); if (el) el.volume = vol; try { localStorage.setItem("bsl_bgm", String(vol)); } catch (e) { /* storage may be off */ } }
   return { LIST, play, stop, setVol, get vol() { return vol; }, get cur() { return cur; } };
@@ -15600,7 +15600,11 @@ window.BSL_ECON = (() => {
   const headOf = (url) => CUT.head[artKey(url)] || [0.5, 0.2];
   function applySkin() { const k = skinOf(); SKINS.forEach((q) => sheet.classList.toggle("sk-" + q.id, q === k)); sheet.style.setProperty("--acc", k.acc); sheet.style.setProperty("--t0", k.t[0]); sheet.style.setProperty("--t1", k.t[1]); sheet.style.setProperty("--lbg", k.bg); }
   const mainTrack = () => { const heard = BGM.LIST.filter((q) => (S.bgmSeen || {})[q.id] || q.free); return heard.find((q) => q.id === S.bgmMain) || heard[0] || null; };
-  function playMain() { const t = mainTrack(); if (!t) return; (S.bgmSeen = S.bgmSeen || {})[t.id] = 1; BGM.play(t.id); }
+  let booted = false;   // nothing plays under the loading screen
+  function playMain() {
+    // the main theme is for the terminal's own screens: not while loading, not before the prologue and first lesson are over, never under a scene
+    if (!booted || !S.started || !(S.tutorialDone || S.startDone) || sheet.querySelector(".story")) { if (window.BGM) BGM.stop(); return; }
+    const t = mainTrack(); if (!t) return; (S.bgmSeen = S.bgmSeen || {})[t.id] = 1; BGM.play(t.id); }
   // each skin's air: data motes, dust in the lamplight, glyphs, embers
   function lobbyFx(host, kind) {
     const cv = h("canvas", "lb-fx"); host.appendChild(cv); const q = Math.min(1.5, window.devicePixelRatio || 1); cv.width = 1280 * q; cv.height = 720 * q;
@@ -18406,7 +18410,7 @@ window.BSL_ECON = (() => {
     }, { playerName: S.name });
   }
 
-  // the training room: every operator you own, fully promoted, endless cost, foes on demand
+  // the training room: your own operators as they stand, endless cost, foes on demand
   function startSandbox(sel) {
     // the training room fields your own operators as they are now
     const squad = sel.filter((q) => S.ops[q.id]).slice(0, 12).map((q) => { const o = S.ops[q.id]; return { id: q.id, skillIdx: Math.min(q.s || 0, o.elite, Math.max(0, (def(q.id).skills || []).length - 1)), mult: mult(q.id), elite: o.elite, look: lookElite(q.id), pot: o.pot, slv: o.sl || 1 }; });
@@ -18499,7 +18503,7 @@ window.BSL_ECON = (() => {
     tick();
   }
   render();
-  bootLoad(() => { if (!S.started) firstStart(); });
+  bootLoad(() => { booted = true; if (!S.started) firstStart(); else playMain(); });
 })();
 
 </script>
