@@ -15606,7 +15606,7 @@ window.BSL_ECON = (() => {
   let booted = false;   // nothing plays under the loading screen
   function playMain() {
     // the main theme is for the terminal's own screens: not while loading, not before the prologue and first lesson are over, never under a scene
-    if (!booted || !S.started || !(S.tutorialDone || S.startDone) || sheet.querySelector(".story")) { if (window.BGM) BGM.stop(); return; }
+    if (!booted || host.hidden || !S.started || !(S.tutorialDone || S.startDone) || sheet.querySelector(".story")) { if (window.BGM) BGM.stop(); return; }
     const t = mainTrack(); if (!t) return; (S.bgmSeen = S.bgmSeen || {})[t.id] = 1; BGM.play(t.id); }
   // each skin's air: data motes, dust in the lamplight, glyphs, embers
   function lobbyFx(host, kind) {
@@ -18415,7 +18415,7 @@ window.BSL_ECON = (() => {
 
   // level-0 training straight after the prologue: Yui alone, on the terminal's training grid
   function startTutorial() {
-    host.hidden = true;
+    host.hidden = true; if (window.BGM) BGM.stop();
     const o = S.ops.yui;
     B.start("tutorial", [{ id: "yui", skillIdx: 0, mult: mult("yui"), elite: o ? o.elite : 0, pot: o ? o.pot : 1 }], () => {
       host.hidden = false; S.tutorialDone = true; save(); render();
@@ -18428,7 +18428,7 @@ window.BSL_ECON = (() => {
   function startSandbox(sel) {
     // the training room fields your own operators as they are now
     const squad = sel.filter((q) => S.ops[q.id]).slice(0, 12).map((q) => { const o = S.ops[q.id]; return { id: q.id, skillIdx: Math.min(q.s || 0, o.elite, Math.max(0, (def(q.id).skills || []).length - 1)), mult: mult(q.id), elite: o.elite, look: lookElite(q.id), pot: o.pot, slv: o.sl || 1 }; });
-    host.hidden = true;
+    host.hidden = true; if (window.BGM) BGM.stop();
     B.start("sandbox", squad, () => { host.hidden = false; render(); });
   }
 
@@ -18438,7 +18438,7 @@ window.BSL_ECON = (() => {
     const cap = STAGE_META[sel].squad || 12, fx = STAGE_META[sel].fixed;
     const squad = fx ? fx.map(([id, elite, lvl]) => ({ id, skillIdx: 0, mult: TD.growth(def(id), elite, lvl, maxLv(id, elite)), elite, pot: 1 }))   // the lesson's own squad
       : squadIds().slice(0, cap).map((id) => ({ id, skillIdx: S.ops[id].skill, mult: mult(id), elite: S.ops[id].elite, look: lookElite(id), pot: S.ops[id].pot, slv: S.ops[id].sl || 1 }));
-    host.hidden = true;
+    host.hidden = true; if (window.BGM) BGM.stop();
     const seenOpt = { seen: Object.assign({}, S.seen || {}), mark: (k) => { (S.seen = S.seen || {})[k] = 1; save(); }, practice: !!practice, cost: practice ? 0 : STAGE_META[sel].cost };   // what this save has already been shown in battle; the give-up box's refund
     B.start(sel, squad, (r) => {
       host.hidden = false;
