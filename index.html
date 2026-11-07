@@ -13955,6 +13955,7 @@ window.BSL_ECON = (() => {
   const BASE = {
     FAT: 24, DRAIN: 1, REST: [2, 3, 4], DORM_SLOTS: [3, 4, 5], SLOTS: 3, LVMUL: [1, 1.6, 2.4], CAPH: 12,   // fatigue max, per hour on guard, per hour in the dorm by its level
     RAID_EVERY: 5, RAID_JIT: 2,   // hours between raids, and the spread
+    BUILD: { coin: 3000, items: [["bm1", 6]] },   // opening a new dispatch room (the first one comes ready)
     UP: { 2: { coin: 6000, items: [["bm1", 8]] }, 3: { coin: 16000, items: [["bm2", 5], ["bm1", 10]] } },
   };
   return { CLS, clsKey, MATS, ITEMS, REFINE, expNeed, coinPerExp, matsOf, promoCost, skillCost, DROPS, SUPPLY, OPEN, SUPPLY_META, supplyDrops, ZONES, BASE };
@@ -14350,6 +14351,61 @@ window.BSL_ECON = (() => {
   .bm-c .st { font-size:12px; font-weight:900; padding:1px 6px; margin-left:2px; white-space:nowrap; } .bm-c .st.on { background:#2fa84f; } .bm-c .st.stop { background:#d23b3b; } .bm-c .st.off { background:#55575c; }
   .bm-c .wn { margin-left:auto; text-align:right; line-height:1; } .bm-c .wn b { font-size:19px; display:block; } .bm-c .wn small { font-size:11px; color:#8a909a; }
   .bm-c .ft { margin-top:6px; font-size:14px; color:#c8ccd4; }
+  /* the base, after the original: a pale blueprint floor with the rooms as tiles */
+  .ib-bg { position:absolute; inset:0; background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='236'%3E%3Cg fill='none' stroke='%23b9bcc1' stroke-width='1'%3E%3Cpath d='M8 0v14M1 7h14M228 222v14M221 229h14'/%3E%3Cpath d='M110 100l20 20M130 100l-20 20' stroke='%23d0d2d5'/%3E%3C/g%3E%3Ctext x='150' y='60' font-size='9' fill='%23b9bcc1' font-family='sans-serif' transform='rotate(-90 150 60)'%3EINFRA07%3C/text%3E%3C/svg%3E"),
+    linear-gradient(rgba(0,0,0,.045) 1px, transparent 1px) 0 0/40px 40px, linear-gradient(90deg, rgba(0,0,0,.045) 1px, transparent 1px) 0 0/40px 40px, #e7e8ea; }
+  .ib-bg.dim { filter:brightness(.25); }
+  .ib-res { position:absolute; right:20px; top:16px; display:flex; gap:8px; } .ib-res .c { display:flex; align-items:center; height:40px; background:#1d1f23; padding-right:14px; }
+  .ib-res .c > i { width:44px; height:40px; display:grid; place-items:center; background:#2c2f35; margin-right:12px; } .ib-res .c svg { width:30px; height:30px; } .ib-res .c b { font-size:21px; font-weight:500; color:#fff; min-width:44px; text-align:right; }
+  .ib-res .cn { font-style:normal; font-size:20px; font-weight:900; color:#ffd36a; }
+  .ib-al { position:absolute; right:20px; top:66px; width:170px; height:52px; background:#d8423c; color:#fff; display:flex; align-items:center; gap:10px; padding:0 14px; }
+  .ib-al i { font-style:normal; font-size:28px; } .ib-al b { font-size:30px; font-weight:500; margin-left:auto; } .ib-al small { position:absolute; left:10px; bottom:2px; font-size:9px; letter-spacing:.1em; opacity:.8; }
+  .ib-all { position:absolute; left:28px; top:96px; width:230px; height:70px; background:#2f86b5; color:#fff; display:flex; align-items:center; justify-content:space-between; padding:0 22px; box-shadow:0 3px 8px rgba(0,0,0,.2); }
+  .ib-all b { font-size:24px; font-weight:900; } .ib-all i { font-style:normal; font-size:30px; }
+  .ib-gd { position:absolute; left:28px; top:178px; width:230px; height:52px; background:#8d9096; color:#fff; display:flex; align-items:center; justify-content:space-between; padding:0 18px; } .ib-gd b { font-size:20px; font-weight:900; } .ib-gd span { font-size:15px; opacity:.85; }
+  .ib-gd { width:150px; } .ib-gd.lg { left:186px; width:150px; background:#6f7278; }
+  .ib-ch { position:absolute; left:196px; width:66px; background:#2a2c30; color:#fff; display:flex; flex-direction:column; align-items:center; justify-content:center; line-height:1; }
+  .ib-ch small { font-size:10px; letter-spacing:.08em; color:#9aa0aa; } .ib-ch b { font-size:30px; font-weight:400; } .ib-ch.lk { background:#bfc2c6; } .ib-ch.lk b, .ib-ch.lk small { color:#8a8d92; }
+  .ib-rm { position:absolute; background:linear-gradient(135deg,#2c2e33,#24262a); color:#fff; box-shadow:0 0 0 3px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.25); overflow:hidden; }
+  .ib-rm::before { content:""; position:absolute; inset:0; background:repeating-linear-gradient(60deg,rgba(255,255,255,.025) 0 2px,transparent 2px 14px); pointer-events:none; }
+  .ib-rm .bar { position:absolute; left:0; top:0; bottom:0; width:12px; background:var(--rc); }
+  .ib-rm .tt { position:absolute; left:22px; top:8px; font-size:24px; font-weight:900; display:flex; align-items:center; gap:6px; }
+  .ib-rm .lv { display:flex; gap:2px; } .ib-rm .lv i { width:5px; height:15px; background:#fff; } .ib-rm .lv i.o { background:rgba(255,255,255,.2); }
+  .ib-rm .st { position:absolute; left:22px; top:40px; font-size:14px; font-weight:800; color:#c8ccd4; }
+  .ib-rm .ic { position:absolute; right:-14px; top:-14px; width:56px; height:56px; border-radius:50%; background:#1b1c1f; border:3px solid var(--rc); display:grid; place-items:center; } .ib-rm .ic > i { width:34px; height:34px; display:grid; place-items:center; margin:6px 6px 0 0; } .ib-rm .ic svg { width:100%; height:100%; }
+  .ib-rm .ic .cn { font-style:normal; font-size:24px; font-weight:900; color:#ffd36a; } .ib-rm .ic.none { border-color:#6f747d; font-size:26px; color:#9aa0aa; }
+  .ib-rm .gn { position:absolute; right:10px; bottom:14px; font-size:28px; line-height:1; } .ib-rm .gn b { font-weight:400; } .ib-rm .gn small { font-size:16px; color:#9aa0aa; }
+  .ib-rm .sg { position:absolute; left:22px; right:70px; bottom:8px; display:flex; gap:3px; } .ib-rm .sg i { flex:1; height:5px; background:rgba(255,255,255,.18); } .ib-rm .sg i.on { background:var(--rc); }
+  .ib-rm.empty { background:rgba(255,255,255,.4); border:2px dashed #9a9ea4; box-shadow:none; color:#4a4d52; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; }
+  .ib-rm.empty::before { display:none; } .ib-rm.empty b { font-size:34px; font-weight:300; line-height:1; } .ib-rm.empty span { font-size:16px; font-weight:800; } .ib-rm.empty em { font-style:normal; display:flex; align-items:center; gap:2px; font-size:14px; } .ib-rm.empty em svg { width:22px; height:22px; } .ib-rm.empty em i { font-style:normal; margin-right:6px; }
+  .ib-rm.lock { background:transparent; border:1px solid #c4c7cb; box-shadow:none; color:#a4a7ac; display:grid; place-items:center; text-align:center; font-size:13px; letter-spacing:.04em; cursor:default; } .ib-rm.lock::before { display:none; }
+  .ib-rm .gn .pp { width:16px; height:16px; fill:#c8ccd4; margin-right:4px; vertical-align:2px; }
+  .ib-rm.dorm .gn small { color:#9aa0aa; }
+  .ib-cor { position:absolute; width:62px; height:52px; background:#111; color:#4fd8b0; display:flex; align-items:center; justify-content:center; gap:1px; box-shadow:0 2px 5px rgba(0,0,0,.3); }
+  .ib-cor i { font-style:normal; font-size:9px; letter-spacing:-2px; } .ib-cor svg { width:26px; height:26px; fill:#4fd8b0; }
+  .ib-cc { position:absolute; left:890px; top:104px; width:358px; height:136px; background:linear-gradient(135deg,#2a2b2f,#1b1c1f); color:#fff; overflow:hidden; box-shadow:0 0 0 3px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.25); }
+  .ib-cc::before { content:""; position:absolute; inset:0; background:linear-gradient(rgba(255,180,90,.08) 1px,transparent 1px) 0 0/16px 16px, linear-gradient(90deg,rgba(255,180,90,.08) 1px,transparent 1px) 0 0/16px 16px; }
+  .ib-cc .tt { position:absolute; left:24px; top:14px; font-size:30px; font-weight:900; } .ib-cc .sub { position:absolute; left:26px; top:54px; font-size:10px; letter-spacing:.1em; color:#9aa0aa; }
+  .ib-cc .vv { position:absolute; right:22px; top:6px; font-size:72px; font-weight:300; color:#ffb44a; line-height:1; } .ib-cc .vv small { font-size:18px; color:#c8ccd4; margin-right:4px; }
+  .ib-cc .ss { position:absolute; left:24px; bottom:12px; display:flex; gap:22px; } .ib-cc .ss small { display:block; font-size:12px; color:#9aa0aa; } .ib-cc .ss b { font-size:22px; font-weight:500; }
+  .ib-yd { position:absolute; width:290px; height:108px; background:#3b3d42; color:#fff; padding:12px 18px; box-shadow:0 0 0 3px rgba(0,0,0,.12); background-image:repeating-linear-gradient(45deg,rgba(0,0,0,.12) 0 10px,transparent 10px 20px); }
+  .ib-yd .tt { font-size:22px; font-weight:900; } .ib-yd .st { font-size:14px; color:#f0d9a8; margin-top:4px; } .ib-yd .yg { position:absolute; right:16px; bottom:12px; font-size:16px; font-weight:800; color:#8fd3ff; }
+  .ib-log { width:680px !important; } .ib-log .ls { max-height:380px; overflow-y:auto; font-size:15px; } .ib-log .ls div { display:flex; gap:10px; padding:5px 0; border-bottom:1px solid rgba(255,255,255,.06); color:#c8ccd4; }
+  .ib-log .ls div.bad { color:#ff8a7a; } .ib-log span { color:#7f8590; } .ib-log em { font-style:normal; color:#8fd3ff; } .ib-log small { margin-left:auto; color:#7f8590; }
+  .ib-nz { position:absolute; left:50%; top:46%; transform:translate(-50%,-50%); text-align:center; color:#fff; display:flex; flex-direction:column; align-items:center; gap:8px; }
+  .ib-nz small { font-size:14px; letter-spacing:.2em; color:#8fd3ff; } .ib-nz b { font-size:30px; font-weight:900; } .ib-nz span { font-size:16px; color:#b8bcc4; } .ib-nz .btn { margin-top:10px; padding:10px 34px; background:linear-gradient(90deg,#118bc4,#24a8e8); font-size:19px; font-weight:900; }
+  .bz-pn .zr { display:flex; align-items:flex-start; gap:10px; } .bz-pn .zr p { flex:1; } .bz-pn .zr .chg { flex:none; margin-top:8px; padding:5px 12px; border:1px solid rgba(143,211,255,.6); color:#8fd3ff; font-size:14px; font-weight:800; }
+  .sk-box .lack { font-size:14px; color:#f2c14e; }
+  .modal.bz-zp .box { position:relative; width:1000px; padding:20px 24px; } .bz-zp .hd b { font-size:24px; font-weight:900; } .bz-zp .hd span { display:block; margin-top:4px; font-size:15px; color:#9aa0aa; }
+  .bz-zp .zl { margin-top:14px; display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+  .bz-zp .zc { position:relative; height:170px; background:#1c1d21; border:1px solid rgba(255,255,255,.12); overflow:hidden; }
+  .bz-zp .zc .im { position:absolute; inset:0; background:center/cover; opacity:.45; } .bz-zp .zc .tx { position:absolute; inset:0; padding:12px 14px; background:linear-gradient(90deg,rgba(0,0,0,.8),rgba(0,0,0,.2)); }
+  .bz-zp .zc .tx > b { font-size:15px; color:#8fd3ff; } .bz-zp .zc .n { font-size:21px; font-weight:900; } .bz-zp .zc .o { display:flex; align-items:center; gap:6px; margin-top:8px; font-size:16px; } .bz-zp .zc .o > i { width:30px; height:30px; display:grid; place-items:center; } .bz-zp .zc .o svg { width:100%; height:100%; }
+  .bz-zp .zc .o .cn { font-style:normal; font-size:18px; font-weight:900; color:#ffd36a; background:radial-gradient(#5a4a1c,#2a220c); border-radius:50%; border:1.5px solid #d9b24a; }
+  .bz-zp .zc .dg { position:absolute; left:14px; bottom:10px; font-size:14px; color:#b8bcc4; } .bz-zp .zc .dg b { color:#ff9a7a; }
+  .bz-zp .zc .tag { position:absolute; right:0; top:10px; font-size:13px; font-weight:900; background:#55575c; padding:2px 8px; } .bz-zp .zc .tag.on { background:#2fa84f; }
+  .bz-zp .zc.on { border:2px solid #2aa7ec; } .bz-zp .zc.lk, .bz-zp .zc.used { opacity:.55; }
   /* a zone or the dorm, the scene behind the panel */
   .bz-cv { position:absolute; inset:0; width:1280px; height:720px; }
   .bz-pn { position:absolute; right:0; top:0; bottom:0; width:470px; background:linear-gradient(90deg,rgba(10,11,13,0),rgba(10,11,13,.88) 12%,rgba(10,11,13,.94)); padding:80px 28px 20px 70px; transition:transform .3s, opacity .3s; overflow:hidden; }
@@ -14376,7 +14432,7 @@ window.BSL_ECON = (() => {
   .bz-pn .dg { display:flex; gap:8px; } .bz-pn .dg > div { flex:1; background:rgba(255,255,255,.06); padding:6px 10px; } .bz-pn .dg small { display:block; font-size:13px; color:#8a909a; } .bz-pn .dg b { font-size:24px; }
   .bz-pn .nr { font-size:14px; color:#9aa0aa; margin-top:6px; }
   .bz-pn .lgs { margin-top:6px; font-size:14px; color:#c8ccd4; } .bz-pn .lgs div { padding:2px 0; } .bz-pn .lgs span { color:#7f8590; margin-right:8px; } .bz-pn .lgs .bad { color:#ff8a7a; } .bz-pn .lgs .no { color:#6f747d; }
-  .bz-pk .box { position:relative; width:1060px; max-height:600px; padding:20px 24px; display:flex; flex-direction:column; }
+  .modal.bz-pk .box { position:relative; width:1060px; max-height:600px; padding:20px 24px; display:flex; flex-direction:column; }
   .bz-pk .hd b { font-size:24px; font-weight:900; } .bz-pk .hd span { margin-left:12px; font-size:15px; color:#9aa0aa; }
   .bz-pk .gl { margin-top:14px; display:grid; grid-template-columns:repeat(6,1fr); gap:10px; overflow-y:auto; padding-right:6px; }
   .bz-pk .pc { position:relative; height:180px; background:#202227; border:1px solid rgba(255,255,255,.12); overflow:hidden; }
@@ -15356,74 +15412,109 @@ window.BSL_ECON = (() => {
 
     // 자원 수집, after the original's 물자 비축: a pale concrete room, the week across the top, a tall card per site —
     // its chips laid out in rows on the art, a band when it is open, its name and its days below
-    // 기반시설: the shelter on the left, the zones won back on the right, each with what it is making, who is on guard and how a raid would go
+    // 기반시설, after the original's base: a pale blueprint floor, the dispatch rooms three to a chapter on the left,
+    // the control centre and the dorm on the right; every room a tile, touched to open
     base(el) {
-      baseTick(); const b = baseState(); b.seen = Date.now(); save();
-      // the city as a field map: the shelter, the zones won back along the line of advance, the fog where the dead still are
-      const MP = BMAP_POS, open = BZ.filter(zoneOpen).map((z) => z.code);
-      const live = baseMapLive(el, open, (code) => { const s = b.z[code], act = activeG(code); return { on: act.length > 0, stop: s.g.length > 0 && !act.length, risk: s.g.length > 0 && zWin(code, act) < 0.6 }; });
-      el.appendChild(topBar("", "", () => go("lobby"), { stam: false }));
-      el.appendChild(h("div", "bs-ttl", `<small class="en">BASE · FIELD MAP</small><b>탈환 구역</b>`));
-      // the shelter
-      const dc = h("div", "btn bm-c dorm", `<div class="hd"><b>피난처</b><small>숙소</small><span class="en">Lv.${b.dorm.lv}</span></div>
-        <div class="gd">${Array.from({ length: BB.DORM_SLOTS[b.dorm.lv - 1] }, (_, k) => { const id = b.dorm.rest[k]; return id ? `<i style="background-image:url(${opArt(id, "card")});--f:${fatOf(id) / BB.FAT * 360}deg;--c:${fatCol(fatOf(id))}"></i>` : `<i class="e"></i>`; }).join("")}</div>
-        <div class="ft">회복 <b class="en">${BB.REST[b.dorm.lv - 1]}</b>/시간</div>`);
-      Object.assign(dc.style, { left: MP.dorm[0] - 110 + "px", top: MP.dorm[1] + 34 + "px" }); dc.onclick = () => go("dorm"); el.appendChild(dc);
-      const dn = h("div", "btn bm-pin home"); Object.assign(dn.style, { left: MP.dorm[0] + "px", top: MP.dorm[1] + "px" }); dn.onclick = () => go("dorm"); el.appendChild(dn);
-      BZ.forEach((z, n) => {
-        const [x, y] = MP[z.code], up = n % 2 === 0, s = b.z[z.code], isOpen = zoneOpen(z);
-        const pin = h("div", "btn bm-pin" + (isOpen ? "" : " lk")); Object.assign(pin.style, { left: x + "px", top: y + "px" }); el.appendChild(pin);
-        if (!isOpen) { const t = h("div", "bm-lk", `<b class="en">${z.code}</b>미탈환`); Object.assign(t.style, { left: x - 60 + "px", top: (up ? y - 62 : y + 26) + "px" }); el.appendChild(t); return; }
-        const act = activeG(z.code), cap = zCap(z.code), win = zWin(z.code, act);
-        const stt = !s.g.length ? ["경계 없음", "off"] : !act.length ? ["생산 정지", "stop"] : ["생산 중", "on"];
-        const c = h("div", "btn bm-c " + (up ? "up" : "dn"), `<div class="hd"><b class="en">${z.code}</b>${esc(z.n)}<span class="en">Lv.${s.lv}</span></div>
-          <div class="pr">${outIc(z.out)}<div class="bar"><i style="width:${Math.min(100, s.store / cap * 100)}%"></i></div><em class="en">${numF(s.store, z.out)}</em></div>
-          <div class="gd">${Array.from({ length: BB.SLOTS }, (_, k) => { const id = s.g[k]; return id ? `<i class="${fatOf(id) <= 0 ? "out" : ""}" style="background-image:url(${opArt(id, "card")});--f:${fatOf(id) / BB.FAT * 360}deg;--c:${fatCol(fatOf(id))}"></i>` : `<i class="e"></i>`; }).join("")}
-            <div class="st ${stt[1]}">${stt[0]}</div><div class="wn ${s.g.length ? (win >= 1 ? "ok" : win >= 0.6 ? "mid" : "bad") : "bad"}"><b class="en">${s.g.length ? Math.round(win * 100) : 0}%</b><small>방어</small></div></div>`);
-        Object.assign(c.style, { left: x - 115 + "px", top: (up ? y - 150 : y + 30) + "px" });
-        c.onclick = pin.onclick = () => go("zone", z.code); el.appendChild(c);
-      });
-      // collect everything, and the last thing that happened
-      const ft = h("div", "bs-ft"); el.appendChild(ft);
-      const lg = b.log[0];
-      ft.appendChild(h("div", "lg", lg ? `<span class="en">${clockTxt(lg.t)}</span><b class="en">${lg.c}</b>${lg.ok ? "습격을 격퇴했습니다" : '<em>습격에 뚫려 보관 물자 절반을 잃었습니다</em>'}` : `<span>아직 습격 기록이 없습니다</span>`));
-      const all = h("div", "btn bs-all", "일괄 수령");
-      all.onclick = () => { baseTick(); const got = BZ.filter(zoneOpen).map((z) => collectZone(z.code)).filter(Boolean); save(); if (!got.length) return toast("수령할 물자가 없습니다"); dropBox("물자 수령", mergeItems(got.filter(([k]) => k !== "coin")).concat(got.filter(([k]) => k === "coin").length ? [["coin", got.filter(([k]) => k === "coin").reduce((a, x) => a + x[1], 0)]] : [])); render(); };
-      ft.appendChild(all);
-      const help = () => { const mo = h("div", "modal"), bx = h("div", "box bs-help", `<h3>기반시설 안내</h3>
-        <p><b>탈환 구역</b> 작전을 클리어한 지역은 탈환 구역이 됩니다. 구역마다 생산하는 물자가 정해져 있습니다.</p>
+      baseTick(); const b = baseState(); save();
+      el.appendChild(h("div", "ib-bg"));
+      el.appendChild(topBar("", "", () => go("lobby"), { res: false }));
+      // the base's own purse: its two materials and coin
+      const pr = h("div", "ib-res", [["bm1", inv("bm1")], ["bm2", inv("bm2")]].map(([k, n]) => `<div class="btn c" data-k="${k}"><i>${icn(ITEM[k].ic)}</i><b class="en">${fmt(n)}</b></div>`).join("") + `<div class="btn c" data-k="coin"><i class="cn">₵</i><b class="en">${fmt(S.res.coin)}</b></div>`);
+      pr.querySelectorAll(".c").forEach((c) => c.onclick = () => itemInfo(c.dataset.k, c.dataset.k === "coin" ? S.res.coin : inv(c.dataset.k))); el.appendChild(pr);
+      const nAl = baseAlerts();
+      if (nAl) { const al = h("div", "btn ib-al", `<i>⚠</i><b class="en">${nAl}</b><small class="en">EMERGENCY</small>`); al.onclick = () => { b.seen = Date.now(); save(); logBox(); }; el.appendChild(al); }
+      // left: collect all, the guide
+      const all = h("div", "btn ib-all", `<b>일괄 수령</b><i>⇩</i>`);
+      all.onclick = () => { baseTick(); const got = b.rooms.map((R, r) => collectRoom(r)).filter(Boolean); save(); if (!got.length) return toast("수령할 물자가 없습니다"); render(); dropBox("물자 수령", mergeItems(got)); };
+      el.appendChild(all);
+      const gd = h("div", "btn ib-gd", `<b>기반 안내</b><span class="en">?</span>`); gd.onclick = () => help(); el.appendChild(gd);
+      const lg = h("div", "btn ib-gd lg", `<b>습격 기록</b><span class="en">${b.log.length}</span>`); lg.onclick = () => { b.seen = Date.now(); save(); logBox(); }; el.appendChild(lg);
+      // the dispatch rooms
+      const X0 = 270, Y0 = 250, W = 176, HH = 108, GX = 8, GY = 10;
+      for (let ch = 1; ch <= 3; ch++) {
+        const y = Y0 + (ch - 1) * (HH + GY);
+        el.appendChild(Object.assign(h("div", "ib-ch" + (ch <= CHAPTERS ? "" : " lk"), `<small class="en">EPISODE</small><b class="en">${String(ch).padStart(2, "0")}</b>`), { style: `top:${y}px;height:${HH}px` }));
+        for (let k = 0; k < 3; k++) {
+          const r = (ch - 1) * 3 + k, R = b.rooms[r], x = X0 + k * (W + GX), t = h("div", "btn ib-rm");
+          Object.assign(t.style, { left: x + "px", top: y + "px", width: W + "px", height: HH + "px" });
+          if (!roomAvail(r)) { t.classList.add("lock"); t.innerHTML = `<span>EPISODE ${String(ch).padStart(2, "0")}<br>수신 후 개방</span>`; t.onclick = () => toast("다음 장이 열리면 파견실이 늘어납니다"); }
+          else if (!R.built) { t.classList.add("empty"); t.innerHTML = `<b>+</b><span>파견실 건설</span><em>${BB.BUILD.items.map(([k2, n]) => `${icn(ITEM[k2].ic)}<i class="en">×${n}</i>`).join("")}</em>`; t.onclick = () => buildBox(r, render); }
+          else {
+            const z = R.zone && zDef(R.zone), act = activeG(r), cap = zCap(r), col = roomCol(R);
+            const stt = !z ? ["보호 구역 미지정", "#9aa0aa"] : !R.g.length ? ["경계 인원 없음", "#ff9a3c"] : !act.length ? ["생산 정지", "#ff4a3a"] : R.store >= cap ? ["보관 가득", "#ff9a3c"] : [`${z.code} 보호 중`, col];
+            const seg = 5, fill = z ? Math.round(Math.min(1, R.store / cap) * seg) : 0;
+            t.style.setProperty("--rc", col);
+            t.innerHTML = `<div class="bar"></div><div class="tt">파견실<span class="lv">${"<i></i>".repeat(R.lv)}${"<i class=o></i>".repeat(3 - R.lv)}</span></div><div class="st" style="color:${stt[1]}">${stt[0]}</div>
+              ${z ? `<div class="ic">${outIc(z.out)}</div>` : '<div class="ic none">+</div>'}
+              <div class="gn en"><svg class="pp" viewBox="0 0 20 20"><circle cx="10" cy="6" r="4"/><path d="M2 19c0-5 4-7 8-7s8 2 8 7z"/></svg><b>${R.g.length}</b><small>/${BB.SLOTS}</small></div>
+              <div class="sg">${Array.from({ length: seg }, (_, q) => `<i class="${q < fill ? "on" : ""}"></i>`).join("")}</div>`;
+            t.onclick = () => go("room", r);
+          }
+          el.appendChild(t);
+        }
+        el.appendChild(Object.assign(h("div", "ib-cor", `<i>◂◂</i><svg viewBox="0 0 24 24"><circle cx="13" cy="4" r="2.4"/><path d="M11 8l-4 4 2 1 3-3 1 4-3 5 2 1 3-5 3 3 2-1-4-5-1-4 3 2 2-1-5-4z"/></svg><i>▸▸</i>`), { style: `left:${X0 + 3 * (W + GX)}px;top:${y + HH / 2 - 26}px` }));
+      }
+      // right: the control centre, the dorm, the way to the materials yard
+      const working = b.rooms.filter((R) => R.built && R.zone && R.g.some((id) => fatOf(id) > 0)).length, built = b.rooms.filter((R, r) => R.built && roomAvail(r)).length;
+      const today = b.log.filter((l) => l.t > Date.now() - 24 * HR), win = today.filter((l) => l.ok).length;
+      const cc = h("div", "btn ib-cc", `<div class="tt">제어 센터</div><div class="sub en">LEVEL OF CONTROL INTERFACE</div>
+        <div class="vv en"><small>EP</small>01</div><div class="ss"><div><small>가동 파견실</small><b class="en">${working}/${built}</b></div><div><small>24시간 습격</small><b class="en">${win}/${today.length}</b></div></div>`);
+      cc.onclick = () => help(); el.appendChild(cc);
+      const dr = b.dorm, dt = h("div", "btn ib-rm dorm", `<div class="bar"></div><div class="tt">숙소<span class="lv">${"<i></i>".repeat(dr.lv)}${"<i class=o></i>".repeat(3 - dr.lv)}</span></div><div class="st">${dr.rest.length ? "휴식 중" : "사용 가능"}</div>
+        <div class="gn en"><b>${dr.rest.length}</b><small>/${BB.DORM_SLOTS[dr.lv - 1]}</small></div><div class="sg">${Array.from({ length: BB.DORM_SLOTS[dr.lv - 1] }, (_, q) => `<i class="${dr.rest[q] ? "on" : ""}"></i>`).join("")}</div>`);
+      dt.style.setProperty("--rc", "#c8ccd4"); Object.assign(dt.style, { left: "890px", top: Y0 + "px", width: "290px", height: HH + "px" }); dt.onclick = () => go("dorm"); el.appendChild(dt);
+      el.appendChild(Object.assign(h("div", "ib-cor", `<i>◂◂</i><svg viewBox="0 0 24 24"><circle cx="13" cy="4" r="2.4"/><path d="M11 8l-4 4 2 1 3-3 1 4-3 5 2 1 3-5 3 3 2-1-4-5-1-4 3 2 2-1-5-4z"/></svg><i>▸▸</i>`), { style: `left:1188px;top:${Y0 + HH / 2 - 26}px` }));
+      const bmI = TD.STAGES.findIndex((q) => q.supply === "BM" && q.tier === 1), bmOk = STAGE_META[bmI].unlock(S), bmOn = EC.OPEN[new Date().getDay()].includes("BM");
+      const yd = h("div", "btn ib-yd", `<div class="tt">자재 반입</div><div class="st">${bmOk ? (bmOn ? "자재 야적장 · 오늘 개방" : "자재 야적장 · 오늘 닫힘") : `${STAGE_META[bmI].unlockAt} 클리어 후 개방`}</div><div class="yg">바로가기 ›</div>`);
+      Object.assign(yd.style, { left: "890px", top: Y0 + HH + GY + "px" });
+      yd.onclick = () => { if (!bmOk) return toast(`${STAGE_META[bmI].unlockAt} 클리어 후 열립니다`); if (!bmOn) return toast("오늘은 닫혀 있습니다 · 월수금토일 개방"); go("supplymap", "BM"); };
+      el.appendChild(yd);
+      function logBox() {
+        const mo = h("div", "modal"), bx = h("div", "box ib-log", `<h3>습격 기록</h3><div class="ls">${b.log.map((l) => `<div class="${l.ok ? "" : "bad"}"><span class="en">${clockTxt(l.t)}</span><b>파견실 ${l.r + 1}</b><em class="en">${l.c}</em>${l.ok ? "습격 격퇴" : "방어 실패 · 보관 물자 절반 손실"}<small class="en">${l.p}%</small></div>`).join("") || "<div>기록 없음</div>"}</div>`);
+        const row = h("div", "row"), ok = h("div", "btn", "확인"); ok.onclick = () => { mo.remove(); render(); }; row.appendChild(ok); bx.appendChild(row); mo.appendChild(bx); sheet.appendChild(mo);
+      }
+      function help() { const mo = h("div", "modal"), bx = h("div", "box bs-help", `<h3>기반시설 안내</h3>
+        <p><b>파견실</b> 장마다 파견실이 3칸씩 열립니다. 첫 칸은 바로 쓸 수 있고, 나머지는 보강 자재로 건설합니다.</p>
+        <p><b>보호 구역</b> 파견실마다 지킬 탈환 구역(클리어한 맵)을 하나 고릅니다. 구역마다 생산물과 위험도가 다릅니다.</p>
         <p><b>경계 배치</b> 가사인격을 경계에 세워야 생산이 진행됩니다. 인원이 많고 적합 직군일수록 빨라집니다. 경계 중에도 작전에는 그대로 데려갈 수 있습니다.</p>
         <p><b>피로</b> 경계 중에는 피로가 시간당 ${BB.DRAIN}씩 줄어듭니다. 0이 되면 탈진해서 경계를 서지 못하고, 전원이 탈진하면 생산이 멈춥니다. 숙소로 교체해 쉬게 하세요.</p>
-        <p><b>습격</b> 몇 시간마다 습격이 옵니다. 경계 인원의 육성도(방어력)가 구역 위험도보다 낮으면 격퇴 확률이 떨어지고, 뚫리면 보관 물자 절반을 잃습니다.</p>
-        <p><b>시설 강화</b> 자원 수집의 「자재 야적장」에서 얻는 자재로 강화합니다. 생산량이 늘지만 위험도도 올라갑니다.</p>`), row = h("div", "row"), ok = h("div", "btn", "확인");
-        ok.onclick = () => mo.remove(); row.appendChild(ok); bx.appendChild(row); mo.appendChild(bx); mo.onclick = (e) => { if (e.target === mo) mo.remove(); }; sheet.appendChild(mo); };
-      const hb = h("div", "btn bs-q", "?"); hb.onclick = help; el.appendChild(hb);
+        <p><b>습격</b> 몇 시간마다 습격이 옵니다. 경계 인원의 방어력이 구역 위험도보다 낮으면 격퇴 확률이 떨어지고, 뚫리면 보관 물자 절반을 잃습니다.</p>
+        <p><b>건설과 강화</b> 자원 수집의 「자재 야적장」에서 얻는 보강 자재·강화 골조로 합니다. 강화하면 생산량이 늘지만 위험도도 올라갑니다.</p>`), row = h("div", "row"), ok = h("div", "btn", "확인");
+        ok.onclick = () => mo.remove(); row.appendChild(ok); bx.appendChild(row); mo.appendChild(bx); mo.onclick = (e) => { if (e.target === mo) mo.remove(); }; sheet.appendChild(mo); }
       if (!b.intro) { b.intro = 1; save(); help(); }
     },
 
-    // one zone: its ground alive behind, the guards standing on it, and the panel with the work, the watch and the danger
-    zone(el, code) {
-      baseTick(); save(); const b = baseState(), z = zDef(code), s = b.z[code], i = zoneIdx(code);
-      const sp = zoneSpots(code);
-      const sc = livingScene(el, { bg: ART[TD.STAGES[i].bg] || ART.bg, fx: "fire", k: sp.k, speed: sp.k * 0.5,
-        actors: s.g.map((id, k) => ({ id, x: sp.spots[k % sp.spots.length][0], y: sp.spots[k % sp.spots.length][1], home: sp.spots[k % sp.spots.length], tired: fatOf(id) <= 0 })),
-        next: (a) => Math.random() < 0.5 ? a.home : sp.all[Math.floor(Math.random() * Math.min(6, sp.all.length))] });   // a short round of the nearest squares, then back
+    // one dispatch room: the map it guards alive behind, the guards standing on it, and the panel with the work, the watch and the danger
+    room(el, r) {
+      baseTick(); save(); const b = baseState(), R = b.rooms[r];
+      if (!R || !R.built) return go("base");
       el.appendChild(topBar("", "", () => go("base"), { res: false }));
-      const act = activeG(code), rate = zRate(code, act), cap = zCap(code), win = zWin(code, act), pw = zPow(code, act), dg = zDanger(code);
+      if (!R.zone) {   // nothing chosen yet: a blank plan, and the choice
+        el.insertBefore(h("div", "ib-bg dim"), el.firstChild);
+        const e = h("div", "ib-nz", `<small class="en">DISPATCH ROOM ${r + 1}</small><b>보호할 구역을 고르세요</b><span>탈환한 맵 가운데 하나를 골라 지키게 합니다.</span><div class="btn">구역 선택</div>`);
+        e.querySelector(".btn").onclick = () => zonePicker(r, render); el.appendChild(e); zonePicker(r, render); return;
+      }
+      const code = R.zone, z = zDef(code), i = zoneIdx(code), sp = zoneSpots(code);
+      livingScene(el, { bg: ART[TD.STAGES[i].bg] || ART.bg, fx: "fire", k: sp.k, speed: sp.k * 0.5,
+        actors: R.g.map((id, k) => ({ id, x: sp.spots[k % sp.spots.length][0], y: sp.spots[k % sp.spots.length][1], home: sp.spots[k % sp.spots.length], tired: fatOf(id) <= 0 })),
+        next: (a) => Math.random() < 0.5 ? a.home : sp.all[Math.floor(Math.random() * Math.min(6, sp.all.length))] });   // a short round of the nearest squares, then back
+      el.appendChild(el.querySelector(".top"));
+      const act = activeG(r), rate = zRate(r, act), cap = zCap(r), win = zWin(r, act), pw = zPow(r, act), dg = zDanger(r);
       const pn = h("div", "bz-pn"); el.appendChild(pn);
       const eye = h("div", "btn bz-eye", "◐"); eye.onclick = () => el.classList.toggle("bz-hide"); el.appendChild(eye);
-      pn.innerHTML = `<div class="hd"><small class="en">ZONE · ${code}</small><b>${esc(z.n)}</b><span class="lv en">Lv.${s.lv}</span><div class="btn up">${BB.UP[s.lv + 1] ? "시설 강화" : "MAX"}</div></div>
-        <p>${esc(z.d)}</p>
-        <div class="sec"><div class="lb">생산</div><div class="pr">${outIc(z.out)}<div><b>${outN(z.out)}</b><span>시간당 <em class="en">${numF(rate, z.out === "coin" ? "coin" : "x")}</em>${act.length < s.g.length ? " · 지친 인원 제외" : ""}</span></div><div class="btn get${s.store >= 1 ? "" : " dis"}">수령</div></div>
-          <div class="bar"><i style="width:${Math.min(100, s.store / cap * 100)}%"></i><span class="en">${numF(s.store, z.out)} / ${numF(cap, z.out)}</span></div></div>
-        <div class="sec"><div class="lb">경계 배치 <span>적합 · ${z.fit.join(" ")}</span></div><div class="sl">${Array.from({ length: BB.SLOTS }, (_, k) => { const id = s.g[k]; if (!id) return `<div class="btn s e" data-k="${k}"><b>+</b><span>배치</span></div>`; const f = fatOf(id);
+      pn.innerHTML = `<div class="hd"><small class="en">DISPATCH ROOM ${r + 1} · ${code}</small><b>${esc(z.n)}</b><span class="lv en">Lv.${R.lv}</span><div class="btn up">${BB.UP[R.lv + 1] ? "시설 강화" : "MAX"}</div></div>
+        <div class="zr"><p>${esc(z.d)}</p><div class="btn chg">구역 변경</div></div>
+        <div class="sec"><div class="lb">생산</div><div class="pr">${outIc(z.out)}<div><b>${outN(z.out)}</b><span>시간당 <em class="en">${numF(rate, z.out === "coin" ? "coin" : "x")}</em>${act.length < R.g.length ? " · 지친 인원 제외" : ""}</span></div><div class="btn get${R.store >= 1 ? "" : " dis"}">수령</div></div>
+          <div class="bar"><i style="width:${Math.min(100, R.store / cap * 100)}%"></i><span class="en">${numF(R.store, z.out)} / ${numF(cap, z.out)}</span></div></div>
+        <div class="sec"><div class="lb">경계 배치 <span>적합 · ${z.fit.join(" ")}</span></div><div class="sl">${Array.from({ length: BB.SLOTS }, (_, k) => { const id = R.g[k]; if (!id) return `<div class="btn s e" data-k="${k}"><b>+</b><span>배치</span></div>`; const f = fatOf(id);
           return `<div class="btn s${f <= 0 ? " out" : ""}" data-k="${k}"><div class="im" style="background-image:url(${opArt(id, "card")})"></div>${z.fit.includes(def(id).cls) ? '<em>적합</em>' : ""}<div class="nm">${esc(nm(id).main)}</div><div class="fb"><i style="width:${f / BB.FAT * 100}%;background:${fatCol(f)}"></i></div><div class="ft en">${f <= 0 ? "탈진" : Math.floor(f) + "/" + BB.FAT}</div></div>`; }).join("")}</div></div>
         <div class="sec"><div class="lb">습격 대비</div><div class="dg"><div><small>위험도</small><b class="en">${dg}</b></div><div><small>방어력</small><b class="en">${pw}</b></div><div class="w ${win >= 1 ? "ok" : win >= 0.6 ? "mid" : "bad"}"><small>격퇴 확률</small><b class="en">${Math.round(win * 100)}%</b></div></div>
-          <div class="nr">다음 습격 예상 · ${hrsTxt(s.nr - Date.now())} 후${win < 1 && s.g.length ? " · 육성도가 낮으면 격퇴 확률이 떨어집니다" : ""}</div>
-          <div class="lgs">${b.log.filter((l) => l.c === code).slice(0, 3).map((l) => `<div class="${l.ok ? "" : "bad"}"><span class="en">${clockTxt(l.t)}</span>${l.ok ? "습격 격퇴" : "방어 실패 · 보관 물자 절반 손실"}</div>`).join("") || '<div class="no">기록 없음</div>'}</div></div>`;
-      pn.querySelector(".up").onclick = () => upgradeBox(code, render);
-      pn.querySelector(".get").onclick = () => { baseTick(); const g = collectZone(code); save(); if (!g) return toast("아직 수령할 만큼 쌓이지 않았습니다"); dropBox("물자 수령", [g]); render(); };
-      pn.querySelectorAll(".sl .s").forEach((c) => c.onclick = () => guardPicker(code, +c.dataset.k, render));
+          <div class="nr">${R.nr ? `다음 습격 예상 · ${hrsTxt(R.nr - Date.now())} 후` : "경계를 세우면 습격 주기가 시작됩니다"}${win < 1 && R.g.length ? " · 육성도가 낮으면 격퇴 확률이 떨어집니다" : ""}</div>
+          <div class="lgs">${b.log.filter((l) => l.r === r).slice(0, 3).map((l) => `<div class="${l.ok ? "" : "bad"}"><span class="en">${clockTxt(l.t)}</span>${l.ok ? "습격 격퇴" : "방어 실패 · 보관 물자 절반 손실"}</div>`).join("") || '<div class="no">기록 없음</div>'}</div></div>`;
+      pn.querySelector(".up").onclick = () => upgradeBox(r, render);
+      pn.querySelector(".chg").onclick = () => zonePicker(r, render);
+      pn.querySelector(".get").onclick = () => { baseTick(); const g = collectRoom(r); save(); if (!g) return toast("아직 수령할 만큼 쌓이지 않았습니다"); render(); dropBox("물자 수령", [g]); };
+      pn.querySelectorAll(".sl .s").forEach((c) => c.onclick = () => guardPicker(r, +c.dataset.k, render));
     },
 
     // the dorm: whoever is resting goes about their day in the shelter
@@ -16232,55 +16323,60 @@ window.BSL_ECON = (() => {
   // an item in a small circle with a count under it: the shape every cost and reward is drawn in
   const itemDot = (k, n, opt = {}) => `<div class="btn idot t${(ITEM[k] || {}).tier || 1}${opt.short ? " short" : ""}" data-k="${k}"><i>${icn(ITEM[k].ic)}</i><b class="en">${opt.text !== undefined ? opt.text : fmt(n)}</b>${opt.tag ? `<em>${opt.tag}</em>` : ""}</div>`;
   const wireDots = (root) => root.querySelectorAll(".idot").forEach((c) => c.onclick = (e) => { e.stopPropagation(); itemInfo(c.dataset.k, HAVE[c.dataset.k] ? HAVE[c.dataset.k]() : undefined); });
-  // ---------- the base: zones won back from the dead, worked while operators stand guard ----------
-  // each zone makes one thing while someone guards it; guards tire by the hour and stop at zero; raids come every few hours
-  // and are beaten off with a chance that falls when the guard is weaker than the zone's danger; the dorm is where they rest
-  const BZ = EC.ZONES, BB = EC.BASE, HR = 3600e3;
+  // ---------- the base: dispatch rooms, three to a chapter, each sent to guard one reclaimed map ----------
+  // a room makes what its map makes while someone guards it; guards tire by the hour and stop at zero; raids come every few hours
+  // and are beaten off with a chance that falls when the guard is weaker than the map's danger; the dorm is where they rest
+  const BZ = EC.ZONES, BB = EC.BASE, HR = 3600e3, ROOMS = 9, CHAPTERS = 1;   // three rooms for each chapter; only the first chapter is out
   const zoneIdx = (code) => TD.STAGES.findIndex((q) => q.code === code);
   const zoneOpen = (z) => ((S.stages[z.code] || {}).stars || 0) > 0;
   const baseOpen = () => BZ.some(zoneOpen);
   const zDef = (code) => BZ.find((z) => z.code === code);
+  const roomCh = (r) => Math.floor(r / 3) + 1;
+  const roomAvail = (r) => roomCh(r) <= CHAPTERS && baseOpen();
   function baseState() {
-    const b = S.base || (S.base = { z: {}, dorm: { lv: 1, rest: [] }, fat: {}, t: Date.now(), log: [], seen: 0 });
-    for (const z of BZ) if (!b.z[z.code]) b.z[z.code] = { lv: 1, g: [], store: 0, nr: Date.now() + (BB.RAID_EVERY + Math.random() * BB.RAID_JIT) * HR };
+    let b = S.base;
+    if (!b || !b.rooms) b = S.base = { rooms: [], dorm: (b && b.dorm) || { lv: 1, rest: [] }, fat: (b && b.fat) || {}, t: Date.now(), log: [], seen: 0, intro: b && b.intro };
+    for (let r = 0; r < ROOMS; r++) if (!b.rooms[r]) b.rooms[r] = { built: r === 0, lv: 1, zone: null, g: [], store: 0, nr: 0 };   // the first room comes ready
     const own = (id) => !!S.ops[id];
-    for (const c in b.z) b.z[c].g = b.z[c].g.filter(own);
+    for (const R of b.rooms) R.g = R.g.filter(own);
     b.dorm.rest = b.dorm.rest.filter(own);
     return b;
   }
   const fatOf = (id) => { const f = S.base && S.base.fat[id]; return f === undefined ? BB.FAT : f; };
-  const postOf = (id) => { const b = baseState(); for (const c in b.z) if (b.z[c].g.includes(id)) return c; return b.dorm.rest.includes(id) ? "dorm" : null; };
+  const postOf = (id) => { const b = baseState(); for (let r = 0; r < ROOMS; r++) if (b.rooms[r].g.includes(id)) return r; return b.dorm.rest.includes(id) ? "dorm" : null; };
   const opPow = (id) => { const o = S.ops[id]; return o ? Math.round(o.elite * 35 + o.lvl + (def(id).rarity - 3) * 8) : 0; };
-  const activeG = (code, b = baseState()) => b.z[code].g.filter((id) => fatOf(id) > 0);
-  function zRate(code, act) {   // what the zone makes in an hour with these guards on their feet
-    const z = zDef(code), s = baseState().z[code]; act = act || activeG(code); const n = act.length; if (!n) return 0;
+  const roomOf = (r) => baseState().rooms[r];
+  const working = (R) => R.built && R.zone && zoneOpen(zDef(R.zone));
+  const activeG = (r) => roomOf(r).g.filter((id) => fatOf(id) > 0);
+  function zRate(r, act) {   // what the room makes in an hour with these guards on their feet
+    const R = roomOf(r); if (!working(R)) return 0; const z = zDef(R.zone); act = act || activeG(r); const n = act.length; if (!n) return 0;
     const fit = act.filter((id) => z.fit.includes(def(id).cls)).length;
-    return z.rate * BB.LVMUL[s.lv - 1] * [0, 0.45, 0.75, 1][Math.min(3, n)] * (1 + 0.1 * fit);
+    return z.rate * BB.LVMUL[R.lv - 1] * [0, 0.45, 0.75, 1][Math.min(3, n)] * (1 + 0.1 * fit);
   }
-  const zCap = (code) => zDef(code).rate * BB.LVMUL[baseState().z[code].lv - 1] * BB.CAPH;
-  const zDanger = (code) => zDef(code).danger[baseState().z[code].lv - 1];
-  const zPow = (code, act) => (act || activeG(code)).reduce((a, id) => a + opPow(id), 0);
-  const zWin = (code, act) => { const p = zPow(code, act), d = zDanger(code); return p <= 0 ? 0 : Math.max(0.1, Math.min(1, Math.pow(p / d, 2))); };
+  const zCap = (r) => { const R = roomOf(r); return R.zone ? zDef(R.zone).rate * BB.LVMUL[R.lv - 1] * BB.CAPH : 1; };
+  const zDanger = (r) => { const R = roomOf(r); return R.zone ? zDef(R.zone).danger[R.lv - 1] : 0; };
+  const zPow = (r, act) => (act || activeG(r)).reduce((a, id) => a + opPow(id), 0);
+  const zWin = (r, act) => { const p = zPow(r, act), d = zDanger(r); return p <= 0 ? 0 : Math.max(0.1, Math.min(1, Math.pow(p / d, 2))); };
   // bring everything up to now: production, fatigue and raids in quarter-hour steps (two weeks at most)
   function baseTick() {
     const b = baseState(), now = Date.now();
     let t = Math.min(b.t || now, now); if (now - t > 14 * 24 * HR) t = now - 14 * 24 * HR;
     while (t < now) {
       const t2 = Math.min(now, t + HR / 4), dh = (t2 - t) / HR;
-      for (const z of BZ) {
-        const s = b.z[z.code];
-        if (!zoneOpen(z)) { s.nr = Math.max(s.nr, t2 + BB.RAID_EVERY * HR); continue; }
-        const act = s.g.filter((id) => fatOf(id) > 0);
-        s.store = Math.min(zCap(z.code), s.store + zRate(z.code, act) * dh);
+      b.rooms.forEach((R, r) => {
+        if (!working(R)) return;
+        if (!R.nr) R.nr = t + (BB.RAID_EVERY + Math.random() * BB.RAID_JIT) * HR;
+        const act = R.g.filter((id) => fatOf(id) > 0);
+        R.store = Math.min(zCap(r), R.store + zRate(r, act) * dh);
         for (const id of act) b.fat[id] = Math.max(0, fatOf(id) - BB.DRAIN * dh);
-        if (t2 >= s.nr) {
-          const at = s.nr; s.nr += (BB.RAID_EVERY + Math.random() * BB.RAID_JIT) * HR; if (s.nr <= t2) s.nr = t2 + BB.RAID_EVERY * HR;
-          if (!s.g.length && s.store < 1) continue;   // nothing there for them to take
-          const p = zWin(z.code, act), ok = Math.random() < p;
-          if (!ok) { s.store *= 0.5; for (const id of s.g) b.fat[id] = Math.max(0, fatOf(id) - 3); }
-          b.log.unshift({ t: at, c: z.code, ok, p: Math.round(p * 100) });
+        if (t2 >= R.nr) {
+          const at = R.nr; R.nr += (BB.RAID_EVERY + Math.random() * BB.RAID_JIT) * HR; if (R.nr <= t2) R.nr = t2 + BB.RAID_EVERY * HR;
+          if (!R.g.length && R.store < 1) return;   // nothing there for them to take
+          const p = zWin(r, act), ok = Math.random() < p;
+          if (!ok) { R.store *= 0.5; for (const id of R.g) b.fat[id] = Math.max(0, fatOf(id) - 3); }
+          b.log.unshift({ t: at, r, c: R.zone, ok, p: Math.round(p * 100) });
         }
-      }
+      });
       for (const id of b.dorm.rest) b.fat[id] = Math.min(BB.FAT, fatOf(id) + BB.REST[b.dorm.lv - 1] * dh);
       t = t2;
     }
@@ -16288,28 +16384,32 @@ window.BSL_ECON = (() => {
   }
   function setPost(id, where) {
     const b = baseState();
-    for (const c in b.z) b.z[c].g = b.z[c].g.filter((x) => x !== id);
+    for (const R of b.rooms) R.g = R.g.filter((x) => x !== id);
     b.dorm.rest = b.dorm.rest.filter((x) => x !== id);
-    if (where === "dorm") b.dorm.rest.push(id); else if (where) b.z[where].g.push(id);
+    if (where === "dorm") b.dorm.rest.push(id); else if (where !== null && where !== undefined) b.rooms[where].g.push(id);
   }
-  function collectZone(code) {
-    const s = baseState().z[code], z = zDef(code), n = Math.floor(s.store); if (n < 1) return null;
-    s.store -= n; if (z.out === "coin") S.res.coin += n; else addItems([[z.out, n]]);
+  function collectRoom(r) {
+    const R = roomOf(r); if (!R.zone) return null; const z = zDef(R.zone), n = Math.floor(R.store); if (n < 1) return null;
+    R.store -= n; if (z.out === "coin") S.res.coin += n; else addItems([[z.out, n]]);
     return [z.out, n];
   }
   const outIc = (k) => k === "coin" ? `<i class="cn">₵</i>` : `<i>${icn(ITEM[k].ic)}</i>`;
   const outN = (k) => k === "coin" ? "주화" : ITEM[k].n;
   const numF = (v, k) => k === "coin" ? fmt(Math.floor(v)) : v > 0 && v < 1 ? v.toFixed(2) : (Math.floor(v * 10) / 10).toFixed(1);
-  const baseAlert = () => { if (!S.base) return false; const b = S.base; return b.log.some((l) => !l.ok && l.t > (b.seen || 0)) || BZ.some((z) => zoneOpen(z) && b.z[z.code] && b.z[z.code].g.length && b.z[z.code].g.every((id) => fatOf(id) <= 0)); };
+  const roomTrouble = (R, r) => working(R) && R.g.length > 0 && R.g.every((id) => fatOf(id) <= 0);
+  const baseAlerts = () => { if (!S.base || !S.base.rooms) return 0; const b = S.base; return b.log.filter((l) => !l.ok && l.t > (b.seen || 0)).length + b.rooms.filter(roomTrouble).length; };
+  const baseAlert = () => baseAlerts() > 0;
   const fatCol = (f) => f > 12 ? "#5fd36a" : f > 4 ? "#f2c14e" : f > 0 ? "#ff7a45" : "#d23b3b";
   const hrsTxt = (ms) => { const m = Math.max(0, Math.round(ms / 60000)); return m >= 60 ? `${Math.floor(m / 60)}시간 ${m % 60}분` : `${m}분`; };
   const clockTxt = (t) => { const d = new Date(t), p = (n) => String(n).padStart(2, "0"); return `${p(d.getMonth() + 1)}/${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`; };
+  const OUT_COL = { coin: "#f5c400", rec1: "#2aa7ec" };   // a room's colour follows what it makes: coin gold, records blue, materials green
+  const roomCol = (R) => !R.zone ? "#8a8f98" : OUT_COL[zDef(R.zone).out] || "#8ed42a";
   // the picker: every operator, where they are now, how tired, how strong
   function guardPicker(target, slotIdx, after) {
     baseTick();
     const b = baseState(), mo = h("div", "modal bz-pk"), bx = h("div", "box");
-    const cur = target === "dorm" ? b.dorm.rest : b.z[target].g, z = target === "dorm" ? null : zDef(target);
-    bx.innerHTML = `<div class="hd"><b>${target === "dorm" ? "숙소에서 쉴 가사인격" : "경계 배치"}</b><span>${target === "dorm" ? `피로가 시간당 ${BB.REST[b.dorm.lv - 1]}씩 회복됩니다` : `적합 직군 ${z.fit.join(" · ")} · 생산 +10%`}</span></div><div class="gl"></div>`;
+    const isD = target === "dorm", cur = isD ? b.dorm.rest : b.rooms[target].g, z = isD ? null : zDef(b.rooms[target].zone);
+    bx.innerHTML = `<div class="hd"><b>${isD ? "숙소에서 쉴 가사인격" : "경계 배치"}</b><span>${isD ? `피로가 시간당 ${BB.REST[b.dorm.lv - 1]}씩 회복됩니다` : `적합 직군 ${z.fit.join(" · ")} · 생산 +10%`}</span></div><div class="gl"></div>`;
     const gl = bx.querySelector(".gl");
     const ids = Object.keys(S.ops).sort((a, c) => (cur.includes(c) - cur.includes(a)) || (fatOf(c) - fatOf(a)) || (opPow(c) - opPow(a)));
     for (const id of ids) {
@@ -16317,12 +16417,12 @@ window.BSL_ECON = (() => {
       const card = h("div", "btn pc" + (on ? " on" : ""), `<div class="im" style="background-image:url(${opArt(id, "card")})"></div>
         <div class="nm">${esc(nm(id).main)}</div><div class="cl"><img src="${clsIcon(CLS_REP[def(id).cls], 20)}" alt="">${fit ? '<em>적합</em>' : ""}<span class="en">${opPow(id)}</span></div>
         <div class="fb"><i style="width:${f / BB.FAT * 100}%;background:${fatCol(f)}"></i></div><div class="ft en">${Math.floor(f)}/${BB.FAT}</div>
-        ${p ? `<div class="pt">${p === "dorm" ? "휴식 중" : on ? "배치 중" : esc(p) + " 경계"}</div>` : ""}`);
+        ${p !== null ? `<div class="pt">${p === "dorm" ? "휴식 중" : on ? "배치 중" : `파견실 ${p + 1}`}</div>` : ""}`);
       card.onclick = () => {
         baseTick();
         if (on) setPost(id, null);
         else {
-          const cap = target === "dorm" ? BB.DORM_SLOTS[b.dorm.lv - 1] : BB.SLOTS, list = target === "dorm" ? b.dorm.rest : b.z[target].g;
+          const cap = isD ? BB.DORM_SLOTS[b.dorm.lv - 1] : BB.SLOTS, list = isD ? b.dorm.rest : b.rooms[target].g;
           if (list.length >= cap) { const out = list[Math.min(slotIdx, list.length - 1)]; setPost(out, null); }
           setPost(id, target);
         }
@@ -16333,122 +16433,44 @@ window.BSL_ECON = (() => {
     const x = h("div", "btn itm-x", "✕"); x.onclick = () => mo.remove(); bx.appendChild(x);
     mo.appendChild(bx); mo.onclick = (e) => { if (e.target === mo) mo.remove(); }; sheet.appendChild(mo);
   }
-  function upgradeBox(target, after) {
-    const b = baseState(), lv = target === "dorm" ? b.dorm.lv : b.z[target].lv, to = lv + 1, c = BB.UP[to]; if (!c) return toast("최고 레벨입니다");
+  // building a room, or raising one (or the dorm) a level: base materials from the 자재 야적장, and coin
+  function costBox(title, what, c, yes, onYes) {
     const ok = hasItems(c.items) && S.res.coin >= c.coin;
-    const what = target === "dorm" ? `숙소 정원 ${BB.DORM_SLOTS[lv - 1]} → ${BB.DORM_SLOTS[to - 1]}, 회복 ${BB.REST[lv - 1]} → ${BB.REST[to - 1]}/시간`
-      : `생산량 ×${BB.LVMUL[lv - 1]} → ×${BB.LVMUL[to - 1]} · 보관 한도 증가 · 위험도 ${zDef(target).danger[lv - 1]} → ${zDef(target).danger[to - 1]}`;
     const mo = h("div", "modal"), bx = h("div", "box sk-box");
-    bx.innerHTML = `<h3>시설 강화 Lv.${lv} → ${to}</h3><p>${what}</p><div class="sk-cost">${c.items.map(([k, n]) => itemDot(k, n, { text: `${fmt(inv(k))}<small>/${n}</small>`, short: inv(k) < n })).join("")}<div class="idot coin${S.res.coin < c.coin ? " short" : ""}"><i class="cn">₵</i><b class="en">${fmt(c.coin)}</b></div></div>`;
+    bx.innerHTML = `<h3>${title}</h3><p>${what}</p><div class="sk-cost">${c.items.map(([k, n]) => itemDot(k, n, { text: `${fmt(inv(k))}<small>/${n}</small>`, short: inv(k) < n })).join("")}${c.coin ? `<div class="idot coin${S.res.coin < c.coin ? " short" : ""}"><i class="cn">₵</i><b class="en">${fmt(c.coin)}</b></div>` : ""}</div>${ok ? "" : `<p class="lack">보강 자재는 자원 수집의 「자재 야적장」에서 얻을 수 있습니다. 재료 아이콘을 누르면 바로 갈 수 있습니다.</p>`}`;
     wireDots(bx);
-    const row = h("div", "row"), n = h("div", "btn n", "취소"), y = h("div", "btn" + (ok ? "" : " dis"), "강화");
+    const row = h("div", "row"), n = h("div", "btn n", "취소"), y = h("div", "btn" + (ok ? "" : " dis"), yes);
     n.onclick = () => mo.remove();
-    y.onclick = () => { if (!ok) return toast("재료가 부족합니다"); baseTick(); takeItems(c.items); S.res.coin -= c.coin; if (target === "dorm") b.dorm.lv = to; else b.z[target].lv = to; save(); mo.remove(); toast(`Lv.${to} 강화 완료`); after && after(); };
+    y.onclick = () => { if (!ok) return toast("재료가 부족합니다"); baseTick(); takeItems(c.items); S.res.coin -= c.coin; mo.remove(); onYes(); save(); };
     row.append(n, y); bx.appendChild(row); mo.appendChild(bx); mo.onclick = (e) => { if (e.target === mo) mo.remove(); }; sheet.appendChild(mo);
   }
-
-  // ---------- the base's field map: drawn once from a fixed seed, then kept alive with a sweep, pulses and supply runs ----------
-  const BMAP_POS = { dorm: [210, 400], "BL-01": [370, 300], "BL-02": [520, 470], "BL-03": [690, 280], "BL-04": [850, 470], "BL-05": [1000, 270], "BL-06": [1130, 470], front: [1228, 340] };
-  let BMAP_ART = null;
-  function baseMapArt() {
-    if (BMAP_ART) return BMAP_ART;
-    const c = document.createElement("canvas"); c.width = 1280; c.height = 720; const g = c.getContext("2d");
-    let sd = 1907; const rnd = () => (sd = (sd * 16807) % 2147483647) / 2147483647;
-    g.fillStyle = "#0a1014"; g.fillRect(0, 0, 1280, 720);
-    // the river: a slow bend from the north down through the middle
-    const river = (off) => { g.beginPath(); g.moveTo(560 + off, -20); g.bezierCurveTo(660 + off, 180, 520 + off, 380, 640 + off, 520); g.bezierCurveTo(700 + off, 610, 660 + off, 680, 700 + off, 740); };
-    const inRiver = (x, y) => { const t = y / 720, cx = 560 + (1 - t) * 0 + t * 140 + Math.sin(t * 6.3) * 40; return Math.abs(x - cx) < 52; };
-    // city blocks with their buildings, the streets left between them
-    for (let gy = 0; gy < 720; gy += 58) for (let gx = 0; gx < 1280; gx += 74) {
-      const x = gx + 7, y = gy + 7, w = 60, hh = 44; if (inRiver(x + w / 2, y + hh / 2)) continue;
-      g.fillStyle = "#121a1f"; g.fillRect(x, y, w, hh);
-      const nb = 2 + Math.floor(rnd() * 4);
-      for (let k = 0; k < nb; k++) { const bw = 10 + rnd() * 22, bh = 8 + rnd() * 16, bx = x + 3 + rnd() * (w - bw - 6), by = y + 3 + rnd() * (hh - bh - 6);
-        g.fillStyle = rnd() < 0.12 ? "#2a1a16" : "#18232a"; g.fillRect(bx, by, bw, bh); g.strokeStyle = "#22313a"; g.lineWidth = 1; g.strokeRect(bx + 0.5, by + 0.5, bw - 1, bh - 1); }
-    }
-    // the avenues
-    g.strokeStyle = "#24323a"; g.lineCap = "round";
-    for (const [w, pts] of [[9, [[0, 410], [1280, 330]]], [7, [[0, 180], [1280, 210]]], [7, [[0, 600], [1280, 560]]], [8, [[300, 0], [420, 720]]], [7, [[930, 0], [880, 720]]], [6, [[120, 720], [700, 0]]]]) { g.lineWidth = w; g.beginPath(); g.moveTo(...pts[0]); g.lineTo(...pts[1]); g.stroke(); }
-    // water
-    river(0); g.lineTo(-20, 740); g.lineTo(-20, -20); g.closePath();
-    g.save(); river(0); g.lineWidth = 92; g.strokeStyle = "#0d2a36"; g.stroke(); g.lineWidth = 92; g.strokeStyle = "rgba(0,0,0,0)"; g.restore();
-    g.save(); river(-46); g.lineWidth = 2; g.strokeStyle = "#1e5466"; g.stroke(); river(46); g.stroke(); g.setLineDash([10, 16]); river(0); g.strokeStyle = "rgba(90,170,200,.25)"; g.lineWidth = 1.5; g.stroke(); g.restore();
-    // bridges
-    g.fillStyle = "#2a3a42"; for (const [bx, by, a] of [[620, 300, -0.05], [652, 560, 0.1], [596, 120, -0.1]]) { g.save(); g.translate(bx, by); g.rotate(a); g.fillRect(-64, -8, 128, 16); g.strokeStyle = "#3d525c"; g.strokeRect(-64, -8, 128, 16); g.restore(); }
-    // the fountain square's park
-    g.fillStyle = "#0f1d18"; g.beginPath(); g.roundRect(720, 210, 150, 120, 14); g.fill();
-    for (let k = 0; k < 40; k++) { g.fillStyle = "#16301f"; g.beginPath(); g.arc(726 + rnd() * 138, 216 + rnd() * 108, 2 + rnd() * 4, 0, 6.29); g.fill(); }
-    g.strokeStyle = "#2c5a52"; g.lineWidth = 2; g.beginPath(); g.arc(690, 280, 22, 0, 6.29); g.stroke(); g.beginPath(); g.arc(690, 280, 9, 0, 6.29); g.stroke();
-    // the rail line into the station
-    g.strokeStyle = "#3a3f44"; g.lineWidth = 3; g.beginPath(); g.moveTo(860, 740); g.lineTo(1130, 500); g.lineTo(1290, 380); g.stroke();
-    g.lineWidth = 1.5; for (let t = 0; t < 1; t += 0.02) { const x = 860 + (1130 - 860) * t, y = 740 + (500 - 740) * t; g.beginPath(); g.moveTo(x - 5, y - 6); g.lineTo(x + 5, y + 6); g.stroke(); }
-    g.fillStyle = "#1d262c"; g.fillRect(1090, 440, 90, 34); g.strokeStyle = "#3a4a54"; g.strokeRect(1090, 440, 90, 34);
-    // the watchtower, the mart's long roof and its lot
-    g.fillStyle = "#1d262c"; g.fillRect(838, 458, 24, 24); g.strokeStyle = "#4a5a64"; g.strokeRect(838, 458, 24, 24); g.beginPath(); g.arc(850, 470, 30, 0, 6.29); g.setLineDash([3, 5]); g.stroke(); g.setLineDash([]);
-    g.fillStyle = "#1a2328"; g.fillRect(960, 230, 90, 44); g.strokeRect(960, 230, 90, 44); g.strokeStyle = "#2a363d"; for (let k = 0; k < 7; k++) { g.beginPath(); g.moveTo(962 + k * 13, 282); g.lineTo(962 + k * 13, 300); g.stroke(); }
-    // the underpass: a dashed run under the avenue
-    g.strokeStyle = "#4a5a64"; g.setLineDash([6, 6]); g.lineWidth = 2; g.beginPath(); g.moveTo(470, 470); g.lineTo(570, 470); g.stroke(); g.setLineDash([]);
-    // a map's grid and its margins
-    g.strokeStyle = "rgba(140,200,220,.06)"; g.lineWidth = 1;
-    for (let x = 0; x <= 1280; x += 80) { g.beginPath(); g.moveTo(x + 0.5, 0); g.lineTo(x + 0.5, 720); g.stroke(); }
-    for (let y = 0; y <= 720; y += 80) { g.beginPath(); g.moveTo(0, y + 0.5); g.lineTo(1280, y + 0.5); g.stroke(); }
-    g.fillStyle = "rgba(140,200,220,.3)"; g.font = "11px sans-serif"; for (let k = 0; k < 16; k++) g.fillText("ABCDEFGHIJKLMNOP"[k], k * 80 + 4, 712); for (let k = 1; k < 9; k++) g.fillText(String(k), 4, k * 80 - 4);
-    return (BMAP_ART = c);
+  function buildBox(r, after) {
+    costBox(`파견실 ${r + 1} 건설`, "새 파견실을 엽니다. 연 뒤에 보호할 탈환 구역을 고르고 경계 인원을 배치하세요.", BB.BUILD, "건설", () => { roomOf(r).built = true; toast(`파견실 ${r + 1} 건설 완료`); after && after(); });
   }
-  // the living layer: fog over what is still theirs, the route of the advance, supply runs out of the shelter, pulses at each zone, a radar sweep
-  function baseMapLive(el, open, stat) {
-    const cv = h("canvas", "bz-cv"); el.appendChild(cv);
-    const q = Math.min(1.5, window.devicePixelRatio || 1); cv.width = Math.round(1280 * q); cv.height = Math.round(720 * q);
-    const g = cv.getContext("2d"), art = baseMapArt(), MP = BMAP_POS;
-    // fog with the won ground cut out of it (made once per visit)
-    const fog = document.createElement("canvas"); fog.width = 1280; fog.height = 720; const f = fog.getContext("2d");
-    f.fillStyle = "rgba(14,6,8,.78)"; f.fillRect(0, 0, 1280, 720);
-    f.strokeStyle = "rgba(120,30,30,.18)"; f.lineWidth = 2; for (let x = -720; x < 1280; x += 18) { f.beginPath(); f.moveTo(x, 720); f.lineTo(x + 720, 0); f.stroke(); }
-    f.globalCompositeOperation = "destination-out";
-    const hole = (x, y, r) => { const gr = f.createRadialGradient(x, y, r * 0.55, x, y, r); gr.addColorStop(0, "#000"); gr.addColorStop(1, "rgba(0,0,0,0)"); f.fillStyle = gr; f.fillRect(x - r, y - r, r * 2, r * 2); };
-    hole(...MP.dorm, 190); open.forEach((c) => hole(...MP[c], 175));
-    const route = ["dorm", ...BZ.map((z) => z.code), "front"].map((k) => MP[k]);
-    const won = (k) => k === 0 || open.includes(BZ[k - 1] && BZ[k - 1].code);
-    const runs = open.filter((c) => stat(c).on).map((c, k) => ({ c, t: k * 0.37 }));
-    let last = performance.now(), clock = 0, acc = 0;
-    const along = (to, t) => {   // a point along the route from the shelter to zone index `to`
-      const segs = route.slice(0, to + 2); let L = 0; const ls = []; for (let k = 1; k < segs.length; k++) { const d = Math.hypot(segs[k][0] - segs[k - 1][0], segs[k][1] - segs[k - 1][1]); ls.push(d); L += d; }
-      let s = t * L; for (let k = 0; k < ls.length; k++) { if (s <= ls[k]) { const a = s / ls[k]; return [segs[k][0] + (segs[k + 1][0] - segs[k][0]) * a, segs[k][1] + (segs[k + 1][1] - segs[k][1]) * a]; } s -= ls[k]; }
-      return segs[segs.length - 1];
-    };
-    const frame = (now) => {
-      if (!cv.isConnected) return; requestAnimationFrame(frame);
-      const dt = Math.min(0.1, (now - last) / 1000); last = now; acc += dt; if (acc < 1 / 30) return; clock += acc; acc = 0;
-      g.setTransform(q, 0, 0, q, 0, 0); g.drawImage(art, 0, 0); g.drawImage(fog, 0, 0);
-      // the line of advance: blue where it is held, red and broken beyond
-      g.lineCap = "round";
-      for (let k = 1; k < route.length; k++) {
-        const held = k < route.length - 1 && won(k); g.setLineDash(held ? [] : [8, 8]); g.lineDashOffset = held ? 0 : -clock * 20;
-        g.strokeStyle = held ? "rgba(79,184,255,.85)" : "rgba(255,80,70,.6)"; g.lineWidth = held ? 3 : 2;
-        g.beginPath(); g.moveTo(...route[k - 1]); g.lineTo(...route[k]); g.stroke();
-      }
-      g.setLineDash([]);
-      // the front itself: a red pulse past the last zone
-      const [fx, fy] = MP.front, pf = (clock % 2) / 2; g.strokeStyle = `rgba(255,60,50,${0.8 * (1 - pf)})`; g.lineWidth = 2; g.beginPath(); g.arc(fx, fy, 10 + pf * 30, 0, 6.29); g.stroke();
-      g.fillStyle = "#ff4a3a"; g.font = "bold 13px sans-serif"; g.textAlign = "center"; g.fillText("봉쇄선", fx, fy + 26); g.textAlign = "left";
-      // supply runs: little lights from the shelter out to each working zone and back
-      for (const r of runs) {
-        const to = BZ.findIndex((z) => z.code === r.c) + 1, u = ((clock * 0.12 + r.t) % 1), tt = u < 0.5 ? u * 2 : 2 - u * 2, [x, y] = along(to - 1 + 1 - 1 + 0, tt);
-        g.fillStyle = "rgba(150,230,255,.95)"; g.beginPath(); g.arc(x, y, 3, 0, 6.29); g.fill();
-        const gr = g.createRadialGradient(x, y, 0, x, y, 12); gr.addColorStop(0, "rgba(120,210,255,.45)"); gr.addColorStop(1, "rgba(120,210,255,0)"); g.fillStyle = gr; g.fillRect(x - 12, y - 12, 24, 24);
-      }
-      // pulses at the zones: blue while working, amber when stopped, red when a raid would likely break through
-      open.forEach((c, k) => { const s = stat(c), [x, y] = MP[c], p = ((clock + k * 0.3) % 2.4) / 2.4, col = s.risk ? "255,80,70" : s.stop ? "255,190,70" : s.on ? "79,184,255" : "160,170,180";
-        g.strokeStyle = `rgba(${col},${0.7 * (1 - p)})`; g.lineWidth = 2; g.beginPath(); g.arc(x, y, 12 + p * 34, 0, 6.29); g.stroke(); });
-      { const p = (clock % 3) / 3, [x, y] = MP.dorm; g.strokeStyle = `rgba(255,200,120,${0.6 * (1 - p)})`; g.lineWidth = 2; g.beginPath(); g.arc(x, y, 14 + p * 36, 0, 6.29); g.stroke(); }
-      // the radar sweep from the shelter
-      const a = clock * 0.6, [sx, sy] = MP.dorm; g.save(); g.translate(sx, sy); g.rotate(a);
-      const sg = g.createLinearGradient(0, 0, 0, -1100); sg.addColorStop(0, "rgba(79,184,255,.10)"); sg.addColorStop(1, "rgba(79,184,255,0)");
-      g.fillStyle = sg; g.beginPath(); g.moveTo(0, 0); g.arc(0, 0, 1400, -Math.PI / 2 - 0.35, -Math.PI / 2); g.closePath(); g.fill(); g.restore();
-      const vg = g.createRadialGradient(640, 360, 360, 640, 360, 820); vg.addColorStop(0, "rgba(0,0,0,0)"); vg.addColorStop(1, "rgba(0,0,0,.6)"); g.fillStyle = vg; g.fillRect(0, 0, 1280, 720);
-    };
-    requestAnimationFrame(frame);
-    return cv;
+  function upgradeBox(target, after) {
+    const b = baseState(), isD = target === "dorm", R = isD ? null : b.rooms[target], lv = isD ? b.dorm.lv : R.lv, to = lv + 1, c = BB.UP[to]; if (!c) return toast("최고 레벨입니다");
+    const what = isD ? `숙소 정원 ${BB.DORM_SLOTS[lv - 1]} → ${BB.DORM_SLOTS[to - 1]}, 회복 ${BB.REST[lv - 1]} → ${BB.REST[to - 1]}/시간`
+      : `생산량 ×${BB.LVMUL[lv - 1]} → ×${BB.LVMUL[to - 1]} · 보관 한도 증가${R.zone ? ` · 위험도 ${zDef(R.zone).danger[lv - 1]} → ${zDef(R.zone).danger[to - 1]}` : " · 위험도 상승"}`;
+    costBox(`${isD ? "숙소" : "파견실 " + (target + 1)} 강화 Lv.${lv} → ${to}`, what, c, "강화", () => { if (isD) b.dorm.lv = to; else R.lv = to; toast(`Lv.${to} 강화 완료`); after && after(); });
+  }
+  // which reclaimed map a room guards: every map won so far, one room each
+  function zonePicker(r, after) {
+    const b = baseState(), R = b.rooms[r], mo = h("div", "modal bz-zp"), bx = h("div", "box");
+    bx.innerHTML = `<div class="hd"><b>보호 구역 선택</b><span>파견실 하나는 한 구역을 지킵니다. 구역을 바꾸면 보관 중인 물자는 먼저 수령됩니다.</span></div><div class="zl"></div>`;
+    const zl = bx.querySelector(".zl");
+    for (const z of BZ) {
+      const i = zoneIdx(z.code), open = zoneOpen(z), by = b.rooms.findIndex((q, k) => k !== r && q.built && q.zone === z.code), on = R.zone === z.code;
+      const c = h("div", "btn zc" + (open ? "" : " lk") + (on ? " on" : "") + (by >= 0 ? " used" : ""), `<div class="im" style="background-image:url(${ART[TD.STAGES[i].bg] || ART.bg})"></div>
+        <div class="tx"><b class="en">${z.code}</b><div class="n">${esc(z.n)}</div><div class="o">${outIc(z.out)}<span>${outN(z.out)}</span></div><div class="dg">위험도 <b class="en">${z.danger[R.lv - 1]}</b> · 적합 ${z.fit.join(" ")}</div></div>
+        ${!open ? `<div class="tag">${z.code} 클리어 필요</div>` : on ? '<div class="tag on">보호 중</div>' : by >= 0 ? `<div class="tag">파견실 ${by + 1} 보호 중</div>` : ""}`);
+      c.onclick = () => {
+        if (!open) return toast(`${z.code}을 클리어하면 탈환됩니다`); if (on) return mo.remove(); if (by >= 0) return toast(`파견실 ${by + 1}이 이미 지키고 있습니다`);
+        baseTick(); const got = collectRoom(r); R.zone = z.code; R.store = 0; R.nr = 0; save(); mo.remove(); if (got) toast(`보관 물자 ${outN(got[0])} ${fmt(got[1])} 수령`); after && after();
+      };
+      zl.appendChild(c);
+    }
+    const x = h("div", "btn itm-x", "✕"); x.onclick = () => mo.remove(); bx.appendChild(x);
+    mo.appendChild(bx); mo.onclick = (e) => { if (e.target === mo) mo.remove(); }; sheet.appendChild(mo);
   }
   // the shelter drawn as its own floor plan: bunks, the mess table, the lounge, the workshop; where the residents go and what they do there
   const DORM_SPOTS = [
