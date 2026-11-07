@@ -12889,6 +12889,20 @@ window.BGM = (() => {
   const reveal = (ln) => Math.min(1, ln.t * 1.6);
 
   // --- drawing helpers ---
+  function wrapRuby(txt, maxW, size) {   // split at "\n", then at spaces to fit maxW; a [base|ruby] word never splits
+    ctx.font = `600 ${size}px ${FONT_KR}`;
+    const vis = (t) => ctx.measureText(t.replace(/\[([^|\]]+)\|[^\]]+\]/g, "$1")).width, out = [];
+    for (const para of txt.split("\n")) {
+      let cur = "";
+      for (const word of para.split(" ")) {
+        const tryL = cur ? cur + " " + word : word;
+        if (!cur || vis(tryL) <= maxW) { cur = tryL; continue; }
+        out.push(cur); cur = word;
+      }
+      out.push(cur);
+    }
+    return out;
+  }
   function rubyLine(str, x, y, size, col, align) {
     const segs = []; str.replace(/\[([^|\]]+)\|([^\]]+)\]|([^\[]+|\[)/g, (m, b, r, t) => { segs.push(t ? { t } : { t: b, r }); return m; });
     ctx.font = `600 ${size}px ${FONT_KR}`;
@@ -12938,8 +12952,12 @@ window.BGM = (() => {
   }
   function panel(ln) {
     const BIG = TOUCH ? 1.3 : 1.12;   // the terminal's lines, larger, more so on a phone
-    const lines = ln.txt.split("\n"), size = Math.round(21 * BIG), lh = Math.round(40 * BIG), W0 = Math.round(820 * BIG);
-    const w = panelOn ? Math.min(W0, VW - 506) : Math.min(W0, VW - 40), h = Math.round(50 * BIG) + lines.length * lh, x = panelOn ? 490 : (VW - w) / 2;
+    const size = Math.round(21 * BIG), lh = Math.round(40 * BIG), W0 = Math.round(820 * BIG);
+    const w = panelOn ? Math.min(W0, VW - 506) : Math.min(W0, VW - 40), x = panelOn ? 490 : (VW - w) / 2;
+    // lines too long for the box (it narrows while a card's panel is open) wrap at spaces instead of running off its edge
+    const wd0 = ln.who && TD.UNITS.find((u) => u.id === ln.who), wi0 = wd0 && artOf(wd0, null, "card");
+    const ox0 = wi0 && wi0.complete && wi0.naturalWidth ? Math.round(92 * BIG) * wi0.naturalWidth / wi0.naturalHeight - 52 : 0;
+    const lines = wrapRuby(ln.txt, w - 110 - ox0, size), h = Math.round(50 * BIG) + lines.length * lh;
     const y = ln.at === "top" ? 88 : ln.at === "mid" ? 230 : VH - (TOUCH ? 180 : 150) - h - 16;
     const a = Math.min(1, ln.t * 5);
     ctx.save(); ctx.globalAlpha = a;
@@ -13040,7 +13058,8 @@ window.BGM = (() => {
         if (T.t > 1.6) go("nocost");
       } else if (s === "nocost") {
         const L = lead(); if (!L) return;
-        const need = yuiCost(), p = Math.max(0, Math.min(1, (L.x - 3.4) / (8.6 - 3.4))), c = need - 10 + 10 * p;   // the gauge creeps up to just short of what she costs
+        if (T.c0 === undefined) T.c0 = Math.min(game.cost + game.costAcc, yuiCost() - 1);   // the gauge goes on from where it stands (never dips first)
+        const need = yuiCost(), p = Math.max(0, Math.min(1, (L.x - 3.4) / (8.6 - 3.4))), c = T.c0 + (need - 1 - T.c0) * p;   // ...and creeps up to just short of what she costs
         game.cost = Math.min(need - 1, Math.floor(c)); game.costAcc = c - Math.floor(c);
         if (T.t > 1.6 && !T.mine) ME("코스트? 정신력? 무슨 소리야, 지금 그게——!");
         if (L.x >= 8.6) go("stop");
