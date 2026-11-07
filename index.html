@@ -3321,19 +3321,29 @@ window.BGM = (() => {
   const LIST = [   // { id, n: name, d: what it is, src, free: heard from the start }
     { id: "main1", n: "Leaf of the Crimson Moon", d: "메인 테마", src: "bgm/main1.mp3", free: 1 },
   ];
-  let el = null, cur = null, vol = 0.5, want = null, fadeT = 0;
+  // one audio element for the whole game, so nothing (a quick second call, a reload of the screen, a stop mid-fade) can ever start a second copy
+  const el = new Audio(); el.loop = true; el.preload = "auto";
+  let cur = null, vol = 0.5, want = null, gen = 0;
   try { const v = localStorage.getItem("bsl_bgm"); if (v !== null) vol = +v; } catch (e) { /* storage may be off */ }
-  const fade = (a, to, ms, done) => { if (!a) return done && done(); const from = a.volume, t0 = performance.now(); const st = (t) => { const k = Math.min(1, (t - t0) / ms); a.volume = Math.max(0, Math.min(1, from + (to - from) * k)); if (k < 1) requestAnimationFrame(st); else done && done(); }; requestAnimationFrame(st); };
+  const fade = (to, ms, done) => { const g = ++gen, from = el.volume, t0 = performance.now();
+    const st = (t) => { if (g !== gen) return; const k = Math.min(1, (t - t0) / ms); el.volume = Math.max(0, Math.min(1, from + (to - from) * k)); if (k < 1) requestAnimationFrame(st); else if (done) done(); };
+    requestAnimationFrame(st); };
+  function start(tr) {
+    cur = tr.id;
+    if (!el.src.endsWith(tr.src)) { el.src = tr.src; el.volume = 0; }
+    const p = el.play(); if (p && p.catch) p.catch(() => { if (cur === tr.id) cur = null; });   // phones refuse until a touch
+    fade(vol, 1200);
+  }
   function play(id) {
     want = id; const tr = LIST.find((q) => q.id === id); if (!tr) { stop(); return; }
-    if (cur === id && el && !el.paused) return;
-    const go = () => { el = new Audio(tr.src); el.loop = true; el.volume = 0; cur = id; const p = el.play(); if (p && p.catch) p.catch(() => { cur = null; }); fade(el, vol, 1200); };
-    if (el) { const old = el; el = null; fade(old, 0, 600, () => { old.pause(); go(); }); } else go();
+    if (cur === id && !el.paused) { fade(vol, 400); return; }
+    if (cur && cur !== id && !el.paused) { fade(0, 600, () => start(tr)); return; }   // another track: fade it out, then switch the same element over
+    start(tr);
   }
-  function stop() { want = null; if (!el) return; const old = el; el = null; cur = null; old.pause(); }   // forgetting what was wanted, so the next touch doesn't bring it back
-  ["pointerdown", "keydown"].forEach((ev) => window.addEventListener(ev, () => { if (want && !cur) play(want); }, { capture: true, passive: true }));   // phones only let it start after a touch
-  function setVol(v) { vol = Math.max(0, Math.min(1, v)); if (el) el.volume = vol; try { localStorage.setItem("bsl_bgm", String(vol)); } catch (e) { /* storage may be off */ } }
-  return { LIST, play, stop, setVol, get vol() { return vol; }, get cur() { return cur; } };
+  function stop() { want = null; cur = null; ++gen; el.pause(); }   // forgetting what was wanted, so the next touch doesn't bring it back
+  ["pointerdown", "keydown"].forEach((ev) => window.addEventListener(ev, () => { if (want && (!cur || el.paused)) play(want); }, { capture: true, passive: true }));
+  function setVol(v) { vol = Math.max(0, Math.min(1, v)); ++gen; el.volume = vol; try { localStorage.setItem("bsl_bgm", String(vol)); } catch (e) { /* storage may be off */ } }
+  return { LIST, play, stop, setVol, get vol() { return vol; }, get cur() { return el.paused ? null : cur; }, get playing() { return !el.paused; } };
 })();
 
 </script>
