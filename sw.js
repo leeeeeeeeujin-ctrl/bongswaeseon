@@ -1,7 +1,7 @@
 // 봉쇄선 service worker. Every picture is cached on install, so the game starts complete and runs offline.
 // The page: network first (a new build shows at once when online), the cache when offline.
 // Pictures and fonts: the cache first (their addresses carry a version, and a new build replaces this whole cache).
-const VERSION = "e23cb83ec3ca";
+const VERSION = "821ea5531a40";
 const CACHE = "bsl-" + VERSION;
 const CORE = ["./", "index.html", "manifest.webmanifest", "asset_list.json", "fonts/fonts.css", "icons/icon-192.png", "icons/icon-512.png"];
 
