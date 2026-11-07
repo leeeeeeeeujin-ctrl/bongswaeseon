@@ -14644,7 +14644,7 @@ window.BSL_ECON = (() => {
   .toast { position:absolute; left:50%; top:90px; transform:translateX(-50%); background:rgba(0,0,0,.85); border:1px solid rgba(255,255,255,.2); padding:10px 22px; font-size:17px; z-index:9; animation:fl 2.4s forwards; pointer-events:none; }
   .modal { position:absolute; inset:0; background:rgba(0,0,0,.7); display:grid; place-items:center; z-index:70; }
   .modal .box { width:520px; background:#16171a; border:1px solid rgba(255,255,255,.2); padding:24px 28px; } .modal .box h3 { margin:0 0 10px; font-size:22px; } .modal .box p { color:#c8ccd4; line-height:1.7; }
-  .modal .row { display:flex; gap:10px; margin-top:16px; } .modal .row div { flex:1; height:44px; display:grid; place-items:center; background:#e8eaee; color:#111; font-weight:900; } .modal .row div.n { background:#3a3b40; color:#ddd; }
+  .modal .row { display:flex; gap:10px; margin-top:16px; } .modal .row div { flex:1; height:44px; display:grid; place-items:center; background:#e8eaee; color:#111; font-weight:900; } .modal .row div.n { background:#3a3b40; color:#ddd; } .modal .row div.dis { background:#2a2b2f; color:#777; border:1px solid #444; }
 
   /* the terminal's guide */
   .guide { position:absolute; inset:0; z-index:9; cursor:pointer; }
@@ -16609,7 +16609,7 @@ window.BSL_ECON = (() => {
     const mo = h("div", "modal"), bx = h("div", "box sk-box");
     bx.innerHTML = `<h3>${title}</h3><p>${what}</p><div class="sk-cost">${c.items.map(([k, n]) => itemDot(k, n, { text: `${fmt(inv(k))}<small>/${n}</small>`, short: inv(k) < n })).join("")}${c.coin ? `<div class="idot coin${S.res.coin < c.coin ? " short" : ""}"><i class="cn">₵</i><b class="en">${fmt(c.coin)}</b></div>` : ""}</div>${ok ? "" : `<p class="lack">보강 자재는 자원 수집의 「자재 야적장」에서 얻을 수 있습니다. 재료 아이콘을 누르면 바로 갈 수 있습니다.</p>`}`;
     wireDots(bx);
-    const row = h("div", "row"), n = h("div", "btn n", "취소"), y = h("div", "btn" + (ok ? "" : " dis"), yes);
+    const row = h("div", "row"), n = h("div", "btn n", "취소"), y = h("div", "btn" + (ok ? "" : " dis"), ok ? yes : "재료 부족");
     n.onclick = () => mo.remove();
     y.onclick = () => { if (!ok) return toast("재료가 부족합니다"); baseTick(); takeItems(c.items); S.res.coin -= c.coin; mo.remove(); onYes(); save(); };
     row.append(n, y); bx.appendChild(row); mo.appendChild(bx); mo.onclick = (e) => { if (e.target === mo) mo.remove(); }; sheet.appendChild(mo);
