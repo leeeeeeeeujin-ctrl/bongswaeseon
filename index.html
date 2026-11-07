@@ -14539,6 +14539,32 @@ window.BSL_ECON = (() => {
   .rv-dw .tb2 .b1 i.n { background:#5fd3a8; } .rv-dw .tb2 .b1 i.z { background:#55575c; color:#c8ccd4; }
   .rv-dw .skl { margin-top:10px; font-size:14px; color:#b8bcc4; } .rv-dw .skl div { display:flex; align-items:center; gap:6px; padding:3px 0; } .rv-dw .skl b { color:#fff; } .rv-dw .skl em { font-style:normal; color:#4fb8ff; font-weight:800; margin-left:auto; }
   .rv-dw .chg2 { margin-top:12px; height:44px; display:grid; place-items:center; font-size:17px; font-weight:900; background:linear-gradient(90deg,#118bc4,#24a8e8); }
+  /* choosing a gathering site: the chapter map */
+  .zm { position:absolute; inset:0; z-index:70; background:#0c0d10; overflow:hidden; }
+  .zm .zm-ln { position:absolute; left:0; top:0; pointer-events:none; }
+  .zm-bk { position:absolute; left:20px; top:16px; width:110px; height:46px; background:rgba(30,32,36,.92); color:#fff; font-size:34px; display:grid; place-items:center; z-index:3; }
+  .zm-ttl { position:absolute; left:160px; top:14px; color:#fff; } .zm-ttl small { display:block; font-size:13px; letter-spacing:.16em; color:#8fd3ff; } .zm-ttl b { font-size:30px; font-weight:900; } .zm-ttl span { display:block; font-size:15px; color:#c8ccd4; margin-top:2px; }
+  .zm .node.lk { filter:grayscale(1) brightness(.6); } .zm .node.lk .box { background:linear-gradient(90deg,#6a6c70,#55575c); color:#ddd; }
+  .zm .node.here .hx { background:linear-gradient(#ffcf5a,#e09a10); } .zm .node.here .hx i { background:#f5b52a; box-shadow:inset 0 0 0 2px #fff; }
+  .zm .node .dm .cn { font-style:normal; font-size:26px; font-weight:900; color:#ffd36a; }
+  .zm .zt { position:absolute; left:18px; top:50px; font-size:13px; font-weight:900; background:#3a3c41; color:#fff; padding:2px 8px; white-space:nowrap; } .zm .zt.on { background:#e09a10; color:#221400; } .zm .zt.lk { background:#7a2a2a; }
+  .zm-pn { position:absolute; right:0; top:0; bottom:0; width:470px; background:linear-gradient(90deg,rgba(10,11,13,.6),rgba(10,11,13,.94) 14%,rgba(10,11,13,.97)); padding:24px 30px 24px 56px; color:#fff; transition:transform .24s, opacity .24s; }
+  .zm-pn.in { animation:zmIn .26s ease both; } .zm-pn.swap { animation:zmSw .22s ease both; } .zm-pn.out { opacity:0; transform:translateX(30px); }
+  @keyframes zmIn { from { transform:translateX(100%); } } @keyframes zmSw { from { opacity:0; transform:translateX(24px); } }
+  .zm-pn .im { position:relative; height:180px; background:center/cover; box-shadow:0 0 0 2px rgba(255,255,255,.25); } .zm-pn .im span { position:absolute; left:0; bottom:0; background:rgba(0,0,0,.75); font-size:22px; padding:2px 12px; }
+  .zm-pn .hd { margin-top:12px; } .zm-pn .hd small { display:block; font-size:14px; color:#8fd3ff; } .zm-pn .hd b { font-size:28px; font-weight:900; }
+  .zm-pn p { font-size:15px; color:#b8bcc4; line-height:1.55; margin:6px 0 10px; }
+  .zm-pn .gt { background:rgba(255,255,255,.06); padding:10px 12px; } .zm-pn .gt .lb { font-size:14px; font-weight:900; color:#9aa0aa; margin-bottom:6px; }
+  .zm-pn .gt .it { display:flex; align-items:center; gap:12px; } .zm-pn .gt .it > i { width:54px; height:54px; flex:none; border-radius:50%; background:radial-gradient(#3a3d43,#1b1c1f 70%); border:2px solid #6a6e75; display:grid; place-items:center; } .zm-pn .gt .it > i svg { width:40px; height:40px; }
+  .zm-pn .gt .it .cn { font-style:normal; font-size:28px; font-weight:900; color:#ffd36a; } .zm-pn .gt .it b { display:block; font-size:19px; } .zm-pn .gt .it span { font-size:13px; color:#9aa0aa; line-height:1.4; }
+  .zm-pn .row3 { display:flex; gap:10px; margin-top:10px; } .zm-pn .row3 > div { flex:1; background:rgba(255,255,255,.06); padding:8px 12px; } .zm-pn .row3 small { display:block; font-size:13px; color:#9aa0aa; } .zm-pn .row3 b { font-size:26px; color:#ff9a7a; } .zm-pn .row3 i { font-style:normal; font-size:12px; color:#7f8590; margin-left:6px; }
+  .zm-pn .cl { display:flex; align-items:center; gap:4px; margin-top:4px; } .zm-pn .cl img { width:26px; height:26px; } .zm-pn .cl em { font-style:normal; font-size:14px; margin-right:6px; }
+  .zm-pn .go2 { position:absolute; left:56px; right:30px; bottom:24px; height:62px; background:linear-gradient(90deg,#118bc4,#24a8e8); display:grid; place-items:center; font-size:22px; font-weight:900; }
+  .zm-pn .go2.dis { background:#3a3c41; color:#888; } .zm-pn .go2.on { background:#e09a10; color:#221400; }
+  /* the room's corner card names where it gathers, and opens the map */
+  .rv-cd.site { cursor:pointer; } .rv-cd .site { position:absolute; left:0; right:0; top:0; height:30px; background:var(--sbg) center/cover; } .rv-cd .site::after { content:""; position:absolute; inset:0; background:linear-gradient(90deg,rgba(38,40,44,.95),rgba(38,40,44,.4)); }
+  .rv-cd .site span { position:relative; z-index:1; display:flex; align-items:center; gap:8px; height:100%; padding-left:38px; font-size:14px; font-weight:800; color:#e8eaee; } .rv-cd .site span b { color:#8fd3ff; } .rv-cd .site span i { font-style:normal; margin-left:auto; margin-right:14px; color:#8fd3ff; }
+  .rv-cd.site .ic { top:40px; } .rv-cd.site .tx { top:68px; } .rv-cd.site .rt { top:38px; }
   /* a zone or the dorm, the scene behind the panel */
   .bz-cv { position:absolute; inset:0; width:1280px; height:720px; }
   .bz-pn { position:absolute; right:0; top:0; bottom:0; width:470px; background:linear-gradient(90deg,rgba(10,11,13,0),rgba(10,11,13,.88) 12%,rgba(10,11,13,.94)); padding:80px 28px 20px 70px; transition:transform .3s, opacity .3s; overflow:hidden; }
@@ -16579,23 +16605,42 @@ window.BSL_ECON = (() => {
     costBox(`${isD ? "숙소" : "파견실 " + (target + 1)} 강화 Lv.${lv} → ${to}`, what, c, "강화", () => { if (isD) b.dorm.lv = to; else R.lv = to; toast(`Lv.${to} 강화 완료`); after && after(); });
   }
   // which reclaimed map a room guards: every map won so far, one room each
+  // choosing where a room gathers: the chapter's own map with the reclaimed places pinned on it, each with what can be gathered there;
+  // picking one slides in its picture, what it yields, the danger and who suits it
   function zonePicker(r, after) {
-    const b = baseState(), R = b.rooms[r], mo = h("div", "modal bz-zp"), bx = h("div", "box");
-    bx.innerHTML = `<div class="hd"><b>보호 구역 선택</b><span>파견실 하나는 한 구역을 지킵니다. 구역을 바꾸면 보관 중인 물자는 먼저 수령됩니다.</span></div><div class="zl"></div>`;
-    const zl = bx.querySelector(".zl");
-    for (const z of BZ) {
-      const i = zoneIdx(z.code), open = zoneOpen(z), by = b.rooms.findIndex((q, k) => k !== r && q.built && q.zone === z.code), on = R.zone === z.code;
-      const c = h("div", "btn zc" + (open ? "" : " lk") + (on ? " on" : "") + (by >= 0 ? " used" : ""), `<div class="im" style="background-image:url(${ART[TD.STAGES[i].bg] || ART.bg})"></div>
-        <div class="tx"><b class="en">${z.code}</b><div class="n">${esc(z.n)}</div><div class="o">${outIc(z.out)}<span>${outN(z.out)}</span></div><div class="dg">위험도 <b class="en">${z.danger[R.lv - 1]}</b> · 적합 ${z.fit.join(" ")}</div></div>
-        ${!open ? `<div class="tag">${z.code} 클리어 필요</div>` : on ? '<div class="tag on">보호 중</div>' : by >= 0 ? `<div class="tag">파견실 ${by + 1} 보호 중</div>` : ""}`);
-      c.onclick = () => {
-        if (!open) return toast(`${z.code}을 클리어하면 탈환됩니다`); if (on) return mo.remove(); if (by >= 0) return toast(`파견실 ${by + 1}이 이미 지키고 있습니다`);
-        baseTick(); const got = collectRoom(r); R.zone = z.code; R.store = 0; R.nr = 0; save(); mo.remove(); if (got) toast(`보관 물자 ${outN(got[0])} ${fmt(got[1])} 수령`); after && after();
+    const b = baseState(), R = b.rooms[r];
+    const mo = h("div", "zm"); sheet.appendChild(mo);
+    mo.innerHTML = `<div class="term-bg" style="background-image:url(${ART.st_war || ART.bg})"></div><div class="term-shade"></div>
+      <div class="zm-ttl"><small class="en">DISPATCH ROOM ${r + 1} · GATHERING SITE</small><b>채집지 선택</b><span>탈환한 구역 가운데 이 파견실이 지키며 채집할 곳을 고르세요</span></div><div class="btn zm-bk">‹</div>`;
+    mo.querySelector(".zm-bk").onclick = () => mo.remove();
+    const YS = [360, 470, 330, 450, 340, 470], X = (i) => 70 + i * 128;
+    const svg = `<svg class="zm-ln" width="1280" height="720"><path d="${BZ.map((z, i) => (i ? "L" : "M") + (X(i) + 50) + " " + (YS[i] + 26)).join(" ")}" stroke="rgba(255,255,255,.75)" stroke-width="2.5" fill="none"/></svg>`;
+    mo.insertAdjacentHTML("beforeend", svg);
+    let pn = null, cur = null;
+    const usedBy = (code) => b.rooms.findIndex((q, k) => k !== r && q.built && q.zone === code);
+    const pick = (i) => {
+      const z = BZ[i], st = TD.STAGES[zoneIdx(z.code)], open = zoneOpen(z), by = usedBy(z.code), on = R.zone === z.code; cur = i;
+      mo.querySelectorAll(".node").forEach((n, k) => n.classList.toggle("sel", k === i));
+      const np = h("div", "zm-pn", `<div class="im" style="background-image:url(${ART[st.bg] || ART.bg})"><span class="en">${z.code}</span></div>
+        <div class="hd"><small>${esc(st.name)}</small><b>${esc(z.n)}</b></div><p>${esc(z.d)}</p>
+        <div class="gt"><div class="lb">채집 자원</div><div class="it">${outIc(z.out)}<div><b>${outN(z.out)}</b><span>${z.out === "coin" ? "고철을 팔아 얻는 주화" : esc((ITEM[z.out] || {}).d || "")}</span></div></div></div>
+        <div class="row3"><div><small>위험도</small><b class="en">${z.danger[R.lv - 1]}</b><i>파견실 Lv.${R.lv}</i></div><div><small>적합 직군</small><span class="cl">${z.fit.map((c) => `<img src="${clsIcon(CLS_REP[c], 26)}" alt="${c}"><em>${c}</em>`).join("")}</span></div></div>
+        <div class="btn go2${!open || by >= 0 ? " dis" : on ? " on" : ""}">${!open ? `${z.code} 클리어 후 탈환` : by >= 0 ? `파견실 ${by + 1}이 채집 중` : on ? "현재 채집 중" : "이곳에서 채집"}</div>`);
+      np.querySelector(".go2").onclick = () => {
+        if (!open) return toast(`${z.code}을 클리어하면 탈환됩니다`); if (by >= 0) return toast(`파견실 ${by + 1}이 이미 채집하고 있습니다`); if (on) return mo.remove();
+        baseTick(); const got = collectRoom(r); R.zone = z.code; R.store = 0; R.nr = 0; save(); mo.remove(); after && after(); if (got) gainToast([got]);
       };
-      zl.appendChild(c);
-    }
-    const x = h("div", "btn itm-x", "✕"); x.onclick = () => mo.remove(); bx.appendChild(x);
-    mo.appendChild(bx); mo.onclick = (e) => { if (e.target === mo) mo.remove(); }; sheet.appendChild(mo);
+      np.classList.add(pn ? "swap" : "in"); if (pn) { const o = pn; o.classList.add("out"); setTimeout(() => o.remove(), 240); }
+      mo.appendChild(np); pn = np;
+    };
+    BZ.forEach((z, i) => {
+      const open = zoneOpen(z), by = usedBy(z.code), on = R.zone === z.code;
+      const nd = h("div", "btn node" + (open ? " clear" : " lk") + (on ? " here" : ""), `<div class="lab en">${open ? "RECLAIMED" : "HOSTILE"}</div><div class="box"><div class="hx"><i></i></div><div class="c en">${z.code}</div></div>
+        <div class="dm t${(ITEM[z.out] || {}).tier || 1}">${z.out === "coin" ? '<i class="cn">₵</i>' : icn(ITEM[z.out].ic)}</div>${on ? '<div class="zt on">채집 중</div>' : by >= 0 ? `<div class="zt">파견실 ${by + 1}</div>` : !open ? '<div class="zt lk">미탈환</div>' : ""}`);
+      Object.assign(nd.style, { left: X(i) + "px", top: YS[i] + "px" });
+      nd.onclick = () => pick(i); mo.appendChild(nd);
+    });
+    const start = BZ.findIndex((z) => z.code === R.zone); pick(start >= 0 ? start : Math.max(0, BZ.findIndex((z) => zoneOpen(z) && usedBy(z.code) < 0)));
   }
   // ---------- the rooms themselves: a painted cross-section for each kind of work, and where people go in it ----------
   // positions are fractions of the picture; f: the floor band (top, bottom) feet stand in; a: the bubble at that spot
@@ -16672,7 +16717,7 @@ window.BSL_ECON = (() => {
     if (isD) roomScene(fr, ROOM_SET.dorm, b.dorm.rest, () => false);
     else if (z) roomScene(fr, roomSetOf(key), R.g, (id) => fatOf(id) <= 0);
     else {
-      fr.classList.add("nz"); fr.innerHTML = `<div class="ib-nz"><small class="en">DISPATCH ROOM ${key + 1}</small><b>보호할 구역을 고르세요</b><span>탈환한 맵 가운데 하나를 골라 지키게 합니다.</span><div class="btn">구역 선택</div></div>`;
+      fr.classList.add("nz"); fr.innerHTML = `<div class="ib-nz"><small class="en">DISPATCH ROOM ${key + 1}</small><b>채집지를 고르세요</b><span>탈환한 맵 가운데 한 곳을 골라, 지키면서 그곳의 자원을 채집합니다.</span><div class="btn">채집지 선택</div></div>`;
       fr.querySelector(".btn").onclick = () => zonePicker(key, render);
     }
     // the bar: back, home, the room's name and level
@@ -16741,9 +16786,11 @@ window.BSL_ECON = (() => {
     } else if (z) {
       const act = activeG(key), rate = zRate(key, act), cap = zCap(key), left = rate > 0 ? (z.out === "coin" ? 0 : (1 - (R.store % 1)) / rate * HR) : 0;
       const hms = (ms) => { const s = Math.max(0, Math.round(ms / 1000)), p = (n) => String(n).padStart(2, "0"); return `${p(Math.floor(s / 3600))}:${p(Math.floor(s / 60) % 60)}:${p(s % 60)}`; };
-      cd.innerHTML = `<div class="ic">${outIc(z.out)}<b class="en">${numF(R.store, z.out)}</b></div><div class="tx"><b>${outN(z.out)}</b><span class="en">${z.out === "coin" ? `시간당 ${numF(rate, "coin")}` : rate > 0 ? `다음 1개 ${hms(left)}` : "생산 정지"}</span></div>
-        <div class="rt"><em class="${rate > 0 ? "" : "stop"}">${rate > 0 ? "생산 중" : R.g.length ? "생산 정지" : "경계 없음"}</em><span class="en">${numF(R.store, z.out)}/${numF(cap, z.out)}</span></div><div class="pb"><i style="width:${Math.min(100, R.store / cap * 100)}%"></i></div><div class="btn get${R.store >= 1 ? "" : " dis"}">수령</div>`;
-      cd.querySelector(".get").onclick = () => { baseTick(); const g = collectRoom(key); save(); if (!g) return toast("아직 수령할 만큼 쌓이지 않았습니다"); render(); gainToast([g]); };
+      cd.classList.add("site"); cd.style.setProperty("--sbg", `url(${ART[TD.STAGES[zoneIdx(R.zone)].bg] || ART.bg})`);
+      cd.innerHTML = `<div class="site"><span>채집지 <b class="en">${R.zone}</b>${esc(TD.STAGES[zoneIdx(R.zone)].name)}<i>변경 ›</i></span></div><div class="ic">${outIc(z.out)}<b class="en">${numF(R.store, z.out)}</b></div><div class="tx"><b>${outN(z.out)}</b><span class="en">${z.out === "coin" ? `시간당 ${numF(rate, "coin")}` : rate > 0 ? `다음 1개 ${hms(left)}` : "채집 정지"}</span></div>
+        <div class="rt"><em class="${rate > 0 ? "" : "stop"}">${rate > 0 ? "채집 중" : R.g.length ? "채집 정지" : "경계 없음"}</em><span class="en">${numF(R.store, z.out)}/${numF(cap, z.out)}</span></div><div class="pb"><i style="width:${Math.min(100, R.store / cap * 100)}%"></i></div><div class="btn get${R.store >= 1 ? "" : " dis"}">수령</div>`;
+      cd.querySelector(".get").onclick = (e) => { e.stopPropagation(); baseTick(); const g = collectRoom(key); save(); if (!g) return toast("아직 수령할 만큼 쌓이지 않았습니다"); render(); gainToast([g]); };
+      cd.onclick = () => zonePicker(key, render);   // the card is the way to the map
     } else cd.remove();
     const eye = h("div", "btn rv-eye", `<svg viewBox="0 0 24 24"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z" fill="none" stroke="#fff" stroke-width="2"/><circle cx="12" cy="12" r="3.5" fill="#fff"/></svg>`);
     eye.onclick = () => el.classList.toggle("rv-only"); el.appendChild(eye);
