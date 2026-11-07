@@ -8855,10 +8855,13 @@ window.BGM = (() => {
     if (d.range === "melee") return d.block >= 3 ? "blunt" : ["slash", "hitm", "punch", "slash2"][id.length % 4];
     return "whoosh";
   }
+  const MUTED_HIT = true;
   const FX_SND = { deploy: ["deploy", 0.9], skill: ["skill", 0.8], heal: ["heal", 0.5], leak: ["leak", 1], land: ["heavy", 0.7], bolt: ["magic2", 0.6], burn: ["boom", 0.5] };
   function playBattleSounds() {
     if (game.sfx && game.sfx.length) {
       for (const k of game.sfx) {
+        // hits, hurts, kills and the clear/fail jingles are off until proper sounds are chosen (the stand-ins grated)
+        if (MUTED_HIT && (k.startsWith("atk:") || k === "die" || k === "hurt")) continue;
         if (k.startsWith("atk:")) SFX.play(atkSound(k.slice(4)), 0.55);
         else if (k === "die") SFX.play("die", 0.6); else if (k === "hurt") SFX.play("hurt", 0.35);
         else if (k === "retreat") SFX.play("retreat", 0.7); else if (k === "down") SFX.play("glass", 0.7);
@@ -8866,7 +8869,7 @@ window.BGM = (() => {
       game.sfx.length = 0;
     }
     for (const f of game.fx) if (!f._s) { f._s = 1; const m = FX_SND[f.k]; if (m) SFX.play(m[0], m[1]); if (f.k === "deploy") SFX.play("deploy2", 0.5); }
-    if (game.over && !game._sndOver) { game._sndOver = 1; SFX.play(game.over === "win" ? "win" : "lose", 0.8); }
+    if (game.over && !game._sndOver) { game._sndOver = 1; if (!MUTED_HIT) SFX.play(game.over === "win" ? "win" : "lose", 0.8); }
   }
   function banner(text, sub, kind) { if (window.SFX) { if (kind === "warn") SFX.play("warn", 0.9); else if (kind === "op") SFX.play("draw", 0.7); } banners.push({ text, sub, kind, t: 0, life: kind === "warn" ? 2.6 : kind === "op" ? 1.9 : 2.2 }); }
 
