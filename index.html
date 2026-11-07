@@ -13958,7 +13958,47 @@ window.BSL_ECON = (() => {
     BUILD: { coin: 3000, items: [["bm1", 6]] },   // opening a new dispatch room (the first one comes ready)
     UP: { 2: { coin: 6000, items: [["bm1", 8]] }, 3: { coin: 16000, items: [["bm2", 5], ["bm1", 10]] } },
   };
-  return { CLS, clsKey, MATS, ITEMS, REFINE, expNeed, coinPerExp, matsOf, promoCost, skillCost, DROPS, SUPPLY, OPEN, SUPPLY_META, supplyDrops, ZONES, BASE };
+  // base skills (기반 스킬): what each operator brings to a room. The first works from the start, the second from promotion 1.
+  // t: prod (production in rooms making `out`: coin, rec1, mat, or one material), zone (one map), fat (fatigue drain, self or room),
+  //    def (defence of the room), cap (storage), rest (dorm recovery per hour, self or all)
+  const S_ = (n, t, v, o = {}) => Object.assign({ n, t, v }, o);
+  const BASE_SKILLS = {
+    belina: [S_("함성 지휘", "fat", 0.15, { room: 1 }), S_("가두 행진", "def", 0.15)],
+    yui: [S_("지하 순찰", "def", 0.2), S_("철야 근무", "fat", 0.3)],
+    hakuren: [S_("군기 수습", "prod", 0.4, { out: "m1_cloth" }), S_("기수의 걸음", "fat", 0.1, { room: 1 })],
+    miho: [S_("여우비", "rest", 0.3, { all: 1 }), S_("신사의 축복", "prod", 0.15, { out: "all" })],
+    lulu: [S_("철판 정비", "def", 0.15), S_("탄피 줍기", "prod", 0.35, { out: "m1_casing" })],
+    irins: [S_("해골 감정", "prod", 0.4, { out: "m1_shard" }), S_("고문서 해독", "prod", 0.25, { out: "rec1" })],
+    alpha: [S_("망루 전문", "zone", 0.4, { code: "BL-04" }), S_("사냥꾼의 눈", "def", 0.2)],
+    skakea: [S_("수읽기", "prod", 0.3, { out: "rec1" }), S_("포석", "cap", 0.25)],
+    ker: [S_("뿌리 내림", "fat", 0.4), S_("동토의 뿌리", "prod", 0.4, { out: "m1_frost" })],
+    sunae: [S_("순애 수호", "def", 0.25), S_("기사의 맹세", "fat", 0.1, { room: 1 })],
+    eungyeol: [S_("인해전술", "prod", 0.2, { out: "all" }), S_("분신 교대", "fat", 0.25, { room: 1 })],
+    teka: [S_("사건의 지평선", "cap", 0.4), S_("중력 압착", "prod", 0.2, { out: "mat" })],
+    capy: [S_("마이웨이", "fat", 0.5), S_("유자 나눔", "rest", 0.3, { all: 1 })],
+    hiro: [S_("작은 용기", "def", 0.1), S_("고물 수리", "prod", 0.25, { out: "coin" })],
+    lilith: [S_("밤의 장부", "prod", 0.2, { out: "coin" }), S_("야행성", "fat", 0.2)],
+    ayaki: [S_("응급 처치", "rest", 0.4, { all: 1 }), S_("위생 관리", "fat", 0.1, { room: 1 })],
+    nana: [S_("장거리 경계", "def", 0.2), S_("탄약 분류", "prod", 0.25, { out: "m1_casing" })],
+    tao: [S_("단련", "fat", 0.25), S_("정신일도", "prod", 0.15, { out: "all" })],
+    rabi: [S_("전령", "prod", 0.3, { out: "rec1" }), S_("희망의 노래", "rest", 0.4, { all: 1 })],
+    rabi6: [S_("축복의 빛", "prod", 0.25, { out: "all" }), S_("후광", "fat", 0.2, { room: 1 })],
+    falchion: [S_("먹 갈기", "prod", 0.35, { out: "rec1" }), S_("일필휘지", "def", 0.15)],
+    veil: [S_("맹목의 파수", "def", 0.3), S_("붉은 장막", "cap", 0.2)],
+    geomseon: [S_("도인의 여유", "fat", 0.5), S_("검기", "def", 0.2)],
+    angelina: [S_("치유의 손길", "rest", 0.6, { all: 1 }), S_("나비 효과", "prod", 0.1, { out: "all" })],
+    piania: [S_("휴식의 선율", "rest", 0.5, { all: 1 }), S_("작은 연주회", "fat", 0.15, { room: 1 })],
+    silphy: [S_("금서 정리", "prod", 0.4, { out: "rec1" }), S_("심연 탐구", "prod", 0.25, { out: "m1_shard" })],
+    smoqueen: [S_("연막", "def", 0.25), S_("연기 신호", "prod", 0.2, { out: "rec1" })],
+    bongeun: [S_("박봉 협상", "prod", 0.4, { out: "coin" }), S_("자금 운용", "cap", 0.3)],
+    alpha2: [S_("약탈자의 눈", "prod", 0.3, { out: "mat" }), S_("기습 대비", "def", 0.15)],
+    skakea2: [S_("결정 가공", "prod", 0.35, { out: "m1_frost" }), S_("여왕의 수", "prod", 0.2, { out: "all" })],
+    brick: [S_("묵묵한 벽", "def", 0.35), S_("움직이지 않음", "fat", 0.4)],
+    jayeon: [S_("광합성", "rest", 0.6), S_("텃밭 가꾸기", "rest", 0.3, { all: 1 })],
+    atat: [S_("낙서 기록", "prod", 0.25, { out: "rec1" }), S_("잉크 분류", "prod", 0.15, { out: "mat" })],
+  };
+  for (const [ko, k] of CLS) { const id = { van: "vanguard", grd: "guard", def: "defender", snp: "sniper", cst: "caster", med: "medic", sup: "supporter", spc: "specialist" }[k]; BASE_SKILLS[id] = [S_("기본 근무", "prod", 0.1, { out: "all" })]; }
+  return { BASE_SKILLS, CLS, clsKey, MATS, ITEMS, REFINE, expNeed, coinPerExp, matsOf, promoCost, skillCost, DROPS, SUPPLY, OPEN, SUPPLY_META, supplyDrops, ZONES, BASE };
 })();
 
 // Lobby and everything around the battles: the main menu, operations, squads, operators, headhunting, base.
@@ -14375,6 +14415,11 @@ window.BSL_ECON = (() => {
   .ib-rm .lv { display:flex; gap:2px; } .ib-rm .lv i { width:5px; height:15px; background:#fff; } .ib-rm .lv i.o { background:rgba(255,255,255,.2); }
   .ib-rm .st { position:absolute; left:22px; top:40px; font-size:14px; font-weight:800; color:#c8ccd4; }
   .ib-rm .ic { position:absolute; right:-14px; top:-14px; width:56px; height:56px; border-radius:50%; background:#1b1c1f; border:3px solid var(--rc); display:grid; place-items:center; } .ib-rm .ic > i { width:34px; height:34px; display:grid; place-items:center; margin:6px 6px 0 0; } .ib-rm .ic svg { width:100%; height:100%; }
+  .ib-rm .ic.ready { animation:icReady 1.4s ease-in-out infinite; box-shadow:0 0 0 3px rgba(255,255,255,.9), 0 0 14px var(--rc); }
+  @keyframes icReady { 50% { transform:scale(1.08); } }
+  .gain { position:absolute; left:50%; top:96px; transform:translateX(-50%); display:flex; gap:18px; background:rgba(12,13,15,.88); border:1px solid rgba(255,255,255,.2); padding:8px 22px; z-index:90; pointer-events:none; animation:gainIn 1.9s ease forwards; }
+  .gain span { display:flex; align-items:center; gap:6px; } .gain i { width:30px; height:30px; display:grid; place-items:center; font-style:normal; } .gain i svg { width:100%; height:100%; } .gain .cn { font-size:22px; font-weight:900; color:#ffd36a; } .gain b { font-size:21px; color:#fff; }
+  @keyframes gainIn { 0% { opacity:0; transform:translate(-50%,8px); } 12% { opacity:1; transform:translate(-50%,0); } 80% { opacity:1; } 100% { opacity:0; transform:translate(-50%,-6px); } }
   .ib-rm .ic .cn { font-style:normal; font-size:24px; font-weight:900; color:#ffd36a; } .ib-rm .ic.none { border-color:#6f747d; font-size:26px; color:#9aa0aa; }
   .ib-rm .gn { position:absolute; right:10px; bottom:14px; font-size:28px; line-height:1; } .ib-rm .gn b { font-weight:400; } .ib-rm .gn small { font-size:16px; color:#9aa0aa; }
   .ib-rm .sg { position:absolute; left:22px; right:70px; bottom:8px; display:flex; gap:3px; } .ib-rm .sg i { flex:1; height:5px; background:rgba(255,255,255,.18); } .ib-rm .sg i.on { background:var(--rc); }
@@ -14451,6 +14496,49 @@ window.BSL_ECON = (() => {
   .rv-cd .get { position:absolute; right:26px; bottom:42px; padding:6px 22px; background:linear-gradient(90deg,#118bc4,#24a8e8); font-size:17px; font-weight:900; } .rv-cd .get.dis { background:#3a3c41; color:#888; }
   .rv-eye { position:absolute; right:30px; bottom:30px; width:64px; height:64px; display:grid; place-items:center; z-index:5; } .rv-eye svg { width:52px; height:52px; filter:drop-shadow(0 2px 4px #000); }
   .rv-only .rv-tabs, .rv-only .rv-dw, .rv-only .rv-cd, .rv-only .rv-nm, .rv-only .rv-nb { opacity:0; pointer-events:none; } .rv-only .rv-fr { left:0; top:0; width:1280px; height:720px; clip-path:none; background:#000; } .rv-only .rv-fr .bz-cv { left:0; top:0; width:100%; height:100%; clip-path:none; } .rv-only .top { opacity:.5; }
+  /* base skills */
+  .ski { display:inline-grid; place-items:center; width:26px; height:26px; border-radius:50%; font-style:normal; font-size:15px; font-weight:900; color:#1b1c1f; background:#f5c400; box-shadow:0 0 0 2px rgba(0,0,0,.4); vertical-align:middle; }
+  .ski.big { width:34px; height:34px; font-size:19px; }
+  .ski.c { background:#f5c400; } .ski.r { background:#4fb8ff; } .ski.m { background:#8ed42a; } .ski.a { background:#ffffff; } .ski.z { background:#ff9a3c; } .ski.f { background:#5fd3a8; } .ski.d { background:#ff6a5a; } .ski.p { background:#b48aff; } .ski.s { background:#9ad8ff; }
+  .ski.lk { filter:grayscale(1) brightness(.5); }
+  .bz-sel { position:absolute; inset:0; z-index:70; background:linear-gradient(90deg,#d9dadd 0,#d9dadd 440px,#f2f2f3 440px); color:#1b1c1f; }
+  .bz-sel .bk { position:absolute; left:20px; top:16px; width:110px; height:46px; background:#2a2c30; color:#fff; font-size:34px; display:grid; place-items:center; }
+  .bz-sel .lp { position:absolute; left:0; top:80px; width:440px; bottom:0; padding:0 26px; }
+  .bz-sel .rt { display:flex; justify-content:space-between; align-items:baseline; background:#c4c6ca; padding:10px 14px; } .bz-sel .rt b { font-size:22px; font-weight:900; } .bz-sel .rt span { font-size:17px; font-weight:800; color:#4a4d52; }
+  .bz-sel .fo { margin-top:12px; background:#ececed; border:1px solid #c4c6ca; padding:14px; min-height:220px; } .bz-sel .fo.none { display:grid; place-items:center; color:#8a8d92; font-size:17px; }
+  .bz-sel .fo .nm { font-size:30px; font-weight:900; } .bz-sel .fo .fb { display:flex; align-items:center; gap:8px; margin:6px 0 10px; background:#55585e; padding:4px 10px; border-radius:4px; }
+  .bz-sel .fo .fb .sm { font-style:normal; width:24px; height:24px; border-radius:50%; background:#f5c400; display:grid; place-items:center; font-size:16px; } .bz-sel .fo .fb .bar { flex:1; height:6px; background:rgba(255,255,255,.25); } .bz-sel .fo .fb .bar b { display:block; height:100%; } .bz-sel .fo .fb span { color:#fff; font-size:18px; }
+  .bz-sel .sk { margin-top:10px; } .bz-sel .sk .tag { display:inline-flex; align-items:center; gap:6px; background:#2a2c30; color:#fff; padding:3px 10px 3px 4px; font-size:17px; } .bz-sel .sk.fit .tag { background:#1f6f9c; }
+  .bz-sel .sk p { margin:5px 0 0; font-size:16px; line-height:1.45; color:#2a2c30; } .bz-sel .sk p em { font-style:normal; font-weight:900; color:#1a8fd6; } .bz-sel .sk.lk { opacity:.55; } .bz-sel .sk .no { color:#8a8d92; }
+  .bz-sel .pv { margin-top:12px; background:#2a2c30; color:#fff; padding:10px 14px; } .bz-sel .pv .lb { font-size:14px; color:#9aa0aa; margin-bottom:4px; }
+  .bz-sel .pv .kv { display:flex; justify-content:space-between; font-size:16px; padding:3px 0; } .bz-sel .pv .kv span { color:#c8ccd4; } .bz-sel .pv em { font-style:normal; color:#4fb8ff; margin-left:6px; } .bz-sel .pv b.ok { color:#5fd36a; } .bz-sel .pv b.mid { color:#f2c14e; } .bz-sel .pv b.bad { color:#ff5a4a; }
+  .bz-sel .rp { position:absolute; left:460px; right:20px; top:14px; bottom:0; }
+  .bz-sel .tabs { display:flex; align-items:center; background:#1d1f23; height:52px; padding:0 10px; } .bz-sel .tb { color:#c8ccd4; font-size:18px; font-weight:800; padding:0 22px; height:100%; display:grid; place-items:center; } .bz-sel .tb.on { color:#4fb8ff; box-shadow:inset 0 -3px #4fb8ff; }
+  .bz-sel .cnt { margin-left:auto; color:#fff; font-size:20px; padding-right:10px; }
+  .bz-sel .gl { position:absolute; left:0; right:0; top:64px; bottom:84px; overflow-y:auto; display:grid; grid-template-columns:repeat(5,1fr); gap:10px; align-content:start; padding:2px; }
+  .bz-sel .pc { position:relative; height:220px; background:#2a2c30; overflow:hidden; box-shadow:0 2px 5px rgba(0,0,0,.25); }
+  .bz-sel .pc .im { position:absolute; inset:0 0 56px 0; background:center 12%/cover; } .bz-sel .pc .im::after { content:""; position:absolute; inset:0; background:linear-gradient(180deg,rgba(0,0,0,0) 60%,rgba(20,21,24,.95)); }
+  .bz-sel .pc.on { box-shadow:0 0 0 4px #2aa7ec; } .bz-sel .pc.on .im { filter:brightness(.8) sepia(.3) hue-rotate(170deg) saturate(1.4); }
+  .bz-sel .pc .no { position:absolute; right:8px; top:4px; font-size:54px; font-weight:400; color:#fff; text-shadow:0 2px 6px #000; line-height:1; }
+  .bz-sel .pc .pt { position:absolute; left:0; top:6px; background:rgba(20,21,24,.85); color:#fff; font-size:13px; font-weight:800; padding:2px 8px; }
+  .bz-sel .pc .sk { position:absolute; left:6px; bottom:56px; display:flex; gap:4px; margin:0; } .bz-sel .pc .sk span { opacity:.45; } .bz-sel .pc .sk span.fit { opacity:1; filter:drop-shadow(0 0 4px rgba(255,255,255,.8)); }
+  .bz-sel .pc .fb { position:absolute; left:8px; right:8px; bottom:42px; height:5px; background:rgba(255,255,255,.2); } .bz-sel .pc .fb b { display:block; height:100%; }
+  .bz-sel .pc .nm { position:absolute; left:8px; right:8px; bottom:10px; color:#fff; font-size:18px; font-weight:900; text-align:right; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .bz-sel .pc.out .im { filter:grayscale(1) brightness(.5); }
+  .bz-sel .ft { position:absolute; left:0; right:0; bottom:16px; display:flex; justify-content:space-between; } .bz-sel .ft .btn { height:56px; display:grid; place-items:center; font-size:22px; font-weight:900; padding:0 40px; }
+  .bz-sel .ft .clr { background:#3a3c41; color:#fff; } .bz-sel .ft .ok { background:linear-gradient(90deg,#118bc4,#24a8e8); color:#fff; padding:0 70px; }
+  /* the crew table in a room */
+  .rv-dw .crew { display:flex; gap:8px; } .rv-dw .cc { position:relative; width:118px; height:150px; background:#202227 center 12%/cover; border:1px solid rgba(255,255,255,.15); overflow:hidden; }
+  .rv-dw .cc::after { content:""; position:absolute; inset:0; background:linear-gradient(180deg,rgba(0,0,0,0) 50%,rgba(15,16,18,.95)); } .rv-dw .cc > * { position:relative; z-index:1; }
+  .rv-dw .cc .st { position:absolute; left:0; right:0; bottom:20px; text-align:center; font-size:14px; font-weight:900; color:#fff; } .rv-dw .cc .st.out { color:#ff6a5a; }
+  .rv-dw .cc .fb2 { position:absolute; left:6px; right:6px; bottom:8px; height:5px; background:rgba(255,255,255,.2); } .rv-dw .cc .fb2 b { display:block; height:100%; }
+  .rv-dw .cc .sk2 { position:absolute; left:4px; top:4px; display:flex; gap:3px; } .rv-dw .cc .sk2 .ski { width:22px; height:22px; font-size:13px; }
+  .rv-dw .cc.e { display:grid; place-items:center; border-style:dashed; color:#8a909a; font-size:30px; } .rv-dw .cc.e::after { display:none; }
+  .rv-dw .tb2 { margin-top:12px; width:100%; border-collapse:collapse; font-size:16px; } .rv-dw .tb2 td { padding:6px 4px; border-bottom:1px solid rgba(255,255,255,.08); } .rv-dw .tb2 td:first-child { color:#c8ccd4; font-weight:800; }
+  .rv-dw .tb2 .b0 { text-align:right; color:#fff; } .rv-dw .tb2 .b1 { text-align:right; width:90px; } .rv-dw .tb2 .b1 i { font-style:normal; display:inline-block; min-width:64px; text-align:center; padding:1px 6px; background:#4fb8ff; color:#0b1a24; font-weight:900; }
+  .rv-dw .tb2 .b1 i.n { background:#5fd3a8; } .rv-dw .tb2 .b1 i.z { background:#55575c; color:#c8ccd4; }
+  .rv-dw .skl { margin-top:10px; font-size:14px; color:#b8bcc4; } .rv-dw .skl div { display:flex; align-items:center; gap:6px; padding:3px 0; } .rv-dw .skl b { color:#fff; } .rv-dw .skl em { font-style:normal; color:#4fb8ff; font-weight:800; margin-left:auto; }
+  .rv-dw .chg2 { margin-top:12px; height:44px; display:grid; place-items:center; font-size:17px; font-weight:900; background:linear-gradient(90deg,#118bc4,#24a8e8); }
   /* a zone or the dorm, the scene behind the panel */
   .bz-cv { position:absolute; inset:0; width:1280px; height:720px; }
   .bz-pn { position:absolute; right:0; top:0; bottom:0; width:470px; background:linear-gradient(90deg,rgba(10,11,13,0),rgba(10,11,13,.88) 12%,rgba(10,11,13,.94)); padding:80px 28px 20px 70px; transition:transform .3s, opacity .3s; overflow:hidden; }
@@ -15498,7 +15586,7 @@ window.BSL_ECON = (() => {
       const lost = b.log.filter((l) => !l.ok && l.t > (b.seen || 0)).length;
       const bar = h("div", "ib-pend", `<div class="pl"><i>✓</i>처리 대기</div>`); el.appendChild(bar);
       const item = (n, tag, label, fn, cls = "") => { const d = h("div", "btn pi" + (n ? " on " + cls : ""), `${n ? `<em class="en">${tag}</em>` : ""}<b>${label}</b>`); d.onclick = n ? fn : () => toast("처리할 일이 없습니다"); bar.appendChild(d); };
-      item(ready, `${ready}곳 수령`, "획득 가능", () => { baseTick(); const got = b.rooms.map((R, r) => collectRoom(r)).filter(Boolean); save(); render(); if (got.length) dropBox("물자 수령", mergeItems(got)); });
+      item(ready, `${ready}곳 수령`, "획득 가능", () => { baseTick(); const got = b.rooms.map((R, r) => collectRoom(r)).filter(Boolean); save(); render(); if (got.length) gainToast(mergeItems(got)); });
       item(tired, `${tired}명 탈진`, "교체 필요", () => { const r = b.rooms.findIndex((R, k) => roomAvail(k) && working(R) && R.g.some((id) => fatOf(id) <= 0)); go("room", r); }, "warn");
       item(empty, `${empty}곳 공백`, "경계 공백", () => { const r = b.rooms.findIndex((R, k) => roomAvail(k) && R.built && (!R.zone || !R.g.length)); go("room", r); }, "warn");
       item(lost, `${lost}건`, "습격 피해", () => baseLog(), "bad");
@@ -16327,14 +16415,47 @@ window.BSL_ECON = (() => {
   const roomOf = (r) => baseState().rooms[r];
   const working = (R) => R.built && R.zone && zoneOpen(zDef(R.zone));
   const activeG = (r) => roomOf(r).g.filter((id) => fatOf(id) > 0);
+  // ---------- base skills ----------
+  const skillsOf = (id) => (EC.BASE_SKILLS[id] || []).map((sk, i) => Object.assign({ i, locked: i > 0 && !(S.ops[id] && S.ops[id].elite >= 1) }, sk));
+  const liveSkills = (id) => skillsOf(id).filter((sk) => !sk.locked);
+  const outLabel = (o) => o === "all" ? "" : o === "coin" ? "주화 " : o === "rec1" ? "작전기록 " : o === "mat" ? "재료 " : (ITEM[o] ? ITEM[o].n + " " : "");
+  const skDesc = (sk) => {
+    const pc = `+${Math.round(sk.v * 100)}%`;
+    if (sk.t === "prod") return [`파견실 배치 시, ${outLabel(sk.out)}생산력 `, pc];
+    if (sk.t === "zone") return [`${sk.code} 보호 시, 생산력 `, pc];
+    if (sk.t === "fat") return [`파견실 배치 시, ${sk.room ? "같은 방 전원의" : "자신의"} 피로 소모 `, `-${Math.round(sk.v * 100)}%`];
+    if (sk.t === "def") return ["파견실 배치 시, 방의 방어력 ", pc];
+    if (sk.t === "cap") return ["파견실 배치 시, 보관 한도 ", pc];
+    if (sk.t === "rest") return [`숙소 배치 시, ${sk.all ? "숙소 전원의" : "자신의"} 피로 회복 `, `+${sk.v}/시간`];
+    return ["", ""];
+  };
+  const SK_IC = { prod: (sk) => sk.out === "coin" ? ["₵", "c"] : sk.out === "rec1" ? ["≡", "r"] : sk.out === "all" ? ["▲", "a"] : ["◆", "m"], zone: () => ["⌖", "z"], fat: () => ["♥", "f"], def: () => ["⛨", "d"], cap: () => ["▣", "p"], rest: () => ["☾", "s"] };
+  const bsIcon = (sk, big) => { const [g2, c] = SK_IC[sk.t](sk); return `<i class="ski ${c}${sk.locked ? " lk" : ""}${big ? " big" : ""}">${g2}</i>`; };
+  // does a skill do anything in this room?
+  const skFits = (sk, R) => {
+    if (!R) return sk.t === "rest"; if (!R.zone) return false; const o = zDef(R.zone).out;
+    if (sk.t === "prod") return sk.out === "all" || sk.out === o || (sk.out === "mat" && o.startsWith("m1_"));
+    if (sk.t === "zone") return sk.code === R.zone;
+    return sk.t === "fat" || sk.t === "def" || sk.t === "cap";
+  };
+  // what a room's guards add up to: production, defence, storage (fractions) and the fatigue drain the room takes off everyone
+  function roomFx(r, act) {
+    const R = roomOf(r), fx = { prod: 0, def: 0, cap: 0, roomFat: 0 }; act = act || activeG(r);
+    for (const id of act) for (const sk of liveSkills(id)) { if (!skFits(sk, R)) continue;
+      if (sk.t === "prod" || sk.t === "zone") fx.prod += sk.v; else if (sk.t === "def") fx.def += sk.v; else if (sk.t === "fat" && sk.room) fx.roomFat += sk.v; }
+    for (const id of R.g) for (const sk of liveSkills(id)) if (sk.t === "cap") fx.cap += sk.v;   // storage holds whether they are awake or not
+    return fx;
+  }
+  const drainOf = (id, r, act) => { const self = liveSkills(id).filter((sk) => sk.t === "fat" && !sk.room).reduce((a, sk) => a + sk.v, 0); return BB.DRAIN * Math.max(0.2, 1 - self - roomFx(r, act).roomFat); };
+  const restOf = (id) => { const b = baseState(); let v = BB.REST[b.dorm.lv - 1]; for (const sk of liveSkills(id)) if (sk.t === "rest" && !sk.all) v += sk.v; for (const o of b.dorm.rest) for (const sk of liveSkills(o)) if (sk.t === "rest" && sk.all) v += sk.v; return v; };
   function zRate(r, act) {   // what the room makes in an hour with these guards on their feet
     const R = roomOf(r); if (!working(R)) return 0; const z = zDef(R.zone); act = act || activeG(r); const n = act.length; if (!n) return 0;
     const fit = act.filter((id) => z.fit.includes(def(id).cls)).length;
-    return z.rate * BB.LVMUL[R.lv - 1] * [0, 0.45, 0.75, 1][Math.min(3, n)] * (1 + 0.1 * fit);
+    return z.rate * BB.LVMUL[R.lv - 1] * [0, 0.45, 0.75, 1][Math.min(3, n)] * (1 + 0.1 * fit + roomFx(r, act).prod);
   }
-  const zCap = (r) => { const R = roomOf(r); return R.zone ? zDef(R.zone).rate * BB.LVMUL[R.lv - 1] * BB.CAPH : 1; };
+  const zCap = (r) => { const R = roomOf(r); return R.zone ? zDef(R.zone).rate * BB.LVMUL[R.lv - 1] * BB.CAPH * (1 + roomFx(r).cap) : 1; };
   const zDanger = (r) => { const R = roomOf(r); return R.zone ? zDef(R.zone).danger[R.lv - 1] : 0; };
-  const zPow = (r, act) => (act || activeG(r)).reduce((a, id) => a + opPow(id), 0);
+  const zPow = (r, act) => { act = act || activeG(r); return Math.round(act.reduce((a, id) => a + opPow(id), 0) * (1 + roomFx(r, act).def)); };
   const zWin = (r, act) => { const p = zPow(r, act), d = zDanger(r); return p <= 0 ? 0 : Math.max(0.1, Math.min(1, Math.pow(p / d, 2))); };
   // bring everything up to now: production, fatigue and raids in quarter-hour steps (two weeks at most)
   function baseTick() {
@@ -16347,7 +16468,7 @@ window.BSL_ECON = (() => {
         if (!R.nr) R.nr = t + (BB.RAID_EVERY + Math.random() * BB.RAID_JIT) * HR;
         const act = R.g.filter((id) => fatOf(id) > 0);
         R.store = Math.min(zCap(r), R.store + zRate(r, act) * dh);
-        for (const id of act) b.fat[id] = Math.max(0, fatOf(id) - BB.DRAIN * dh);
+        for (const id of act) b.fat[id] = Math.max(0, fatOf(id) - drainOf(id, r, act) * dh);
         if (t2 >= R.nr) {
           const at = R.nr; R.nr += (BB.RAID_EVERY + Math.random() * BB.RAID_JIT) * HR; if (R.nr <= t2) R.nr = t2 + BB.RAID_EVERY * HR;
           if (!R.g.length && R.store < 1) return;   // nothing there for them to take
@@ -16356,7 +16477,7 @@ window.BSL_ECON = (() => {
           b.log.unshift({ t: at, r, c: R.zone, ok, p: Math.round(p * 100) });
         }
       });
-      for (const id of b.dorm.rest) b.fat[id] = Math.min(BB.FAT, fatOf(id) + BB.REST[b.dorm.lv - 1] * dh);
+      for (const id of b.dorm.rest) b.fat[id] = Math.min(BB.FAT, fatOf(id) + restOf(id) * dh);
       t = t2;
     }
     b.t = now; b.log = b.log.slice(0, 40);
@@ -16372,6 +16493,11 @@ window.BSL_ECON = (() => {
     R.store -= n; if (z.out === "coin") S.res.coin += n; else addItems([[z.out, n]]);
     return [z.out, n];
   }
+  // what was just collected, shown for a moment and out of the way (no box to close)
+  function gainToast(list) {
+    const t = h("div", "gain", list.map(([k, n]) => `<span>${k === "coin" ? '<i class="cn">₵</i>' : `<i>${icn(ITEM[k].ic)}</i>`}<b class="en">+${fmt(n)}</b></span>`).join(""));
+    sheet.appendChild(t); setTimeout(() => t.remove(), 1900);
+  }
   const outIc = (k) => k === "coin" ? `<i class="cn">₵</i>` : `<i>${icn(ITEM[k].ic)}</i>`;
   const outN = (k) => k === "coin" ? "주화" : ITEM[k].n;
   const numF = (v, k) => k === "coin" ? fmt(Math.floor(v)) : v > 0 && v < 1 ? v.toFixed(2) : (Math.floor(v * 10) / 10).toFixed(1);
@@ -16383,34 +16509,54 @@ window.BSL_ECON = (() => {
   const clockTxt = (t) => { const d = new Date(t), p = (n) => String(n).padStart(2, "0"); return `${p(d.getMonth() + 1)}/${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`; };
   const OUT_COL = { coin: "#f5c400", rec1: "#2aa7ec" };   // a room's colour follows what it makes: coin gold, records blue, materials green
   const roomCol = (R) => !R.zone ? "#8a8f98" : OUT_COL[zDef(R.zone).out] || "#8ed42a";
-  // the picker: every operator, where they are now, how tired, how strong
+  // the picker, after the original's: every operator as a card with their base skills, the chosen ones numbered in order;
+  // the left shows whoever was touched last, with their skills spelled out, and what the room would do with this choice
   function guardPicker(target, slotIdx, after) {
     baseTick();
-    const b = baseState(), mo = h("div", "modal bz-pk"), bx = h("div", "box");
-    const isD = target === "dorm", cur = isD ? b.dorm.rest : b.rooms[target].g, z = isD ? null : zDef(b.rooms[target].zone);
-    bx.innerHTML = `<div class="hd"><b>${isD ? "숙소에서 쉴 가사인격" : "경계 배치"}</b><span>${isD ? `피로가 시간당 ${BB.REST[b.dorm.lv - 1]}씩 회복됩니다` : `적합 직군 ${z.fit.join(" · ")} · 생산 +10%`}</span></div><div class="gl"></div>`;
-    const gl = bx.querySelector(".gl");
-    const ids = Object.keys(S.ops).sort((a, c) => (cur.includes(c) - cur.includes(a)) || (fatOf(c) - fatOf(a)) || (opPow(c) - opPow(a)));
-    for (const id of ids) {
-      const p = postOf(id), f = fatOf(id), on = cur.includes(id), fit = z && z.fit.includes(def(id).cls);
-      const card = h("div", "btn pc" + (on ? " on" : ""), `<div class="im" style="background-image:url(${opArt(id, "card")})"></div>
-        <div class="nm">${esc(nm(id).main)}</div><div class="cl"><img src="${clsIcon(CLS_REP[def(id).cls], 20)}" alt="">${fit ? '<em>적합</em>' : ""}<span class="en">${opPow(id)}</span></div>
-        <div class="fb"><i style="width:${f / BB.FAT * 100}%;background:${fatCol(f)}"></i></div><div class="ft en">${Math.floor(f)}/${BB.FAT}</div>
-        ${p !== null ? `<div class="pt">${p === "dorm" ? "휴식 중" : on ? "배치 중" : `파견실 ${p + 1}`}</div>` : ""}`);
-      card.onclick = () => {
-        baseTick();
-        if (on) setPost(id, null);
-        else {
-          const cap = isD ? BB.DORM_SLOTS[b.dorm.lv - 1] : BB.SLOTS, list = isD ? b.dorm.rest : b.rooms[target].g;
-          if (list.length >= cap) { const out = list[Math.min(slotIdx, list.length - 1)]; setPost(out, null); }
-          setPost(id, target);
-        }
+    const b = baseState(), isD = target === "dorm", R = isD ? null : b.rooms[target], z = R && R.zone ? zDef(R.zone) : null;
+    const cap = isD ? BB.DORM_SLOTS[b.dorm.lv - 1] : BB.SLOTS;
+    let sel = (isD ? b.dorm.rest : R.g).slice(), focus = sel[0] || null, sortBy = "eff";
+    const score = (id) => skillsOf(id).filter((sk) => !sk.locked && skFits(sk, R)).reduce((a, sk) => a + (sk.t === "rest" ? sk.v / 2 : sk.v), 0) + (z && z.fit.includes(def(id).cls) ? 0.1 : 0);
+    const mo = h("div", "bz-sel"); sheet.appendChild(mo);
+    const draw = () => {
+      const ids = Object.keys(S.ops).sort((a, c) => (sortBy === "fat" ? fatOf(c) - fatOf(a) : sortBy === "pow" ? opPow(c) - opPow(a) : (score(c) - score(a)) || (fatOf(c) - fatOf(a))) || (opPow(c) - opPow(a)));
+      const fo = focus && S.ops[focus] ? focus : null;
+      // what the room would do with this choice
+      let prev = "";
+      if (isD) { const per = sel.length ? sel.map((id) => { const save2 = b.dorm.rest; b.dorm.rest = sel; const v = restOf(id); b.dorm.rest = save2; return v; }) : []; prev = `<div class="kv"><span>피로 회복/시간</span><b class="en">${per.length ? (per.reduce((a, v) => a + v, 0) / per.length).toFixed(1) : "-"}</b></div><div class="kv"><span>정원</span><b class="en">${sel.length}/${cap}</b></div>`; }
+      else if (z) {
+        const act = sel.filter((id) => fatOf(id) > 0), fx = roomFx(target, act), save2 = R.g; R.g = sel; const rate = zRate(target, act), win = zWin(target, act), dr = act.length ? act.reduce((a, id) => a + drainOf(id, target, act), 0) / act.length : BB.DRAIN; R.g = save2;
+        prev = `<div class="kv"><span>생산력</span><b class="en">${numF(rate, z.out === "coin" ? "coin" : "x")}/시간 <em>+${Math.round(fx.prod * 100)}%</em></b></div><div class="kv"><span>피로 소모/시간</span><b class="en">${dr.toFixed(2)}</b></div><div class="kv"><span>격퇴 확률</span><b class="en ${win >= 1 ? "ok" : win >= 0.6 ? "mid" : "bad"}">${Math.round(win * 100)}%</b></div>`;
+      }
+      mo.innerHTML = `<div class="lp"><div class="rt"><b>${isD ? "숙소" : `파견실 ${target + 1}`}</b><span>${z ? esc(z.n) : isD ? "휴식" : ""}</span></div>
+          ${fo ? `<div class="fo"><div class="nm">${esc(nm(fo).main)}</div><div class="fb"><i class="sm">☺</i><div class="bar"><b style="width:${fatOf(fo) / BB.FAT * 100}%;background:${fatCol(fatOf(fo))}"></b></div><span class="en">${Math.floor(fatOf(fo))}/${BB.FAT}</span></div>
+            <div class="sks">${skillsOf(fo).map((sk) => { const [d1, d2] = skDesc(sk); return `<div class="sk${sk.locked ? " lk" : ""}${skFits(sk, R) ? " fit" : ""}"><div class="tag">${bsIcon(sk)}<b>${esc(sk.n)}</b></div><p>${sk.locked ? "정예화 1 달성 시 해금 · " : ""}${esc(d1)}<em>${esc(d2)}</em></p></div>`; }).join("") || '<p class="no">기반 스킬 없음</p>'}</div></div>` : '<div class="fo none">가사인격을 선택하세요</div>'}
+          <div class="pv"><div class="lb">배치 결과</div>${prev}</div></div>
+        <div class="rp"><div class="tabs">${[["eff", "효율"], ["fat", "컨디션"], ["pow", "방어력"]].map(([k, l]) => `<div class="btn tb${sortBy === k ? " on" : ""}" data-k="${k}">${l}</div>`).join("")}<span class="cnt en">${sel.length}/${cap}</span></div>
+          <div class="gl">${ids.map((id) => { const p = postOf(id), f = fatOf(id), n = sel.indexOf(id), here = isD ? p === "dorm" : p === target;
+            const tag = n >= 0 ? "" : p === "dorm" && !isD ? "휴식 중" : typeof p === "number" && !here ? `파견실 ${p + 1}` : "";
+            return `<div class="btn pc${n >= 0 ? " on" : ""}${f <= 0 && !isD ? " out" : ""}" data-id="${id}"><div class="im" style="background-image:url(${opArt(id, "card")})"></div>
+              ${n >= 0 ? `<div class="no en">${n + 1}</div>` : ""}${tag ? `<div class="pt">${tag}</div>` : ""}
+              <div class="sk">${skillsOf(id).map((sk) => `<span class="${skFits(sk, R) && !sk.locked ? "fit" : ""}">${bsIcon(sk)}</span>`).join("")}</div>
+              <div class="fb"><b style="width:${f / BB.FAT * 100}%;background:${fatCol(f)}"></b></div><div class="nm">${esc(nm(id).main)}</div></div>`; }).join("")}</div>
+          <div class="ft"><div class="btn clr">선택 초기화</div><div class="btn ok">확인</div></div></div>
+        <div class="btn bk">‹</div>`;
+      mo.querySelectorAll(".tb").forEach((t) => t.onclick = () => { sortBy = t.dataset.k; draw(); });
+      mo.querySelectorAll(".pc").forEach((c) => c.onclick = () => {
+        const id = c.dataset.id, n = sel.indexOf(id); focus = id;
+        if (n >= 0) sel.splice(n, 1); else if (sel.length < cap) sel.push(id); else { toast(`최대 ${cap}명까지 배치할 수 있습니다`); }
+        const gl = mo.querySelector(".gl"), st = gl.scrollTop; draw(); mo.querySelector(".gl").scrollTop = st;
+      });
+      mo.querySelector(".clr").onclick = () => { sel = []; draw(); };
+      mo.querySelector(".bk").onclick = () => mo.remove();
+      mo.querySelector(".ok").onclick = () => {
+        baseTick(); const before = isD ? b.dorm.rest.slice() : R.g.slice();
+        for (const id of before) if (!sel.includes(id)) setPost(id, null);
+        for (const id of sel) setPost(id, target);
         save(); mo.remove(); after && after();
       };
-      gl.appendChild(card);
-    }
-    const x = h("div", "btn itm-x", "✕"); x.onclick = () => mo.remove(); bx.appendChild(x);
-    mo.appendChild(bx); mo.onclick = (e) => { if (e.target === mo) mo.remove(); }; sheet.appendChild(mo);
+    };
+    draw();
   }
   // building a room, or raising one (or the dorm) a level: base materials from the 자재 야적장, and coin
   function costBox(title, what, c, yes, onYes) {
@@ -16485,10 +16631,11 @@ window.BSL_ECON = (() => {
     t.style.setProperty("--rc", col);
     const rs = roomSetOf(r); if (rs && ART[rs.key]) t.style.setProperty("--art", `url(${ART[rs.key]})`);
     t.innerHTML = `<div class="art"></div><div class="bar"></div><div class="tt">파견실<span class="lv">${"<i></i>".repeat(R.lv)}${"<i class=o></i>".repeat(3 - R.lv)}</span></div><div class="st" style="color:${stt[1]}">${stt[0]}</div>
-      ${z ? `<div class="ic">${outIc(z.out)}</div>` : '<div class="ic none">+</div>'}
+      ${z ? `<div class="ic${R.store >= 1 ? " ready" : ""}">${outIc(z.out)}</div>` : '<div class="ic none">+</div>'}
       <div class="gn en"><svg class="pp" viewBox="0 0 20 20"><circle cx="10" cy="6" r="4"/><path d="M2 19c0-5 4-7 8-7s8 2 8 7z"/></svg><b>${R.g.length}</b><small>/${BB.SLOTS}</small></div>
       <div class="sg">${Array.from({ length: seg }, (_, q) => `<i class="${q < fill ? "on" : ""}"></i>`).join("")}</div>`;
     t.onclick = () => go("room", r);
+    const ic = t.querySelector(".ic.ready"); if (ic) ic.onclick = (e) => { e.stopPropagation(); baseTick(); const g = collectRoom(r); save(); render(); if (g) gainToast([g]); };   // the full disc collects on the spot
     return t;
   }
   function baseHelp() {
@@ -16559,13 +16706,31 @@ window.BSL_ECON = (() => {
     const crewHtml = () => {
       const cap = isD ? BB.DORM_SLOTS[b.dorm.lv - 1] : BB.SLOTS, list = isD ? b.dorm.rest : R.g;
       if (!isD && !z) return `<div class="hd">배치 정보</div><p>먼저 보호할 구역을 고르세요.</p>`;
-      return `<div class="hd">배치 정보<small>${isD ? `회복 ${BB.REST[b.dorm.lv - 1]}/시간` : `적합 · ${z.fit.join(" ")}`}</small></div><div class="sl">${Array.from({ length: cap }, (_, k) => { const id = list[k]; if (!id) return `<div class="btn s e" data-k="${k}"><b>+</b><span>배치</span></div>`; const f = fatOf(id);
-        return `<div class="btn s${f <= 0 && !isD ? " out" : ""}" data-k="${k}"><div class="im" style="background-image:url(${opArt(id, "card")})"></div>${!isD && z.fit.includes(def(id).cls) ? '<em>적합</em>' : ""}<div class="nm">${esc(nm(id).main)}</div><div class="fb"><i style="width:${f / BB.FAT * 100}%;background:${fatCol(f)}"></i></div><div class="ft en">${isD ? (f >= BB.FAT ? "회복 완료" : Math.floor(f) + "/" + BB.FAT) : f <= 0 ? "탈진" : Math.floor(f) + "/" + BB.FAT}</div></div>`; }).join("")}</div>`;
+      const cards = Array.from({ length: cap }, (_, k) => { const id = list[k]; if (!id) return `<div class="btn cc e">+</div>`; const f = fatOf(id), out = f <= 0 && !isD;
+        return `<div class="btn cc" style="background-image:url(${opArt(id, "card")})"><div class="sk2">${skillsOf(id).filter((sk) => !sk.locked && skFits(sk, R)).map((sk) => bsIcon(sk)).join("")}</div><div class="st${out ? " out" : ""}">${isD ? (f >= BB.FAT ? "회복 완료" : "휴식 중") : out ? "탈진" : "업무 중"}</div><div class="fb2"><b style="width:${f / BB.FAT * 100}%;background:${fatCol(f)}"></b></div></div>`; }).join("");
+      const pill = (v, cls = "") => `<i class="${v ? cls : "z"}">${v}</i>`;
+      let rows = "", skl = [];
+      if (isD) {
+        const base = BB.REST[b.dorm.lv - 1], avg = list.length ? list.reduce((a, id) => a + restOf(id), 0) / list.length : base;
+        rows = `<tr><td>피로 회복/h</td><td class="b0 en">${base}</td><td class="b1 en">${pill(avg - base > 0.001 ? "+" + (avg - base).toFixed(1) : 0)}</td></tr><tr><td>정원</td><td class="b0 en">${list.length}/${cap}</td><td></td></tr>`;
+        for (const id of list) for (const sk of liveSkills(id)) if (sk.t === "rest") skl.push([id, sk]);
+      } else {
+        const act = activeG(key), fx = roomFx(key, act), raw = act.length ? zRate(key, act) / (1 + 0.1 * act.filter((id) => z.fit.includes(def(id).cls)).length + fx.prod) : 0;
+        const dr = act.length ? act.reduce((a, id) => a + drainOf(id, key, act), 0) / act.length : BB.DRAIN, basePow = act.reduce((a, id) => a + opPow(id), 0);
+        rows = `<tr><td>피로 소모/h</td><td class="b0 en">${BB.DRAIN}</td><td class="b1 en">${pill(BB.DRAIN - dr > 0.001 ? "-" + (BB.DRAIN - dr).toFixed(2) : 0, "n")}</td></tr>
+          <tr><td>생산력/h</td><td class="b0 en">${numF(raw, z.out === "coin" ? "coin" : "x")}</td><td class="b1 en">${pill(fx.prod ? "+" + Math.round(fx.prod * 100) + "%" : 0)}</td></tr>
+          <tr><td>방어력</td><td class="b0 en">${basePow}</td><td class="b1 en">${pill(fx.def ? "+" + Math.round(fx.def * 100) + "%" : 0)}</td></tr>
+          <tr><td>보관 한도</td><td class="b0 en">${numF(zCap(key) / (1 + fx.cap), z.out)}</td><td class="b1 en">${pill(fx.cap ? "+" + Math.round(fx.cap * 100) + "%" : 0)}</td></tr>`;
+        for (const id of list) for (const sk of liveSkills(id)) if (skFits(sk, R)) skl.push([id, sk]);
+      }
+      return `<div class="hd">배치 인원<small class="en">ATTENDANCE</small></div><div class="crew">${cards}</div><table class="tb2">${rows}</table>
+        <div class="skl">${skl.map(([id, sk]) => { const [, d2] = skDesc(sk); return `<div>${bsIcon(sk)}<b>${esc(sk.n)}</b>${esc(nm(id).main)}<em>${esc(d2)}</em></div>`; }).join("") || "<div>적용 중인 기반 스킬 없음</div>"}</div>
+        <div class="btn chg2">인원 교체</div>`;
     };
     const wireDw = (t) => {
       const up = dw.querySelector(".up"); if (up) up.onclick = () => upgradeBox(isD ? "dorm" : key, render);
       const chg = dw.querySelector(".chg"); if (chg) chg.onclick = () => zonePicker(key, render);
-      dw.querySelectorAll(".sl .s").forEach((c) => c.onclick = () => guardPicker(isD ? "dorm" : key, +c.dataset.k, render));
+      dw.querySelectorAll(".cc, .chg2").forEach((c) => c.onclick = () => guardPicker(isD ? "dorm" : key, 0, render));
     };
     fr.onclick = (e) => { if (!e.target.closest(".btn")) openTab("crew"); };   // touching the room shows who is in it
     // the corner card: what it makes and when the next one comes
@@ -16578,7 +16743,7 @@ window.BSL_ECON = (() => {
       const hms = (ms) => { const s = Math.max(0, Math.round(ms / 1000)), p = (n) => String(n).padStart(2, "0"); return `${p(Math.floor(s / 3600))}:${p(Math.floor(s / 60) % 60)}:${p(s % 60)}`; };
       cd.innerHTML = `<div class="ic">${outIc(z.out)}<b class="en">${numF(R.store, z.out)}</b></div><div class="tx"><b>${outN(z.out)}</b><span class="en">${z.out === "coin" ? `시간당 ${numF(rate, "coin")}` : rate > 0 ? `다음 1개 ${hms(left)}` : "생산 정지"}</span></div>
         <div class="rt"><em class="${rate > 0 ? "" : "stop"}">${rate > 0 ? "생산 중" : R.g.length ? "생산 정지" : "경계 없음"}</em><span class="en">${numF(R.store, z.out)}/${numF(cap, z.out)}</span></div><div class="pb"><i style="width:${Math.min(100, R.store / cap * 100)}%"></i></div><div class="btn get${R.store >= 1 ? "" : " dis"}">수령</div>`;
-      cd.querySelector(".get").onclick = () => { baseTick(); const g = collectRoom(key); save(); if (!g) return toast("아직 수령할 만큼 쌓이지 않았습니다"); render(); dropBox("물자 수령", [g]); };
+      cd.querySelector(".get").onclick = () => { baseTick(); const g = collectRoom(key); save(); if (!g) return toast("아직 수령할 만큼 쌓이지 않았습니다"); render(); gainToast([g]); };
     } else cd.remove();
     const eye = h("div", "btn rv-eye", `<svg viewBox="0 0 24 24"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z" fill="none" stroke="#fff" stroke-width="2"/><circle cx="12" cy="12" r="3.5" fill="#fff"/></svg>`);
     eye.onclick = () => el.classList.toggle("rv-only"); el.appendChild(eye);
