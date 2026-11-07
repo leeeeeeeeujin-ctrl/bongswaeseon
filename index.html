@@ -14831,14 +14831,12 @@ window.BSL_ECON = (() => {
   .rz-it { display:flex; align-items:center; gap:6px; height:38px; padding:0 14px 0 6px; background:rgba(14,15,18,.72); border:1px solid rgba(255,255,255,.14); }
   .rz-it .icn { width:28px; height:28px; } .rz-it b { font-size:19px; font-weight:500; }
   .rz-tap { position:absolute; inset:0; }
-  .wd-m .box { width:960px !important; } .wd-row { display:flex; gap:16px; margin-top:8px; }
-  .wd-ls { width:230px; max-height:430px; overflow-y:auto; display:flex; flex-direction:column; gap:6px; padding-right:4px; }
-  .wd-op { display:flex; align-items:center; gap:10px; padding:6px; background:#202227; border:1px solid rgba(255,255,255,.08); } .wd-op i { width:42px; height:42px; background:center 15%/cover; flex:none; } .wd-op b { font-size:16px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; } .wd-op.on { border-color:#2aa7ec; background:#1a2a36; }
-  .wd-main { flex:1; min-width:0; } .wd-hd b { font-size:24px; font-weight:900; } .wd-hd span { display:block; font-size:14px; color:#9aa0aa; margin-top:2px; }
+  .od-ib.od-wd { left:350px; } .od-wd svg { width:30px; height:30px; }
+  .wd-m .box { width:720px !important; } .wd-hd h3 { display:inline-block; margin:0 14px 0 0 !important; } .wd-hd h3::after { content:"·"; margin-left:14px; color:#6a6f78; } .wd-hd b { font-size:22px; font-weight:900; } .wd-hd span { display:block; font-size:14px; color:#9aa0aa; margin-top:4px; }
   .wd-slots { display:flex; gap:12px; margin-top:12px; } .wd-s { flex:1; background:#1b1c20; border:1px solid rgba(255,255,255,.12); padding:8px; display:flex; flex-direction:column; gap:4px; }
-  .wd-s .im { height:300px; background:#121316 center 15%/cover; } .wd-s b { font-size:16px; } .wd-s span { font-size:13px; color:#8a8f98; }
+  .wd-s .im { height:320px; background:#121316 center 15%/cover; } .wd-s b { font-size:16px; } .wd-s span { font-size:13px; color:#8a8f98; }
   .wd-s.on { border:2px solid #2aa7ec; box-shadow:0 0 14px rgba(42,167,236,.4); } .wd-s.on span { color:#4fb8ff; } .wd-s.lk .im { filter:grayscale(1) brightness(.4); } .wd-s.soon .im { background:repeating-linear-gradient(135deg,#1a1b1f 0 10px,#222328 10px 20px); }
-  .wd-auto { margin-top:12px; height:42px; display:grid; place-items:center; background:#2a2c31; border:1px solid rgba(255,255,255,.25); font-size:16px; font-weight:800; } .wd-auto.on { border-color:#2aa7ec; color:#4fb8ff; }
+  .wd-m .row { margin-top:12px; } .wd-auto.on { border-color:#2aa7ec !important; color:#4fb8ff; }
   .ps-open { margin:10px 0 4px; height:46px; display:grid; place-items:center; background:#2a2c31; border:1px solid rgba(143,211,255,.5); color:#8fd3ff; font-size:17px; font-weight:800; }
   .ps-m .box { width:760px !important; } .ps-sec { margin-top:14px; } .ps-sec .lb { font-size:17px; font-weight:900; margin-bottom:8px; } .ps-sec .lb span { font-size:13px; font-weight:500; color:#8a8f98; margin-left:8px; }
   .ps-list { display:flex; flex-direction:column; gap:6px; max-height:170px; overflow-y:auto; } .ps-none { color:#8a8f98; font-size:15px; padding:14px; background:rgba(255,255,255,.04); text-align:center; }
@@ -15591,23 +15589,20 @@ window.BSL_ECON = (() => {
   }
   window.__bslSkin = (id) => { S.skin = id; save(); go("lobby"); render(); };   // test hook
   window.__bslAsst = (id) => { if (!S.ops[id]) S.ops[id] = { lvl: 1, elite: 0, pot: 1, skill: 0, got: Date.now() }; S.assistant = id; save(); go("lobby"); render(); };
-  function wardrobe(focus) {
-    const ids = Object.keys(S.ops).filter((id) => def(id) && (def(id).art || id === "geomseon")).sort((a, c) => (c === focus) - (a === focus) || def(c).rarity - def(a).rarity);
-    let cur = ids.includes(focus) ? focus : ids[0];
+  function wardrobe(cur) {   // one operator at a time, opened from their file
     const m = h("div", "modal wd-m"), b = h("div", "box"); m.appendChild(b); sheet.appendChild(m);
+    const close = () => { m.remove(); render(); };
     const draw = () => {
-      const o = S.ops[cur], d = def(cur), e2ok = o.elite >= 2, le = lookElite(cur), auto = o.look === undefined;
+      const o = S.ops[cur], e2ok = o.elite >= 2, le = lookElite(cur), auto = o.look === undefined;
       const slot = (e, lab) => { const lock = e === 2 && !e2ok, on = !auto && o.look === e || auto && le === e; return `<div class="btn wd-s${on ? " on" : ""}${lock ? " lk" : ""}" data-e="${e}"><div class="im" style="background-image:url(${B.portrait(cur, "full", e)})"></div><b>${lab}</b><span>${lock ? "정예화 2 달성 시 해금" : on ? (auto ? "착용 중 · 자동" : "착용 중") : "착용하기"}</span></div>`; };
-      b.innerHTML = `<h3>옷장</h3><div class="wd-row"><div class="wd-ls">${ids.map((id) => `<div class="btn wd-op${id === cur ? " on" : ""}" data-id="${id}"><i style="background-image:url(${opArt(id, "card")})"></i><b>${esc(nm(id).main)}</b></div>`).join("")}</div>
-        <div class="wd-main"><div class="wd-hd"><b>${esc(nm(cur).main)}</b><span>${cur === "geomseon" ? "작전에서도 고른 모습(노인 / 젊은 모습)으로 나옵니다" : "로비, 상세 화면, 작전 카드에 고른 일러스트가 쓰입니다"}</span></div>
+      b.innerHTML = `<div class="wd-hd"><h3>옷장</h3><b>${esc(nm(cur).main)}</b><span>${cur === "geomseon" ? "작전에서도 고른 모습(노인 / 젊은 모습)으로 나옵니다" : "로비, 상세 화면, 작전 카드에 고른 일러스트가 쓰입니다"}</span></div>
           <div class="wd-slots">${slot(0, cur === "geomseon" ? "노인의 모습 · 정예화 0" : "정예화 0")}${hasE2(cur) ? slot(2, cur === "geomseon" ? "반로환동 · 정예화 2" : "정예화 2") : ""}<div class="wd-s lk soon"><div class="im"></div><b>스킨</b><span>준비 중</span></div></div>
-          <div class="btn wd-auto${auto ? " on" : ""}">정예화에 맞춰 자동</div></div></div><div class="row"><div class="btn">닫기</div></div>`;
-      b.querySelectorAll(".wd-op").forEach((x) => x.onclick = () => { cur = x.dataset.id; draw(); });
+          <div class="row"><div class="btn wd-auto${auto ? " on" : ""}">정예화에 맞춰 자동</div><div class="btn wd-x">닫기</div></div>`;
       b.querySelectorAll(".wd-s:not(.soon)").forEach((x) => x.onclick = () => { const e = +x.dataset.e; if (e === 2 && !e2ok) return toast("정예화 2 달성 시 해금됩니다"); o.look = e; save(); draw(); });
       b.querySelector(".wd-auto").onclick = () => { delete o.look; save(); draw(); };
-      b.querySelector(".row .btn").onclick = () => { m.remove(); render(); };
+      b.querySelector(".wd-x").onclick = close;
     };
-    m.onclick = (e) => { if (e.target === m) { m.remove(); render(); } };
+    m.onclick = (e) => { if (e.target === m) close(); };
     draw();
   }
   function personalBox() {
@@ -15773,8 +15768,7 @@ window.BSL_ECON = (() => {
       const eye = h("div", "btn lb-rb", ICON.eye); eye.style.left = (nw + 50) + "px";
       eye.onclick = (ev) => { ev.stopPropagation(); el.classList.add("hideui"); setTimeout(() => { el.onclick = () => { el.classList.remove("hideui"); el.onclick = null; }; }, 50); };
       const sw = h("div", "btn lb-rb", ICON.swap); sw.style.left = (nw + 114) + "px"; sw.onclick = () => go("roster", { pickAssistant: true });
-      const wd = h("div", "btn lb-rb", `<svg viewBox="0 0 24 24"><path d="M12 4a2 2 0 0 1 2 2c0 1-1 1.6-2 2.2V9l9 6.5c.8.6.4 1.5-.5 1.5H3.5c-.9 0-1.3-.9-.5-1.5L12 9" fill="none" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/></svg>`); wd.style.left = (nw + 178) + "px"; wd.onclick = (ev) => { ev.stopPropagation(); wardrobe(S.assistant); };
-      ui.append(eye, sw, wd);
+      ui.append(eye, sw);
       // news: the archive's current pick-up
       const news = h("div", "btn lb-news", `<div class="bn en">BREAKING NEWS</div><div class="tt"><small>아카이브 한정 픽업</small>함성의 행진</div>${S.res.start > 0 ? '<div class="nw en">NEW</div>' : ""}`);
       news.style.backgroundImage = `url(${opArt("belina", "full")})`; news.onclick = () => go("gacha"); ui.appendChild(news);
@@ -16199,6 +16193,7 @@ window.BSL_ECON = (() => {
       el.appendChild(h("div", "od-wash"));
       el.appendChild(topBar("", "", () => go("roster"), { res: false }));
       const ib = h("div", "btn od-ib", `<i>i</i>`); ib.title = "기록"; ib.onclick = () => go("opfile", id); el.appendChild(ib);
+      if (d.art || id === "geomseon") { const wb = h("div", "btn od-ib od-wd", `<svg viewBox="0 0 24 24"><path d="M12 4a2 2 0 0 1 2 2c0 1-1 1.6-2 2.2V9l9 6.5c.8.6.4 1.5-.5 1.5H3.5c-.9 0-1.3-.9-.5-1.5L12 9" fill="none" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/></svg>`); wb.title = "옷장"; wb.onclick = () => wardrobe(id); el.appendChild(wb); }
       // ---- left ----
       const sv = odStats(id, o.elite, o.lvl);
       const L = h("div", "odl"); el.appendChild(L);
