@@ -12795,6 +12795,8 @@ window.BGM = (() => {
       if (st.waitMark && game.bar && game.bar.cur && game.bar.cur.tgts) next();   // BL-07: the first barrage has picked its marks
       if (st.waitPart && game.march && game.march.id === st.waitPart && !game.march.choose && (!pan || pan.t >= 1)) next();   // BL-07: arrived at that part of the march
       if (st.deployCls && SS.cardIdx >= 0 && game.cards[SS.cardIdx].deployed) next();
+      // the field holds still only once that card can be paid for: cost spent on others beforehand must not leave the lesson waiting forever
+      else if (st.deployCls && SS.cardIdx >= 0) SS.freeze = game.cost >= game.costOf(game.cards[SS.cardIdx]);
     };
     SS.gate = (b) => {
       const st = steps[SS.i]; if (!st) return false;
