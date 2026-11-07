@@ -3316,15 +3316,17 @@ window.SFX = (() => {
 // Background music: one main track plays everywhere but the story scenes; the player picks which of the tracks heard so far is the main one.
 // Files sit next to the page (bgm/<id>.mp3); an empty list simply plays nothing.
 window.BGM = (() => {
-  const LIST = [];   // { id, n: name, src } — filled as tracks are made
+  const LIST = [   // { id, n: name, d: what it is, src, free: heard from the start }
+    { id: "main1", n: "Leaf of the Crimson Moon", d: "메인 테마", src: "bgm/main1.mp3", free: 1 },
+  ];
   let el = null, cur = null, vol = 0.5, want = null, fadeT = 0;
   try { const v = localStorage.getItem("bsl_bgm"); if (v !== null) vol = +v; } catch (e) { /* storage may be off */ }
-  const fade = (to, ms, done) => { if (!el) return done && done(); cancelAnimationFrame(fadeT); const from = el.volume, t0 = performance.now(); const st = (t) => { const k = Math.min(1, (t - t0) / ms); el.volume = from + (to - from) * k; if (k < 1) fadeT = requestAnimationFrame(st); else done && done(); }; fadeT = requestAnimationFrame(st); };
+  const fade = (a, to, ms, done) => { if (!a) return done && done(); const from = a.volume, t0 = performance.now(); const st = (t) => { const k = Math.min(1, (t - t0) / ms); a.volume = Math.max(0, Math.min(1, from + (to - from) * k)); if (k < 1) requestAnimationFrame(st); else done && done(); }; requestAnimationFrame(st); };
   function play(id) {
     want = id; const tr = LIST.find((q) => q.id === id); if (!tr) { stop(); return; }
     if (cur === id && el && !el.paused) return;
-    const go = () => { el = new Audio(tr.src); el.loop = true; el.volume = 0; cur = id; const p = el.play(); if (p && p.catch) p.catch(() => { cur = null; }); fade(vol, 1200); };
-    if (el) { const old = el; fade(0, 600, () => { old.pause(); go(); }); } else go();
+    const go = () => { el = new Audio(tr.src); el.loop = true; el.volume = 0; cur = id; const p = el.play(); if (p && p.catch) p.catch(() => { cur = null; }); fade(el, vol, 1200); };
+    if (el) { const old = el; el = null; fade(old, 0, 600, () => { old.pause(); go(); }); } else go();
   }
   function stop() { if (!el) return; const old = el; el = null; cur = null; old.pause(); }
   ["pointerdown", "keydown"].forEach((ev) => window.addEventListener(ev, () => { if (want && !cur) play(want); }, { capture: true, passive: true }));   // phones only let it start after a touch

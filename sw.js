@@ -1,7 +1,7 @@
 // 봉쇄선 service worker. Every picture is cached on install, so the game starts complete and runs offline.
 // The page: network first (a new build shows at once when online), the cache when offline.
 // Pictures and fonts: the cache first (their addresses carry a version, and a new build replaces this whole cache).
-const VERSION = "0f4e3e84129f";
+const VERSION = "6c08382e86aa";
 const CACHE = "bsl-" + VERSION;
 const CORE = ["./", "index.html", "manifest.webmanifest", "asset_list.json", "fonts/fonts.css", "icons/icon-192.png", "icons/icon-512.png"];
 
@@ -35,6 +35,7 @@ self.addEventListener("fetch", (ev) => {
   if (req.method !== "GET") return;
   const url = new URL(req.url);
   if (url.origin !== location.origin) return;
+  if (url.pathname.includes("/bgm/")) return;   // music streams with range requests: left to the browser's own cache
   if (req.mode === "navigate" || url.pathname.endsWith("/") || url.pathname.endsWith("/index.html")) {
     ev.respondWith((async () => {
       try {
