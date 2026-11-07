@@ -13902,14 +13902,14 @@ window.BSL_ECON = (() => {
   }
 
   // what each operation hands out: fixed records or books, and rolls for materials (few early on)
+  // not every operation hands out materials: the ones that do have one main drop, marked on the map
   const DROPS = {
-    "BL-01": { fixed: [["rec1", 2]], roll: [["m1_shard", 0.1]] },
-    "BL-02": { fixed: [["bk1", 1]], roll: [["m1_casing", 0.12]] },
-    "BL-03": { fixed: [["rec1", 3]], roll: [["m1_shard", 0.15], ["m1_frost", 0.1]] },
-    "BL-04": { fixed: [["bk1", 1], ["rec1", 1]], roll: [["m1_casing", 0.18], ["m1_cloth", 0.12]] },
-    "BL-05": { fixed: [["rec2", 2]], roll: [["m1_frost", 0.25], ["m1_shard", 0.2], ["m1_cloth", 0.1]] },
-    "BL-06": { fixed: [["bk1", 2]], roll: [["m1_cloth", 0.3], ["m1_casing", 0.25], ["m2_shard", 0.05], ["m2_casing", 0.05]] },
-    "BL-07": { fixed: [["rec2", 3], ["bk2", 1]], roll: [["m1_frost", 0.35], ["m1_shard", 0.3], ["m1_casing", 0.3], ["m1_cloth", 0.3], ["m2_shard", 0.12], ["m2_casing", 0.12], ["m2_frost", 0.12], ["m2_cloth", 0.12], ["bk3", 0.08]] },
+    "BL-02": { main: "bk1", fixed: [["bk1", 1]], roll: [] },
+    "BL-03": { main: "m1_shard", fixed: [["rec1", 2]], roll: [["m1_shard", 0.5]] },
+    "BL-04": { main: "m1_casing", fixed: [], roll: [["m1_casing", 0.5]] },
+    "BL-05": { main: "m1_frost", fixed: [["rec2", 1]], roll: [["m1_frost", 0.5]] },
+    "BL-06": { main: "m1_cloth", fixed: [], roll: [["m1_cloth", 0.5], ["m2_cloth", 0.05]] },
+    "BL-07": { main: "bk2", fixed: [["bk2", 1], ["rec2", 2]], roll: [["m2_shard", 0.1], ["m2_casing", 0.1], ["m2_frost", 0.1], ["m2_cloth", 0.1], ["bk3", 0.08]] },
   };
   // the supply operations: four sites, two classes each; -1 gives chips, -2 chip packs
   const SUPPLY = {
@@ -14087,6 +14087,8 @@ window.BSL_ECON = (() => {
   .node .c { font-size:23px; font-weight:500; letter-spacing:.01em; line-height:1; }
   .node.sel .box { background:linear-gradient(90deg,#8e9095,#6f7277); color:#2a2a2a; } .node.sel .hx { filter:grayscale(1) brightness(.85); }
   .node.tr .box { background:linear-gradient(90deg,#1d1e21 0,#2a2b2f 100%); color:#fff; } .node.tr .lab { background:#e9eaec; color:#151515; } .node.tr.sel .box { background:linear-gradient(90deg,#55585e,#43464b); color:#ddd; }   /* a lesson, as the original's TR stages: the tag in black */
+  .node .dm { position:absolute; right:-34px; top:-5px; width:50px; height:50px; border-radius:50%; background:radial-gradient(#3a3d43,#1b1c1f 70%); border:2px solid #9a9da3; box-shadow:0 0 0 2px rgba(0,0,0,.55),0 3px 6px rgba(0,0,0,.5); display:grid; place-items:center; overflow:hidden; }
+  .node .dm svg { width:38px; height:38px; } .node .dm.t2 { border-color:#5fb3ff; } .node .dm.t3 { border-color:#d9a8ff; } .node.sel .dm { filter:brightness(.8); }
   @keyframes hxPulse { 50% { filter:brightness(1.35); } }
   .detail { position:absolute; right:0; top:0; bottom:0; width:540px; background:linear-gradient(90deg,rgba(10,11,13,0),rgba(10,11,13,.9) 18%,rgba(10,11,13,.95)); padding:96px 36px 30px 90px; }
   .detail .hd { display:flex; align-items:flex-end; gap:12px; background:linear-gradient(90deg,rgba(0,0,0,0),rgba(0,0,0,.55) 20%); margin:0 -36px 0 -40px; padding:10px 36px 10px 40px; }
@@ -15194,10 +15196,10 @@ window.BSL_ECON = (() => {
       const branchIdx = TD.STAGES.map((q, i) => i).filter((i) => STAGE_META[i].branch !== undefined && STAGE_META[i].unlock(S));
       track.innerHTML = `<svg width="${X0 * 2 + n * GAP + 760}" height="420"><path d="${mainIdx.map((i, k) => (k ? "L" : "M") + cx(i) + " " + cy(i)).join(" ")}" stroke="rgba(255,255,255,.85)" stroke-width="2.5" fill="none"/>`
         + branchIdx.map((i) => { const f = STAGE_META[i].branch; return `<path d="M${cx(f)} ${cy(f)} L${cx(f)} ${cy(i)} L${cx(i)} ${cy(i)}" stroke="rgba(255,255,255,.55)" stroke-width="2" stroke-dasharray="6 5" fill="none"/>`; }).join("") + `</svg>`;
-      const nodes = [];
+      const nodes = [], dm = (c) => { const k = (EC.DROPS[c] || {}).main; return k && ITEM[k] ? `<div class="dm t${ITEM[k].tier || 0}">${icn(ITEM[k].ic)}</div>` : ""; };   // the main drop, in a disc at the tag's end
       TD.STAGES.forEach((st, i) => {
         if (!STAGE_META[i].unlock(S) || STAGE_META[i].supply) return;
-        const nd = h("div", "btn node" + (cleared(i) ? " clear" : " next") + (isMain(i) ? "" : " tr"), `<div class="lab en">${isMain(i) ? "OPERATION" : "TUTORIAL"}</div><div class="box"><div class="hx"><i></i></div><div class="c en">${st.code}</div></div>`);
+        const nd = h("div", "btn node" + (cleared(i) ? " clear" : " next") + (isMain(i) ? "" : " tr"), `<div class="lab en">${isMain(i) ? "OPERATION" : "TUTORIAL"}</div><div class="box"><div class="hx"><i></i></div><div class="c en">${st.code}</div></div>${dm(st.code)}`);
         Object.assign(nd.style, { left: nx(i) + "px", top: ny(i) + "px" });
         nd.onclick = (ev) => { ev.stopPropagation(); pick(i, true); };
         nodes[i] = nd; track.appendChild(nd);
@@ -16057,7 +16059,8 @@ window.BSL_ECON = (() => {
     const s = TD.STAGES[sel], m = STAGE_META[sel];
     if (m.supply) { const cls = EC.SUPPLY[m.supply].cls; return cls.map((c) => [(m.tier === 1 ? "chip_" : "pack_") + EC.clsKey(c), m.tier === 1 ? "1~2" : "1", "확률"]); }
     const dr = EC.DROPS[s.code]; if (!dr) return [];
-    return [...dr.fixed.map(([k, n]) => [k, n, ""]), ...dr.roll.slice().sort((a, b) => b[1] - a[1]).map(([k, p]) => [k, "", p >= 0.3 ? "가끔" : p >= 0.12 ? "드묾" : "희귀"])];
+    const all = [...dr.fixed.map(([k, n]) => [k, n, ""]), ...dr.roll.slice().sort((a, b) => b[1] - a[1]).map(([k, p]) => [k, "", p >= 0.3 ? "가끔" : p >= 0.12 ? "드묾" : "희귀"])];
+    return all.sort((a, b) => (b[0] === dr.main) - (a[0] === dr.main));   // the main drop leads
   }
   // what came out of a sweep: a box of everything gained
   function dropBox(title, list, lv) {
