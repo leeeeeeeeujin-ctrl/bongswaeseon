@@ -15604,10 +15604,16 @@ window.BSL_ECON = (() => {
   function applySkin() { const k = skinOf(); SKINS.forEach((q) => sheet.classList.toggle("sk-" + q.id, q === k)); sheet.style.setProperty("--acc", k.acc); sheet.style.setProperty("--t0", k.t[0]); sheet.style.setProperty("--t1", k.t[1]); sheet.style.setProperty("--lbg", k.bg); }
   const mainTrack = () => { const heard = BGM.LIST.filter((q) => (S.bgmSeen || {})[q.id] || q.free); return heard.find((q) => q.id === S.bgmMain) || heard[0] || null; };
   let booted = false;   // nothing plays under the loading screen
+  // the main theme has one place: the terminal's menu screens. Anything else in front of them (loading, the name prompt, scenes,
+  // operations, training) is outside that place, and a watcher silences it there without each of those having to say so
+  const onMenu = () => booted && !host.hidden && !!SCREENS[route.name] && S.started && !!(S.tutorialDone || S.startDone)
+    && !sheet.querySelector(".story, .nm-ask, .reveal .chat");
   function playMain() {
-    // the main theme is for the terminal's own screens: not while loading, not before the prologue and first lesson are over, never under a scene
-    if (!booted || host.hidden || !S.started || !(S.tutorialDone || S.startDone) || sheet.querySelector(".story")) { if (window.BGM) BGM.stop(); return; }
-    const t = mainTrack(); if (!t) return; (S.bgmSeen = S.bgmSeen || {})[t.id] = 1; BGM.play(t.id); }
+    if (!window.BGM) return;
+    if (!onMenu()) return BGM.stop();
+    const t = mainTrack(); if (!t) return; (S.bgmSeen = S.bgmSeen || {})[t.id] = 1; BGM.play(t.id);
+  }
+  setInterval(() => { if (window.BGM && BGM.cur && !onMenu()) BGM.stop(); }, 250);
   // each skin's air: data motes, dust in the lamplight, glyphs, embers
   function lobbyFx(host, kind) {
     const cv = h("canvas", "lb-fx"); host.appendChild(cv); const q = Math.min(1.5, window.devicePixelRatio || 1); cv.width = 1280 * q; cv.height = 720 * q;
@@ -18415,7 +18421,7 @@ window.BSL_ECON = (() => {
 
   // level-0 training straight after the prologue: Yui alone, on the terminal's training grid
   function startTutorial() {
-    host.hidden = true; if (window.BGM) BGM.stop();
+    host.hidden = true;
     const o = S.ops.yui;
     B.start("tutorial", [{ id: "yui", skillIdx: 0, mult: mult("yui"), elite: o ? o.elite : 0, pot: o ? o.pot : 1 }], () => {
       host.hidden = false; S.tutorialDone = true; save(); render();
@@ -18428,7 +18434,7 @@ window.BSL_ECON = (() => {
   function startSandbox(sel) {
     // the training room fields your own operators as they are now
     const squad = sel.filter((q) => S.ops[q.id]).slice(0, 12).map((q) => { const o = S.ops[q.id]; return { id: q.id, skillIdx: Math.min(q.s || 0, o.elite, Math.max(0, (def(q.id).skills || []).length - 1)), mult: mult(q.id), elite: o.elite, look: lookElite(q.id), pot: o.pot, slv: o.sl || 1 }; });
-    host.hidden = true; if (window.BGM) BGM.stop();
+    host.hidden = true;
     B.start("sandbox", squad, () => { host.hidden = false; render(); });
   }
 
@@ -18438,7 +18444,7 @@ window.BSL_ECON = (() => {
     const cap = STAGE_META[sel].squad || 12, fx = STAGE_META[sel].fixed;
     const squad = fx ? fx.map(([id, elite, lvl]) => ({ id, skillIdx: 0, mult: TD.growth(def(id), elite, lvl, maxLv(id, elite)), elite, pot: 1 }))   // the lesson's own squad
       : squadIds().slice(0, cap).map((id) => ({ id, skillIdx: S.ops[id].skill, mult: mult(id), elite: S.ops[id].elite, look: lookElite(id), pot: S.ops[id].pot, slv: S.ops[id].sl || 1 }));
-    host.hidden = true; if (window.BGM) BGM.stop();
+    host.hidden = true;
     const seenOpt = { seen: Object.assign({}, S.seen || {}), mark: (k) => { (S.seen = S.seen || {})[k] = 1; save(); }, practice: !!practice, cost: practice ? 0 : STAGE_META[sel].cost };   // what this save has already been shown in battle; the give-up box's refund
     B.start(sel, squad, (r) => {
       host.hidden = false;
