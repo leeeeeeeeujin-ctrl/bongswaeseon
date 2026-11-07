@@ -3313,6 +3313,25 @@ window.SFX = (() => {
   return { play, unlock, setVol, get vol() { return vol; }, get loaded() { return Object.keys(BUF).length; }, keys: Object.keys(RAW) };
 })();
 
+// Background music: one main track plays everywhere but the story scenes; the player picks which of the tracks heard so far is the main one.
+// Files sit next to the page (bgm/<id>.mp3); an empty list simply plays nothing.
+window.BGM = (() => {
+  const LIST = [];   // { id, n: name, src } — filled as tracks are made
+  let el = null, cur = null, vol = 0.5, want = null, fadeT = 0;
+  try { const v = localStorage.getItem("bsl_bgm"); if (v !== null) vol = +v; } catch (e) { /* storage may be off */ }
+  const fade = (to, ms, done) => { if (!el) return done && done(); cancelAnimationFrame(fadeT); const from = el.volume, t0 = performance.now(); const st = (t) => { const k = Math.min(1, (t - t0) / ms); el.volume = from + (to - from) * k; if (k < 1) fadeT = requestAnimationFrame(st); else done && done(); }; fadeT = requestAnimationFrame(st); };
+  function play(id) {
+    want = id; const tr = LIST.find((q) => q.id === id); if (!tr) { stop(); return; }
+    if (cur === id && el && !el.paused) return;
+    const go = () => { el = new Audio(tr.src); el.loop = true; el.volume = 0; cur = id; const p = el.play(); if (p && p.catch) p.catch(() => { cur = null; }); fade(vol, 1200); };
+    if (el) { const old = el; fade(0, 600, () => { old.pause(); go(); }); } else go();
+  }
+  function stop() { if (!el) return; const old = el; el = null; cur = null; old.pause(); }
+  ["pointerdown", "keydown"].forEach((ev) => window.addEventListener(ev, () => { if (want && !cur) play(want); }, { capture: true, passive: true }));   // phones only let it start after a touch
+  function setVol(v) { vol = Math.max(0, Math.min(1, v)); if (el) el.volume = vol; try { localStorage.setItem("bsl_bgm", String(vol)); } catch (e) { /* storage may be off */ } }
+  return { LIST, play, stop, setVol, get vol() { return vol; }, get cur() { return cur; } };
+})();
+
 </script>
 <script>
 // Battle logic for a grid tower-defence prototype. No DOM in here, so it also runs in node
@@ -14187,7 +14206,7 @@ window.BSL_ECON = (() => {
   .btn:active { filter:brightness(1.25); }
   .stars { letter-spacing:-2px; font-size:16px; text-shadow:0 0 6px rgba(0,0,0,.6); }
   /* lobby */
-  .lobby-bg { position:absolute; inset:0; background:radial-gradient(ellipse at 30% 60%, #2a2d34 0%, #121316 70%); }
+  .lobby-bg { position:absolute; inset:0; background:radial-gradient(ellipse at 30% 60%, var(--lbg,#2a2d34) 0%, #121316 70%); transition:background .4s; }
   .lobby-bg::after { content:""; position:absolute; inset:0; background:repeating-linear-gradient(115deg, rgba(255,255,255,.025) 0 2px, transparent 2px 22px); }
   .assist { position:absolute; left:-30px; bottom:-90px; height:860px; filter:drop-shadow(0 0 40px rgba(0,0,0,.6)); animation:breathe 6s ease-in-out infinite; pointer-events:none; }
   .assist.full { left:10px; bottom:-40px; height:780px; -webkit-mask-image:linear-gradient(90deg,#000 70%,transparent); mask-image:linear-gradient(90deg,#000 70%,transparent); }
@@ -14764,6 +14783,14 @@ window.BSL_ECON = (() => {
   .rz-it { display:flex; align-items:center; gap:6px; height:38px; padding:0 14px 0 6px; background:rgba(14,15,18,.72); border:1px solid rgba(255,255,255,.14); }
   .rz-it .icn { width:28px; height:28px; } .rz-it b { font-size:19px; font-weight:500; }
   .rz-tap { position:absolute; inset:0; }
+  .ps-open { margin:10px 0 4px; height:46px; display:grid; place-items:center; background:#2a2c31; border:1px solid rgba(143,211,255,.5); color:#8fd3ff; font-size:17px; font-weight:800; }
+  .ps-m .box { width:760px !important; } .ps-sec { margin-top:14px; } .ps-sec .lb { font-size:17px; font-weight:900; margin-bottom:8px; } .ps-sec .lb span { font-size:13px; font-weight:500; color:#8a8f98; margin-left:8px; }
+  .ps-list { display:flex; flex-direction:column; gap:6px; max-height:170px; overflow-y:auto; } .ps-none { color:#8a8f98; font-size:15px; padding:14px; background:rgba(255,255,255,.04); text-align:center; }
+  .ps-it { display:flex; align-items:center; gap:12px; padding:10px 14px; background:#202227; border:1px solid rgba(255,255,255,.1); } .ps-it i { font-style:normal; width:24px; text-align:center; color:#8fd3ff; } .ps-it b { font-size:17px; } .ps-it span { margin-left:auto; font-size:13px; color:#8a8f98; }
+  .ps-it.on { border-color:#2aa7ec; background:#1a2a36; } .ps-it.lk { opacity:.5; }
+  .ps-skins { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
+  .ps-sk { padding:10px; background:#202227; border:1px solid rgba(255,255,255,.1); display:flex; flex-direction:column; gap:4px; } .ps-sk .sw { display:flex; height:54px; gap:4px; } .ps-sk .sw i:first-child { flex:2; background:linear-gradient(135deg,var(--s0),var(--s1)); } .ps-sk .sw i:last-child { flex:1; background:#1c1f24; box-shadow:inset 4px 0 var(--sa); }
+  .ps-sk b { font-size:16px; } .ps-sk span { font-size:12px; color:#8a8f98; } .ps-sk.on { border-color:var(--sa); box-shadow:0 0 0 2px var(--sa); } .ps-sk.lk { opacity:.45; }
   .vol { display:flex; align-items:center; gap:14px; margin:6px 0 4px; font-size:17px; } .vol input { flex:1; accent-color:#2aa7ec; height:28px; } .vol b { width:40px; text-align:right; }
   .toast { position:absolute; left:50%; top:90px; transform:translateX(-50%); background:rgba(0,0,0,.85); border:1px solid rgba(255,255,255,.2); padding:10px 22px; font-size:17px; z-index:95; animation:fl 2.4s forwards; pointer-events:none; }
   .modal { position:absolute; inset:0; background:rgba(0,0,0,.7); display:grid; place-items:center; z-index:70; }
@@ -14897,10 +14924,10 @@ window.BSL_ECON = (() => {
   .lt:hover { filter:brightness(1.15); } .lt:active { transform:scale(.98); }
   .lt .lb { position:absolute; left:16px; bottom:12px; font-size:24px; font-weight:900; text-shadow:0 2px 6px #000; z-index:2; }
   .lt .lb small { display:block; font-size:13px; font-weight:700; color:#8fd3d6; letter-spacing:.18em; font-family:"Oswald",sans-serif; }
-  .lt .bar { position:absolute; left:8px; top:14px; bottom:14px; width:4px; background:#2fd0d6; }
+  .lt .bar { position:absolute; left:8px; top:14px; bottom:14px; width:4px; background:var(--acc,#2fd0d6); }
   .lt .deco { position:absolute; left:22px; top:10px; font-family:"Oswald",sans-serif; font-weight:700; font-size:40px; color:rgba(47,208,214,.22); letter-spacing:.06em; line-height:1; white-space:nowrap; pointer-events:none; }
   .lt .emb { position:absolute; right:22px; top:50%; transform:translateY(-50%); width:110px; height:96px; opacity:.85; }
-  .lt.teal { background:linear-gradient(135deg,#1f8f95,#146f74); border-color:rgba(255,255,255,.18); } .lt.teal .bar { background:#fff; }
+  .lt.teal { background:linear-gradient(135deg,var(--t0,#1f8f95),var(--t1,#146f74)); border-color:rgba(255,255,255,.18); } .lt.teal .bar { background:#fff; }
   .lt.lock { filter:grayscale(.6) brightness(.7); } .lt.lock .lk { position:absolute; right:12px; top:10px; font-size:13px; letter-spacing:.14em; color:#9aa0aa; font-family:"Oswald",sans-serif; }
   .lt.stam { background:rgba(22,24,28,.95); }
   .lt.stam .num { position:absolute; left:40px; top:26px; font-size:84px; font-weight:600; line-height:1; letter-spacing:-.02em; }
@@ -14908,7 +14935,7 @@ window.BSL_ECON = (() => {
   .lt.stam .cap { position:absolute; left:16px; right:16px; bottom:12px; height:34px; background:#2b2e34; display:flex; justify-content:center; align-items:center; gap:4px; font-size:19px; font-weight:900; white-space:nowrap; }
   .lt.op .cur { position:absolute; left:20px; bottom:14px; display:flex; gap:12px; align-items:center; font-size:21px; font-weight:900; z-index:2; }
   .lt.op .cur b { background:#4a4d54; font-size:15px; padding:4px 8px; color:#d8dbe0; } .lt.op .cur .en { color:#fff; }
-  .lt.op .big { position:absolute; left:22px; top:16px; font-family:"Oswald",sans-serif; font-weight:700; font-size:46px; letter-spacing:.04em; color:#2fd0d6; line-height:1; }
+  .lt.op .big { position:absolute; left:22px; top:16px; font-family:"Oswald",sans-serif; font-weight:700; font-size:46px; letter-spacing:.04em; color:var(--acc,#2fd0d6); line-height:1; }
   .lt.op .ko { position:absolute; left:24px; top:72px; font-size:28px; font-weight:900; }
   .lt.ev { background:#111 center/cover; } .lt.ev .lb { font-size:22px; } .lt.ev::after { content:""; position:absolute; inset:0; background:linear-gradient(90deg,rgba(0,0,0,.7),rgba(0,0,0,.05)); }
   .lt .badge { position:absolute; right:-2px; top:-2px; min-width:30px; height:30px; background:#e8551b; color:#fff; font-size:18px; font-weight:700; display:grid; place-items:center; padding:0 6px; z-index:3; }
@@ -15425,22 +15452,53 @@ window.BSL_ECON = (() => {
     eye: `<svg viewBox="0 0 30 30"><path d="M3 15 Q15 3 27 15 Q15 27 3 15 Z" fill="none" stroke="#fff" stroke-width="2.4"/><circle cx="15" cy="15" r="4" fill="#fff"/><path d="M5 25 L25 5" stroke="#fff" stroke-width="2.4"/></svg>`,
     swap: `<svg viewBox="0 0 30 30"><path d="M6 12 A10 10 0 0 1 24 10 M24 18 A10 10 0 0 1 6 20" fill="none" stroke="#fff" stroke-width="2.6"/><path d="M24 4 L25 11 L18 11 Z M6 26 L5 19 L12 19 Z" fill="#fff"/></svg>`,
     rook: `<svg viewBox="0 0 30 30"><path d="M8 4h3v3h3V4h2v3h3V4h3v7l-3 2v9h3v4H8v-4h3v-9l-3-2z" fill="#fff"/></svg>`,
-    friend: `<svg viewBox="0 0 30 30"><path d="M4 4 L13 15 L4 26 M13 4 L22 15 L13 26" fill="none" stroke="#2fd0d6" stroke-width="3"/></svg>`,
-    file: `<svg viewBox="0 0 30 30"><path d="M15 3 L27 15 L15 27 L3 15 Z" fill="#2fd0d6"/><path d="M15 9 L21 15 L15 21 L9 15 Z" fill="#1c1e22"/></svg>`,
-    drill: `<svg viewBox="0 0 30 30"><circle cx="15" cy="15" r="11" fill="none" stroke="#2fd0d6" stroke-width="3"/><circle cx="15" cy="15" r="4" fill="#2fd0d6"/><path d="M15 1v6M15 23v6M1 15h6M23 15h6" stroke="#2fd0d6" stroke-width="3"/></svg>`,
-    squadE: `<svg viewBox="0 0 110 96"><g fill="none" stroke="#2fd0d6" stroke-width="7"><path d="M55 8 L102 88 H8 Z"/><path d="M55 34 L80 78 H30 Z"/></g></svg>`,
-    opE: `<svg viewBox="0 0 110 96"><g fill="none" stroke="#2fd0d6" stroke-width="7"><path d="M55 6 L100 88 M55 6 L10 88 M28 58 H82"/><path d="M40 88 L55 62 L70 88"/></g></svg>`,
+    friend: `<svg viewBox="0 0 30 30"><path d="M4 4 L13 15 L4 26 M13 4 L22 15 L13 26" fill="none" style="stroke:var(--acc,#2fd0d6)" stroke-width="3"/></svg>`,
+    file: `<svg viewBox="0 0 30 30"><path d="M15 3 L27 15 L15 27 L3 15 Z" style="fill:var(--acc,#2fd0d6)"/><path d="M15 9 L21 15 L15 21 L9 15 Z" fill="#1c1e22"/></svg>`,
+    drill: `<svg viewBox="0 0 30 30"><circle cx="15" cy="15" r="11" fill="none" style="stroke:var(--acc,#2fd0d6)" stroke-width="3"/><circle cx="15" cy="15" r="4" style="fill:var(--acc,#2fd0d6)"/><path d="M15 1v6M15 23v6M1 15h6M23 15h6" style="stroke:var(--acc,#2fd0d6)" stroke-width="3"/></svg>`,
+    squadE: `<svg viewBox="0 0 110 96"><g fill="none" style="stroke:var(--acc,#2fd0d6)" stroke-width="7"><path d="M55 8 L102 88 H8 Z"/><path d="M55 34 L80 78 H30 Z"/></g></svg>`,
+    opE: `<svg viewBox="0 0 110 96"><g fill="none" style="stroke:var(--acc,#2fd0d6)" stroke-width="7"><path d="M55 6 L100 88 M55 6 L10 88 M28 58 H82"/><path d="M40 88 L55 62 L70 88"/></g></svg>`,
     shopE: `<svg viewBox="0 0 110 96"><g fill="none" stroke="rgba(255,255,255,.35)" stroke-width="6"><path d="M30 6 H80 L104 48 L80 90 H30 L6 48 Z"/><path d="M40 28 H70 L82 48 L70 68 H40 L28 48 Z"/></g></svg>`,
     link1: `<svg viewBox="0 0 34 34"><rect x="5" y="5" width="24" height="24" fill="none" stroke="#fff" stroke-width="3"/><rect x="11" y="11" width="12" height="12" fill="#fff"/></svg>`,
     link2: `<svg viewBox="0 0 34 34"><path d="M17 2 L32 17 L17 32 L2 17 Z" fill="none" stroke="#fff" stroke-width="3"/><path d="M17 9 L25 17 L17 25 L9 17 Z" fill="#fff"/></svg>`,
-    task: `<svg viewBox="0 0 110 96"><g fill="none" stroke="#2fd0d6" stroke-width="7"><path d="M14 10 H96 V86 H14 Z"/><path d="M55 26 V62 M38 48 L55 66 L72 48"/></g></svg>`,
-    base: `<svg viewBox="0 0 110 96"><g fill="none" stroke="#2fd0d6" stroke-width="7"><path d="M10 86 V30 H40 V12 H70 V30 H100 V86 Z"/><path d="M40 86 V56 H70 V86"/></g></svg>`,
+    task: `<svg viewBox="0 0 110 96"><g fill="none" style="stroke:var(--acc,#2fd0d6)" stroke-width="7"><path d="M14 10 H96 V86 H14 Z"/><path d="M55 26 V62 M38 48 L55 66 L72 48"/></g></svg>`,
+    base: `<svg viewBox="0 0 110 96"><g fill="none" style="stroke:var(--acc,#2fd0d6)" stroke-width="7"><path d="M10 86 V30 H40 V12 H70 V30 H100 V86 Z"/><path d="M40 86 V56 H70 V86"/></g></svg>`,
     depot: `<svg viewBox="0 0 110 96"><g fill="none" stroke="rgba(255,255,255,.35)" stroke-width="6"><path d="M10 34 L55 10 L100 34 V86 H10 Z"/><path d="M28 86 V50 H82 V86 M28 64 H82"/></g></svg>`,
     lens: `<svg viewBox="0 0 30 30"><circle cx="12" cy="12" r="8" fill="none" stroke="#fff" stroke-width="3"/><path d="M18 18 L27 27" stroke="#fff" stroke-width="4"/></svg>`,
   };
+  // ---------- personal settings: the main track and the lobby's skin, from what has been heard and earned ----------
+  const SKINS = [
+    { id: "base", n: "테오히 기본", d: "기본 스킨", acc: "#2fd0d6", t: ["#1f8f95", "#146f74"], bg: "#2a2d34", ok: () => true },
+    { id: "shelter", n: "피난처", d: "파견실 2곳 가동", acc: "#f2c14e", t: ["#9a7420", "#6b5010"], bg: "#33291a", ok: () => !!(S.base && S.base.rooms && S.base.rooms.filter((R) => R.built && R.zone).length >= 2) },
+    { id: "archive", n: "아카이브", d: "가사인격 10명과 링크", acc: "#b48aff", t: ["#5f43a3", "#3f2b78"], bg: "#2a2438", ok: () => Object.keys(S.ops).length >= 10 },
+    { id: "line", n: "봉쇄선", d: "BL-07 클리어", acc: "#ff7a45", t: ["#a8402a", "#742617"], bg: "#3a2320", ok: () => ((S.stages["BL-07"] || {}).stars || 0) > 0 },
+  ];
+  const skinOf = () => SKINS.find((k) => k.id === S.skin && k.ok()) || SKINS[0];
+  function applySkin() { const k = skinOf(); sheet.style.setProperty("--acc", k.acc); sheet.style.setProperty("--t0", k.t[0]); sheet.style.setProperty("--t1", k.t[1]); sheet.style.setProperty("--lbg", k.bg); }
+  const mainTrack = () => { const heard = BGM.LIST.filter((q) => (S.bgmSeen || {})[q.id] || q.free); return heard.find((q) => q.id === S.bgmMain) || heard[0] || null; };
+  function playMain() { const t = mainTrack(); if (!t) return; (S.bgmSeen = S.bgmSeen || {})[t.id] = 1; BGM.play(t.id); }
+  function personalBox() {
+    const m = h("div", "modal ps-m"), b = h("div", "box"); m.appendChild(b); sheet.appendChild(m);
+    const draw = () => {
+      const tracks = BGM.LIST, mt = mainTrack();
+      b.innerHTML = `<h3>개인 설정</h3>
+        <div class="ps-sec"><div class="lb">메인 배경음악 <span>스토리 장면이 아니면 이 곡이 나옵니다</span></div>
+          <div class="ps-list">${tracks.length ? tracks.map((q) => { const got = (S.bgmSeen || {})[q.id] || q.free; return `<div class="btn ps-it${got ? "" : " lk"}${mt && mt.id === q.id ? " on" : ""}" data-b="${q.id}"><i>${mt && mt.id === q.id ? "♪" : got ? "▶" : "🔒"}</i><b>${got ? esc(q.n) : "???"}</b><span>${got ? esc(q.d || "") : "아직 듣지 못한 곡"}</span></div>`; }).join("") : '<div class="ps-none">수록된 곡을 준비 중입니다</div>'}</div></div>
+        <div class="ps-sec"><div class="lb">UI 스킨 <span>진행도에 따라 열립니다</span></div>
+          <div class="ps-skins">${SKINS.map((k) => `<div class="btn ps-sk${k.ok() ? "" : " lk"}${skinOf().id === k.id ? " on" : ""}" data-s="${k.id}" style="--sa:${k.acc};--s0:${k.t[0]};--s1:${k.t[1]}"><div class="sw"><i></i><i></i></div><b>${esc(k.n)}</b><span>${k.ok() ? (skinOf().id === k.id ? "사용 중" : "사용 가능") : "🔒 " + esc(k.d)}</span></div>`).join("")}</div></div>
+        <div class="row"><div class="btn">닫기</div></div>`;
+      b.querySelectorAll(".ps-it").forEach((it) => it.onclick = () => { const q = BGM.LIST.find((x) => x.id === it.dataset.b); if (!((S.bgmSeen || {})[q.id] || q.free)) return toast("아직 듣지 못한 곡입니다"); S.bgmMain = q.id; save(); playMain(); draw(); });
+      b.querySelectorAll(".ps-sk").forEach((it) => it.onclick = () => { const k = SKINS.find((x) => x.id === it.dataset.s); if (!k.ok()) return toast(`${k.d} 시 열립니다`); S.skin = k.id; save(); applySkin(); draw(); });
+      b.querySelector(".row .btn").onclick = () => { m.remove(); render(); };
+    };
+    m.onclick = (e) => { if (e.target === m) { m.remove(); render(); } };
+    draw();
+  }
   function settingsBox() {
     const m = h("div", "modal"), b = h("div", "box", `<h3>설정</h3><div class="vol"><span>효과음</span><input type="range" min="0" max="100" value="${Math.round((window.SFX ? SFX.vol : 0.7) * 100)}"><b class="en">${Math.round((window.SFX ? SFX.vol : 0.7) * 100)}</b></div><p>저장 데이터는 이 브라우저에 보관됩니다.</p>`), row = h("div", "row");
-    const vr = b.querySelector(".vol input"); vr.oninput = () => { b.querySelector(".vol b").textContent = vr.value; if (window.SFX) SFX.setVol(vr.value / 100); }; vr.onchange = () => window.SFX && SFX.play("ui_ok", 0.8);
+    b.querySelector(".vol").insertAdjacentHTML("beforebegin", `<div class="vol bgm"><span>배경음악</span><input type="range" min="0" max="100" value="${Math.round(BGM.vol * 100)}"><b class="en">${Math.round(BGM.vol * 100)}</b></div>`);
+    const br = b.querySelector(".vol.bgm input"); br.oninput = () => { b.querySelector(".vol.bgm b").textContent = br.value; BGM.setVol(br.value / 100); };
+    const pb = h("div", "btn ps-open", "개인 설정 · 배경음악과 UI 스킨 ›"); pb.onclick = () => { m.remove(); personalBox(); }; b.insertBefore(pb, b.querySelector("p"));
+    const vr = b.querySelector(".vol:not(.bgm) input"); vr.oninput = () => { b.querySelector(".vol:not(.bgm) b").textContent = vr.value; if (window.SFX) SFX.setVol(vr.value / 100); }; vr.onchange = () => window.SFX && SFX.play("ui_ok", 0.8);
     const rs = h("div", "btn n", "데이터 초기화"); rs.onclick = () => { m.remove(); confirmBox("데이터 초기화", "보유 가사인격, 재화, 작전 기록이 처음 상태로 돌아갑니다.", "초기화", () => { S = freshSave(); save(); render(); firstStart(); }); };
     const ok = h("div", "btn", "닫기"); ok.onclick = () => m.remove();
     row.append(rs, ok); b.appendChild(row); m.appendChild(b); sheet.appendChild(m);
@@ -15529,6 +15587,7 @@ window.BSL_ECON = (() => {
     for (const c of [...sheet.children]) if (c !== old) c.remove();
     const scr = h("div", "scr"); sheet.appendChild(scr);
     (SCREENS[route.name] || SCREENS.lobby)(scr, route.arg);
+    applySkin(); if (!sheet.querySelector(".story")) playMain();
     if (old) {
       old.classList.add("scr-out"); scr.classList.add("scr-in");
       setTimeout(() => { old.remove(); scr.classList.remove("scr-in"); }, 360);
@@ -17960,6 +18019,7 @@ window.BSL_ECON = (() => {
   window.__bslPlay = (key) => playStory(key, () => {});   // for checking a scene on its own
   window.__bslGo = (r, a) => go(r, a);   // for checking a screen on its own
   function playStory(key, done, opt = {}) {
+    if (window.BGM) BGM.stop();   // story scenes keep their own music (none yet): the main track waits
     const script = STORIES[key]; if (!script) { done && done(); return; }
     const box = h("div", "story"); sheet.appendChild(box);
     const bg = h("div", "bg"); box.appendChild(bg);
