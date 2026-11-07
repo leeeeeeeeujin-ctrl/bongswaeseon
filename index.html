@@ -4129,7 +4129,7 @@ window.BGM = (() => {
       this.units = []; this.enemies = []; this.fx = []; this.sfx = []; this.heals = []; this.shots = []; this.pulls = []; this.later = []; this.waveIdx = 0; this.uid = 1;
       const pick = squad && squad.length ? squad.map((s) => ({ s, def: UNITS.find((u) => u.id === s.id) })).filter((p) => p.def) : UNITS.map((def) => ({ s: {}, def }));
       this.cards = pick.map(({ s, def: u }) => ({ def: u, cooldown: 0, deployed: false, level: 0, mult: s.mult || 1,
-        skillIdx: s.skillIdx !== undefined ? Math.min(s.skillIdx, u.skills.length - 1) : u.defaultSkill !== undefined ? u.defaultSkill : u.skills.length - 1, elite: s.elite !== undefined ? s.elite : 2, pot: potOf(u, s.pot), slv: s.slv || 1 }));
+        skillIdx: s.skillIdx !== undefined ? Math.min(s.skillIdx, u.skills.length - 1) : u.defaultSkill !== undefined ? u.defaultSkill : u.skills.length - 1, elite: s.elite !== undefined ? s.elite : 2, look: s.look, pot: potOf(u, s.pot), slv: s.slv || 1 }));
       if (stageIdx === "tutorial") { this.stageIdx = -1; this.stage = TUTORIAL; }
       else if (stageIdx === "sandbox") { this.stageIdx = -2; this.stage = SANDBOX; }
       else { this.stageIdx = Math.max(0, Math.min(STAGES.length - 1, stageIdx || 0)); this.stage = STAGES[this.stageIdx]; }
@@ -5689,8 +5689,9 @@ window.BGM = (() => {
   // illustration / card art: Yui's legacy keys (with E0/E2), or a per-unit map
   function artOf(d, card, kind) {
     if (!d.art) return null;
-    if (d.art === true) return IMG[(kind === "card" ? "card_e" : "e") + (card && card.elite === 2 ? 2 : 0)];
-    const e2 = d.art.e2 && card && card.elite === 2;   // a second illustration that comes with the final promotion
+    const le = card ? (card.look !== undefined ? card.look : card.elite) : 0;   // the wardrobe's choice, else the promotion
+    if (d.art === true) return IMG[(kind === "card" ? "card_e" : "e") + (le === 2 ? 2 : 0)];
+    const e2 = d.art.e2 && le === 2;   // a second illustration that comes with the final promotion
     return IMG[kind === "card" ? (e2 ? d.art.card2 : d.art.card) : (e2 ? d.art.e2 : d.art.e0)];
   }
   // generated art (pose sprites, illustrations, card crops) shipped as data URIs
@@ -6461,7 +6462,7 @@ window.BGM = (() => {
   const C3PUP = {}; if (window.CHIBI3) for (const id of CHIBI3_IDS) C3PUP[id] = new CHIBI3.Puppet(IMG, id);
   function drawChibi3(g, id, sx, sy, k, o) {
     let P = C3PUP[id]; if (!P) return;
-    const gel = o.unit && game.cards[o.unit.card] ? game.cards[o.unit.card].elite : o.elite;
+    const gc = o.unit && game.cards[o.unit.card], gel = gc ? (gc.look !== undefined ? gc.look : gc.elite) : o.elite;
     if (id === "geomseon" && gel !== undefined && gel < 2) P = C3PUP.geomseon0;   // the old hermit until 반로환동, also while being dragged in   // the old hermit until 반로환동
     const u = o.unit, C = CHIBI3.CLIPS, opt = { face: o.face, alpha: o.alpha, flash: o.flash, out: o.out || {} };
     if (u) {
@@ -11940,7 +11941,7 @@ window.BGM = (() => {
         ctx.beginPath(); ctx.moveTo(cx + v[0] * a, cy + v[1] * a); ctx.lineTo(cx - v[1] * a * 0.8, cy + v[0] * a * 0.8); ctx.lineTo(cx + v[1] * a * 0.8, cy - v[0] * a * 0.8); ctx.closePath(); ctx.fill();
       }
       ctx.restore();
-      drawOperator(ctx, def.id, sx, sy, k * 0.8 * BODY, { face: aim.dir === 2 ? -1 : 1, t: clock, alpha: 0.85, elite: game.cards[aim.card] ? game.cards[aim.card].elite : undefined });
+      drawOperator(ctx, def.id, sx, sy, k * 0.8 * BODY, { face: aim.dir === 2 ? -1 : 1, t: clock, alpha: 0.85, elite: game.cards[aim.card] ? (game.cards[aim.card].look !== undefined ? game.cards[aim.card].look : game.cards[aim.card].elite) : undefined });
       text("방향을 정하세요", sx, sy - R - k * 0.45, 18, "#fff", { align: "center", shadow: true, weight: 700 });
       // cancel
       const bx = sx + R * 0.95, by = sy - R * 0.95;
@@ -12119,7 +12120,7 @@ window.BGM = (() => {
   const PANEL_ART = {}, statRects = {};
   function panelArt(d, card) {
     const art = artOf(d, card, "e"); if (!ready(art)) return null;
-    const key = d.id + ":" + (card ? card.elite : 0); if (PANEL_ART[key] && PANEL_ART[key].src === art) return PANEL_ART[key].c;
+    const key = d.id + ":" + (card ? (card.look !== undefined ? card.look : card.elite) : 0); if (PANEL_ART[key] && PANEL_ART[key].src === art) return PANEL_ART[key].c;
     const PW = 480, c = document.createElement("canvas"); c.width = PW * 1.5; c.height = VH * 1.5; const g = c.getContext("2d"); g.scale(1.5, 1.5);
     const e2 = card && card.elite === 2 && d.art === true && !d.noTrueName;
     const h = VH * 1.08, w = art.naturalWidth * h / art.naturalHeight, x = (PW - w) / 2 + 30 + (e2 ? -20 : 0), y = d.noTrueName ? 40 : -20;
@@ -12502,8 +12503,8 @@ window.BGM = (() => {
     // dragged ghost
     if (drag && drag.moved) {
       const c = game.cards[drag.card];
-      if (drag.tile) { const [sx0, sy0, k] = P(drag.tile.x, drag.tile.y, zOf(drag.tile.x, drag.tile.y)), [sx, sy] = camApply(sx0, sy0); drawOperator(ctx, c.def.id, sx, sy, k * 0.8 * camScale(), { t: clock, alpha: 0.8, elite: c.elite }); }
-      else drawOperator(ctx, c.def.id, drag.rx !== undefined ? drag.rx : drag.vx, (drag.ry !== undefined ? drag.ry : drag.vy) + 30, 80, { t: clock, alpha: 0.7, elite: c.elite });
+      if (drag.tile) { const [sx0, sy0, k] = P(drag.tile.x, drag.tile.y, zOf(drag.tile.x, drag.tile.y)), [sx, sy] = camApply(sx0, sy0); drawOperator(ctx, c.def.id, sx, sy, k * 0.8 * camScale(), { t: clock, alpha: 0.8, elite: c.look !== undefined ? c.look : c.elite }); }
+      else drawOperator(ctx, c.def.id, drag.rx !== undefined ? drag.rx : drag.vx, (drag.ry !== undefined ? drag.ry : drag.vy) + 30, 80, { t: clock, alpha: 0.7, elite: c.look !== undefined ? c.look : c.elite });
     }
     if (pending >= 0) text("배치할 칸을 누르세요", VW / 2, VH - 150, 18, "#fff", { align: "center", shadow: true, weight: 700 });
   }
@@ -14830,6 +14831,14 @@ window.BSL_ECON = (() => {
   .rz-it { display:flex; align-items:center; gap:6px; height:38px; padding:0 14px 0 6px; background:rgba(14,15,18,.72); border:1px solid rgba(255,255,255,.14); }
   .rz-it .icn { width:28px; height:28px; } .rz-it b { font-size:19px; font-weight:500; }
   .rz-tap { position:absolute; inset:0; }
+  .wd-m .box { width:960px !important; } .wd-row { display:flex; gap:16px; margin-top:8px; }
+  .wd-ls { width:230px; max-height:430px; overflow-y:auto; display:flex; flex-direction:column; gap:6px; padding-right:4px; }
+  .wd-op { display:flex; align-items:center; gap:10px; padding:6px; background:#202227; border:1px solid rgba(255,255,255,.08); } .wd-op i { width:42px; height:42px; background:center 15%/cover; flex:none; } .wd-op b { font-size:16px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; } .wd-op.on { border-color:#2aa7ec; background:#1a2a36; }
+  .wd-main { flex:1; min-width:0; } .wd-hd b { font-size:24px; font-weight:900; } .wd-hd span { display:block; font-size:14px; color:#9aa0aa; margin-top:2px; }
+  .wd-slots { display:flex; gap:12px; margin-top:12px; } .wd-s { flex:1; background:#1b1c20; border:1px solid rgba(255,255,255,.12); padding:8px; display:flex; flex-direction:column; gap:4px; }
+  .wd-s .im { height:300px; background:#121316 center 15%/cover; } .wd-s b { font-size:16px; } .wd-s span { font-size:13px; color:#8a8f98; }
+  .wd-s.on { border:2px solid #2aa7ec; box-shadow:0 0 14px rgba(42,167,236,.4); } .wd-s.on span { color:#4fb8ff; } .wd-s.lk .im { filter:grayscale(1) brightness(.4); } .wd-s.soon .im { background:repeating-linear-gradient(135deg,#1a1b1f 0 10px,#222328 10px 20px); }
+  .wd-auto { margin-top:12px; height:42px; display:grid; place-items:center; background:#2a2c31; border:1px solid rgba(255,255,255,.25); font-size:16px; font-weight:800; } .wd-auto.on { border-color:#2aa7ec; color:#4fb8ff; }
   .ps-open { margin:10px 0 4px; height:46px; display:grid; place-items:center; background:#2a2c31; border:1px solid rgba(143,211,255,.5); color:#8fd3ff; font-size:17px; font-weight:800; }
   .ps-m .box { width:760px !important; } .ps-sec { margin-top:14px; } .ps-sec .lb { font-size:17px; font-weight:900; margin-bottom:8px; } .ps-sec .lb span { font-size:13px; font-weight:500; color:#8a8f98; margin-left:8px; }
   .ps-list { display:flex; flex-direction:column; gap:6px; max-height:170px; overflow-y:auto; } .ps-none { color:#8a8f98; font-size:15px; padding:14px; background:rgba(255,255,255,.04); text-align:center; }
@@ -15535,6 +15544,9 @@ window.BSL_ECON = (() => {
       const i = CUT.idx[k]; mg.drawImage(at, (i % CUT.cols) * CUT.w, Math.floor(i / CUT.cols) * CUT.h, CUT.w, CUT.h, 0, 0, c.width, c.height);
       const md = mg.getImageData(0, 0, c.width, c.height), px = md.data; for (let j = 0; j < px.length; j += 4) { px[j + 3] = px[j]; } mg.putImageData(md, 0, 0);
       g.drawImage(im, 0, 0); g.globalCompositeOperation = "destination-in"; g.drawImage(mc, 0, 0);
+      // where the figure runs into the painting's own edge, it fades instead of stopping at a straight line
+      g.globalCompositeOperation = "destination-out"; const W = c.width, H = c.height, e = Math.round(W * 0.07);
+      for (const [x0, y0, x1, y1, rx, ry, rw, rh] of [[0, 0, e, 0, 0, 0, e, H], [W, 0, W - e, 0, W - e, 0, e, H], [0, 0, 0, e, 0, 0, W, e]]) { const gr = g.createLinearGradient(x0, y0, x1, y1); gr.addColorStop(0, "rgba(0,0,0,1)"); gr.addColorStop(1, "rgba(0,0,0,0)"); g.fillStyle = gr; g.fillRect(rx, ry, rw, rh); }
       return c.toDataURL("image/webp", 0.92);
     }).catch(() => null));
   }
@@ -15579,6 +15591,25 @@ window.BSL_ECON = (() => {
   }
   window.__bslSkin = (id) => { S.skin = id; save(); go("lobby"); render(); };   // test hook
   window.__bslAsst = (id) => { if (!S.ops[id]) S.ops[id] = { lvl: 1, elite: 0, pot: 1, skill: 0, got: Date.now() }; S.assistant = id; save(); go("lobby"); render(); };
+  function wardrobe(focus) {
+    const ids = Object.keys(S.ops).filter((id) => def(id) && (def(id).art || id === "geomseon")).sort((a, c) => (c === focus) - (a === focus) || def(c).rarity - def(a).rarity);
+    let cur = ids.includes(focus) ? focus : ids[0];
+    const m = h("div", "modal wd-m"), b = h("div", "box"); m.appendChild(b); sheet.appendChild(m);
+    const draw = () => {
+      const o = S.ops[cur], d = def(cur), e2ok = o.elite >= 2, le = lookElite(cur), auto = o.look === undefined;
+      const slot = (e, lab) => { const lock = e === 2 && !e2ok, on = !auto && o.look === e || auto && le === e; return `<div class="btn wd-s${on ? " on" : ""}${lock ? " lk" : ""}" data-e="${e}"><div class="im" style="background-image:url(${B.portrait(cur, "full", e)})"></div><b>${lab}</b><span>${lock ? "정예화 2 달성 시 해금" : on ? (auto ? "착용 중 · 자동" : "착용 중") : "착용하기"}</span></div>`; };
+      b.innerHTML = `<h3>옷장</h3><div class="wd-row"><div class="wd-ls">${ids.map((id) => `<div class="btn wd-op${id === cur ? " on" : ""}" data-id="${id}"><i style="background-image:url(${opArt(id, "card")})"></i><b>${esc(nm(id).main)}</b></div>`).join("")}</div>
+        <div class="wd-main"><div class="wd-hd"><b>${esc(nm(cur).main)}</b><span>${cur === "geomseon" ? "작전에서도 고른 모습(노인 / 젊은 모습)으로 나옵니다" : "로비, 상세 화면, 작전 카드에 고른 일러스트가 쓰입니다"}</span></div>
+          <div class="wd-slots">${slot(0, cur === "geomseon" ? "노인의 모습 · 정예화 0" : "정예화 0")}${hasE2(cur) ? slot(2, cur === "geomseon" ? "반로환동 · 정예화 2" : "정예화 2") : ""}<div class="wd-s lk soon"><div class="im"></div><b>스킨</b><span>준비 중</span></div></div>
+          <div class="btn wd-auto${auto ? " on" : ""}">정예화에 맞춰 자동</div></div></div><div class="row"><div class="btn">닫기</div></div>`;
+      b.querySelectorAll(".wd-op").forEach((x) => x.onclick = () => { cur = x.dataset.id; draw(); });
+      b.querySelectorAll(".wd-s:not(.soon)").forEach((x) => x.onclick = () => { const e = +x.dataset.e; if (e === 2 && !e2ok) return toast("정예화 2 달성 시 해금됩니다"); o.look = e; save(); draw(); });
+      b.querySelector(".wd-auto").onclick = () => { delete o.look; save(); draw(); };
+      b.querySelector(".row .btn").onclick = () => { m.remove(); render(); };
+    };
+    m.onclick = (e) => { if (e.target === m) { m.remove(); render(); } };
+    draw();
+  }
   function personalBox() {
     const m = h("div", "modal ps-m"), b = h("div", "box"); m.appendChild(b); sheet.appendChild(m);
     const draw = () => {
@@ -15707,7 +15738,10 @@ window.BSL_ECON = (() => {
       save(); render();
     });
   }
-  const opArt = (id, kind) => B.portrait(id, kind, S.ops[id] ? S.ops[id].elite : 0);
+  // the wardrobe: which illustration an operator wears (promotion 0 or 2 for now; skins later). "auto" follows the promotion
+  const hasE2 = (id) => { const d = def(id); return d && (d.art === true || (d.art && d.art.e2)) || id === "geomseon"; };
+  const lookElite = (id) => { const o = S.ops[id]; if (!o) return 0; if (o.look === 0) return 0; if (o.look === 2 && o.elite >= 2) return 2; return o.elite; };
+  const opArt = (id, kind) => B.portrait(id, kind, lookElite(id));
   const nm = (id) => TD.nameOf(def(id), S.ops[id] ? S.ops[id].elite : 0);
   const epHtml = (id, big) => { const r = nm(id).ruby; return r ? `<div class="${big ? "ep-big" : "epi"}">${esc(r)}</div>` : ""; };   // the epithet: its own quiet line over the name, never squeezed onto it
   const nameHtml = (id, big) => { const n = nm(id); return `${esc(n.main)}${n.sub ? `<span class="sub-nm"${big ? ' style="font-size:21px"' : ""}>${esc(n.sub)}</span>` : ""}`; };
@@ -15739,7 +15773,8 @@ window.BSL_ECON = (() => {
       const eye = h("div", "btn lb-rb", ICON.eye); eye.style.left = (nw + 50) + "px";
       eye.onclick = (ev) => { ev.stopPropagation(); el.classList.add("hideui"); setTimeout(() => { el.onclick = () => { el.classList.remove("hideui"); el.onclick = null; }; }, 50); };
       const sw = h("div", "btn lb-rb", ICON.swap); sw.style.left = (nw + 114) + "px"; sw.onclick = () => go("roster", { pickAssistant: true });
-      ui.append(eye, sw);
+      const wd = h("div", "btn lb-rb", `<svg viewBox="0 0 24 24"><path d="M12 4a2 2 0 0 1 2 2c0 1-1 1.6-2 2.2V9l9 6.5c.8.6.4 1.5-.5 1.5H3.5c-.9 0-1.3-.9-.5-1.5L12 9" fill="none" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/></svg>`); wd.style.left = (nw + 178) + "px"; wd.onclick = (ev) => { ev.stopPropagation(); wardrobe(S.assistant); };
+      ui.append(eye, sw, wd);
       // news: the archive's current pick-up
       const news = h("div", "btn lb-news", `<div class="bn en">BREAKING NEWS</div><div class="tt"><small>아카이브 한정 픽업</small>함성의 행진</div>${S.res.start > 0 ? '<div class="nw en">NEW</div>' : ""}`);
       news.style.backgroundImage = `url(${opArt("belina", "full")})`; news.onclick = () => go("gacha"); ui.appendChild(news);
@@ -18297,7 +18332,7 @@ window.BSL_ECON = (() => {
     S.last = sel; save();
     const cap = STAGE_META[sel].squad || 12, fx = STAGE_META[sel].fixed;
     const squad = fx ? fx.map(([id, elite, lvl]) => ({ id, skillIdx: 0, mult: TD.growth(def(id), elite, lvl, maxLv(id, elite)), elite, pot: 1 }))   // the lesson's own squad
-      : squadIds().slice(0, cap).map((id) => ({ id, skillIdx: S.ops[id].skill, mult: mult(id), elite: S.ops[id].elite, pot: S.ops[id].pot, slv: S.ops[id].sl || 1 }));
+      : squadIds().slice(0, cap).map((id) => ({ id, skillIdx: S.ops[id].skill, mult: mult(id), elite: S.ops[id].elite, look: lookElite(id), pot: S.ops[id].pot, slv: S.ops[id].sl || 1 }));
     host.hidden = true;
     const seenOpt = { seen: Object.assign({}, S.seen || {}), mark: (k) => { (S.seen = S.seen || {})[k] = 1; save(); }, practice: !!practice, cost: practice ? 0 : STAGE_META[sel].cost };   // what this save has already been shown in battle; the give-up box's refund
     B.start(sel, squad, (r) => {
