@@ -8855,7 +8855,7 @@ window.BGM = (() => {
     if (d.range === "melee") return d.block >= 3 ? "blunt" : ["slash", "hitm", "punch", "slash2"][id.length % 4];
     return "whoosh";
   }
-  const MUTED_HIT = true;
+  const MUTED_HIT = true, BATTLE_MUTE = true;   // the battle is silent until proper sounds are picked: every stand-in was a bad match
   const FX_SND = { deploy: ["deploy", 0.9], skill: ["skill", 0.8], heal: ["heal", 0.5], leak: ["leak", 1], land: ["heavy", 0.7], bolt: ["magic2", 0.6], burn: ["boom", 0.5] };
   function playBattleSounds() {
     if (game.sfx && game.sfx.length) {
@@ -8871,7 +8871,7 @@ window.BGM = (() => {
     for (const f of game.fx) if (!f._s) { f._s = 1; const m = FX_SND[f.k]; if (m) SFX.play(m[0], m[1]); if (f.k === "deploy") SFX.play("deploy2", 0.5); }
     if (game.over && !game._sndOver) { game._sndOver = 1; if (!MUTED_HIT) SFX.play(game.over === "win" ? "win" : "lose", 0.8); }
   }
-  function banner(text, sub, kind) { if (window.SFX) { if (kind === "warn") SFX.play("warn", 0.9); else if (kind === "op") SFX.play("draw", 0.7); } banners.push({ text, sub, kind, t: 0, life: kind === "warn" ? 2.6 : kind === "op" ? 1.9 : 2.2 }); }
+  function banner(text, sub, kind) { if (window.SFX && !BATTLE_MUTE) { if (kind === "warn") SFX.play("warn", 0.9); else if (kind === "op") SFX.play("draw", 0.7); } banners.push({ text, sub, kind, t: 0, life: kind === "warn" ? 2.6 : kind === "op" ? 1.9 : 2.2 }); }
 
   // ---------- input ----------
   function toV(ev) { const r = canvas.getBoundingClientRect(); return [(ev.clientX - r.left) / scale, (ev.clientY - r.top) / scale]; }
@@ -13174,7 +13174,7 @@ window.BGM = (() => {
     if (phase === "play" && !paused && Q > 0) { paceT += raw; paceN++; if (paceT >= 2) { const fps = paceN / paceT; paceSlow = fps < 40 ? paceSlow + 1 : 0; paceT = 0; paceN = 0; if (paceSlow >= 2) { paceSlow = 0; setQuality(Q - 1); } } }
     if (phase === "idle") { requestAnimationFrame(frame); return; }
     clock += real;
-    if (game && window.SFX) playBattleSounds();
+    if (game && window.SFX && !BATTLE_MUTE) playBattleSounds();
     if (tut && phase === "play" && !paused) tut.update(real);
     if (phase === "play" && !paused) { if (sscr) sscr.update(real); updateFoeNotes(real); }
     if (selected && game && game.units.includes(selected)) { const [sx, sy, k] = unitScreen(selected); CAM.F = [sx, sy - k * 0.45]; }
@@ -14193,7 +14193,7 @@ window.BSL_ECON = (() => {
   const kwHtml = (str) => esc(str).replace(/\{([^}]+)\}/g, (_, n) => `<span class="kw" data-kw="${n}" style="color:${(ST()[n] || {}).col || "#ffd27a"}">${n}</span>`);
   // menu sounds: back, tabs, the rest of the buttons a plain click
   document.addEventListener("pointerdown", (ev) => {
-    if (!window.SFX || !ev.target.closest) return; const t = ev.target.closest(".btn, .node, .tb, .ms-tab"); if (!t) return;
+    if (!window.SFX || !ev.target.closest || host.hidden) return; const t = ev.target.closest(".btn, .node, .tb, .ms-tab"); if (!t) return;
     if (t.classList.contains("dis")) return SFX.play("ui_err", 0.5);
     if (t.classList.contains("back") || t.classList.contains("bk") || t.classList.contains("zm-bk")) return SFX.play("ui_back", 0.6);
     if (t.matches(".tb, .ms-tab, .dp-tabs .btn, .rv-tabs .t, .tag")) return SFX.play("ui_tab", 0.6);
@@ -18098,8 +18098,19 @@ window.BSL_ECON = (() => {
   // ---------- the terminal's guide: a dimmed screen, one lit target, a line from the link terminal ----------
   // lines use [base|ruby] like the battle tutorial
   const rubyHtml = (s) => esc(s).replace(/\[([^|\]]+)\|([^\]]+)\]/g, "<ruby>$1<rt>$2</rt></ruby>").replace(/\n/g, "<br>");
+  // is it (or something holding it) still mid-way through a one-off entrance animation? looping pulses don't count
+  const moving = (el) => { for (let e = el; e && e !== sheet; e = e.parentElement) if (e.getAnimations && e.getAnimations().some((an) => an.playState === "running" && an.effect && an.effect.getComputedTiming().iterations !== Infinity)) return true; return false; };
+  let gStepN = 0;
   function guideStep(o) {
+    const my = ++gStepN;
     const old = sheet.querySelector(".guide"); if (old) old.remove();
+    if (typeof o.target === "string") o = Object.assign({}, o, { target: sheet.querySelector(o.target) });
+    if (o.target && !o.target.isConnected) {   // the part was drawn again since: find its new copy by its classes
+      const cls = [...o.target.classList].map((c) => "." + CSS.escape(c)).join(""), nt = cls && sheet.querySelector(cls);
+      if (!nt) return; const oldT = o.target; o = Object.assign({}, o, { target: nt }); if (!o.onTarget) o.onTarget = () => nt.click(); void oldT;
+    }
+    // a screen still sliding in would put the lit hole where the button is not yet: measure once it has settled
+    if (o.target && (sheet.querySelector(".scr-in, .scr-out") || moving(o.target))) { const wait = h("div", "guide"); sheet.appendChild(wait); return setTimeout(() => { if (my === gStepN) { wait.remove(); guideStep(o); } }, 120); }
     const gd = h("div", "guide" + (o.target ? "" : " dim")); sheet.appendChild(gd);
     let hole = null;
     if (o.target) {
