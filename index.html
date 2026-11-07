@@ -3956,6 +3956,14 @@ window.__ART = {"z_hair_back": "a/z_hair_back.webp?v=622717", "z_hair_back2": "a
     { code: "AR-2", name: "기록 보관소", supply: "AR", tier: 2, map: MAP_C1.pincer, bg: "bg_c1_pincer", cam: [0.86, 13.5, 1223.68, 640, 246.25], hz: 0.5, mul: { hp: 0.62, atk: 0.8, def: 1 },
       waves: W1([[4, "heavy", 0], [6, "heavy", 1], [14, "soldier", 0, 4, 2], [16, "soldier", 1, 4, 2], [28, "hexer", 0, 3, 2], [30, "hexer", 1, 3, 2], [40, "heavy", 0], [42, "heavy", 1], [52, "dog", 0, 5, 0.7], [54, "dog", 1, 5, 0.7], [66, "heavy", 0], [68, "heavy", 1], [74, "soldier", 0, 5, 1.4], [76, "soldier", 1, 5, 1.4]]),
       boss: ["", ""], desc: "기록 보관소 서고. 술사와 보조 칩 팩이 보관되어 있습니다. 척탄병이 양쪽에서 옵니다.", lose: "물리 공격은 척탄병에게 거의 통하지 않습니다." },
+    { code: "BM-1", name: "자재 야적장", supply: "BM", tier: 1, map: MAP_C1.plaza, bg: "bg_c1_plaza", cam: [0.86, 13.5, 1297.37, 640, 263.09], hz: 0.5, mul: { hp: 0.6, atk: 0.7, def: 0.8 },
+      waves: W1([[4, "strag", 0, 4, 0.8, UP], [6, "strag", 0, 4, 0.8, DOWN], [18, "soldier", 0, 2, 2, UP], [20, "soldier", 0, 2, 2, DOWN], [32, "strag", 0, 6, 0.5, UP], [34, "strag", 0, 6, 0.5, DOWN],
+        [46, "heavy", 0, 1, 0, UP], [52, "soldier", 0, 3, 1.5, DOWN], [62, "strag", 0, 8, 0.4, UP], [64, "strag", 0, 8, 0.4, DOWN]]),
+      boss: ["", ""], desc: "광장 뒤편의 자재 야적장. 기반시설을 보강할 자재가 쌓여 있습니다. 낙오병이 분수 양쪽으로 갈라져 옵니다.", lose: "양쪽 길을 모두 막으세요. 범위 공격이 유리합니다." },
+    { code: "BM-2", name: "자재 야적장", supply: "BM", tier: 2, map: MAP_C1.plaza, bg: "bg_c1_plaza", cam: [0.86, 13.5, 1297.37, 640, 263.09], hz: 0.5, mul: { hp: 0.95, atk: 1, def: 1 },
+      waves: W1([[4, "soldier", 0, 3, 1.5, UP], [6, "soldier", 0, 3, 1.5, DOWN], [16, "heavy", 0, 1, 0, UP], [18, "heavy", 0, 1, 0, DOWN], [28, "strag", 0, 10, 0.35, UP], [30, "strag", 0, 10, 0.35, DOWN],
+        [42, "hexer", 0, 2, 2, UP], [44, "hexer", 0, 2, 2, DOWN], [56, "heavy", 0, 1, 0, UP], [58, "heavy", 0, 1, 0, DOWN], [68, "soldier", 0, 5, 1, UP], [70, "soldier", 0, 5, 1, DOWN]]),
+      boss: ["", ""], desc: "야적장 안쪽의 철골 더미. 강화 골조가 남아 있습니다. 중장병이 양쪽에서 옵니다.", lose: "중장병은 방어가 단단합니다. 술사의 마법으로 뚫으세요." },
   ];
   // level-0 training: no timed waves (the tutorial script spawns and paces everything), no passive cost
   const TUTORIAL = { code: "TR-00", name: "링크 학습", map: MAP_TUT, waves: [], holo: true, tutorial: true, costRate: 0, mul: { hp: 0.45, atk: 0.8, def: 0.3 },
@@ -13873,6 +13881,9 @@ window.BSL_ECON = (() => {
     ITEMS["m1_" + k] = { n: n1, ic: "it-mat", tier: 1, kind: i, d: d1 + " 정예화와 스킬 강화의 기초 재료.", src: "작전 클리어 시 확률로 획득" };
     ITEMS["m2_" + k] = { n: n2, ic: "it-mat", tier: 2, kind: i, d: d2 + " 2차 정예화와 높은 스킬 강화에 쓴다.", src: "작전 클리어 시 낮은 확률로 획득 · 창고에서 가공" };
   });
+  // base materials: what the reclaimed zones' walls and works are built up with (from the 자재 야적장 supply site)
+  ITEMS.bm1 = { n: "보강 자재", ic: "it-bm1", tier: 1, d: "철근과 모래주머니, 쓸 만한 판자 묶음. 탈환 구역의 시설과 방벽을 보강한다.", src: "자원 수집 · 자재 야적장" };
+  ITEMS.bm2 = { n: "강화 골조", ic: "it-bm2", tier: 2, d: "용접까지 끝난 철골 한 벌. 시설을 한 단계 더 끌어올릴 때 쓴다.", src: "자원 수집 · 자재 야적장 (난이도 2)" };
   const REFINE = { need: 3, coin: 300 };   // three of a T1 and some coin make one of its T2
 
   // operator EXP per level, and the coin it takes alongside
@@ -13917,18 +13928,36 @@ window.BSL_ECON = (() => {
     FH: { n: "야전 병원", cls: ["중장", "의무"] },
     CB: { n: "기병 막사", cls: ["근위", "특수"] },
     AR: { n: "기록 보관소", cls: ["술사", "보조"] },
+    BM: { n: "자재 야적장", cls: [], mat: true },   // not chips: the base's building materials
   };
   // which are open on which day (0 Sunday .. 6 Saturday): two a weekday, all four on Saturday
-  const OPEN = { 0: ["FH", "CB"], 1: ["AM", "FH"], 2: ["CB", "AR"], 3: ["AM", "CB"], 4: ["FH", "AR"], 5: ["AM", "AR"], 6: ["AM", "FH", "CB", "AR"] };
+  const OPEN = { 0: ["FH", "CB", "BM"], 1: ["AM", "FH", "BM"], 2: ["CB", "AR"], 3: ["AM", "CB", "BM"], 4: ["FH", "AR"], 5: ["AM", "AR", "BM"], 6: ["AM", "FH", "CB", "AR", "BM"] };
   const SUPPLY_META = { 1: { cost: 10, coin: 800, exp: 60, unlock: "BL-03" }, 2: { cost: 15, coin: 1500, exp: 90, unlock: "BL-05" } };
   function supplyDrops(site, tier, rnd) {
+    if (site === "BM") return tier === 1 ? [["bm1", 3 + (rnd() < 0.5 ? 1 : 0)]] : [["bm2", 1 + (rnd() < 0.3 ? 1 : 0)], ["bm1", 2]];
     const cls = SUPPLY[site].cls, pick = () => cls[Math.floor(rnd() * cls.length)];
     const out = [];
     if (tier === 1) { out.push(["chip_" + clsKey(pick()), 1]); if (rnd() < 0.5) out.push(["chip_" + clsKey(pick()), 1]); }
     else { out.push(["pack_" + clsKey(pick()), 1]); out.push(["chip_" + clsKey(pick()), 1]); if (rnd() < 0.3) out.push(["pack_" + clsKey(pick()), 1]); }
     return out;
   }
-  return { CLS, clsKey, MATS, ITEMS, REFINE, expNeed, coinPerExp, matsOf, promoCost, skillCost, DROPS, SUPPLY, OPEN, SUPPLY_META, supplyDrops };
+  // ---------- the base: zones won back, each worked while operators stand guard ----------
+  // a zone opens when its operation is cleared; out: what it makes, rate per hour at level 1 with a full guard;
+  // fit: the classes that suit the post (+10% each); danger: raid strength per level
+  const ZONES = [
+    { code: "BL-01", n: "뒷골목 고물상", out: "coin", rate: 320, fit: ["선봉", "특수"], danger: [60, 120, 190], d: "불탄 차들에서 쓸 만한 부품을 뜯어 판다. 주화가 쌓인다." },
+    { code: "BL-02", n: "지하보도 통신실", out: "rec1", rate: 1.6, fit: ["술사", "보조"], danger: [70, 135, 205], d: "무너진 보도 밑, 살아남은 통신 장비로 작전 기록을 정리한다." },
+    { code: "BL-03", n: "분수 광장 수거소", out: "m1_shard", rate: 0.35, fit: ["근위", "의무"], danger: [85, 150, 220], d: "광장에 흩어진 가면 조각을 주워 모은다." },
+    { code: "BL-04", n: "감시탑 탄약고", out: "m1_casing", rate: 0.35, fit: ["저격", "중장"], danger: [95, 165, 235], d: "감시탑 아래 버려진 탄피를 분류한다. 높은 곳에서 지켜야 한다." },
+    { code: "BL-05", n: "마트 하역장", out: "m1_cloth", rate: 0.35, fit: ["중장", "보조"], danger: [105, 175, 250], d: "하역장 창고에서 군기 천 조각과 물자를 꺼낸다." },
+    { code: "BL-06", n: "역 앞 광장 동토", out: "m1_frost", rate: 0.35, fit: ["술사", "저격"], danger: [115, 190, 265], d: "역 앞의 얼어붙은 진창을 파서 서리 결정을 캔다." },
+  ];
+  const BASE = {
+    FAT: 24, DRAIN: 1, REST: [2, 3, 4], DORM_SLOTS: [3, 4, 5], SLOTS: 3, LVMUL: [1, 1.6, 2.4], CAPH: 12,   // fatigue max, per hour on guard, per hour in the dorm by its level
+    RAID_EVERY: 5, RAID_JIT: 2,   // hours between raids, and the spread
+    UP: { 2: { coin: 6000, items: [["bm1", 8]] }, 3: { coin: 16000, items: [["bm2", 5], ["bm1", 10]] } },
+  };
+  return { CLS, clsKey, MATS, ITEMS, REFINE, expNeed, coinPerExp, matsOf, promoCost, skillCost, DROPS, SUPPLY, OPEN, SUPPLY_META, supplyDrops, ZONES, BASE };
 })();
 
 // Lobby and everything around the battles: the main menu, operations, squads, operators, headhunting, base.
@@ -13957,7 +13986,7 @@ window.BSL_ECON = (() => {
     { cost: 3, first: { orb: 600 }, coin: 600, exp: 40, rec: "고정 편성", branch: 4,   // TR-02: casters and slowers, under BL-05
       fixed: [["sunae", 0, 30], ["lilith", 0, 30], ["teka", 0, 30], ["ayaki", 0, 30]] },
     // the supply operations (자원 수집): open on their days, once the story is far enough along
-    ...["AM", "FH", "CB", "AR"].flatMap((site) => [1, 2].map((tier) => { const sm = window.BSL_ECON.SUPPLY_META[tier];
+    ...["AM", "FH", "CB", "AR", "BM"].flatMap((site) => [1, 2].map((tier) => { const sm = window.BSL_ECON.SUPPLY_META[tier];
       return { cost: sm.cost, first: { orb: 0 }, coin: sm.coin, exp: sm.exp, rec: tier === 1 ? "정예화 0 · Lv.40" : "정예화 1 · Lv.30", supply: site, tier,
         unlockAt: sm.unlock }; })),
   ].map((m, i) => Object.assign(m, { unlock: m.supply ? (s) => ((s.stages[m.unlockAt] || {}).stars || 0) > 0 : m.branch !== undefined ? (s) => ((s.stages[TD.STAGES[m.branch].code] || {}).stars || 0) > 0
@@ -14266,7 +14295,78 @@ window.BSL_ECON = (() => {
   .rv .nm { position:absolute; left:0; right:0; bottom:0; padding:28px 6px 8px; background:linear-gradient(transparent,#000); font-weight:900; text-align:center; font-size:17px; }
   @keyframes rvin { to { opacity:1; transform:none; } }
   .flash { position:absolute; inset:0; pointer-events:none; animation:fl .9s forwards; } @keyframes fl { from { opacity:1 } to { opacity:0 } }
-  /* base and stubs */
+  /* base: the reclaimed zones */
+  .bs-bg { position:absolute; inset:0; background:linear-gradient(180deg,rgba(8,9,11,.55),rgba(8,9,11,.9)), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Cpath d='M40 0H0v40' fill='none' stroke='%23ffffff' stroke-opacity='.05'/%3E%3C/svg%3E"), #101216; }
+  .bs-ttl { position:absolute; left:320px; top:22px; } .bs-ttl small { display:block; font-size:13px; letter-spacing:.2em; color:#7f8590; } .bs-ttl b { font-size:28px; font-weight:900; }
+  .bs-dorm { position:absolute; left:36px; top:100px; width:300px; height:536px; overflow:hidden; background:#1a1b1f; box-shadow:0 8px 18px rgba(0,0,0,.4); }
+  .bs-dorm .im { position:absolute; inset:0; background:center/cover; filter:brightness(.75); } .bs-dorm .sh { position:absolute; inset:0; background:linear-gradient(180deg,rgba(0,0,0,.6),rgba(0,0,0,0) 30%,rgba(0,0,0,0) 45%,rgba(0,0,0,.9) 80%); }
+  .bs-dorm .tp { position:absolute; left:18px; top:14px; right:18px; } .bs-dorm .tp small { display:block; font-size:13px; letter-spacing:.2em; color:#ffcf8a; } .bs-dorm .tp b { font-size:32px; font-weight:900; }
+  .bs-dorm .lv, .bs-z .lv { position:absolute; right:0; top:4px; font-size:18px; font-weight:700; background:rgba(0,0,0,.6); padding:2px 8px; }
+  .bs-dorm .rs { position:absolute; left:16px; right:16px; bottom:54px; display:flex; flex-wrap:wrap; gap:8px; }
+  .bs-dorm .r { width:48px; } .bs-dorm .r i { display:block; width:48px; height:48px; border-radius:50%; background:#2a2c31 center 12%/cover; border:2px solid rgba(255,255,255,.6); }
+  .bs-dorm .r.e i { border-style:dashed; border-color:rgba(255,255,255,.3); }
+  .bs-dorm .fb, .bz-pn .fb, .bz-pk .fb { height:5px; background:rgba(255,255,255,.15); margin-top:4px; } .bs-dorm .fb b, .bz-pn .fb i, .bz-pk .fb i { display:block; height:100%; }
+  .bs-dorm .ft { position:absolute; left:16px; right:16px; bottom:16px; font-size:16px; color:#d8dbe0; }
+  .bs-grid { position:absolute; left:356px; top:100px; display:grid; grid-template-columns:repeat(3,282px); grid-auto-rows:260px; gap:14px; }
+  .bs-z { position:relative; overflow:hidden; background:#1c1d21; box-shadow:0 6px 14px rgba(0,0,0,.4); border:1px solid rgba(255,255,255,.08); }
+  .bs-z .im { position:absolute; left:0; right:0; top:0; height:118px; background:center/cover; } .bs-z .im::after { content:""; position:absolute; inset:0; background:linear-gradient(180deg,rgba(0,0,0,0) 40%,#1c1d21); }
+  .bs-z .st { position:absolute; left:0; top:8px; font-size:15px; font-weight:900; padding:2px 10px; } .bs-z .st.on { background:#2fa84f; } .bs-z .st.stop { background:#d23b3b; } .bs-z .st.off { background:#55575c; }
+  .bs-z .nm { position:absolute; left:12px; right:12px; top:100px; font-size:20px; font-weight:900; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; } .bs-z .nm b { font-size:15px; color:#8fd3ff; margin-right:8px; font-weight:700; }
+  .bs-z .pr { position:absolute; left:12px; right:12px; top:138px; display:flex; align-items:center; gap:8px; }
+  .bs-z .pr > i, .bz-pn .pr > i { width:38px; height:38px; flex:none; display:grid; place-items:center; } .bs-z .pr > i svg, .bz-pn .pr > i svg { width:100%; height:100%; }
+  .bs-z .pr .cn, .bz-pn .pr .cn { font-style:normal; font-size:24px; font-weight:900; color:#ffd36a; background:radial-gradient(#5a4a1c,#2a220c); border-radius:50%; border:2px solid #d9b24a; }
+  .bs-z .pr .bar { flex:1; height:8px; background:rgba(255,255,255,.12); } .bs-z .pr .bar i { display:block; height:100%; background:linear-gradient(90deg,#2aa7ec,#7fd4ff); }
+  .bs-z .pr span { font-size:17px; font-weight:700; } .bs-z .pr small { font-size:13px; color:#8a909a; }
+  .bs-z .gd { position:absolute; left:12px; right:12px; bottom:12px; display:flex; align-items:center; gap:8px; }
+  .bs-z .gd > i { width:50px; height:50px; border-radius:50%; background:#2a2c31 center 12%/cover; position:relative; box-shadow:0 0 0 3px #1c1d21, 0 0 0 5px rgba(255,255,255,.15); }
+  .bs-z .gd > i:not(.e)::after { content:""; position:absolute; inset:-5px; border-radius:50%; background:conic-gradient(var(--c) var(--f), transparent 0); -webkit-mask:radial-gradient(circle, transparent 27px, #000 28px); mask:radial-gradient(circle, transparent 27px, #000 28px); }
+  .bs-z .gd > i.e { border:2px dashed rgba(255,255,255,.25); box-shadow:none; } .bs-z .gd > i.out { filter:grayscale(1) brightness(.6); }
+  .bs-z .wn { margin-left:auto; text-align:right; line-height:1.1; } .bs-z .wn small { display:block; font-size:13px; color:#8a909a; } .bs-z .wn b { font-size:24px; }
+  .wn.ok b, .dg .w.ok b { color:#5fd36a; } .wn.mid b, .dg .w.mid b { color:#f2c14e; } .wn.bad b, .dg .w.bad b { color:#ff5a4a; }
+  .bs-z.lk { cursor:default; } .bs-z.lk .im { height:100%; filter:grayscale(1) brightness(.35); } .bs-z.lk .im::after { display:none; }
+  .bs-z .lkt { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; font-size:17px; color:#b8bcc4; } .bs-z .lkt b { font-size:26px; color:#fff; }
+  .bs-ft { position:absolute; left:356px; right:48px; bottom:22px; height:48px; display:flex; align-items:center; gap:16px; }
+  .bs-ft .lg { flex:1; display:flex; align-items:center; gap:10px; font-size:16px; color:#c8ccd4; background:rgba(0,0,0,.4); height:100%; padding:0 16px; white-space:nowrap; overflow:hidden; }
+  .bs-ft .lg span { color:#7f8590; } .bs-ft .lg b { color:#8fd3ff; } .bs-ft .lg em { font-style:normal; color:#ff8a7a; }
+  .bs-q { position:absolute; left:470px; top:34px; width:34px; height:34px; border-radius:50%; border:1.5px solid rgba(255,255,255,.5); display:grid; place-items:center; font-size:19px; font-weight:900; color:#d8dbe0; }
+  .bs-help { width:640px !important; } .bs-help p { margin:8px 0; font-size:16px; } .bs-help p b { color:#8fd3ff; margin-right:6px; }
+  .bs-all { width:200px; height:100%; background:linear-gradient(90deg,#118bc4,#24a8e8); display:grid; place-items:center; font-size:20px; font-weight:900; }
+  /* a zone or the dorm, the scene behind the panel */
+  .bz-cv { position:absolute; inset:0; width:1280px; height:720px; }
+  .bz-pn { position:absolute; right:0; top:0; bottom:0; width:470px; background:linear-gradient(90deg,rgba(10,11,13,0),rgba(10,11,13,.88) 12%,rgba(10,11,13,.94)); padding:80px 28px 20px 70px; transition:transform .3s, opacity .3s; overflow:hidden; }
+  .bz-hide .bz-pn { transform:translateX(100%); opacity:0; } .bz-hide .top { opacity:.4; }
+  .bz-eye { position:absolute; right:20px; top:18px; width:46px; height:46px; border-radius:50%; background:rgba(0,0,0,.6); border:1px solid rgba(255,255,255,.3); display:grid; place-items:center; font-size:24px; z-index:3; }
+  .bz-pn .hd { position:relative; } .bz-pn .hd small { display:block; font-size:14px; letter-spacing:.16em; color:#8fd3ff; } .bz-pn .hd b { font-size:30px; font-weight:900; }
+  .bz-pn .hd .lv { margin-left:10px; font-size:20px; color:#c8ccd4; }
+  .bz-pn .hd .up { position:absolute; right:0; top:18px; padding:6px 14px; background:#2a2c31; border:1px solid rgba(255,255,255,.3); font-size:16px; font-weight:700; }
+  .bz-pn p { font-size:15px; color:#b8bcc4; line-height:1.55; margin:6px 0 10px; }
+  .bz-pn .sec { margin-top:12px; } .bz-pn .lb { font-size:16px; font-weight:900; color:#fff; border-left:4px solid #2aa7ec; padding-left:8px; margin-bottom:8px; } .bz-pn .lb span { font-size:14px; color:#8a909a; font-weight:500; margin-left:8px; }
+  .bz-pn .pr { display:flex; align-items:center; gap:10px; } .bz-pn .pr > div:nth-child(2) { flex:1; } .bz-pn .pr b { display:block; font-size:18px; } .bz-pn .pr span { font-size:14px; color:#9aa0aa; } .bz-pn .pr em { font-style:normal; color:#4fb8ff; font-weight:700; }
+  .bz-pn .get { padding:8px 20px; background:linear-gradient(90deg,#118bc4,#24a8e8); font-size:17px; font-weight:900; } .bz-pn .get.dis { background:#3a3c41; color:#888; }
+  .bz-pn .bar { position:relative; height:20px; background:rgba(255,255,255,.1); margin-top:8px; } .bz-pn .bar i { display:block; height:100%; background:linear-gradient(90deg,#1a6f9c,#2aa7ec); }
+  .bz-pn .bar span { position:absolute; inset:0; display:grid; place-items:center; font-size:14px; font-weight:700; }
+  .bz-pn .sl { display:flex; gap:10px; } .bz-pn .sl.wrap { flex-wrap:wrap; }
+  .bz-pn .s { position:relative; width:112px; height:150px; background:#202227; border:1px solid rgba(255,255,255,.15); overflow:hidden; }
+  .bz-pn .s .im { position:absolute; left:0; right:0; top:0; height:104px; background:center 10%/cover; } .bz-pn .s .im::after { content:""; position:absolute; inset:0; background:linear-gradient(180deg,rgba(0,0,0,0) 60%,#202227); }
+  .bz-pn .s em { position:absolute; left:4px; top:4px; font-style:normal; font-size:12px; font-weight:900; background:#e0a400; color:#221800; padding:1px 5px; }
+  .bz-pn .s .nm { position:absolute; left:6px; right:6px; top:96px; font-size:15px; font-weight:800; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .bz-pn .s .fb { position:absolute; left:6px; right:6px; top:120px; margin:0; } .bz-pn .s .ft { position:absolute; left:6px; right:6px; top:128px; font-size:13px; color:#b8bcc4; }
+  .bz-pn .s.e { display:flex; flex-direction:column; align-items:center; justify-content:center; border-style:dashed; color:#8a909a; } .bz-pn .s.e b { font-size:34px; font-weight:300; line-height:1; } .bz-pn .s.e span { font-size:14px; }
+  .bz-pn .s.out .im { filter:grayscale(1) brightness(.55); } .bz-pn .s.out .ft { color:#ff6a5a; font-weight:700; }
+  .bz-pn.dorm .s { width:104px; height:146px; }
+  .bz-pn .dg { display:flex; gap:8px; } .bz-pn .dg > div { flex:1; background:rgba(255,255,255,.06); padding:6px 10px; } .bz-pn .dg small { display:block; font-size:13px; color:#8a909a; } .bz-pn .dg b { font-size:24px; }
+  .bz-pn .nr { font-size:14px; color:#9aa0aa; margin-top:6px; }
+  .bz-pn .lgs { margin-top:6px; font-size:14px; color:#c8ccd4; } .bz-pn .lgs div { padding:2px 0; } .bz-pn .lgs span { color:#7f8590; margin-right:8px; } .bz-pn .lgs .bad { color:#ff8a7a; } .bz-pn .lgs .no { color:#6f747d; }
+  .bz-pk .box { position:relative; width:1060px; max-height:600px; padding:20px 24px; display:flex; flex-direction:column; }
+  .bz-pk .hd b { font-size:24px; font-weight:900; } .bz-pk .hd span { margin-left:12px; font-size:15px; color:#9aa0aa; }
+  .bz-pk .gl { margin-top:14px; display:grid; grid-template-columns:repeat(6,1fr); gap:10px; overflow-y:auto; padding-right:6px; }
+  .bz-pk .pc { position:relative; height:180px; background:#202227; border:1px solid rgba(255,255,255,.12); overflow:hidden; }
+  .bz-pk .pc.on { border:2px solid #2aa7ec; box-shadow:0 0 12px rgba(42,167,236,.5); }
+  .bz-pk .pc .im { position:absolute; left:0; right:0; top:0; height:118px; background:center 10%/cover; }
+  .bz-pk .pc .nm { position:absolute; left:6px; right:6px; top:118px; font-size:15px; font-weight:800; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .bz-pk .pc .cl { position:absolute; left:6px; right:6px; top:140px; display:flex; align-items:center; gap:4px; font-size:13px; } .bz-pk .pc .cl img { width:18px; height:18px; } .bz-pk .pc .cl em { font-style:normal; font-size:12px; font-weight:900; background:#e0a400; color:#221800; padding:0 4px; } .bz-pk .pc .cl span { margin-left:auto; color:#8fd3ff; }
+  .bz-pk .pc .fb { position:absolute; left:6px; right:44px; top:164px; margin:0; } .bz-pk .pc .ft { position:absolute; right:6px; top:157px; font-size:12px; color:#b8bcc4; }
+  .bz-pk .pc .pt { position:absolute; left:0; top:6px; font-size:12px; font-weight:800; background:rgba(0,0,0,.75); padding:2px 6px; }
   /* results */
   .rz-bg { position:absolute; inset:0; background:#121317 center/cover; transform:scale(1.04); }
   .rz-art { position:absolute; left:560px; top:-40px; height:800px; animation:rzArt .7s ease both;
@@ -14815,8 +14915,8 @@ window.BSL_ECON = (() => {
   .sp-week > div.on { background:#f6c21c; border-color:#f6c21c; box-shadow:0 0 0 2px #fff, 0 2px 6px rgba(0,0,0,.3); } .sp-week > div.on b { color:#1a1a1a; }
   .sp-week > div i { position:absolute; top:36px; left:50%; transform:translateX(-50%); font-style:normal; font-size:12px; font-weight:800; color:#3a3c40; letter-spacing:.05em; }
   .sp-week > span { margin-left:12px; font-size:17px; font-weight:800; color:#3a3c40; letter-spacing:.04em; }
-  .sp-row2 { position:absolute; left:50%; top:100px; transform:translateX(-50%); display:flex; gap:24px; }
-  .sp-c { position:relative; width:236px; height:500px; overflow:hidden; background:#38393d; box-shadow:0 8px 18px rgba(0,0,0,.35); }
+  .sp-row2 { position:absolute; left:50%; top:100px; transform:translateX(-50%); display:flex; gap:16px; }
+  .sp-c { position:relative; width:214px; height:500px; overflow:hidden; background:#38393d; box-shadow:0 8px 18px rgba(0,0,0,.35); }
   .sp-c .art { position:absolute; left:0; right:0; top:0; height:330px; overflow:hidden; background:var(--c0); }
   .sp-c .tiles { position:absolute; left:-130px; top:-110px; width:500px; transform:rotate(-30deg); display:flex; flex-wrap:wrap; gap:10px; }
   .sp-c .pl { width:110px; height:72px; position:relative; background:var(--c1); box-shadow:0 2px 4px rgba(0,0,0,.35); overflow:hidden; }
@@ -14827,6 +14927,8 @@ window.BSL_ECON = (() => {
   .sp-c.am { --c0:#f2a20c; --c1:#1d1d1f; --c2:#f7b52a; --c3:#2b2b2e; --tx:#ffd23c; }
   .sp-c.fh { --c0:#e8e6e2; --c1:#d93a46; --c2:#f4f3f0; --c3:#b82734; --tx:#2a2a2a; }
   .sp-c.cb { --c0:#1a6f8c; --c1:#20a7d6; --c2:#0f4f66; --c3:#7fdcff; --tx:#e8fbff; }
+  .sp-c.bm { --c0:#6b6458; --c1:#2c2a26; --c2:#8a8170; --c3:#3e3a33; --tx:#f0d9a8; }
+  .sp-c .ft .cl .mt { font-size:14px; font-weight:900; padding:4px 10px; border:1.5px solid rgba(255,255,255,.7); }
   .sp-c.ar { --c0:#463a86; --c1:#6c5cc8; --c2:#2c2458; --c3:#a99af0; --tx:#f1edff; }
   .sp-c .art::after { content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,0,0,0) 55%, rgba(0,0,0,.35)); }
   .sp-c .bd { position:absolute; left:0; right:0; top:306px; height:34px; display:flex; align-items:center; justify-content:center; gap:8px; font-size:18px; font-weight:900; z-index:1; }
@@ -15132,7 +15234,8 @@ window.BSL_ECON = (() => {
       sb.onclick = (e) => { e.stopPropagation(); go("gacha"); };
       rec.append(sa, sb);
       tile("lock", 0, 496, 236, 128, `<div class="bar"></div><div class="emb" style="width:90px">${ICON.task}</div><div class="lb"><small>MISSION</small>임무</div><div class="lk en">LOCKED</div>`, locked);
-      tile("lock", 246, 496, 230, 128, `<div class="bar"></div><div class="emb" style="width:90px">${ICON.base}</div><div class="lb"><small>BASE</small>기반시설</div><div class="lk en">LOCKED</div>`, locked);
+      if (baseOpen()) { baseTick(); tile("", 246, 496, 230, 128, `<div class="bar"></div><div class="emb" style="width:90px">${ICON.base}</div><div class="lb"><small>BASE</small>기반시설</div>${baseAlert() ? '<i class="badge en" style="right:6px;top:6px">!</i>' : ""}`, () => go("base")); }
+      else tile("lock", 246, 496, 230, 128, `<div class="bar"></div><div class="emb" style="width:90px">${ICON.base}</div><div class="lb"><small>BASE</small>기반시설</div><div class="lk en">LOCKED</div>`, () => toast("BL-01을 클리어하면 열립니다"));
       tile("", 486, 496, 124, 128, `<div class="emb" style="width:70px;right:14px">${ICON.depot}</div><div class="lb" style="font-size:21px"><small>DEPOT</small>창고</div>${S.econGiftNew ? '<i class="badge en" style="right:6px;top:6px">N</i>' : ""}`, () => go("depot"));
     },
 
@@ -15234,6 +15337,96 @@ window.BSL_ECON = (() => {
 
     // 자원 수집, after the original's 물자 비축: a pale concrete room, the week across the top, a tall card per site —
     // its chips laid out in rows on the art, a band when it is open, its name and its days below
+    // 기반시설: the shelter on the left, the zones won back on the right, each with what it is making, who is on guard and how a raid would go
+    base(el) {
+      baseTick(); const b = baseState(); b.seen = Date.now(); save();
+      el.appendChild(h("div", "bs-bg"));
+      el.appendChild(topBar("", "", () => go("lobby"), { stam: false }));
+      el.appendChild(h("div", "bs-ttl", `<small class="en">BASE · RECLAIMED ZONES</small><b>탈환 구역</b>`));
+      // the dorm
+      const dc = h("div", "btn bs-dorm", `<div class="im" style="background-image:url(${ART.base_dorm || ART.st_room})"></div><div class="sh"></div>
+        <div class="tp"><small class="en">DORMITORY</small><b>숙소</b><span class="lv en">Lv.${b.dorm.lv}</span></div>
+        <div class="rs">${Array.from({ length: BB.DORM_SLOTS[b.dorm.lv - 1] }, (_, k) => { const id = b.dorm.rest[k]; return id ? `<div class="r"><i style="background-image:url(${opArt(id, "card")})"></i><div class="fb"><b style="width:${fatOf(id) / BB.FAT * 100}%;background:${fatCol(fatOf(id))}"></b></div></div>` : `<div class="r e"><i></i></div>`; }).join("")}</div>
+        <div class="ft">피로 회복 <b class="en">${BB.REST[b.dorm.lv - 1]}</b>/시간 · 정원 <b class="en">${b.dorm.rest.length}/${BB.DORM_SLOTS[b.dorm.lv - 1]}</b></div>`);
+      dc.onclick = () => go("dorm"); el.appendChild(dc);
+      // the zones
+      const grid = h("div", "bs-grid"); el.appendChild(grid);
+      for (const z of BZ) {
+        const i = zoneIdx(z.code), open = zoneOpen(z), s = b.z[z.code];
+        if (!open) { grid.appendChild(h("div", "bs-z lk", `<div class="im" style="background-image:url(${ART[TD.STAGES[i].bg] || ART.bg})"></div><div class="lkt"><b class="en">${z.code}</b>클리어 시 탈환</div>`)); continue; }
+        const act = activeG(z.code), rate = zRate(z.code, act), cap = zCap(z.code), win = zWin(z.code, act);
+        const stt = !s.g.length ? ["경계 없음", "off"] : !act.length ? ["생산 정지", "stop"] : ["생산 중", "on"];
+        const c = h("div", "btn bs-z", `<div class="im" style="background-image:url(${ART[TD.STAGES[i].bg] || ART.bg})"></div>
+          <div class="st ${stt[1]}">${stt[0]}</div><div class="lv en">Lv.${s.lv}</div>
+          <div class="nm"><b class="en">${z.code}</b>${esc(z.n)}</div>
+          <div class="pr">${outIc(z.out)}<div class="bar"><i style="width:${Math.min(100, s.store / cap * 100)}%"></i></div><span class="en">${numF(s.store, z.out)}<small>/${numF(cap, z.out)}</small></span></div>
+          <div class="gd">${Array.from({ length: BB.SLOTS }, (_, k) => { const id = s.g[k]; return id ? `<i class="${fatOf(id) <= 0 ? "out" : ""}" style="background-image:url(${opArt(id, "card")});--f:${fatOf(id) / BB.FAT * 360}deg;--c:${fatCol(fatOf(id))}"></i>` : `<i class="e"></i>`; }).join("")}
+          <div class="wn ${s.g.length ? (win >= 1 ? "ok" : win >= 0.6 ? "mid" : "bad") : "bad"}"><small>방어</small><b class="en">${s.g.length ? Math.round(win * 100) : 0}%</b></div></div>`);
+        c.onclick = () => go("zone", z.code); grid.appendChild(c);
+      }
+      // collect everything, and the last thing that happened
+      const ft = h("div", "bs-ft"); el.appendChild(ft);
+      const lg = b.log[0];
+      ft.appendChild(h("div", "lg", lg ? `<span class="en">${clockTxt(lg.t)}</span><b class="en">${lg.c}</b>${lg.ok ? "습격을 격퇴했습니다" : '<em>습격에 뚫려 보관 물자 절반을 잃었습니다</em>'}` : `<span>아직 습격 기록이 없습니다</span>`));
+      const all = h("div", "btn bs-all", "일괄 수령");
+      all.onclick = () => { baseTick(); const got = BZ.filter(zoneOpen).map((z) => collectZone(z.code)).filter(Boolean); save(); if (!got.length) return toast("수령할 물자가 없습니다"); dropBox("물자 수령", mergeItems(got.filter(([k]) => k !== "coin")).concat(got.filter(([k]) => k === "coin").length ? [["coin", got.filter(([k]) => k === "coin").reduce((a, x) => a + x[1], 0)]] : [])); render(); };
+      ft.appendChild(all);
+      const help = () => { const mo = h("div", "modal"), bx = h("div", "box bs-help", `<h3>기반시설 안내</h3>
+        <p><b>탈환 구역</b> 작전을 클리어한 지역은 탈환 구역이 됩니다. 구역마다 생산하는 물자가 정해져 있습니다.</p>
+        <p><b>경계 배치</b> 가사인격을 경계에 세워야 생산이 진행됩니다. 인원이 많고 적합 직군일수록 빨라집니다. 경계 중에도 작전에는 그대로 데려갈 수 있습니다.</p>
+        <p><b>피로</b> 경계 중에는 피로가 시간당 ${BB.DRAIN}씩 줄어듭니다. 0이 되면 탈진해서 경계를 서지 못하고, 전원이 탈진하면 생산이 멈춥니다. 숙소로 교체해 쉬게 하세요.</p>
+        <p><b>습격</b> 몇 시간마다 습격이 옵니다. 경계 인원의 육성도(방어력)가 구역 위험도보다 낮으면 격퇴 확률이 떨어지고, 뚫리면 보관 물자 절반을 잃습니다.</p>
+        <p><b>시설 강화</b> 자원 수집의 「자재 야적장」에서 얻는 자재로 강화합니다. 생산량이 늘지만 위험도도 올라갑니다.</p>`), row = h("div", "row"), ok = h("div", "btn", "확인");
+        ok.onclick = () => mo.remove(); row.appendChild(ok); bx.appendChild(row); mo.appendChild(bx); mo.onclick = (e) => { if (e.target === mo) mo.remove(); }; sheet.appendChild(mo); };
+      const hb = h("div", "btn bs-q", "?"); hb.onclick = help; el.appendChild(hb);
+      if (!b.intro) { b.intro = 1; save(); help(); }
+    },
+
+    // one zone: its ground alive behind, the guards standing on it, and the panel with the work, the watch and the danger
+    zone(el, code) {
+      baseTick(); save(); const b = baseState(), z = zDef(code), s = b.z[code], i = zoneIdx(code);
+      const sp = zoneSpots(code);
+      const sc = livingScene(el, { bg: ART[TD.STAGES[i].bg] || ART.bg, fx: "fire", k: sp.k, speed: sp.k * 0.5,
+        actors: s.g.map((id, k) => ({ id, x: sp.spots[k % sp.spots.length][0], y: sp.spots[k % sp.spots.length][1], home: sp.spots[k % sp.spots.length], tired: fatOf(id) <= 0 })),
+        next: (a) => Math.random() < 0.5 ? a.home : sp.all[Math.floor(Math.random() * Math.min(6, sp.all.length))] });   // a short round of the nearest squares, then back
+      el.appendChild(topBar("", "", () => go("base"), { res: false }));
+      const act = activeG(code), rate = zRate(code, act), cap = zCap(code), win = zWin(code, act), pw = zPow(code, act), dg = zDanger(code);
+      const pn = h("div", "bz-pn"); el.appendChild(pn);
+      const eye = h("div", "btn bz-eye", "◐"); eye.onclick = () => el.classList.toggle("bz-hide"); el.appendChild(eye);
+      pn.innerHTML = `<div class="hd"><small class="en">ZONE · ${code}</small><b>${esc(z.n)}</b><span class="lv en">Lv.${s.lv}</span><div class="btn up">${BB.UP[s.lv + 1] ? "시설 강화" : "MAX"}</div></div>
+        <p>${esc(z.d)}</p>
+        <div class="sec"><div class="lb">생산</div><div class="pr">${outIc(z.out)}<div><b>${outN(z.out)}</b><span>시간당 <em class="en">${numF(rate, z.out === "coin" ? "coin" : "x")}</em>${act.length < s.g.length ? " · 지친 인원 제외" : ""}</span></div><div class="btn get${s.store >= 1 ? "" : " dis"}">수령</div></div>
+          <div class="bar"><i style="width:${Math.min(100, s.store / cap * 100)}%"></i><span class="en">${numF(s.store, z.out)} / ${numF(cap, z.out)}</span></div></div>
+        <div class="sec"><div class="lb">경계 배치 <span>적합 · ${z.fit.join(" ")}</span></div><div class="sl">${Array.from({ length: BB.SLOTS }, (_, k) => { const id = s.g[k]; if (!id) return `<div class="btn s e" data-k="${k}"><b>+</b><span>배치</span></div>`; const f = fatOf(id);
+          return `<div class="btn s${f <= 0 ? " out" : ""}" data-k="${k}"><div class="im" style="background-image:url(${opArt(id, "card")})"></div>${z.fit.includes(def(id).cls) ? '<em>적합</em>' : ""}<div class="nm">${esc(nm(id).main)}</div><div class="fb"><i style="width:${f / BB.FAT * 100}%;background:${fatCol(f)}"></i></div><div class="ft en">${f <= 0 ? "탈진" : Math.floor(f) + "/" + BB.FAT}</div></div>`; }).join("")}</div></div>
+        <div class="sec"><div class="lb">습격 대비</div><div class="dg"><div><small>위험도</small><b class="en">${dg}</b></div><div><small>방어력</small><b class="en">${pw}</b></div><div class="w ${win >= 1 ? "ok" : win >= 0.6 ? "mid" : "bad"}"><small>격퇴 확률</small><b class="en">${Math.round(win * 100)}%</b></div></div>
+          <div class="nr">다음 습격 예상 · ${hrsTxt(s.nr - Date.now())} 후${win < 1 && s.g.length ? " · 육성도가 낮으면 격퇴 확률이 떨어집니다" : ""}</div>
+          <div class="lgs">${b.log.filter((l) => l.c === code).slice(0, 3).map((l) => `<div class="${l.ok ? "" : "bad"}"><span class="en">${clockTxt(l.t)}</span>${l.ok ? "습격 격퇴" : "방어 실패 · 보관 물자 절반 손실"}</div>`).join("") || '<div class="no">기록 없음</div>'}</div></div>`;
+      pn.querySelector(".up").onclick = () => upgradeBox(code, render);
+      pn.querySelector(".get").onclick = () => { baseTick(); const g = collectZone(code); save(); if (!g) return toast("아직 수령할 만큼 쌓이지 않았습니다"); dropBox("물자 수령", [g]); render(); };
+      pn.querySelectorAll(".sl .s").forEach((c) => c.onclick = () => guardPicker(code, +c.dataset.k, render));
+    },
+
+    // the dorm: whoever is resting goes about their day in the shelter
+    dorm(el) {
+      baseTick(); save(); const b = baseState(), cap = BB.DORM_SLOTS[b.dorm.lv - 1];
+      const rr = (a, c) => a + Math.random() * (c - a), FLOOR = [560, 690];
+      const depth = (y) => 0.82 + (y - FLOOR[0]) / (FLOOR[1] - FLOOR[0]) * 0.3;
+      livingScene(el, { bg: ART.base_dorm || ART.st_room, fx: "dust", k: 150, speed: 70, chat: true,
+        tint: ART.base_dorm ? null : "rgba(120,70,20,.22)", lamp: ART.base_dorm ? (window.BASE_LAMPS || []) : [[260, 200, 260], [980, 260, 300]],
+        actors: b.dorm.rest.map((id, k) => { const y = rr(FLOOR[0], FLOOR[1]); return { id, x: 140 + (k + 0.5) * (620 / Math.max(1, b.dorm.rest.length)), y, sc: depth(y) }; }),
+        next: (a) => { const y = rr(FLOOR[0], FLOOR[1]); a.sc = depth(y); return [rr(110, 790), y]; } });   // left of the panel
+      el.appendChild(topBar("", "", () => go("base"), { res: false }));
+      const pn = h("div", "bz-pn dorm"); el.appendChild(pn);
+      const eye = h("div", "btn bz-eye", "◐"); eye.onclick = () => el.classList.toggle("bz-hide"); el.appendChild(eye);
+      pn.innerHTML = `<div class="hd"><small class="en">DORMITORY</small><b>숙소</b><span class="lv en">Lv.${b.dorm.lv}</span><div class="btn up">${BB.UP[b.dorm.lv + 1] ? "시설 강화" : "MAX"}</div></div>
+        <p>탈환 구역 경계를 마친 가사인격이 쉬는 곳. 여기 있는 동안 피로가 회복됩니다. 경계 배치와 겹치지 않습니다.</p>
+        <div class="sec"><div class="lb">휴식 중 <span>회복 ${BB.REST[b.dorm.lv - 1]}/시간 · 정원 ${cap}</span></div><div class="sl wrap">${Array.from({ length: cap }, (_, k) => { const id = b.dorm.rest[k]; if (!id) return `<div class="btn s e" data-k="${k}"><b>+</b><span>배치</span></div>`; const f = fatOf(id);
+          return `<div class="btn s" data-k="${k}"><div class="im" style="background-image:url(${opArt(id, "card")})"></div><div class="nm">${esc(nm(id).main)}</div><div class="fb"><i style="width:${f / BB.FAT * 100}%;background:${fatCol(f)}"></i></div><div class="ft en">${f >= BB.FAT ? "회복 완료" : Math.floor(f) + "/" + BB.FAT}</div></div>`; }).join("")}</div></div>`;
+      pn.querySelector(".up").onclick = () => upgradeBox("dorm", render);
+      pn.querySelectorAll(".sl .s").forEach((c) => c.onclick = () => guardPicker("dorm", +c.dataset.k, render));
+    },
+
     supply(el) {
       el.appendChild(h("div", "sp-bg"));
       el.appendChild(topBar("", "", () => go("ops"), { res: false }));
@@ -15241,15 +15434,15 @@ window.BSL_ECON = (() => {
       el.appendChild(h("div", "sp-week", WEEK.map((d) => `<div class="${d === today ? "on" : ""}${d === 6 ? " sat" : ""}"><b>${DAYN[d]}</b>${d === today ? '<i class="en">TODAY</i>' : ""}</div>`).join("") + `<span class="en">SCHEDULE</span>`));
       const row = h("div", "sp-row2"); el.appendChild(row);
       const idxOf = (site, tier) => TD.STAGES.findIndex((q) => q.supply === site && q.tier === tier);
-      for (const site of ["AM", "FH", "CB", "AR"]) {
+      for (const site of ["AM", "FH", "CB", "AR", "BM"]) {
         const sp = EC.SUPPLY[site], on = open.includes(site), i1 = idxOf(site, 1), unlocked = STAGE_META[i1].unlock(S);
         const days = WEEK.filter((d) => EC.OPEN[d].includes(site));
         const reps = sp.cls.map((c) => CLS_REP[c]);
-        // the art: chip plates in slanted rows, the two classes taking turns
-        let plates = ""; for (let k = 0; k < 28; k++) { const t = (k + Math.floor(k / 4)) % 2; plates += `<div class="pl"><i>${icn("chipc-" + (k % 3 === 0 ? 2 : 1) + "-" + reps[t])}</i><b class="en">${site}-${k % 3 === 0 ? 2 : 1}</b><span>${sp.cls[t]}</span></div>`; }
+        // the art: chip plates in slanted rows, the two classes taking turns (the materials yard: its two materials)
+        let plates = ""; for (let k = 0; k < 28; k++) { const t = (k + Math.floor(k / 4)) % 2, tr = k % 3 === 0 ? 2 : 1; plates += sp.mat ? `<div class="pl"><i>${icn("it-bm" + tr)}</i><b class="en">${site}-${tr}</b><span>${tr === 1 ? "자재" : "골조"}</span></div>` : `<div class="pl"><i>${icn("chipc-" + tr + "-" + reps[t])}</i><b class="en">${site}-${tr}</b><span>${sp.cls[t]}</span></div>`; }
         const band = !unlocked ? `<div class="bd lk">${esc(STAGE_META[i1].unlockAt)} 클리어 후 개방</div>` : today === 6 ? `<div class="bd sat"><i class="en">S</i>토요일 전체 개방</div>` : on ? `<div class="bd on">오늘 개방</div>` : `<div class="bd off">오늘 닫힘</div>`;
         const c = h("div", "btn sp-c " + site.toLowerCase() + (on && unlocked ? "" : " shut"), `<div class="art"><div class="tiles">${plates}</div></div>${band}
-          <div class="ft"><div class="cl">${reps.map((r, k) => `<img src="${clsIcon(r, 30)}" alt="${sp.cls[k]}">`).join("")}</div><b>${esc(sp.n)}</b><span>${days.map((d) => DAYN[d]).join("")}요일 개방</span>
+          <div class="ft"><div class="cl">${sp.mat ? '<span class="mt">기반시설</span>' : reps.map((r, k) => `<img src="${clsIcon(r, 30)}" alt="${sp.cls[k]}">`).join("")}</div><b>${esc(sp.n)}</b><span>${days.map((d) => DAYN[d]).join("")}요일 개방</span>
           <div class="dots">${WEEK.map((d) => `<i class="${days.includes(d) ? "o" : ""}${d === today ? " t" : ""}"></i>`).join("")}</div></div>`);
         c.onclick = () => { if (!unlocked) return toast(`${STAGE_META[i1].unlockAt} 클리어 후 열립니다`); if (!on) return toast(`오늘은 닫혀 있습니다 · ${days.map((d) => DAYN[d]).join("")}요일 개방`); go("supplymap", site); };
         row.appendChild(c);
@@ -15261,12 +15454,12 @@ window.BSL_ECON = (() => {
     supplymap(el, arg) {
       const site = typeof arg === "string" ? arg : STAGE_META[arg] && STAGE_META[arg].supply, sel = typeof arg === "number" ? arg : -1;
       const ids = [1, 2].map((t) => TD.STAGES.findIndex((q) => q.supply === site && q.tier === t));
-      const bg = h("div", "term-bg sm-bg"); bg.style.backgroundImage = `url(${ART[{ AM: "st_war", FH: "st_underpass", CB: "st_lane", AR: "st_room" }[site]] || ART.bg})`; el.appendChild(bg);
+      const bg = h("div", "term-bg sm-bg"); bg.style.backgroundImage = `url(${ART[{ AM: "st_war", FH: "st_underpass", CB: "st_lane", AR: "st_room", BM: "st_mart" }[site]] || ART.bg})`; el.appendChild(bg);
       el.appendChild(h("div", "term-shade"));
       el.appendChild(topBar("", "", () => go("supply"), { res: false }));
       tickStamina();
       const stb = h("div", "btn tm-stam", `<i>${icn("it-stam")}</i><b class="en">${S.res.stam}/${stamMax()}</b>`); stb.onclick = () => itemInfo("stam", S.res.stam); el.appendChild(stb);
-      el.appendChild(h("div", "sm-name", `<small class="en">SUPPLY · ${site}</small><b>${esc(EC.SUPPLY[site].n)}</b><span>${EC.SUPPLY[site].cls.join(" · ")} 칩</span>`));
+      el.appendChild(h("div", "sm-name", `<small class="en">SUPPLY · ${site}</small><b>${esc(EC.SUPPLY[site].n)}</b><span>${EC.SUPPLY[site].mat ? "기반시설 강화 자재" : EC.SUPPLY[site].cls.join(" · ") + " 칩"}</span>`));
       const map = h("div", "sm-map"); el.appendChild(map);
       const POS = [[300, 400], [760, 230]];
       map.innerHTML = `<svg width="1280" height="720"><path d="M${POS[0][0] + 50} ${POS[0][1] + 26} L${POS[1][0] + 50} ${POS[1][1] + 26}" stroke="rgba(255,255,255,.9)" stroke-width="3"/></svg>`;
@@ -15922,6 +16115,8 @@ window.BSL_ECON = (() => {
       <path d="M14 22c6-3 12-3 17 1v22c-5-4-11-4-17-1z" fill="#2a2b2e"/><path d="M50 22c-6-3-12-3-17 1v22c5-4 11-4 17-1z" fill="#2a2b2e"/><path d="M18 27c3-1 6-1 9 1M18 32c3-1 6-1 9 1M37 28c3-2 6-2 9-1M37 33c3-2 6-2 9-1" stroke="#f2f3f4" stroke-width="1.4" fill="none"/></symbol>
     <symbol id="wm-net" viewBox="0 0 120 50"><g fill="none" stroke="currentColor" stroke-width="2"><path d="M20 30 L40 8 L60 4 L80 8 L100 30 L80 40 L60 42 L40 40 Z M40 8 L60 22 L80 8 M20 30 L60 22 L100 30 M40 40 L60 22 L80 40 M60 4 L60 22"/></g><g fill="currentColor"><circle cx="60" cy="22" r="3"/><circle cx="40" cy="8" r="2"/><circle cx="80" cy="8" r="2"/><circle cx="20" cy="30" r="2"/><circle cx="100" cy="30" r="2"/></g></symbol>
     <linearGradient id="g-t1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#b6e36a"/><stop offset=".55" stop-color="#5f8f1c"/><stop offset="1" stop-color="#33520a"/></linearGradient>
+    <symbol id="it-bm1" viewBox="0 0 64 64"><g stroke="#33520a" stroke-width="1.6"><rect x="6" y="38" width="52" height="16" rx="7" fill="url(#g-t1)"/><rect x="12" y="24" width="40" height="16" rx="7" fill="url(#g-t1)"/></g><path d="M10 12h44v8H10z" fill="#c9a36a" stroke="#6b4e22" stroke-width="1.4"/><path d="M14 16h36" stroke="#6b4e22" stroke-width="1" opacity=".6"/><path d="M14 44c6 2 30 2 36 0M18 30c6 2 22 2 28 0" stroke="#fff" stroke-width="1.6" fill="none" opacity=".45"/></symbol>
+    <symbol id="it-bm2" viewBox="0 0 64 64"><g stroke="#124f86" stroke-width="1.6"><path d="M6 14h52v8H38v20h20v8H6v-8h20V22H6z" fill="url(#g-t2)"/></g><path d="M8 16h48" stroke="#fff" stroke-width="1.6" opacity=".5"/><circle cx="12" cy="46" r="1.8" fill="#e9eef2"/><circle cx="52" cy="46" r="1.8" fill="#e9eef2"/><circle cx="12" cy="18" r="1.8" fill="#e9eef2"/><circle cx="52" cy="18" r="1.8" fill="#e9eef2"/></symbol>
     <symbol id="it-rec1" viewBox="0 0 64 64"><path d="M8 16h18l5 5h25v31H8z" fill="url(#g-t1)" stroke="#33520a" stroke-width="1.6"/><rect x="14" y="28" width="36" height="16" fill="#1d2228" opacity=".85"/><g fill="#e9eef2"><rect x="16" y="30" width="4" height="3"/><rect x="16" y="39" width="4" height="3"/><rect x="23" y="30" width="4" height="3"/><rect x="23" y="39" width="4" height="3"/><rect x="30" y="30" width="4" height="3"/><rect x="30" y="39" width="4" height="3"/><rect x="37" y="30" width="4" height="3"/><rect x="37" y="39" width="4" height="3"/><rect x="44" y="30" width="4" height="3"/><rect x="44" y="39" width="4" height="3"/></g><path d="M8 16h18l5 5H8z" fill="#fff" opacity=".35"/></symbol>
     <symbol id="it-book1" viewBox="0 0 64 64"><path d="M12 10h34a6 6 0 0 1 6 6v38H18a6 6 0 0 1-6-6z" fill="url(#g-t1)" stroke="#33520a" stroke-width="1.6"/><path d="M12 48a6 6 0 0 0 6 6h34v-6z" fill="#f2f0e6"/><path d="M24 20h20M24 26h14" stroke="#fff" stroke-width="2.6" opacity=".75"/><text x="34" y="44" font-size="13" font-weight="900" text-anchor="middle" fill="#fff" font-family="serif">Ⅰ</text></symbol>
     <linearGradient id="g-t2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8fd2ff"/><stop offset=".55" stop-color="#2f8fd8"/><stop offset="1" stop-color="#124f86"/></linearGradient>
@@ -15971,7 +16166,7 @@ window.BSL_ECON = (() => {
     TD.STAGES.forEach((st, i) => {
       const m = STAGE_META[i]; if (!m) return;
       if (m.supply) {
-        const sp = EC.SUPPLY[m.supply], keys = sp.cls.map((c) => (m.tier === 1 ? "chip_" : "pack_") + EC.clsKey(c)).concat(m.tier === 2 ? sp.cls.map((c) => "chip_" + EC.clsKey(c)) : []);
+        const sp = EC.SUPPLY[m.supply], keys = sp.mat ? (m.tier === 1 ? ["bm1"] : ["bm2", "bm1"]) : sp.cls.map((c) => (m.tier === 1 ? "chip_" : "pack_") + EC.clsKey(c)).concat(m.tier === 2 ? sp.cls.map((c) => "chip_" + EC.clsKey(c)) : []);
         if (!keys.includes(k)) return;
         const days = [1, 2, 3, 4, 5, 6, 0].filter((d) => EC.OPEN[d].includes(m.supply)), on = EC.OPEN[today].includes(m.supply);
         out.push({ kind: "자원 수집", label: `${st.code} ${sp.n}`, tag: on ? "오늘 개방" : days.map((d) => DAYN[d]).join("") + " 개방", hot: on, ok: m.unlock(S), lock: m.unlockAt + " 클리어 필요", go: () => go("supplymap", i), p: on ? 0 : 1 });
@@ -16008,7 +16203,7 @@ window.BSL_ECON = (() => {
   const HAVE = { orb: () => S.res.orb, coin: () => S.res.coin, stam: () => S.res.stam, ticket: () => S.res.ticket, start: () => S.res.start, exp: () => S.exp };
   // ---------- the growth economy: records, books, chips, materials ----------
   const EC = window.BSL_ECON;
-  const icOf = (k, it) => k.startsWith("rec") ? "it-rec" + it.tier : k.startsWith("bk") ? "it-book" + it.tier : k.startsWith("chip_") ? "chipc-1-" + CLS_REP[it.cls] : k.startsWith("pack_") ? "chipc-2-" + CLS_REP[it.cls] : "it-" + k.slice(3) + it.tier;
+  const icOf = (k, it) => k.startsWith("bm") ? "it-bm" + it.tier : k.startsWith("rec") ? "it-rec" + it.tier : k.startsWith("bk") ? "it-book" + it.tier : k.startsWith("chip_") ? "chipc-1-" + CLS_REP[it.cls] : k.startsWith("pack_") ? "chipc-2-" + CLS_REP[it.cls] : "it-" + k.slice(3) + it.tier;
   for (const k in EC.ITEMS) { ITEM[k] = Object.assign({}, EC.ITEMS[k], { ic: icOf(k, EC.ITEMS[k]) }); HAVE[k] = () => inv(k); }
   const inv = (k) => (S.inv && S.inv[k]) || 0;
   const addItems = (list) => { S.inv = S.inv || {}; for (const [k, n] of list) if (k && n) S.inv[k] = (S.inv[k] || 0) + n; };
@@ -16018,6 +16213,233 @@ window.BSL_ECON = (() => {
   // an item in a small circle with a count under it: the shape every cost and reward is drawn in
   const itemDot = (k, n, opt = {}) => `<div class="btn idot t${(ITEM[k] || {}).tier || 1}${opt.short ? " short" : ""}" data-k="${k}"><i>${icn(ITEM[k].ic)}</i><b class="en">${opt.text !== undefined ? opt.text : fmt(n)}</b>${opt.tag ? `<em>${opt.tag}</em>` : ""}</div>`;
   const wireDots = (root) => root.querySelectorAll(".idot").forEach((c) => c.onclick = (e) => { e.stopPropagation(); itemInfo(c.dataset.k, HAVE[c.dataset.k] ? HAVE[c.dataset.k]() : undefined); });
+  // ---------- the base: zones won back from the dead, worked while operators stand guard ----------
+  // each zone makes one thing while someone guards it; guards tire by the hour and stop at zero; raids come every few hours
+  // and are beaten off with a chance that falls when the guard is weaker than the zone's danger; the dorm is where they rest
+  const BZ = EC.ZONES, BB = EC.BASE, HR = 3600e3;
+  const zoneIdx = (code) => TD.STAGES.findIndex((q) => q.code === code);
+  const zoneOpen = (z) => ((S.stages[z.code] || {}).stars || 0) > 0;
+  const baseOpen = () => BZ.some(zoneOpen);
+  const zDef = (code) => BZ.find((z) => z.code === code);
+  function baseState() {
+    const b = S.base || (S.base = { z: {}, dorm: { lv: 1, rest: [] }, fat: {}, t: Date.now(), log: [], seen: 0 });
+    for (const z of BZ) if (!b.z[z.code]) b.z[z.code] = { lv: 1, g: [], store: 0, nr: Date.now() + (BB.RAID_EVERY + Math.random() * BB.RAID_JIT) * HR };
+    const own = (id) => !!S.ops[id];
+    for (const c in b.z) b.z[c].g = b.z[c].g.filter(own);
+    b.dorm.rest = b.dorm.rest.filter(own);
+    return b;
+  }
+  const fatOf = (id) => { const f = S.base && S.base.fat[id]; return f === undefined ? BB.FAT : f; };
+  const postOf = (id) => { const b = baseState(); for (const c in b.z) if (b.z[c].g.includes(id)) return c; return b.dorm.rest.includes(id) ? "dorm" : null; };
+  const opPow = (id) => { const o = S.ops[id]; return o ? Math.round(o.elite * 35 + o.lvl + (def(id).rarity - 3) * 8) : 0; };
+  const activeG = (code, b = baseState()) => b.z[code].g.filter((id) => fatOf(id) > 0);
+  function zRate(code, act) {   // what the zone makes in an hour with these guards on their feet
+    const z = zDef(code), s = baseState().z[code]; act = act || activeG(code); const n = act.length; if (!n) return 0;
+    const fit = act.filter((id) => z.fit.includes(def(id).cls)).length;
+    return z.rate * BB.LVMUL[s.lv - 1] * [0, 0.45, 0.75, 1][Math.min(3, n)] * (1 + 0.1 * fit);
+  }
+  const zCap = (code) => zDef(code).rate * BB.LVMUL[baseState().z[code].lv - 1] * BB.CAPH;
+  const zDanger = (code) => zDef(code).danger[baseState().z[code].lv - 1];
+  const zPow = (code, act) => (act || activeG(code)).reduce((a, id) => a + opPow(id), 0);
+  const zWin = (code, act) => { const p = zPow(code, act), d = zDanger(code); return p <= 0 ? 0 : Math.max(0.1, Math.min(1, Math.pow(p / d, 2))); };
+  // bring everything up to now: production, fatigue and raids in quarter-hour steps (two weeks at most)
+  function baseTick() {
+    const b = baseState(), now = Date.now();
+    let t = Math.min(b.t || now, now); if (now - t > 14 * 24 * HR) t = now - 14 * 24 * HR;
+    while (t < now) {
+      const t2 = Math.min(now, t + HR / 4), dh = (t2 - t) / HR;
+      for (const z of BZ) {
+        const s = b.z[z.code];
+        if (!zoneOpen(z)) { s.nr = Math.max(s.nr, t2 + BB.RAID_EVERY * HR); continue; }
+        const act = s.g.filter((id) => fatOf(id) > 0);
+        s.store = Math.min(zCap(z.code), s.store + zRate(z.code, act) * dh);
+        for (const id of act) b.fat[id] = Math.max(0, fatOf(id) - BB.DRAIN * dh);
+        if (t2 >= s.nr) {
+          const at = s.nr; s.nr += (BB.RAID_EVERY + Math.random() * BB.RAID_JIT) * HR; if (s.nr <= t2) s.nr = t2 + BB.RAID_EVERY * HR;
+          if (!s.g.length && s.store < 1) continue;   // nothing there for them to take
+          const p = zWin(z.code, act), ok = Math.random() < p;
+          if (!ok) { s.store *= 0.5; for (const id of s.g) b.fat[id] = Math.max(0, fatOf(id) - 3); }
+          b.log.unshift({ t: at, c: z.code, ok, p: Math.round(p * 100) });
+        }
+      }
+      for (const id of b.dorm.rest) b.fat[id] = Math.min(BB.FAT, fatOf(id) + BB.REST[b.dorm.lv - 1] * dh);
+      t = t2;
+    }
+    b.t = now; b.log = b.log.slice(0, 40);
+  }
+  function setPost(id, where) {
+    const b = baseState();
+    for (const c in b.z) b.z[c].g = b.z[c].g.filter((x) => x !== id);
+    b.dorm.rest = b.dorm.rest.filter((x) => x !== id);
+    if (where === "dorm") b.dorm.rest.push(id); else if (where) b.z[where].g.push(id);
+  }
+  function collectZone(code) {
+    const s = baseState().z[code], z = zDef(code), n = Math.floor(s.store); if (n < 1) return null;
+    s.store -= n; if (z.out === "coin") S.res.coin += n; else addItems([[z.out, n]]);
+    return [z.out, n];
+  }
+  const outIc = (k) => k === "coin" ? `<i class="cn">₵</i>` : `<i>${icn(ITEM[k].ic)}</i>`;
+  const outN = (k) => k === "coin" ? "주화" : ITEM[k].n;
+  const numF = (v, k) => k === "coin" ? fmt(Math.floor(v)) : v > 0 && v < 1 ? v.toFixed(2) : (Math.floor(v * 10) / 10).toFixed(1);
+  const baseAlert = () => { if (!S.base) return false; const b = S.base; return b.log.some((l) => !l.ok && l.t > (b.seen || 0)) || BZ.some((z) => zoneOpen(z) && b.z[z.code] && b.z[z.code].g.length && b.z[z.code].g.every((id) => fatOf(id) <= 0)); };
+  const fatCol = (f) => f > 12 ? "#5fd36a" : f > 4 ? "#f2c14e" : f > 0 ? "#ff7a45" : "#d23b3b";
+  const hrsTxt = (ms) => { const m = Math.max(0, Math.round(ms / 60000)); return m >= 60 ? `${Math.floor(m / 60)}시간 ${m % 60}분` : `${m}분`; };
+  const clockTxt = (t) => { const d = new Date(t), p = (n) => String(n).padStart(2, "0"); return `${p(d.getMonth() + 1)}/${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`; };
+  // the picker: every operator, where they are now, how tired, how strong
+  function guardPicker(target, slotIdx, after) {
+    baseTick();
+    const b = baseState(), mo = h("div", "modal bz-pk"), bx = h("div", "box");
+    const cur = target === "dorm" ? b.dorm.rest : b.z[target].g, z = target === "dorm" ? null : zDef(target);
+    bx.innerHTML = `<div class="hd"><b>${target === "dorm" ? "숙소에서 쉴 가사인격" : "경계 배치"}</b><span>${target === "dorm" ? `피로가 시간당 ${BB.REST[b.dorm.lv - 1]}씩 회복됩니다` : `적합 직군 ${z.fit.join(" · ")} · 생산 +10%`}</span></div><div class="gl"></div>`;
+    const gl = bx.querySelector(".gl");
+    const ids = Object.keys(S.ops).sort((a, c) => (cur.includes(c) - cur.includes(a)) || (fatOf(c) - fatOf(a)) || (opPow(c) - opPow(a)));
+    for (const id of ids) {
+      const p = postOf(id), f = fatOf(id), on = cur.includes(id), fit = z && z.fit.includes(def(id).cls);
+      const card = h("div", "btn pc" + (on ? " on" : ""), `<div class="im" style="background-image:url(${opArt(id, "card")})"></div>
+        <div class="nm">${esc(nm(id).main)}</div><div class="cl"><img src="${clsIcon(CLS_REP[def(id).cls], 20)}" alt="">${fit ? '<em>적합</em>' : ""}<span class="en">${opPow(id)}</span></div>
+        <div class="fb"><i style="width:${f / BB.FAT * 100}%;background:${fatCol(f)}"></i></div><div class="ft en">${Math.floor(f)}/${BB.FAT}</div>
+        ${p ? `<div class="pt">${p === "dorm" ? "휴식 중" : on ? "배치 중" : esc(p) + " 경계"}</div>` : ""}`);
+      card.onclick = () => {
+        baseTick();
+        if (on) setPost(id, null);
+        else {
+          const cap = target === "dorm" ? BB.DORM_SLOTS[b.dorm.lv - 1] : BB.SLOTS, list = target === "dorm" ? b.dorm.rest : b.z[target].g;
+          if (list.length >= cap) { const out = list[Math.min(slotIdx, list.length - 1)]; setPost(out, null); }
+          setPost(id, target);
+        }
+        save(); mo.remove(); after && after();
+      };
+      gl.appendChild(card);
+    }
+    const x = h("div", "btn itm-x", "✕"); x.onclick = () => mo.remove(); bx.appendChild(x);
+    mo.appendChild(bx); mo.onclick = (e) => { if (e.target === mo) mo.remove(); }; sheet.appendChild(mo);
+  }
+  function upgradeBox(target, after) {
+    const b = baseState(), lv = target === "dorm" ? b.dorm.lv : b.z[target].lv, to = lv + 1, c = BB.UP[to]; if (!c) return toast("최고 레벨입니다");
+    const ok = hasItems(c.items) && S.res.coin >= c.coin;
+    const what = target === "dorm" ? `숙소 정원 ${BB.DORM_SLOTS[lv - 1]} → ${BB.DORM_SLOTS[to - 1]}, 회복 ${BB.REST[lv - 1]} → ${BB.REST[to - 1]}/시간`
+      : `생산량 ×${BB.LVMUL[lv - 1]} → ×${BB.LVMUL[to - 1]} · 보관 한도 증가 · 위험도 ${zDef(target).danger[lv - 1]} → ${zDef(target).danger[to - 1]}`;
+    const mo = h("div", "modal"), bx = h("div", "box sk-box");
+    bx.innerHTML = `<h3>시설 강화 Lv.${lv} → ${to}</h3><p>${what}</p><div class="sk-cost">${c.items.map(([k, n]) => itemDot(k, n, { text: `${fmt(inv(k))}<small>/${n}</small>`, short: inv(k) < n })).join("")}<div class="idot coin${S.res.coin < c.coin ? " short" : ""}"><i class="cn">₵</i><b class="en">${fmt(c.coin)}</b></div></div>`;
+    wireDots(bx);
+    const row = h("div", "row"), n = h("div", "btn n", "취소"), y = h("div", "btn" + (ok ? "" : " dis"), "강화");
+    n.onclick = () => mo.remove();
+    y.onclick = () => { if (!ok) return toast("재료가 부족합니다"); baseTick(); takeItems(c.items); S.res.coin -= c.coin; if (target === "dorm") b.dorm.lv = to; else b.z[target].lv = to; save(); mo.remove(); toast(`Lv.${to} 강화 완료`); after && after(); };
+    row.append(n, y); bx.appendChild(row); mo.appendChild(bx); mo.onclick = (e) => { if (e.target === mo) mo.remove(); }; sheet.appendChild(mo);
+  }
+
+  // ---------- the living picture behind a zone or the dorm ----------
+  // a painting that breathes (a slow drift, a little parallax under the finger), weather of embers and smoke or dust in the lamplight,
+  // and the operators themselves: guards on the zone's own ground, residents going about the dorm
+  function livingScene(el, opt) {
+    const cv = h("canvas", "bz-cv"); el.appendChild(cv);
+    const q = Math.min(1.5, (window.devicePixelRatio || 1)); cv.width = Math.round(1280 * q); cv.height = Math.round(720 * q);
+    const g = cv.getContext("2d"), img = new Image(); img.src = opt.bg;
+    const rr = (a, b) => a + Math.random() * (b - a);
+    const actors = opt.actors.map((a, i) => Object.assign({ face: Math.random() < 0.5 ? 1 : -1, t0: rr(0, 10), mode: "idle", until: rr(1, 4), tx: a.x, ty: a.y, bub: null }, a));
+    const parts = [];
+    let px = 0, py = 0, tpx = 0, tpy = 0, last = performance.now(), clock = 0, acc = 0;
+    cv.addEventListener("pointermove", (e) => { const r = cv.getBoundingClientRect(); tpx = ((e.clientX - r.left) / r.width - 0.5) * 2; tpy = ((e.clientY - r.top) / r.height - 0.5) * 2; });
+    const spawn = () => {
+      if (opt.fx === "fire") {
+        if (Math.random() < 0.5) parts.push({ k: "ember", x: rr(0, 1280), y: rr(500, 760), vx: rr(-8, 14), vy: rr(-40, -18), life: rr(3, 6), age: 0, s: rr(1.2, 2.6), w: rr(0, 6) });
+        if (Math.random() < 0.06) parts.push({ k: "smoke", x: rr(-100, 1200), y: rr(100, 600), vx: rr(6, 16), vy: rr(-6, -2), life: rr(8, 14), age: 0, s: rr(80, 180) });
+      } else {
+        if (Math.random() < 0.25) parts.push({ k: "dust", x: rr(0, 1280), y: rr(0, 720), vx: rr(-4, 4), vy: rr(-3, 3), life: rr(5, 9), age: 0, s: rr(0.8, 1.8), w: rr(0, 6) });
+      }
+    };
+    for (let i = 0; i < 120; i++) { spawn(); for (const p of parts) p.age += 0.1; }
+    const think = (a, dt) => {
+      a.until -= dt;
+      if (a.bub) { a.bub.t -= dt; if (a.bub.t <= 0) a.bub = null; }
+      if (a.mode === "walk") {
+        const dx = a.tx - a.x, dy = a.ty - a.y, d = Math.hypot(dx, dy), sp = (opt.speed || 60) * (a.sc || 1);
+        if (d < 2) { a.mode = "idle"; a.until = a.pal ? 0 : rr(2, 6); } else { a.x += dx / d * Math.min(d, sp * dt); a.y += dy / d * Math.min(d, sp * dt); a.face = dx >= 0 ? 1 : -1; }
+        return;
+      }
+      if (a.until > 0 || a.tired) return;
+      if (a.pal) {   // arrived beside someone: turn to each other and talk a while
+        const o = a.pal; a.pal = null; a.face = o.x >= a.x ? 1 : -1;
+        if (o.mode !== "walk") { o.face = -a.face; o.until = Math.max(o.until, 4); o.bub = { c: ["♪", "…", "!"][Math.floor(Math.random() * 3)], t: 2.4 }; }
+        a.bub = { c: ["…", "?", "♪"][Math.floor(Math.random() * 3)], t: 2.4 }; a.until = rr(3.5, 6); return;
+      }
+      const others = actors.filter((o) => o !== a && !o.tired);
+      if (opt.chat && others.length && Math.random() < 0.35) {   // go over to someone
+        const o = others[Math.floor(Math.random() * others.length)], side = o.x > 450 ? -1 : 1;
+        a.tx = o.x + side * (opt.k || 120) * 0.55 * (o.sc || 1); a.ty = o.y + rr(-6, 6); a.pal = o; a.mode = "walk"; return;
+      }
+      const n = opt.next(a); if (n) { a.tx = n[0]; a.ty = n[1]; a.mode = "walk"; } else a.until = rr(2, 5);
+      if (opt.chat && Math.random() < 0.15) a.bub = { c: ["♪", "…"][Math.floor(Math.random() * 2)], t: 2 };
+    };
+    const bubble = (x, y, c) => {
+      g.save(); g.fillStyle = "rgba(255,255,255,.92)"; g.strokeStyle = "rgba(0,0,0,.35)"; g.lineWidth = 1.5;
+      g.beginPath(); g.ellipse(x, y, 17, 13, 0, 0, Math.PI * 2); g.fill(); g.stroke();
+      g.beginPath(); g.moveTo(x - 4, y + 11); g.lineTo(x - 8, y + 20); g.lineTo(x + 3, y + 12); g.fill();
+      g.fillStyle = "#333"; g.font = "bold 16px sans-serif"; g.textAlign = "center"; g.textBaseline = "middle"; g.fillText(c, x, y + 1); g.restore();
+    };
+    const frame = (now) => {
+      if (!cv.isConnected) return;
+      requestAnimationFrame(frame);
+      const dt = Math.min(0.1, (now - last) / 1000); last = now; acc += dt; if (acc < 1 / 32) return;   // thirty frames is plenty for a picture that breathes
+      const st = acc; acc = 0; clock += st;
+      px += (tpx - px) * Math.min(1, st * 2); py += (tpy - py) * Math.min(1, st * 2);
+      for (let i = 0; i < (opt.fx === "fire" ? 2 : 1); i++) spawn();
+      g.setTransform(q, 0, 0, q, 0, 0); g.fillStyle = "#08090b"; g.fillRect(0, 0, 1280, 720);
+      // the painting: a slow breath of scale and a drift, the finger's parallax on top
+      const sc = 1.06 + Math.sin(clock * 0.13) * 0.012, ox = Math.sin(clock * 0.07) * 10 - px * 14, oy = Math.cos(clock * 0.09) * 6 - py * 8;
+      g.save(); g.translate(640 + ox, 360 + oy); g.scale(sc, sc); g.translate(-640, -360);
+      if (img.complete && img.naturalWidth) g.drawImage(img, 0, 0, 1280, 720);
+      if (opt.tint) { g.fillStyle = opt.tint; g.fillRect(0, 0, 1280, 720); }
+      if (opt.lamp) {   // warm pools of light that breathe a little, like lamps on a weak line
+        g.globalCompositeOperation = "lighter";
+        for (const [lx, ly, lr] of opt.lamp) { const fl = 0.18 + Math.sin(clock * 3 + lx) * 0.02 + (Math.random() < 0.02 ? -0.08 : 0), gr = g.createRadialGradient(lx, ly, 0, lx, ly, lr); gr.addColorStop(0, `rgba(255,190,110,${fl})`); gr.addColorStop(1, "rgba(255,190,110,0)"); g.fillStyle = gr; g.fillRect(lx - lr, ly - lr, lr * 2, lr * 2); }
+        g.globalCompositeOperation = "source-over";
+      }
+      // the people, back to front
+      for (const a of actors) think(a, st);
+      actors.slice().sort((a, b) => a.y - b.y).forEach((a) => {
+        const k = (opt.k || 120) * (a.sc || 1), walk = a.mode === "walk", hop = walk ? Math.abs(Math.sin((clock + a.t0) * 9)) * k * 0.05 : 0;
+        g.save(); g.globalAlpha = 0.35; g.fillStyle = "#000"; g.beginPath(); g.ellipse(a.x, a.y, k * 0.28, k * 0.07, 0, 0, Math.PI * 2); g.fill(); g.restore();
+        g.save();
+        if (a.tired) { g.translate(a.x, a.y); g.scale(1, 0.9); g.translate(-a.x, -a.y); g.globalAlpha = 0.8; g.filter = "brightness(.7) saturate(.6)"; }
+        else if (walk) { g.translate(a.x, a.y - hop); g.rotate(Math.sin((clock + a.t0) * 9) * 0.04); g.translate(-a.x, -a.y); }
+        try { B.drawChar(g, a.id, a.x, a.y, k, { t: a.tired ? 0 : clock + a.t0, face: a.face }); } catch (e) { /* a puppet still loading */ }
+        g.restore();
+        if (a.tired && Math.sin(clock * 2 + a.t0) > 0) bubble(a.x + k * 0.3, a.y - k * 1.35, "z");
+        else if (a.bub) bubble(a.x + k * 0.3, a.y - k * 1.4, a.bub.c);
+      });
+      g.restore();
+      // weather
+      g.save();
+      for (let i = parts.length - 1; i >= 0; i--) {
+        const p = parts[i]; p.age += st; if (p.age > p.life) { parts.splice(i, 1); continue; }
+        p.x += p.vx * st + (p.w !== undefined ? Math.sin(clock * 1.3 + p.w) * 0.4 : 0); p.y += p.vy * st;
+        const a = Math.sin(p.age / p.life * Math.PI);
+        if (p.k === "ember") { g.globalCompositeOperation = "lighter"; g.fillStyle = `rgba(255,${140 + Math.floor(p.w * 10)},60,${a * 0.9})`; g.beginPath(); g.arc(p.x, p.y, p.s, 0, 6.29); g.fill(); }
+        else if (p.k === "smoke") { g.globalCompositeOperation = "source-over"; const gr = g.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.s); gr.addColorStop(0, `rgba(40,38,40,${a * 0.22})`); gr.addColorStop(1, "rgba(40,38,40,0)"); g.fillStyle = gr; g.fillRect(p.x - p.s, p.y - p.s, p.s * 2, p.s * 2); }
+        else { g.globalCompositeOperation = "lighter"; g.fillStyle = `rgba(255,230,190,${a * 0.5})`; g.beginPath(); g.arc(p.x, p.y, p.s, 0, 6.29); g.fill(); }
+      }
+      g.restore();
+      if (opt.fx === "fire") {   // the fires' light along the bottom, never quite steady
+        const fl = 0.10 + Math.sin(clock * 5.3) * 0.02 + Math.sin(clock * 11.7) * 0.015, gr = g.createLinearGradient(0, 720, 0, 380);
+        gr.addColorStop(0, `rgba(255,110,40,${fl})`); gr.addColorStop(1, "rgba(255,110,40,0)"); g.globalCompositeOperation = "lighter"; g.fillStyle = gr; g.fillRect(0, 380, 1280, 340); g.globalCompositeOperation = "source-over";
+      }
+      const vg = g.createRadialGradient(640, 360, 300, 640, 360, 820); vg.addColorStop(0, "rgba(0,0,0,0)"); vg.addColorStop(1, "rgba(0,0,0,.55)"); g.fillStyle = vg; g.fillRect(0, 0, 1280, 720);
+    };
+    requestAnimationFrame(frame);
+    return { cv, actors };
+  }
+  // where guards stand on a zone: the open squares nearest the protected point, as the battle camera sees them
+  function zoneSpots(code) {
+    const i = zoneIdx(code), st = TD.STAGES[i], rows = st.map; if (!rows) return { spots: [[500, 450], [640, 470], [780, 450]], k: 110, all: [] };
+    let bx = 0, by = 0; rows.forEach((r, y) => [...r].forEach((c, x) => { if (c === "B") { bx = x; by = y; } }));
+    const P = (x, y) => B.project(i, x, y), w = Math.hypot(P(1, 0)[0] - P(0, 0)[0], P(1, 0)[1] - P(0, 0)[1]);
+    // only squares left of the panel and clear of the top bar count; of those, the ones nearest the protected point
+    const open = []; rows.forEach((r, y) => [...r].forEach((c, x) => { const q = P(x, y); if (c === "." && q[0] > 110 && q[0] < 760 && q[1] > 200 && q[1] < 690) open.push([x, y, Math.hypot(x - bx, y - by)]); }));
+    open.sort((a, b) => a[2] - b[2]);
+    if (!open.length) return { spots: [[420, 470], [540, 500], [660, 470]], all: [[420, 470], [540, 500], [660, 470]], k: w * 0.95 };
+    return { spots: open.slice(0, 3).map(([x, y]) => P(x, y)), all: open.slice(0, 10).map(([x, y]) => P(x, y)), k: w * 0.95 };
+  }
   // what one clear of an operation hands out besides coin: its records or books, rolls for materials; a supply operation, its chips
   function rollDrops(sel) {
     const s = TD.STAGES[sel], m = STAGE_META[sel];
@@ -16057,6 +16479,7 @@ window.BSL_ECON = (() => {
   // what an operation shows it gives: the sure things first, then what it may drop
   function dropPreview(sel) {
     const s = TD.STAGES[sel], m = STAGE_META[sel];
+    if (m.supply === "BM") return m.tier === 1 ? [["bm1", "3~4", ""]] : [["bm2", "1~2", ""], ["bm1", 2, ""]];
     if (m.supply) { const cls = EC.SUPPLY[m.supply].cls; return cls.map((c) => [(m.tier === 1 ? "chip_" : "pack_") + EC.clsKey(c), m.tier === 1 ? "1~2" : "1", "확률"]); }
     const dr = EC.DROPS[s.code]; if (!dr) return [];
     const all = [...dr.fixed.map(([k, n]) => [k, n, ""]), ...dr.roll.slice().sort((a, b) => b[1] - a[1]).map(([k, p]) => [k, "", p >= 0.3 ? "가끔" : p >= 0.12 ? "드묾" : "희귀"])];
