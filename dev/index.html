@@ -3784,6 +3784,16 @@ window.BGM = (() => {
       hp: 1500, atk: 460, def: 130, res: 20, speed: 0.85, interval: 2.3, weight: 1, mass: 2, life: 1, ranged: 2.4, phys: true, rscale: true },
     snuffer: { name: "소등부", info: ["긴 소등 막대를 든 야경꾼. 지나가는 길의 가로등을 끈다.", "바로 옆 칸에 가사인격이 선 등은 못 끈다. 어둠 속에서도 보인다. 꺼진 등은 옆 칸에 서 있으면 다시 켜진다(새로 배치된 이는 6초, 서 있던 이는 14초)."],
       hp: 1900, atk: 160, def: 90, res: 10, speed: 0.75, interval: 2.2, weight: 1, mass: 2, life: 1, snuff: true, lantern: true },
+    // the lab (L1): the chimney sweep, drawn as the snuffer in soot grey. He makes for the nearest stopped chimney, and five seconds beside it clear it
+    sweep: { name: "굴뚝 청소부", info: ["검댕투성이 굴뚝 청소부. 막아 둔 굴뚝을 뚫으러 온다.", "막힌 굴뚝 옆에 5초 서 있으면 연기 다리가 바로 돌아오고, 그 굴뚝은 20초 동안 막을 수 없다."],
+      hp: 2200, atk: 120, def: 90, res: 10, speed: 0.8, interval: 2.2, weight: 1, mass: 2, life: 1, sweeper: { dur: 5, block: 20 } },
+    // the lab (L2): the conductor's baton, drawn as the drummer in pale gold. No attack; he makes for the nearest metronome ahead and, beside it, speeds its zone up until killed
+    baton: { name: "지휘봉", info: ["지휘봉을 든 악단원. 싸우지 않는다.", "메트로놈 옆 칸에 서면 그 구역의 박자가 한 단계 빨라진다. 쓰러질 때까지 그 자리에 있다."],
+      hp: 900, atk: 0, def: 0, res: 10, speed: 1.0, interval: 2.5, weight: 1, mass: 1, life: 1, baton: true },
+    // the lab (L3, LAB-04): a masked figure on its way to the ball, drawn as the informer in a white half-mask. A guest or an assassin (the wave says which); nobody of ours
+    // strikes one until it is judged: let through, it walks to the door; judged for killing, it is a normal foe that fights back
+    masked: { name: "가면 쓴 사람", info: ["가면을 쓴 무도회 손님. 겉모습으로는 손님인지 자객인지 알 수 없다.", "가사인격은 스스로 공격하지 않는다. 막아 세운 뒤 눌러서 통과시키거나 처치하자. 맨얼굴은 거울 속에서만 보인다."],
+      hp: 1500, atk: 0, def: 60, res: 20, speed: 0.7, interval: 1.6, weight: 1, mass: 1, life: 1, masked: true },
     // The lamp-breaker is the snuffer with an iron hook. He breaks the lamps beside him even when one of ours stands by them, and a broken lamp needs a keeper for a while.
     lampbreaker: { name: "등 깨는 자", info: ["쇠갈고리를 든 야경꾼. 지키는 이가 있어도 등을 깨뜨린다.", "깨진 등은 지키던 이가 다시 켤 수 없다. 꺼진 뒤 옆 칸에 새로 배치된 가사인격이 6초 서 있어야 켜진다."],
       hp: 2600, atk: 160, def: 90, res: 10, speed: 0.75, interval: 2.2, weight: 1, mass: 2, life: 1, snuff: "force", lantern: true },
@@ -4444,6 +4454,102 @@ window.BGM = (() => {
       costRate: (site === "CN" && k >= 2) || (FARM[site].tiers.length === 2 && k === 1) ? 1.3 : undefined }, t, { map, mapKey: t.map || FARM[site].map, mul: { hp: t.mul.hp * FARM_HARD, atk: t.mul.atk * FARM_HARD, def: t.mul.def }, waves: W1(t.waves.map((w) => w[0] > 0 ? [w[0] + FARM_LEAD, ...w.slice(1)] : w)) }));
   });
 
+  // ---- the lab (실험실): rough prototype stages for trying new systems. They sit at the very end of STAGES, are marked lab, and appear only in the lab menu ----
+  const LAB_STAGES = [
+    // LAB-00 「버티기」: the farm board (WL-06's), turned into a hold-out. Yui stands in the farm lane and walks three squares east at 40 s; the lane's soldiers and the lancer make
+    // for her, the south field's soldiers for the nearest of ours, and the north field's hounds run for the point, where each one adds to the panic gauge instead of costing life.
+    // Gates: 0 the north field, 1 the farm lane, 2 the south field. The waves of the first 30 s come again every 30 s, a little stronger each time
+    { code: "LAB-00", name: "버티기", lab: true, map: MAP_C3.farm, bg: null, hz: 0.5, startCost: 20, mul: { hp: 0.8, atk: 0.9, def: 0.85 },
+      goal: { win: [{ k: "time", t: 90 }], lose: [{ k: "vipDead" }, { k: "meter", id: "panic", op: ">=", v: 6 }],
+        text: { win: "유이가 90초 동안 버틴다.", lose: "유이가 쓰러지거나, 적 여섯이 동쪽 끝에 닿는다." }, hud: [{ vip: true }, { meter: "panic" }, { time: 90 }] },
+      meters: { panic: { v: 0, min: 0, max: 6, label: "동요" } },
+      vip: { name: "유이", hp: 6000, def: 100, at: [7, 4], sprite: "yui", route: [{ to: [10, 4], wait: 40 }], speed: 0.6 },
+      loop: { from: 0, period: 30, grow: 0.15 },
+      waves: W1([[4, "soldier", 1, 3, 2, { aim: "vip" }], [10, "dog", 0, 3, 1.5, { leak: { meter: "panic", by: 1 } }], [18, "soldier", 2, 2, 2, { aim: "unit" }], [24, "lancer", 1, 1, 0, { aim: "vip" }]]),
+      boss: ["", ""], desc: "농장 안길 한가운데에 유이가 서 있습니다. 농장 안길의 병사와 창병은 유이를 노리고, 남쪽 들판의 병사는 가장 가까운 가사인격을 노립니다. 북쪽 들판의 사냥개가 동쪽 끝에 닿으면 동요가 1 오릅니다. 40초에 유이가 동쪽으로 세 칸 걸어갑니다. 적은 30초마다 조금 더 강해져서 다시 옵니다.",
+      lose: "농장 안길 서쪽에서 병사를 막고, 북쪽 들판의 사냥개는 고지에서 쏘아 쓰러뜨리세요." },
+    // LAB-01 「지붕 위」 (chapter 4 prototype): three roofs over night air, joined by smoke bridges. One of ours beside a chimney cuts its bridge; Yui needs a bridge too.
+    // Every foe makes for her; stranded on its roof it leaps across after 30 s. Gates: 0 (12,1), 1 (13,4). B (0,3) is only Yui's doorway: nothing aims at it.
+    // Every time below is the spec's plus 15 s (the safe opening of the lab's second addendum)
+    { code: "LAB-01", name: "지붕 위", lab: true, bg: null, hz: 0.5, startCost: 22, mul: { hp: 0.8, atk: 0.9, def: 0.85 },
+      map: ["##############",
+            "#h.C__h.C__hS#",
+            "#,,,^^,.,^^,,#",
+            "B,.,__.,.__.,#",
+            "#,.,__,.,__,,S",
+            "#,,,^^,,,^^,,#",
+            "#h.C__h.C__h,#",
+            "##############"],
+      chimneys: [{ at: [3, 1], bridge: [[4, 2], [5, 2]] }, { at: [3, 6], bridge: [[4, 5], [5, 5]] }, { at: [8, 1], bridge: [[9, 2], [10, 2]] }, { at: [8, 6], bridge: [[9, 5], [10, 5]] }],
+      leap: { after: 30, warn: 5, dur: 3, retry: 5 },
+      vip: { name: "유이", hp: 7000, def: 120, at: [1, 3], sprite: "yui", route: [{ to: [7, 3], wait: 45 }, { to: [11, 3], wait: 45 }, { to: [12, 6], wait: 20 }], speed: 0.6 },
+      goal: { win: [{ k: "vipAt", at: [12, 6] }], lose: [{ k: "vipDead" }], text: { win: "유이가 동쪽 지붕 끝까지 건너간다. 적은 끝없이 온다.", lose: "유이가 쓰러진다." }, hud: [{ vip: true }] },
+      loop: { from: 15, period: 60, grow: 0.12 },
+      waves: W1([[20, "soldier", 1, 2, 2, { aim: "vip" }], [29, "dog", 0, 2, 1.5, { aim: "vip" }], [39, "soldier", 0, 3, 1.6, { aim: "vip" }], [47, "sweep", 1, 1, 0, { aim: "vip" }],
+        [55, "lancer", 1, 1, 0, { aim: "vip" }], [63, "soldier", 1, 3, 1.5, { aim: "vip" }], [71, "chasseur", 0, 1, 0, { aim: "vip" }]]),
+      boss: ["", ""], desc: "지붕 셋. 굴뚝 옆 칸에 서면 그 굴뚝이 내는 연기 다리가 4초 뒤 끊기고, 떠나면 6초 뒤 다시 이어집니다. 유이도 다리가 있어야 건넙니다.",
+      lose: "다리를 전부 끊으면 적이 30초 뒤 뛰어서 건넙니다. 유이가 건널 다리 하나만 열고 그 앞을 막으세요. 굴뚝 청소부는 막은 굴뚝을 뚫으러 옵니다." },
+    // LAB-02 「네 박자」 (chapter 5 prototype): foes hop one square per beat. Two zones, each with its metronome: one of ours beside it slows the zone (and our own attacks in
+    // it), a baton beside it speeds it up. Gates 0 (0,2), 1 (0,4); points (13,2), (13,4). Every foe that reaches a point, and every fall of ours, adds 1 to the noise gauge.
+    // Every time below is the spec's plus 15 s
+    { code: "LAB-02", name: "네 박자", lab: true, bg: null, hz: 0.5, startCost: 22, mul: { hp: 0.85, atk: 0.9, def: 0.85 },
+      map: ["##############",
+            "#h.M#h..h#M.h#",
+            "S,,.,,.,,.,,,B",
+            "#,.,,R,.,R.,,#",
+            "S,.,,.,,.,,.,B",
+            "#h..#h..h#..h#",
+            "##############"],
+      beat: { base: 1.4, zones: [{ id: "A", x0: 1, x1: 6, metronome: [3, 1] }, { id: "B", x0: 7, x1: 12, metronome: [10, 1] }] },
+      meters: { noise: { v: 0, min: 0, max: 8, label: "불협" } }, fallMeter: { meter: "noise", by: 1 },
+      goal: { win: [{ k: "time", t: 165 }], lose: [{ k: "meter", id: "noise", op: ">=", v: 8 }],
+        text: { win: "곡이 끝날 때까지(165초) 불협을 8 아래로 지킨다.", lose: "적이 동쪽 끝에 닿거나 가사인격이 쓰러질 때마다 불협이 1 오른다. 8이면 끝." }, hud: [{ meter: "noise" }, { time: 165 }] },
+      waves: (() => { const L = { leak: { meter: "noise", by: 1 } }; return W1([[19, "soldier", 0, 3, 2.8, L], [27, "soldier", 1, 3, 2.8, L], [37, "dog", 0, 3, 1.4, L], [45, "baton", 1, 1, 0, L], [51, "grenadier", 0, 1, 0, L],
+        [59, "soldier", 1, 4, 2.8, L], [71, "lancer", 0, 2, 2.8, L], [79, "baton", 0, 1, 0, L], [85, "dog", 1, 4, 1.4, L], [95, "grenadier", 1, 1, 0, L], [101, "soldier", 0, 4, 1.4, L],
+        [113, "chasseur", 1, 2, 2.8, L], [121, "baton", 1, 1, 0, L], [125, "lancer", 1, 2, 2.8, L], [135, "soldier", 0, 5, 1.4, L], [143, "grenadier", 0, 1, 0, L], [149, "dog", 1, 4, 1.4, L]]); })(),
+      boss: ["", ""], desc: "적은 박자에만 한 칸씩 움직입니다. 메트로놈 옆 칸에 서면 그 구역이 느려집니다(우리 공격도 함께). 첫 박에 누른 스킬은 30% 더 갑니다.",
+      lose: "서쪽 구역을 느리게 잡아 적을 오래 때리고, 지휘봉은 메트로놈에 닿기 전에 잡으세요. 쉼표 칸에 선 적은 다음 첫 박까지 멈춥니다." },
+    // LAB-03 「거울의 방」 (chapter 6 prototype): the real room left of the glass, the room in the glass right of it. Each operator set down on the left sets a 60% image on the
+    // mirrored square; the glass can be broken by grenadiers sent at it. Gates: 0 the glass room's (12,3), 1 the real room's (0,4); points (0,1) real, (12,1) glass.
+    // The spec's map had each point walled in by the high ground beside it ("Bh"); the high ground and the square next to it are swapped ("B.h") so both points can be reached.
+    // Every time below is the spec's plus 15 s
+    { code: "LAB-03", name: "거울의 방", lab: true, bg: null, hz: 0.5, startCost: 24, mul: { hp: 0.8, atk: 0.9, def: 0.85 },
+      map: ["#############",
+            "B.h.,,|,,.h.B",
+            "#,.,,.|.,,.,#",
+            "#,,.,,|,,.,,S",
+            "S,.,,.|.,,.,#",
+            "#h.,,.|.,,.h#",
+            "#############"],
+      mirror: { x: 6, pct: 0.6, hp: 3000 },
+      goal: { win: [{ k: "clear" }], lose: [{ k: "life" }], text: { win: "두 방의 적을 모두 막는다.", lose: "어느 방이든 방어 지점에 적이 닿아 목숨이 다한다." }, hud: [{ life: true }] },
+      waves: (() => { const L = 1, R = 0, MI = { aim: "mirror" }; return W1([[20, "soldier", L, 2, 2], [23, "dog", R, 3, 1.4], [33, "soldier", R, 2, 2], [39, "chasseur", L, 1, 0], [45, "grenadier", R, 1, 0, MI],
+        [53, "dog", L, 3, 1.3], [61, "lancer", R, 2, 2], [69, "soldier", L, 3, 1.5], [75, "grenadier", R, 1, 0, MI], [81, "soldier", R, 4, 1.4], [89, "grenadier", L, 1, 0], [97, "dog", R, 4, 1.2],
+        [105, "lancer", L, 2, 2], [111, "soldier", R, 3, 1.4], [119, "chasseur", R, 2, 2], [125, "grenadier", L, 1, 0]]); })(),
+      boss: ["", ""], desc: "거울 왼쪽에 가사인격을 세우면 거울 속 방의 같은 자리에 상(像)이 섭니다(능력치 60%). 거울 속 방은 상으로만 막을 수 있습니다. 거울을 치는 척탄병이 거울을 깨면, 그 줄의 상은 사라지고 길이 이어집니다.",
+      lose: "왼쪽에 좋은 자리가 오른쪽에도 좋은 자리인지 보세요. 거울 앞에 선 척탄병부터 잡으세요." },
+    // LAB-04 「가면무도회」 (chapter 6 prototype): LAB-03's board, but the room in the glass only shows: there each masked figure's reflection walks bare-faced (a guest
+    // warm, an assassin red with a knife). Nobody of ours strikes a mask unjudged; held, it is let through or killed by a tap (12 s and it goes through by itself).
+    // 22 figures from the real gate (1), 14 guests and 8 assassins in a fixed order, singly every 5 s, then in pairs 1.5 s apart. Times are the spec's plus 15 s
+    { code: "LAB-04", name: "가면무도회", lab: true, bg: null, hz: 0.5, startCost: 24, mul: { hp: 1, atk: 1, def: 1 },
+      map: ["#############",
+            "B.h.,,|,,.h.B",
+            "#,.,,.|.,,.,#",
+            "#,,.,,|,,.,,S",
+            "S,.,,.|.,,.,#",
+            "#h.,,.|.,,.h#",
+            "#############"],
+      mirror: { x: 6, pct: 0.6, hp: 3000, display: true }, masks: true,
+      meters: { in: { v: 0, min: 0, max: 14, label: "들어간 손님" }, knife: { v: 0, min: 0, max: 3, label: "들어간 자객" }, blood: { v: 0, min: 0, max: 3, label: "쓰러진 손님" } },
+      goal: { win: [{ k: "clear" }, { k: "count", id: "in", op: ">=", v: 10 }], lose: [{ k: "count", id: "knife", op: ">=", v: 3 }, { k: "count", id: "blood", op: ">=", v: 3 }],
+        text: { win: "손님 열 명 이상을 무도장에 들여보낸다.", lose: "자객 셋이 들어가거나, 손님 셋을 쓰러뜨린다." }, hud: [{ meter: "in" }, { meter: "knife" }, { meter: "blood" }] },
+      waves: (() => { const K = "GAGGAGGAGAGGAGGAGAGGAG".split("").map((c) => ({ mask: c === "A" ? "assassin" : "guest" })),
+          T = [20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 75, 76.5, 85, 86.5, 95, 96.5, 105, 106.5, 113, 114.5, 121, 122.5];
+        return T.map((t, n) => [t, "masked", 1, K[n]]); })(),
+      boss: ["", ""], desc: "가면 쓴 사람들이 무도장으로 갑니다. 손님은 들여보내고 자객은 막아야 합니다. 맨얼굴은 거울 속에서만 보입니다. 막아 세운 뒤 눌러서 통과시키거나 처치하세요. 들어간 손님 한 명마다 코스트 3을 받습니다.",
+      lose: "거울 속 같은 자리를 보세요. 붉은 쪽이 자객입니다. 12초 안에 정하지 않으면 그냥 지나갑니다." },
+  ];
+
   const STAGES = [
     { code: "BL-01", name: "마트로 가는 길", map: MAP_C1.alley, bg: "bg_c1_alley", cam: [0.8368, 14.6214, 1553.44, 640.28, 285.49], hz: 0.5, mul: { hp: 0.7, atk: 0.85, def: 0.5 },
       waves: W1([[5, "soldier", 0, 2, 5], [16, "dog", 0, 3, 1.5], [26, "soldier", 0, 3, 3], [38, "dog", 0, 4, 1.2], [48, "soldier", 0, 3, 2.5],
@@ -4789,6 +4895,7 @@ window.BGM = (() => {
       lose: "빈 갑주는 등불이 비추는 칸에서 막으세요. 등 깨는 자가 깬 등은 지키던 이가 다시 켤 수 없습니다. 새로 세운 가사인격이 6초를 버텨야 합니다. 왕좌의 갑주가 끈 등은 지키던 이도 14초 만에 다시 켭니다. 빈 왕좌의 갑주는 체력이 절반이 되면 가장 가까운 등을 끕니다." },
     // ---- supply (자원 수집): built from the farm tables below, in the order the meta side counts them (AM FH CB AR, BM, CN) ----
     ...FARM_STAGES,
+    ...LAB_STAGES,   // the lab: always last, so no stage before it moves
   ];
   // level-0 training: no timed waves (the tutorial script spawns and paces everything), no passive cost
   const TUTORIAL = { code: "TR-00", name: "링크 학습", map: MAP_TUT, waves: [], holo: true, tutorial: true, costRate: 0, mul: { hp: 0.45, atk: 0.8, def: 0.3 },
@@ -4809,7 +4916,7 @@ window.BGM = (() => {
 
   let W = MAP0[0].length, H = MAP0.length;   // the board size: each map brings its own
   const tileAt = (x, y) => (x < 0 || y < 0 || x >= W || y >= H) ? "#" : MAP[y][x];
-  const walkable = (c) => c === "." || c === "," || c === "S" || c === "B" || c === "*" || c === "~" || c === "=" || c === "-";   // "=": thin ice (stand on it and the armour suffers), "-": an ice sheet nobody can stand on   // "~": mud (the rasputitsa): ground anyone may stand on, where the foe wades slowly   // "*": open ground anyone can stand on, near or far   // ",": ground the foe walks but nobody can stand on
+  const walkable = (c) => c === "." || c === "," || c === "S" || c === "B" || c === "*" || c === "~" || c === "=" || c === "-" || c === "^" || c === "R";   // "^": a smoke bridge (the lab's chimneys): anyone walks it, nobody stands on it   // "R": a rest (the lab's beat): walked, never stood on; a foe landing there waits for the downbeat   // "=": thin ice (stand on it and the armour suffers), "-": an ice sheet nobody can stand on   // "~": mud (the rasputitsa): ground anyone may stand on, where the foe wades slowly   // "*": open ground anyone can stand on, near or far   // ",": ground the foe walks but nobody can stand on
 
   function findAll(ch) { const r = []; for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) if (MAP[y][x] === ch) r.push([x, y]); return r; }
   const SPAWNS = [], BASE = [0, 0], BASES = [];   // BASE: the first defence point (and the one most boards have); BASES: all of them
@@ -4959,6 +5066,282 @@ window.BGM = (() => {
       if (this.stage.lamps) for (const [x, y] of this.stage.lamps.off || []) { this.lampOff.add(y * 100 + x); this.lampOffT.set(y * 100 + x, -1); }
       if (this.stage.volleys) this.volleys = this.stage.volleys.map((v) => Object.assign({ next: v.first, st: 0 }, v));
       if (this.stage.wind) { const w = this.stage.wind; this.wind = { dir: w.dir, every: w.every, warn: w.warn || 4, dur: w.dur || w.every * 0.5, durs: w.durs || null, n: 0, curDur: 0, step: w.step || BLIZ.step, next: w.first || w.every, warned: false, blowing: false, end: 0, front: null, adv: 0 }; }
+      // lab stages (L0): a stage may name its own win and lose conditions (goal), keep gauges (meters), bring an ally who walks (vip) and repeat its waves without end (loop).
+      // None of the stages before the lab sets any of these, so for them all four stay empty and nothing below changes how they play
+      this.goal = this.stage.goal || null; this.meters = {};
+      for (const id in this.stage.meters || {}) { const m = this.stage.meters[id]; this.meters[id] = { v: m.v || 0, min: m.min, max: m.max, label: m.label || id }; }
+      const VP = this.stage.vip;
+      this.vip = VP ? { isVip: true, name: VP.name || "", sprite: VP.sprite || "yui", hp: VP.hp, maxHp: VP.hp, def: VP.def || 0, x: VP.at[0], y: VP.at[1], speed: VP.speed || 0.6,
+        route: (VP.route || []).map((r) => ({ to: r.to.slice(), wait: r.wait || 0 })), leg: 0, waitUntil: VP.route && VP.route.length ? VP.route[0].wait || 0 : Infinity, path: null, seg: 0, segT: 0, walking: false, tryAt: 0, waitFx: false, dead: false, face: 1, hitAt: -9 } : null;
+      this.loopDef = this.stage.loop ? { from: this.stage.loop.from || 0, period: this.stage.loop.period, grow: this.stage.loop.grow || 0, n: 0, q: [] } : null;
+      this.noUnitsSince = null; this.everDeployed = false;
+      // the squares where the walking ally stands or will wait: nobody is set down on them (so she never ends a walk on one of ours)
+      this.vipSquares = VP ? [VP.at, ...(VP.route || []).map((r) => r.to)].map((q) => [q[0], q[1]]) : [];
+      this.boardVer = 0;   // counts the times squares changed (setTile), so the page knows to redraw the board
+      // lab L1: chimneys. While one of ours stands right beside a chimney it is stopped; after close seconds its smoke bridge is gone, and open seconds after nobody stops it
+      // the bridge is back. brokenUntil: a chimney sweep cleared it and it cannot be stopped before then
+      // lab L2: the beat. Each zone keeps its own clock: ph runs from 0 to 1 over one beat, n counts the beats (n % 4 === 0 is a downbeat), lastDown is the game time of the last one
+      const BT = this.stage.beat; this.beat = BT ? { base: BT.base || 1.4, zones: BT.zones.map((z) => ({ id: z.id, x0: z.x0, x1: z.x1, metronome: z.metronome.slice(), level: 1, ph: 0, n: 0, lastDown: 0, kept: false, batoned: false })) } : null;
+      // lab L3: the mirror. Column mirror.x is glass ("|"); every square of it has hp. Operators go down only left of it; each one sets a mirrored image right of it
+      const MI = this.stage.mirror; this.mirror = MI ? { x: MI.x, pct: MI.pct || 0.6, display: !!MI.display, sq: [] } : null;
+      if (MI) for (let y = 0; y < H; y++) if (tileAt(MI.x, y) === "|") this.mirror.sq.push({ x: MI.x, y, hp: MI.hp || 3000, max: MI.hp || 3000, broken: false });
+      this.chimneys = (this.stage.chimneys || []).map((c, i) => ({ i, at: c.at.slice(), bridge: c.bridge.map((q) => q.slice()), close: c.close || 4, open: c.open || 6, stopT: 0, freeT: 0, kept: false, shut: false, brokenUntil: -1 }));
+    }
+    // ---- lab (L0): gauges, the walking ally, enemies with an aim, squares that change, waves without end, and the goal tests ----
+    // a gauge: add delta, keep it inside its bounds (a count is a gauge with none), return the new value
+    meter(id, delta) { const m = this.meters[id] || (this.meters[id] = { v: 0, min: undefined, max: undefined, label: id }); m.v += delta || 0;
+      if (m.min !== undefined) m.v = Math.max(m.min, m.v); if (m.max !== undefined) m.v = Math.min(m.max, m.v); return m.v; }
+    // somebody stands on that square: one of ours, the walking ally, or a foe on foot
+    occupied(x, y) { const V = this.vip; return this.units.some((u) => u.x === x && u.y === y) || (!!V && !V.dead && ((Math.round(V.x) === x && Math.round(V.y) === y) || (V.walking && V.path && V.path.slice(V.seg, V.seg + 2).some((q) => q[0] === x && q[1] === y))))
+      || this.enemies.some((q) => !q.dead && !q.def.flying && Math.round(q.x) === x && Math.round(q.y) === y); }
+    // change one square of this game's own copy of the rows (never the stage's strings). A square somebody stands on cannot be made unwalkable: then nothing changes and it
+    // returns false, and the caller decides what to do. With defer the routes are not rebuilt yet (the caller calls boardChanged once it has set every square)
+    setTile(x, y, ch, defer) {
+      if (x < 0 || y < 0 || x >= W || y >= H) return false;
+      const was = tileAt(x, y); if (was === ch) return true;
+      if (walkable(was) && !walkable(ch) && this.occupied(x, y)) return false;
+      if (!this.rows) this.rows = MAP.slice();
+      this.rows[y] = this.rows[y].slice(0, x) + ch + this.rows[y].slice(x + 1);
+      if (!defer) this.boardChanged();
+      return true;
+    }
+    // after squares change: the gates, the points, the routes and the waypoint cache from the board as it now stands; then every foe on foot whose road ahead crosses a square
+    // that can no longer be walked finds a new one from where it stands (and the walking ally does the same)
+    boardChanged() {
+      setMap(this.rows || MAP); this.boardVer++;
+      const cut = (p, from) => { for (let i = Math.max(1, from); i < p.length; i++) if (!walkable(tileAt(Math.round(p[i][0]), Math.round(p[i][1])))) return true; return false; };
+      for (const e of this.enemies) if (!e.dead && !e.def.flying && !e.hired && e.path && (e.noWay || cut(e.path, e.seg + 1))) this.replan(e);   // one left with no way tries again at once
+      const V = this.vip; if (V && V.walking && V.path && cut(V.path, V.seg + 1)) { V.path = null; V.tryAt = this.t; }
+    }
+    // a walk over the board from a square to the nearest square that passes the test; null when none can be reached
+    bfsTo(from, test) {
+      const key = (x, y) => y * W + x, prev = new Map([[key(from[0], from[1]), null]]), q = [from]; let end = null;
+      while (q.length) { const [x, y] = q.shift(); if (test(x, y)) { end = [x, y]; break; }
+        for (const [dx, dy] of [[1, 0], [0, 1], [0, -1], [-1, 0]]) { const nx = x + dx, ny = y + dy; if (!walkable(tileAt(nx, ny)) || prev.has(key(nx, ny))) continue; prev.set(key(nx, ny), [x, y]); q.push([nx, ny]); } }
+      if (!end) return null;
+      const path = []; for (let c = end; c; c = prev.get(key(c[0], c[1]))) path.push(c); return path.reverse();
+    }
+    // where an aimed foe is going: a way to the square beside (or on) what it is after. "vip": the walking ally; "unit": the nearest of ours by walking distance (and if
+    // nobody of ours is down, the ally if there is one); [x, y]: that square. Null when it should make for the point as usual
+    aimWay(e, T) {
+      const V = this.vip && !this.vip.dead ? this.vip : null, near1 = (ax, ay, bx, by) => Math.abs(ax - bx) + Math.abs(ay - by) <= 1;
+      const toVip = () => V ? this.bfsTo(T, (x, y) => near1(x, y, Math.round(V.x), Math.round(V.y))) : null;
+      if (Array.isArray(e.aim)) return walkable(tileAt(e.aim[0], e.aim[1])) ? bfsPath(T, e.aim) : null;
+      if (e.aim === "mirror" && this.mirror) { const st = this.mirror.sq.filter((q) => !q.broken); return st.length ? this.bfsTo(T, (x, y) => st.some((q) => near1(x, y, q.x, q.y))) : null; }   // lab L3: the nearest standing square of glass
+      if (e.aim === "metro" && this.beat) { const ms = this.beat.zones.filter((z) => z.x1 >= T[0]).map((z) => z.metronome); const p = ms.length ? this.bfsTo(T, (x, y) => ms.some((m) => near1(x, y, m[0], m[1]))) : null; return p; }   // the baton: the nearest metronome ahead
+      if (e.aim === "chimney") { const kept = this.chimneys.filter((c) => c.kept); const p = kept.length ? this.bfsTo(T, (x, y) => kept.some((c) => near1(x, y, c.at[0], c.at[1]))) : null; return p || toVip(); }   // the sweep: the nearest stopped chimney, else the ally
+      if (e.aim === "vip") return toVip();
+      if (e.aim === "unit") { if (this.units.length) return this.bfsTo(T, (x, y) => this.units.some((u) => near1(x, y, u.x, u.y))); return toVip(); }
+      return null;
+    }
+    // a new road from the square the foe stands on: to its aim if it has one, else to the point. With no way at all it stands where it is and tries again every second
+    replan(e) {
+      const T = [Math.round(e.x), Math.round(e.y)]; e.replanAt = this.t + 1;
+      if (!walkable(tileAt(T[0], T[1]))) return;
+      let p = e.aim !== undefined ? this.aimWay(e, T) : null; let aimed = !!p;
+      e.stranded = false;
+      if (!p && e.aim !== undefined && this.stage.leap && this.vip && !this.vip.dead) { p = this.nearWay(T, [Math.round(this.vip.x), Math.round(this.vip.y)]); aimed = !!p; e.stranded = !!p; }   // lab L1: no way to her: the nearest square of its own roof
+      if (!e.stranded) e.standT = 0;
+      if (!p) p = bfsPath(T, BASE);
+      if (!p) { if (!e.noWay) { e.noWay = true; this.fx.push({ k: "noway", x: e.x, y: e.y, t: 0, life: 1 }); } return; }
+      e.noWay = false; e.aimHold = aimed;
+      e.path = [[e.x, e.y]].concat(p.length > 1 ? p.slice(1) : [T]); e.seg = 0; e.segT = 0; e.waitedAt = undefined; this.advance(e, 0);
+    }
+    // what an aimed foe that nobody holds strikes: the ally or one of ours, beside it (above, below, left or right) or on its own square
+    aimStrike(e) {
+      const ex = Math.round(e.x), ey = Math.round(e.y), V = this.vip && !this.vip.dead ? this.vip : null, near1 = (x, y) => Math.abs(x - ex) + Math.abs(y - ey) <= 1;
+      if (e.aim === "mirror" && this.mirror) return this.mirror.sq.find((q) => !q.broken && near1(q.x, q.y)) ? { isMirror: true, sq: this.mirror.sq.find((q) => !q.broken && near1(q.x, q.y)) } : null;
+      if (e.aim === "unit" && this.units.length) { let best = null; for (const u of this.units) if (near1(u.x, u.y) && (!best || u.hp < best.hp)) best = u; return best; }
+      if ((e.aim === "vip" || e.aim === "unit") && V && near1(Math.round(V.x), Math.round(V.y))) return V;
+      return null;
+    }
+    // a blow on the walking ally: the foe's attack less her defence, never under 5% of it
+    hitVip(e, atk) { const V = this.vip, d = Math.max(atk * 0.05, atk - V.def); V.hp -= d; V.hitAt = this.t; e.face = V.x >= e.x ? 1 : -1; e.hitAt = this.t;
+      this.fx.push({ k: "num", x: V.x, y: V.y, v: Math.round(d), t: 0, life: 0.8 }); if (V.hp <= 0 && !V.dead) { V.hp = 0; V.dead = true; this.fx.push({ k: "vipdown", x: V.x, y: V.y, t: 0, life: 1.5 }); } }
+    // the walking ally: she stands, and after each leg's wait walks to its square by the shortest way over the board as it stands; with none she waits and tries every second
+    vipStep(dt) {
+      const V = this.vip; if (V.dead) return;
+      if (!V.walking) { const L = V.route[V.leg]; if (!L || this.t < V.waitUntil) return; V.walking = true; V.path = null; V.tryAt = this.t; V.waitFx = false; }
+      const L = V.route[V.leg];
+      if (!V.path) { if (this.t < V.tryAt) return; V.tryAt = this.t + 1;
+        const p = bfsPath([Math.round(V.x), Math.round(V.y)], L.to);
+        if (!p) { if (!V.waitFx) { V.waitFx = true; this.fx.push({ k: "vipwait", x: V.x, y: V.y, t: 0, life: 1.2 }); } return; }
+        V.path = [[V.x, V.y]].concat(p.slice(1)); V.seg = 0; V.segT = 0; }
+      let dist = V.speed * dt;
+      while (dist > 0 && V.seg < V.path.length - 1) { const a = V.path[V.seg], b = V.path[V.seg + 1], len = Math.hypot(b[0] - a[0], b[1] - a[1]), left = (1 - V.segT) * len;
+        if (len < 1e-6 || dist >= left) { dist -= left; V.seg++; V.segT = 0; } else { V.segT += dist / len; dist = 0; } }
+      const a = V.path[V.seg], b = V.path[Math.min(V.seg + 1, V.path.length - 1)]; if (b[0] !== a[0]) V.face = b[0] > a[0] ? 1 : -1;
+      V.x = a[0] + (b[0] - a[0]) * V.segT; V.y = a[1] + (b[1] - a[1]) * V.segT;
+      if (V.seg >= V.path.length - 1) { V.x = L.to[0]; V.y = L.to[1]; V.walking = false; V.path = null; V.leg++; const N = V.route[V.leg]; V.waitUntil = N ? this.t + N.wait : Infinity; }
+    }
+    // waves without end: from loop.from + loop.period on, every period the entries in [from, from + period) come again, each repeat stronger by grow
+    loopStep() {
+      const L = this.loopDef;
+      while (this.t >= L.from + (L.n + 1) * L.period) { L.n++; const k = 1 + L.grow * L.n;
+        for (const w of this.waves) if (w[0] >= L.from && w[0] < L.from + L.period) { L.q.push([w[0] + L.n * L.period, w[1], w[2], w[3], k]); if (!(w[3] && w[3].ally)) this.total++; }
+        L.q.sort((a, b) => a[0] - b[0]); }
+      while (L.q.length && L.q[0][0] <= this.t) { const [, type, s, o, k] = L.q.shift(); const e = this.spawn(type, s, o); e.hp = e.maxHp = Math.round(e.maxHp * k); e.atkMul = (e.atkMul || 1) * k; }
+    }
+    // one goal condition (see stage.goal)
+    goalHolds(q) {
+      const V = this.vip, cmp = (v) => q.op === "<=" ? v <= q.v : v >= q.v;
+      switch (q.k) {
+        case "clear": return !this.loopDef && this.waveIdx >= this.waves.length && !(this.extra && this.extra.length) && !(this.waitSpawn && this.waitSpawn.length) && this.enemies.every((e) => e.ally) && !this.hold && !(this.march && !this.march.part.final);
+        case "life": return this.life <= 0;
+        case "time": return this.t >= q.t;
+        case "meter": case "count": return cmp(this.meters[q.id] ? this.meters[q.id].v : 0);
+        case "vipAt": return !!V && !V.dead && !V.walking && Math.abs(V.x - q.at[0]) < 0.01 && Math.abs(V.y - q.at[1]) < 0.01;
+        case "vipDead": return !!V && V.dead;
+        case "noUnits": return this.noUnitsSince !== null && this.t - this.noUnitsSince >= q.s;
+      }
+      return false;
+    }
+    // lab L1: the chimneys' clocks. A bridge square that is to go waits until nobody stands on it; one that is to come back comes at once
+    chimneyStep(dt) {
+      let changed = false;
+      for (const c of this.chimneys) {
+        c.kept = this.t >= c.brokenUntil && this.units.some((u) => Math.abs(u.x - c.at[0]) + Math.abs(u.y - c.at[1]) === 1);
+        if (c.kept) { c.stopT += dt; c.freeT = 0; } else { c.freeT += dt; c.stopT = 0; }
+        if (!c.shut && c.kept && c.stopT >= c.close) c.shut = true;
+        if (c.shut && !c.kept && c.freeT >= c.open) c.shut = false;
+        const want = c.shut ? "_" : "^";
+        for (const [x, y] of c.bridge) if (tileAt(x, y) !== want && this.setTile(x, y, want, true)) changed = true;
+      }
+      if (changed) this.boardChanged();
+    }
+    // the two squares a bridge joins: the walkable squares just past its first and its last square, along its line
+    bridgeEnds(c) { const a = c.bridge[0], b = c.bridge[c.bridge.length - 1], dx = Math.sign(b[0] - a[0]), dy = Math.sign(b[1] - a[1]); return [[a[0] - dx, a[1] - dy], [b[0] + dx, b[1] + dy]]; }
+    // every square that can be walked to from here (a roof)
+    reach(from) { const seen = new Set([from[1] * W + from[0]]), q = [from]; while (q.length) { const [x, y] = q.shift(); for (const [dx, dy] of [[1, 0], [0, 1], [0, -1], [-1, 0]]) { const nx = x + dx, ny = y + dy, k = ny * W + nx; if (!walkable(tileAt(nx, ny)) || seen.has(k)) continue; seen.add(k); q.push([nx, ny]); } } return seen; }
+    // with no way to what it is after: the way to the square of its own roof nearest to it (used where the stage lets foes leap)
+    nearWay(T, goal) { const all = this.reach(T); let best = null, bd = 1e9; for (const k of all) { const x = k % W, y = (k / W) | 0, d = Math.hypot(x - goal[0], y - goal[1]); if (d < bd - 1e-9) { bd = d; best = [x, y]; } } return best ? bfsPath(T, best) : null; }
+    // lab L1: a foe stranded on its roof stands; after stage.leap.after seconds of standing it leaps (dur seconds in the air) to the far end of the nearest missing bridge of
+    // its roof. It cannot come down on a square one of ours stands on: then it waits retry seconds more. Returns true while it is in the air
+    leapStep(e, dt) {
+      const L = this.stage.leap;
+      if (e.leap) { e.leap.t += dt; const u = Math.min(1, e.leap.t / e.leap.dur); e.x = e.leap.from[0] + (e.leap.to[0] - e.leap.from[0]) * u; e.y = e.leap.from[1] + (e.leap.to[1] - e.leap.from[1]) * u;
+        if (u >= 1) { e.x = e.leap.to[0]; e.y = e.leap.to[1]; e.leap = null; e.stranded = false; e.standT = 0; e.leapWarn = false; this.replan(e); } return true; }
+      if (!e.stranded || e.blockedBy || e.heldBy || e.remain > 0.05) { e.leapWarn = false; return false; }
+      e.standT = (e.standT || 0) + dt; e.leapWarn = e.standT >= L.after - L.warn;
+      if (e.standT < L.after) return false;
+      const T = [Math.round(e.x), Math.round(e.y)], roof = this.reach(T); let best = null, bd = 1e9;
+      for (const c of this.chimneys) { if (c.bridge.every(([x, y]) => walkable(tileAt(x, y)))) continue;
+        const [a, b] = this.bridgeEnds(c), na = roof.has(a[1] * W + a[0]), nb = roof.has(b[1] * W + b[0]); if (na === nb) continue;
+        const near = na ? a : b, far = na ? b : a, d = Math.hypot(near[0] - e.x, near[1] - e.y); if (d < bd) { bd = d; best = far; } }
+      if (!best) return false;
+      if (this.unitAt(best[0], best[1])) { e.standT = L.after - (L.retry || 5); return false; }
+      e.leap = { t: 0, dur: L.dur || 3, from: [e.x, e.y], to: best.slice() }; e.leapWarn = false; e.blockedBy = null;
+      this.fx.push({ k: "leap", e, x0: e.x, y0: e.y, x1: best[0], y1: best[1], t: 0, life: e.leap.dur }); return true;
+    }
+    // lab L1: the chimney sweep stands beside a stopped chimney for def.sweeper.dur seconds and clears it: its bridge is back at once and nobody can stop it for def.sweeper.block
+    sweepStep(e, dt) {
+      const S = e.def.sweeper, ex = Math.round(e.x), ey = Math.round(e.y), c = this.chimneys.find((q) => q.kept && Math.abs(q.at[0] - ex) + Math.abs(q.at[1] - ey) === 1);
+      if (!c || e.remain > 0.05) { e.sweepT = 0; return; }
+      e.sweepT = (e.sweepT || 0) + dt;
+      if (e.sweepT >= S.dur) { e.sweepT = 0; c.brokenUntil = this.t + S.block; c.kept = false; c.shut = false; c.stopT = 0; this.fx.push({ k: "swept", x: c.at[0], y: c.at[1], t: 0, life: 1.2 }); this.chimneyStep(0); this.replan(e); }
+    }
+    // ---- lab L3: the mirror ----
+    // the square across the glass from (x, y)
+    mirrorOf(x) { return 2 * this.mirror.x - x; }
+    // a square of glass is struck. Broken, it is road (",") from then on: the images in its row are gone (and none can be set there), and every foe of the room in the glass
+    // makes for the real room's point through the gap
+    hitMirror(e, q, atk) {
+      q.hp -= atk; e.face = q.x >= e.x ? 1 : -1; e.hitAt = this.t; this.fx.push({ k: "num", x: q.x, y: q.y, v: Math.round(atk), t: 0, life: 0.8 });
+      if (q.hp > 0 || q.broken) return;
+      q.hp = 0; q.broken = true; this.setTile(q.x, q.y, ","); this.fx.push({ k: "glassbreak", x: q.x, y: q.y, t: 0, life: 1.2 }); this.snd("down");
+      for (const u of this.units.slice()) if (u.image && u.y === q.y) this.retreat(u, false);
+      for (const f of this.enemies) if (!f.dead && f.room === "R" && f.aim === undefined && !f.def.flying) this.toRealPoint(f);
+    }
+    // a foe of the room in the glass, once the glass has a gap: its way to the real room's point (the first B left of the glass)
+    toRealPoint(e) { const B = BASES.find((b) => b[0] < this.mirror.x); if (!B) return; const T = [Math.round(e.x), Math.round(e.y)], p = walkable(tileAt(T[0], T[1])) ? bfsPath(T, B) : null;
+      if (!p) return; e.path = [[e.x, e.y]].concat(p.length > 1 ? p.slice(1) : [T]); e.seg = 0; e.segT = 0; e.goalReal = true; this.advance(e, 0); }
+    // the image in the glass of an operator just set down: across the glass, facing the other way, on a square of the same kind in a row whose glass still stands;
+    // pct of the operator's health, attack and defence; free, and outside the deploy limit (a clone). It goes when the operator goes
+    mirrorImage(u) {
+      const M = this.mirror, x = this.mirrorOf(u.x), y = u.y, c = tileAt(x, y), fits = c === "*" || (u.def.tile === "g" ? c === "." || c === "~" || c === "=" : c === "h");
+      if (M.display || !fits || M.sq.some((q) => q.y === y && q.broken) || this.unitAt(x, y)) return null;
+      const hp = Math.round(u.maxHp * M.pct);
+      const im = Object.assign({}, u, { id: this.uid++, x, y, dir: u.dir === 0 ? 2 : u.dir === 2 ? 0 : u.dir, hp, maxHp: hp, blocked: [], buff: {}, image: true, clone: true, expire: Infinity, owner: u, imgPct: M.pct, atkT: u.def.interval * 0.4, skillT: 0 });
+      this.units.push(im); this.fx.push({ k: "imageup", x, y, t: 0, life: 0.6 }); return im;
+    }
+    // ---- lab L3 (LAB-04): the masks ----
+    // judge a masked figure: "pass" lets it through (nobody blocks it any more and it walks to the door), "kill" makes it a normal foe (it fights back)
+    judge(e, how) {
+      if (!e || !e.mask || e.judged || e.passed || e.dead) return false;
+      if (how === "pass") { e.passed = true; e.blockedBy = null; this.fx.push({ k: "judged", e, pass: true, x: e.x, y: e.y, t: 0, life: 1.0 }); }
+      else if (how === "kill") { e.judged = true; e.def = Object.assign({}, e.def, { atk: 300 }); e.atkT = Math.max(e.atkT, 0.6); this.fx.push({ k: "judged", e, pass: false, x: e.x, y: e.y, t: 0, life: 1.0 }); }
+      else return false;
+      return true;
+    }
+    // each tick: the reflection's square across the glass; the 12 s since it was first held (then it is let through by itself)
+    maskStep() {
+      const mx = this.mirror ? this.mirror.x : 6;
+      for (const e of this.enemies) { if (!e.mask || e.dead) continue; e.reflX = 2 * mx - e.x; e.reflY = e.y;
+        if (e.blockedBy && e.firstBlockT === undefined) e.firstBlockT = this.t;
+        if (!e.judged && !e.passed && e.firstBlockT !== undefined && this.t - e.firstBlockT >= 12) { this.judge(e, "pass"); e.autoPass = true; } }
+    }
+    // ---- lab L2: the beat ----
+    // the zone a square belongs to (one left of the first zone is in the first, one right of the last in the last)
+    beatZone(x) { const Z = this.beat.zones, rx = Math.round(x); return Z.find((z) => rx >= z.x0 && rx <= z.x1) || (rx < Z[0].x0 ? Z[0] : Z[Z.length - 1]); }
+    beatLen(z) { return [2.0, 1.4, 0.9][z.level]; }   // slow, normal, fast
+    // the zones' clocks: a keeper beside the metronome makes its zone a level slower, a baton beside it a level faster (both: they cancel)
+    beatStep(dt) {
+      for (const z of this.beat.zones) {
+        const [mx, my] = z.metronome, near = (x, y) => Math.abs(x - mx) + Math.abs(y - my) === 1;
+        z.kept = this.units.some((u) => near(u.x, u.y)); z.batoned = this.enemies.some((e) => !e.dead && e.def.baton && !e.hop && near(Math.round(e.x), Math.round(e.y)));
+        z.level = Math.max(0, Math.min(2, 1 - (z.kept ? 1 : 0) + (z.batoned ? 1 : 0)));
+        z.ph += dt / this.beatLen(z);
+        while (z.ph >= 1) { z.ph -= 1; z.n++; if (z.n % 4 === 0) z.lastDown = this.t; }
+      }
+    }
+    // inside the downbeat window of a zone: within 0.2 s of the last downbeat or of the next one
+    onBeat(z) { const L = this.beatLen(z), toNext = (1 - z.ph) * L + ((4 - (z.n % 4)) % 4 === 0 ? 3 : (4 - (z.n % 4)) - 1) * L; return (z.n > 0 && this.t - z.lastDown <= 0.2) || toNext <= 0.2; }
+    // a blocker on the square the foe stands on or on the next one of its road takes it (if it has room); then it does not hop
+    beatBlock(e) {
+      const ex = Math.round(e.x), ey = Math.round(e.y); let i = e.seg + 1; while (i < e.path.length && Math.round(e.path[i][0]) === ex && Math.round(e.path[i][1]) === ey) i++;
+      const nx = e.path[i], sq = nx ? [[ex, ey], [Math.round(nx[0]), Math.round(nx[1])]] : [[ex, ey]];
+      for (const [x, y] of sq) { const u = this.unitAt(x, y);
+        if (u && this.onGround(u) && this.blockLoad(u) + e.def.weight <= this.stat(u, "block")) { e.blockedBy = u; e.blockedAt = this.t; return true; } }
+      return false;
+    }
+    // a foe's step on the beat: it stands in the middle of its square and on each beat of its zone hops to the next square of its road (0.25 s). Slow (speed under 0.6, after
+    // any slowing): every second beat; fast (over 1.2): two squares; a charge: three. Landing on a rest it waits for the zone's downbeat. Returns true at the end of its road
+    beatMove(e, dt, slow) {
+      const z = this.beatZone(e.x); if (e.chargeT > 0) e.chargeQueued = true;
+      if (!e.hop) {
+        { const u = this.unitAt(Math.round(e.x), Math.round(e.y)); if (u && this.onGround(u) && this.blockLoad(u) + e.def.weight <= this.stat(u, "block")) { e.blockedBy = u; e.blockedAt = this.t; return false; } }   // one of ours set down on its very square holds it at once
+        const skipped = e.beatSeen !== undefined && this.t - e.beatSeen > dt * 1.5; e.beatSeen = this.t;
+        if (skipped) { e.bn = z.n; e.bz = z.id; return e.seg >= e.path.length - 1; }   // it was held, aiming or pausing until now: it moves on the next beat, not on one it missed
+        if (e.bz !== z.id) { e.bz = z.id; e.bn = z.n; return e.seg >= e.path.length - 1; }   // just came into this zone: it waits for this zone's next beat
+        if (e.bn === z.n) return e.seg >= e.path.length - 1;
+        e.bn = z.n; const down = z.n % 4 === 0, sp = e.def.speed * (1 - (slow || 0));
+        if (e.restUntilDown) { if (!down) return false; e.restUntilDown = false; }
+        if (sp < 0.6) { e.beatOdd = !e.beatOdd; if (e.beatOdd) return false; }
+        let n = sp > 1.2 ? 2 : 1; if (e.chargeQueued) { n = 3; e.chargeQueued = false; }
+        if (e.seg >= e.path.length - 1) return true;
+        if (this.beatBlock(e)) return false;
+        e.hop = { left: n, n };
+      }
+      let d = e.hop.n / 0.25 * dt;
+      while (d > 1e-9 && e.hop && e.hop.left > 0) {
+        const a = e.path[e.seg], b = e.path[e.seg + 1]; if (!b) { e.hop = null; break; }
+        const L = Math.hypot(b[0] - a[0], b[1] - a[1]); if (L < 1e-9) { e.seg++; e.segT = 0; continue; }
+        const rem = (1 - e.segT) * L;
+        if (d < rem) { this.advance(e, d); d = 0; break; }
+        this.advance(e, rem); d -= rem; e.hop.left--;
+        if (e.path.waits && e.path.waits[e.seg] && e.waitedAt !== e.seg) { e.waitedAt = e.seg; e.pauseT = e.path.waits[e.seg]; e.hop.left = 0; }
+        if (tileAt(Math.round(e.x), Math.round(e.y)) === "R") { e.restUntilDown = true; e.hop.left = 0; this.fx.push({ k: "rest", x: e.x, y: e.y, t: 0, life: 0.8 }); }
+        if (e.hop.left > 0 && this.beatBlock(e)) e.hop.left = 0;
+      }
+      if (e.hop && e.hop.left <= 0) e.hop = null;
+      return !e.hop && e.seg >= e.path.length - 1;
+    }
+    // the stage's own ending: lost when any lose condition holds (tested first), won when every win condition does
+    goalStep() {
+      if (this.units.length) { this.everDeployed = true; this.noUnitsSince = null; } else if (this.everDeployed && this.noUnitsSince === null) this.noUnitsSince = this.t;
+      const G = this.goal, lost = (G.lose || []).find((q) => this.goalHolds(q));
+      if (lost) { this.over = "lose"; this.goalWhy = lost.k; this.life = Math.max(0, this.life); this.escortLost = lost.k === "vipDead"; }
+      else if ((G.win || []).length && G.win.every((q) => this.goalHolds(q))) this.over = "win";
     }
     driftAt(x, y) { const u = this.drift && this.drift.get(y * 100 + x); return !!u && u > this.t; }
     // the blizzard (walls: "W" stands up and stops it; "#" is sunken ground it blows over; rises are snowed over too; mud freezes all at once): it blows in from one side of the board and, for as long as it lasts, its front creeps square by square along every line.
@@ -5051,9 +5434,9 @@ window.BGM = (() => {
         for (const [x, y, ch] of sh.set) {
           if (walkable(tileAt(x, y)) || !walkable(ch)) { console.error("shift: only a wall may open onto road", x, y, tileAt(x, y), ch); continue; }
           if (this.units.some((u) => u.x === x && u.y === y) || this.enemies.some((q) => !q.dead && !q.def.flying && Math.round(q.x) === x && Math.round(q.y) === y)) console.error("shift: somebody stands on", x, y);
-          this.rows[y] = this.rows[y].slice(0, x) + ch + this.rows[y].slice(x + 1);
+          this.setTile(x, y, ch, true);   // a wall opening onto road: nobody standing there can stop that
         }
-        setMap(this.rows);   // the gates, the points, the routes and the waypoint cache, from the board as it now stands
+        this.boardChanged();   // the gates, the points, the routes and the waypoint cache, from the board as it now stands (opening a wall leaves nobody's road cut, so nobody re-plans)
         this.fx.push({ k: "shift", tiles: sh.tiles, banner: sh.banner, t: 0, life: 2 });
       }
     }
@@ -5148,6 +5531,9 @@ window.BGM = (() => {
       if (this.enemies.some((q) => !q.dead && !q.def.flying && (q.waiting || q.ally || q.postUntil > this.t) && Math.round(q.x) === x && Math.round(q.y) === y)) return false;   // somebody is waiting, posted or standing with us on that square
       for (let i = this.waveIdx; i < this.waves.length; i++) { const o = this.waves[i][3]; if (this.waves[i][0] <= 1 && o && o.at && (o.until !== undefined || o.wait || o.ally) && o.at[0] === x && o.at[1] === y) return false; }   // a post is kept free for the one who has not come to it yet
       if (this.enemies.some((q) => q.perched && q.x === x && q.y === y)) return false;   // somebody is already up there
+      if (this.vip && !this.vip.dead && Math.round(this.vip.x) === x && Math.round(this.vip.y) === y) return false;   // lab: nobody is set down on the walking ally
+      if (this.vipSquares.length && this.vipSquares.some((q) => q[0] === x && q[1] === y)) return false;   // ...nor on a square where she stands or will wait
+      if (this.mirror && x >= this.mirror.x) return false;   // lab L3: only the real room, left of the glass
       return !this.unitAt(x, y);
     }
     // like the original: every retreat or fall makes the next deployment 50% dearer, up to double
@@ -5230,6 +5616,7 @@ window.BGM = (() => {
     rangeTiles(u, dir = u.dir) { const c = this.cards[u.card]; return RANGE[u.rangeKey || rangeKeyOf(u.def, c ? c.elite : 0)].map((o) => { const [dx, dy] = rotate(o, dir); return [u.x + dx, u.y + dy]; }); }
     inRange(u, e, tiles = this.rangeTiles(u)) {
       if (e.isEnemy && e.downUntil > this.t) return false;   // lying where it fell: there is nothing to strike yet
+      if (e.mask && !e.judged) return false;   // lab L3 (LAB-04): a masked figure not judged for killing is never struck
       if (!u.isEnemy && this.smoke.size && this.smokeAt(u.x, u.y) && Math.max(Math.abs(e.x - u.x), Math.abs(e.y - u.y)) > 1.5) return false;   // in the smoke: no further than the next square
       if (e.stealth && e.blockedBy !== u) return false;   // 은신: only the one holding it back can find it
       if (e.dim && !u.isEnemy && (u.def.tile !== "g" || Math.max(Math.abs(e.x - u.x), Math.abs(e.y - u.y)) > 1.5)) return false;   // held or met in the dark: only those on the ground right beside it can make it out; nobody up on a rise sees into the dark
@@ -5237,12 +5624,14 @@ window.BGM = (() => {
       // (as a blocked foe does, held at the edge of its blocker's tile) can be reached from either side of that edge
       const R = 0.2, xs = [Math.round(e.x - R), Math.round(e.x + R)], ys = [Math.round(e.y - R), Math.round(e.y + R)];
       if (tiles.some(([x, y]) => (x === xs[0] || x === xs[1]) && (y === ys[0] || y === ys[1]))) return true;
+      if (this.beat && e.blockedBy === u && tiles.some(([x, y]) => x === u.x && y === u.y)) return true;   // lab L2: held from the next square (foes stand square-centred on the beat), it is within its blocker's own reach
       const b = e.blockedBy; return !!(b && !b.isEnemy && b !== u && tiles.some(([x, y]) => x === b.x && y === b.y));   // and a held foe is on its blocker's tile too
     }
     stat(u, k) {
       let v = u.def[k];
       if ((k === "atk" || k === "def") && u.mult) v *= mOf(u.mult, k);   // growth from the lobby
       if (k === "res" && u.potRes) v += u.potRes;
+      if ((k === "atk" || k === "def") && u.imgPct) v *= u.imgPct;   // lab L3: an image in the glass has its share of the operator's attack and defence
       if (k === "atk" && u.potAtk) v *= u.potAtk; else if (k === "def" && u.potDef) v *= u.potDef;   // potential
       if (k === "def" && u.defMul0) v *= u.defMul0;   // an early stage's thinner armour
       if ((k === "atk" || k === "def") && u.def.grow && !u.isEnemy) v *= 1 + u.def.grow.step * this.growth(u);   // Lulu: heavier the longer he stands
@@ -5253,7 +5642,8 @@ window.BGM = (() => {
       if (k === "def" && u.def.lowDef && !u.isEnemy && u.hp <= u.maxHp * 0.5) v *= 1 + u.def.lowDef;   // 꺾이지 않는 의지   // 응원하마
       if (k === "interval" && b.speed) v /= b.speed;
       if (k === "interval" && !u.isEnemy && this.calls && this.calls.until > this.t && (u.x === this.calls.at[0] || u.y === this.calls.at[1])) v *= this.calls.slow;   // the call: in line with the one called, hands falter
-      if (k === "interval" && !u.isEnemy && u.frostN > 0) v *= FROST.slow;   // 동상: stiff fingers
+      if (k === "interval" && !u.isEnemy && u.frostN > 0) v *= FROST.slow;
+      if (k === "interval" && !u.isEnemy && this.beat) v *= this.beatLen(this.beatZone(u.x)) / this.beat.base;   // lab L2: a slow zone slows us too   // 동상: stiff fingers
       if (k === "def" && !u.isEnemy && tileAt(u.x, u.y) === "=") v *= 1 - THIN_ICE;   // thin ice under the feet
       if (k === "atk" && u.def.pair && !u.isEnemy && this.units.some((q) => q.def.id === u.def.pair)) v *= 1.1;   // 운명의 서약
       if (k === "block" && b.blockAdd) v += b.blockAdd;
@@ -5271,7 +5661,9 @@ window.BGM = (() => {
     afflict(u, key, dur) { if (u.buff && u.buff.immune && u.skillT > 0) return 0; if (u.def.id === "lulu") dur *= 0.5; u[key] = Math.max(u[key] || 0, dur); return dur; }
     growth(u) { const g = u.def.grow; return g ? Math.min(g.max, Math.floor(Math.max(0, this.t - u.born) / g.every)) : 0; }
     damage(target, raw, type, fromUnit, fromEnemy) {
-      if (target.isEnemy && (target.crownUntil > this.t || target.downUntil > this.t)) return 0;   // a boss between his two stages, or an armour still lying where it fell: nothing harms them
+      if (this._beatAmpU && fromUnit === this._beatAmpU) raw *= 1.3;   // lab L2: an instant skill started on the downbeat
+      if (target.isEnemy && (target.crownUntil > this.t || target.downUntil > this.t)) return 0;
+      if (target.mask && !target.judged) return 0;   // lab L3 (LAB-04): nor harmed by a blast   // a boss between his two stages, or an armour still lying where it fell: nothing harms them
       if (fromEnemy && !target.isEnemy && target.markT > this.t) raw *= target.markAmp || 1;   // pointed out by an informer
       if (fromEnemy && fromEnemy.def.vsFrozen && !target.isEnemy && target.frozenT > 0) raw *= fromEnemy.def.vsFrozen;   // fangs into the frozen
       if (fromEnemy && fromEnemy.def.frost && !target.isEnemy && raw > 0) this.frostHit(target, fromEnemy.def.frost);
@@ -5615,6 +6007,7 @@ window.BGM = (() => {
     }
     // can a foot soldier's way from its gate be built now? (a gate that is still shut has none). Flyers, posts, landings and drops do not ask
     routeReady(type, s, o) { const d = ENEMIES[type]; if (!d || d.flying || (o && (o.at || o.land || o.drops))) return true;
+      if (o && o.aim !== undefined && this.stage.leap) return true;   // lab L1: an aimed foe on a board where foes leap comes in even with no road to the point (it finds its own way)
       const p = o && o.via ? viaPath(s, o.via) : this.stage.vias && this.stage.vias[s] ? viaPath(s, this.stage.vias[s]) : PATHS[s]; return !!(p && p.length); }
     spawn(type, s, o) {
       const d = ENEMIES[type];
@@ -5655,7 +6048,12 @@ window.BGM = (() => {
         e.rose = (e.rose || 0) + 1; e.hp = e.downHp = Math.round(e.maxHp * d.revive.pct); e.downUntil = this.t + o.fallen; e.stunT = Math.max(e.stunT || 0, o.fallen);
         this.fx.push({ k: "rise", e, x: e.x, y: e.y, t: 0, life: o.fallen }); }
       if (o && o.scanEvery) { e.scanEvery = o.scanEvery; e.nextScan = this.t + o.scanEvery * 0.6; }
-      if (o && o.scanNear) e.scanNear = true;   // BL-07's lighthouse: the three nearest him, not the three furthest along
+      if (o && o.scanNear) e.scanNear = true;
+      if (o && o.leak) e.leakTo = o.leak;   // lab: reaching a point adds to a gauge instead of costing life
+      if (o && o.aim !== undefined && !d.flying) { e.aim = d.sweeper && this.chimneys.length ? "chimney" : o.aim; this.replan(e); }
+      if (d.baton && this.beat && !d.flying) { e.aim = "metro"; this.replan(e); }   // lab L2: the baton makes for a metronome
+      if (d.masked && this.stage.masks) { e.mask = (o && o.mask) || "guest"; e.leakTo = { meter: e.mask === "assassin" ? "knife" : "in", by: 1 }; }   // lab L3 (LAB-04): through the door, a guest counts in, an assassin counts a knife
+      if (this.mirror) { e.room = SPAWNS[s] && SPAWNS[s][0] > this.mirror.x ? "R" : "L"; if (e.room === "R" && e.aim === undefined && this.mirror.sq.some((q) => q.broken)) this.toRealPoint(e); }   // lab L3   // lab: it makes for the walking ally, for one of ours, or for a square   // BL-07's lighthouse: the three nearest him, not the three furthest along
       if (o && o.atk) e.atkMul = (e.atkMul || 1) * o.atk;
       if (d.sniper) { e.shots = 0; e.scanned = 0; e.scanQ = 0; e.atkT = d.interval; }
       if (!d.boss) for (const q of this.enemies) if (q.stealth && q.def.stealth && !q.dead && q !== e && ++q.mins >= q.def.stealth.reveal) this.reveal(q);
@@ -6240,6 +6638,10 @@ window.BGM = (() => {
       if (this.waitSpawn && this.waitSpawn.length) for (const w of this.waitSpawn.slice()) if (this.t >= w.next) {   // tried again every second; it comes in the moment its way is open
         if (this.routeReady(w.type, w.s, w.o)) { this.waitSpawn.splice(this.waitSpawn.indexOf(w), 1); this.spawn(w.type, w.s, w.o); } else w.next = this.t + 1; }
       if (this.extra) while (this.extra.length && this.extra[0][0] <= this.t) { const [, type, s] = this.extra.shift(); this.spawn(type, s); }
+      if (this.loopDef) this.loopStep();   // lab: waves without end
+      if (this.vip) this.vipStep(dt);   // lab: the ally who walks
+      if (this.chimneys.length) this.chimneyStep(dt);   // lab L1: the chimneys and their bridges
+      if (this.beat) this.beatStep(dt);   // lab L2: the zones' beat clocks
       // enemies move / attack
       const gates = this.units.filter((u) => u.skill.id === "eg_gate" && u.skillT > 0 && this.units.includes(u));   // 수문장: nobody small leaves his yard
       // the drum and the cross: a drummer (or the eagle) keeps everyone round him in step — faster, bolder, deaf to the blizzard; a priest mends the men round him
@@ -6346,6 +6748,9 @@ window.BGM = (() => {
           this.fx.push({ k: "call", x: e.x, y: e.y, rouse: !!cl.rouse, gust: !!cl.gust, dark: !!only("dark"), rapid: !!only("rapid"), near: !!cl.darkNear, barrage: !!cl.barrage, t: 0, life: 1.4 });
         }
         if (e.blockedBy && !this.units.includes(e.blockedBy)) e.blockedBy = null;
+        if ((e.aim !== undefined || e.noWay) && this.t >= (e.replanAt || 0) && !e.blockedBy && !e.heldBy && !e.leap && !e.hop) this.replan(e);   // lab: an aimed foe (or one whose road was cut) looks again once a second
+        if (this.stage.leap && (e.stranded || e.leap) && this.leapStep(e, dt)) continue;   // lab L1: stranded on its roof, it leaps across in the end
+        if (e.def.sweeper && this.chimneys.length) this.sweepStep(e, dt);   // lab L1: the sweep at work beside a chimney
         if (e.def.rally && e.def.rally.at && !e.rallied && e.hp <= e.maxHp * e.def.rally.at) { e.rallied = true; this.fx.push({ k: "call", x: e.x, y: e.y, rally: true, t: 0, life: 1.6 }); }   // past half: the banner of the Sacred Heart goes up
         if (e.def.callshot && !e.ally && e.hp > 0) this.shotStep(e, dt);
         if (e.def.hook && !(e.windT > 0) && !e.blockedBy && !(e.pauseT > 0)) {   // free of any blocker: now and then he throws the hook at someone up on a rise
@@ -6398,7 +6803,10 @@ window.BGM = (() => {
             e.windK = null;
           }
         } else if (e.pauseT > 0) { e.pauseT -= dt;   // stopped at a waypoint of its route: looking the ground over
-        } else if (!e.blockedBy && !e.heldBy && !e.aiming && !settling && !(e.postUntil > this.t)) {
+        } else if (this.beat && !e.def.flying && !e.blockedBy && !e.heldBy && ((!e.aiming && !settling) || e.hop) && !(e.postUntil > this.t) && !e.noWay) {   // lab L2: on the beat (a hop once begun is finished)
+          const reached = this.beatMove(e, dt, slow);
+          if (reached && !e.blockedBy && !e.heldBy && !e.aimHold) { e.dead = true; e.leaked = true; if (e.leakTo) this.meter(e.leakTo.meter, e.leakTo.by); else this.life -= e.def.life; this.leaked++; this.fx.push({ k: "leak", t: 0, life: 0.8 }); continue; }
+        } else if (!e.blockedBy && !e.heldBy && !e.aiming && !settling && !(e.postUntil > this.t) && !e.noWay) {
           const step = e.def.speed * (1 - slow) * (e.dashMul || 1) * (this.calls && this.calls.until > this.t && !e.def.flying ? this.calls.speed : 1) * (rally ? rally.speed : 1) * (e.chargeT > 0 ? ch.mult : 1) * (e.dropped ? e.def.bomber.dash : 1) * dt;
           const sx = e.x, sy = e.y, sseg = e.seg, st = e.segT;
           let reached = this.advance(e, step);
@@ -6407,7 +6815,7 @@ window.BGM = (() => {
             const tx = Math.round(e.x), ty = Math.round(e.y);
             const u = this.unitAt(tx, ty);
             if (e.def.claim && u && this.onGround(u) && !(e.breachT > this.t && e.breachFrom === u)) this.claimBlocker(e, u);   // a boss is never walked past: a full blocker lets go of others to take him
-            if (u && this.onGround(u) && !(e.breachT > this.t && e.breachFrom === u) && this.blockLoad(u) + e.def.weight <= this.stat(u, "block")) {
+            if (u && this.onGround(u) && !e.passed && !(e.breachT > this.t && e.breachFrom === u) && this.blockLoad(u) + e.def.weight <= this.stat(u, "block")) {
               e.blockedBy = u; e.blockedAt = this.t;
               // stop at the edge of the blocker's tile
               const d = Math.hypot(e.x - u.x, e.y - u.y);
@@ -6437,7 +6845,7 @@ window.BGM = (() => {
             this.total++; this.fx.push({ k: "land", x: e.land[0], y: e.land[1], t: 0, life: 0.8 }); continue;
           }
           if (reached && e.toEscort && this.escort && !e.blockedBy && !e.heldBy) { e.dead = true; e.leaked = true; this.escort.hp -= e.def.life; this.leaked++; this.fx.push({ k: "escorthit", x: this.escort.x, y: this.escort.y, t: 0, life: 0.9 }); continue; }
-          if (reached && !e.blockedBy && !e.heldBy) { if (e.def.bomb) this.explode(e); e.dead = true; e.leaked = true; this.life -= e.def.life; this.leaked++; this.fx.push({ k: "leak", t: 0, life: 0.8 }); continue; }
+          if (reached && !e.blockedBy && !e.heldBy && !e.aimHold) { if (e.def.bomb) this.explode(e); e.dead = true; e.leaked = true; if (e.leakTo) this.meter(e.leakTo.meter, e.leakTo.by); else this.life -= e.def.life; this.leaked++; this.fx.push({ k: "leak", t: 0, life: 0.8 }); continue; }
         }
         if (!e.def.sniper) e.atkT -= dt;   // the marshal keeps his own count
         if (e.atkT <= 0 && e.def.atk > 0 && !e.def.sniper) {
@@ -6445,7 +6853,10 @@ window.BGM = (() => {
           if (!target && e.def.ranged) target = e.aimTgt;
           if (!target && e.def.reachHigh) { const R = e.def.reachHigh, ex = Math.round(e.x), ey = Math.round(e.y);   // a long arm: nobody holding him, he cuts at whoever stands within reach — up on a rise too — the weakest first
             for (const u of this.units) if (Math.max(Math.abs(u.x - ex), Math.abs(u.y - ey)) <= R && (!target || u.hp < target.hp)) target = u; if (target) e.reachHit = true; }
-          if (target && e.def.sweep && (e.swings = (e.swings || 0) + 1) % e.def.sweep.every === 0) { e.windT = e.def.sweep.wind; e.windK = "sweep"; e.atkT = e.def.interval; this.fx.push({ k: "sweepwarn", e, x: e.x, y: e.y, r: e.def.sweep.r, t: 0, life: e.def.sweep.wind }); target = null; }
+          if (!target && e.aim !== undefined) target = this.aimStrike(e);   // lab: what it was sent for, beside it
+          if (target && target.isMirror) { e.atkT = e.def.interval / (e.frenzyM || 1); this.hitMirror(e, target.sq, e.def.atk * (e.enraged ? RAGE.atk : 1) * (e.atkMul || 1)); }   // lab L3: a blow on the glass
+          else if (target && target.isVip) { e.atkT = e.def.interval / (e.frenzyM || 1); this.hitVip(e, e.def.atk * (e.enraged ? RAGE.atk : 1) * (e.atkMul || 1)); }
+          else if (target && e.def.sweep && (e.swings = (e.swings || 0) + 1) % e.def.sweep.every === 0) { e.windT = e.def.sweep.wind; e.windK = "sweep"; e.atkT = e.def.interval; this.fx.push({ k: "sweepwarn", e, x: e.x, y: e.y, r: e.def.sweep.r, t: 0, life: e.def.sweep.wind }); target = null; }
           else if (target) {
             e.atkT = e.def.interval / (e.frenzyM || 1);
             const reach = e.reachHit; e.reachHit = false;   // a cut in passing at someone he is not held by: lighter, and it does not spend the charge
@@ -6751,15 +7162,39 @@ window.BGM = (() => {
         if (e.def.call && e.def.call.rapid && !e.ally) for (const v of this.volleys) if (v.rapidUntil > this.t) { v.rapidUntil = this.t;   // "every gun" dies with the one who gave it: the guns go back to their own time
           if (v.shotT !== undefined && v.next < v.shotT + v.every) { v.next = v.shotT + v.every; v.st = 0; } }
         if (e.lastHitBy && e.lastHitBy.def && e.lastHitBy.def.killCost && this.units.includes(e.lastHitBy)) { this.cost = Math.min(CFG.maxCost, this.cost + e.lastHitBy.def.killCost); this.fx.push({ k: "killcost", x: e.lastHitBy.x, y: e.lastHitBy.y, n: e.lastHitBy.def.killCost, t: 0, life: 1.0 }); }   /* 돌격: every kill pays a point back */ this.fx.push({ k: "die", x: e.x, y: e.y, boss: !!e.def.boss, e, t: 0, life: 0.5 }); }
+      if (this.stage.masks) this.maskStep();   // lab L3 (LAB-04): reflections (where the figures stand after this tick's moves) and the 12 s rule
+      if (this.stage.masks) for (const e of this.enemies) if (e.dead && e.mask === "guest" && !e._counted) { e._counted = true;   // lab L3 (LAB-04): a guest who went in brings 3 cost; one killed is blood
+        if (e.leaked) { this.cost = Math.min(CFG.maxCost, this.cost + 3); this.fx.push({ k: "killcost", x: e.x, y: e.y, n: 3, t: 0, life: 1.0 }); } else this.meter("blood", 1); }
       this.enemies = this.enemies.filter((e) => !e.dead);
-      for (const u of this.units.slice()) if (u.hp <= 0) this.retreat(u, false);
+      for (const u of this.units.slice()) if (u.hp <= 0) { if (this.stage.fallMeter && !u.summoned && !u.clone) this.meter(this.stage.fallMeter.meter, this.stage.fallMeter.by); this.retreat(u, false); }   // lab L2: a fall adds to a gauge
       for (const f of this.fx) f.t += dt;
       this.fx = this.fx.filter((f) => f.t < f.life);
-      if (this.life <= 0 || (this.escort && this.escort.hp <= 0)) { this.life = Math.max(0, this.life); this.over = "lose"; this.escortLost = !!(this.escort && this.escort.hp <= 0); }
+      if (this.goal) this.goalStep();   // lab: the stage's own win and lose conditions in place of the two below
+      else if (this.life <= 0 || (this.escort && this.escort.hp <= 0)) { this.life = Math.max(0, this.life); this.over = "lose"; this.escortLost = !!(this.escort && this.escort.hp <= 0); }
       else if (this.waveIdx >= this.waves.length && !(this.extra && this.extra.length) && !(this.waitSpawn && this.waitSpawn.length) && this.enemies.every((e) => e.ally) && !this.hold && !(this.march && !this.march.part.final)) this.over = "win";
     }
   }
 
+  // lab L2: on a stage with a beat, a manual skill started within 0.2 s of its zone's downbeat is "on the beat" (맞음): a timed one lasts 30% longer, an instant one hits 30%
+  // harder; a deployment on the downbeat halves that card's next redeploy time. Stages without a beat go straight through to the methods as they are
+  { const useSkill0 = Game.prototype.useSkill, deploy0 = Game.prototype.deploy, retreat0 = Game.prototype.retreat;
+    Game.prototype.useSkill = function (u) {
+      if (!this.beat || u.skill.mode !== "manual") return useSkill0.call(this, u);
+      const on = this.onBeat(this.beatZone(u.x)); if (on && !u.skill.dur) this._beatAmpU = u;
+      let r; try { r = useSkill0.call(this, u); } finally { this._beatAmpU = null; }
+      if (on && r !== false) { if (u.skillT > 0) u.skillT *= 1.3; u.beatHitT = this.t; this.fx.push({ k: "onbeat", x: u.x, y: u.y, t: 0, life: 1.0 }); this.snd("chime"); }
+      return r; };
+    { const useSkillB = Game.prototype.useSkill;   // lab L3: the image in the glass uses its skill when its operator does
+      Game.prototype.useSkill = function (u) { const r = useSkillB.call(this, u); if (this.mirror && r !== false && !u.image) { const im = this.units.find((q) => q.image && q.owner === u); if (im && !(im.skillT > 0)) { im.sp = im.skill.sp; useSkillB.call(this, im); } } return r; }; }
+    Game.prototype.deploy = function (cardIdx, x, y, dir) {
+      const r = deploy0.call(this, cardIdx, x, y, dir);
+      if (this.beat && r !== false && this.units.some((u) => u.x === x && u.y === y && u.card === cardIdx) && this.onBeat(this.beatZone(x))) { this.cards[cardIdx].beatRd = true; this.fx.push({ k: "onbeat", x, y, deploy: true, t: 0, life: 1.0 }); }
+      return r; };
+    Game.prototype.deploy = (function (deployB) { return function (cardIdx, x, y, dir) { const r = deployB.call(this, cardIdx, x, y, dir); if (this.mirror && r && !r.summoned) this.mirrorImage(r); return r; }; })(Game.prototype.deploy);   // lab L3
+    Game.prototype.retreat = function (u, refund = true) {
+      const c = this.beat && !u.summoned && this.cards[u.card]; const r = retreat0.call(this, u, refund);
+      if (c && c.beatRd && c.cooldown > 0) { c.cooldown *= 0.5; c.beatRd = false; }
+      return r; }; }
   // statuses and terms that skill texts link to: {이름} in a description becomes a tappable word that opens this explanation
   const STATUS = {
     "신성 손상": { col: "#ffd27a", desc: "적에게 쌓이는 원소 손상. 1000(보스는 2000)이 쌓이면 터지며 {성흔} 상태가 된다. 성흔이 끝날 때까지는 다시 쌓이지 않는다." },
@@ -6813,7 +7248,7 @@ window.BGM = (() => {
 (function () {
   "use strict";
   const { Game, UNITS, CFG, STAGES, PATHS, AIR_PATHS, SPAWNS, tileAt, rotate, RANGE } = window.TD;
-  const solid = (c) => c === "#" || c === "W" || c === "F" || c === "D";   // squares nothing stands on or reaches into: sunken floor (#), a raised wall (W), a lamp (F) and a shut gate (D)
+  const solid = (c) => c === "#" || c === "W" || c === "F" || c === "D" || c === "_" || c === "C" || c === "M" || c === "|";   // the lab's night air (_), chimneys (C), metronomes (M) and glass (|) too   // squares nothing stands on or reaches into: sunken floor (#), a raised wall (W), a lamp (F) and a shut gate (D)
   let W = window.TD.W, H = window.TD.H;   // refreshed whenever a battle sets up its board
   const VWB = 1280, VH = 720;
   let VW = VWB, OX = 0;   // a wide phone screen gets a wider stage: the field stays centred, OX to the right
@@ -6873,7 +7308,7 @@ window.BGM = (() => {
   }
   const zOf = (x, y) => tileAt(x, y) === "h" ? HZ : 0;
   // Chapter 3 (the stages with ep 3) gets its own read of bosses, lamps and guns; every other chapter is drawn as before.
-  const C3 = () => !!(game && game.stage && game.stage.ep === 3);
+  const C3 = () => !!(game && game.stage && (game.stage.ep === 3 || game.stage.lab));   // the lab's stages have no chapter: they borrow chapter 3's bosses, labels and banners
   // A boss of chapter 3 is drawn a size up, ringed on the floor, with its bar always on.
   const BIG3 = (e) => !!(e && e.def && e.def.boss && C3());
   const BOSS3 = 1.3;
@@ -8261,6 +8696,99 @@ window.BGM = (() => {
     rect(lx - w / 2, ly - 19, w, h, "rgba(10,11,13,.72)");
     text(str, lx, ly, 18, "rgba(190,215,255,.98)", { align: "center", weight: 800 });
   }
+  // ---- lab floor marks (L0/L1): the walking ally's route and her squares, the chimneys' links, clocks and smoke, foes about to leap or in the air ----
+  const CHIM_COL = ["#ffa45a", "#7fd3ff", "#c69bff", "#9be15d"], ZONE_COL = ["#ffcf6a", "#7fd3ff"];
+  let vipTop = null;   // where the walking ally stands on screen this frame
+  let maskSel = null, maskBtns = [];   // lab L3 (LAB-04): the mask picked for judging, and this frame's two buttons over it (world space)
+  // the masks over the figures: a white half-mask on each face, the 12 s clock on a held one, a word once judged, and the two buttons over the picked one
+  function drawMasksTop() {
+    maskBtns = []; if (maskSel && (maskSel.dead || maskSel.judged || maskSel.passed || !game.enemies.includes(maskSel))) maskSel = null;
+    for (const e of game.enemies) { if (!e.mask) continue; const [sx, sy, k] = P(e.x, e.y, 0), hy = sy - k * enemyHeight(e.type) * 0.86, f = e.face || 1;
+      if (!e.judged) { ctx.fillStyle = "rgba(248,248,252,.95)"; ctx.strokeStyle = "rgba(40,40,50,.8)"; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.ellipse(sx + f * k * 0.03, hy, k * 0.12, k * 0.07, 0, Math.PI, Math.PI * 2); ctx.lineTo(sx + f * k * 0.15, hy + k * 0.03); ctx.lineTo(sx - f * k * 0.09, hy + k * 0.03); ctx.closePath(); ctx.fill(); ctx.stroke();
+        ctx.fillStyle = "#222"; for (const d of [-0.035, 0.035]) { ctx.beginPath(); ctx.ellipse(sx + f * k * 0.03 + d * k, hy - k * 0.012, k * 0.016, k * 0.009, 0, 0, Math.PI * 2); ctx.fill(); } }
+      if (e.passed) text("통과", sx, hy - k * 0.2, 13, "#9be15d", { align: "center", weight: 800, shadow: true });
+      else if (e.judged) text("처치", sx, hy - k * 0.2, 13, "#ff8a8a", { align: "center", weight: 800, shadow: true });
+      else if (e.firstBlockT !== undefined) { const fr = Math.min(1, (game.t - e.firstBlockT) / 12); ctx.strokeStyle = fr > 0.7 ? "#ff8a5a" : "#ffe066"; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(sx, hy - k * 0.22, 9, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * (1 - fr)); ctx.stroke(); }
+    }
+    if (maskSel) { const e = maskSel, [sx, sy, k] = P(e.x, e.y, 0), by = sy - k * enemyHeight(e.type) - 44, bw = 62, bh = 30;
+      for (const [i, how, lab, col] of [[0, "pass", "통과", "#2f8f3a"], [1, "kill", "처치", "#b8322a"]]) { const bx = sx - bw - 4 + i * (bw + 8); ctx.fillStyle = col; ctx.fillRect(bx, by, bw, bh); ctx.strokeStyle = "#fff"; ctx.lineWidth = 2; ctx.strokeRect(bx, by, bw, bh);
+        text(lab, bx + bw / 2, by + 21, 16, "#fff", { align: "center", weight: 900 }); maskBtns.push({ x: bx, y: by, w: bw, h: bh, e, how }); } }
+  }
+  // the walking ally's marks, drawn after all the figures so nobody standing in front hides them: a white ring, her health bar, her name and what she is doing
+  // (the seconds until she next moves, walking, a cut road, down)
+  function drawVipTop() {
+    const V = game.vip, [sx, sy, k] = vipTop, pl = 0.5 + 0.5 * Math.sin(clock * 3);
+    ctx.strokeStyle = V.dead ? "rgba(160,160,170,.5)" : `rgba(255,255,255,${0.65 + 0.3 * pl})`; ctx.lineWidth = 3; ctx.beginPath(); ctx.ellipse(sx, sy, k * 0.42, k * 0.17, 0, 0, Math.PI * 2); ctx.stroke();
+    bars(sx, sy, k, V.hp / V.maxHp, undefined, false, false);
+    const blocked = V.walking && !V.path, next = !V.walking && V.route[V.leg] ? Math.max(0, Math.ceil(V.waitUntil - game.t)) : null;
+    const tag = V.dead ? " · 쓰러짐" : blocked ? " · 길이 막힘" : V.walking ? " · 이동 중" : next !== null ? ` · ${next}초 뒤 출발` : "";
+    text(V.name + tag, sx, sy - k * 1.18, 15, blocked ? "#ffb3a0" : "#fff", { align: "center", weight: 800, shadow: true });
+  }
+  function drawLabFloor() {
+    const V = game.vip;
+    if (V) {
+      // her whole route ahead, faint and dotted, over the board as it stands (a straight dotted line where there is no way yet), her waiting squares numbered
+      const legs = []; let from = [Math.round(V.x), Math.round(V.y)];
+      for (let i = V.leg; i < V.route.length; i++) { const to = V.route[i].to, p = (i === V.leg && V.walking && V.path ? V.path.slice(V.seg) : TD.bfsPath(from, to)) || [from, to]; legs.push(p); from = to; }
+      ctx.save(); ctx.setLineDash([3, 6]); ctx.strokeStyle = "rgba(255,255,255,.42)"; ctx.lineWidth = 2;
+      for (const p of legs) { ctx.beginPath(); p.forEach((q, j) => { const c0 = P(q[0], q[1], 0.02); j ? ctx.lineTo(c0[0], c0[1]) : ctx.moveTo(c0[0], c0[1]); }); ctx.stroke(); }
+      ctx.restore();
+      // the squares where she stands or will wait: a small white corner bracket at each corner (nobody can be set down there)
+      for (const [x, y] of game.vipSquares || []) { const q = quad(x, y, 0.015), c0 = P(x, y, 0.015); ctx.strokeStyle = "rgba(255,255,255,.85)"; ctx.lineWidth = 2;
+        for (let i = 0; i < 4; i++) { const a = q[i], b = q[(i + 1) % 4], d = q[(i + 3) % 4], f = 0.22; ctx.beginPath(); ctx.moveTo(a[0] + (d[0] - a[0]) * f, a[1] + (d[1] - a[1]) * f); ctx.lineTo(a[0], a[1]); ctx.lineTo(a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f); ctx.stroke(); }
+        void c0; }
+      V.route.forEach((r, i) => { if (i < V.leg) return; const c0 = P(r.to[0], r.to[1], 0.02); ctx.fillStyle = "rgba(255,255,255,.88)"; ctx.beginPath(); ctx.arc(c0[0], c0[1], 11, 0, Math.PI * 2); ctx.fill();
+        text(String(i + 1), c0[0], c0[1] + 5, 14, "#14161a", { align: "center", font: FONT_NUM, weight: 800 }); });
+    }
+    if (game.mirror) {   // lab L3: the room in the glass under a cool blue wash; over each pane a thin health bar once it has been struck
+      const M = game.mirror; poly(ctx, [P(M.x + 0.5, 0.5, 0.01), P(W - 0.5, 0.5, 0.01), P(W - 0.5, H - 1.5, 0.01), P(M.x + 0.5, H - 1.5, 0.01)]); ctx.fillStyle = "rgba(70,130,230,.16)"; ctx.fill();
+      for (const q of M.sq) { if (q.broken || q.hp >= q.max) continue; const c0 = P(q.x, q.y, HZ * 2.2), w = c0[2] * 0.5; ctx.fillStyle = "rgba(0,0,0,.7)"; ctx.fillRect(c0[0] - w / 2 - 1, c0[1] - 8, w + 2, 7); ctx.fillStyle = "#cfe3ff"; ctx.fillRect(c0[0] - w / 2, c0[1] - 7, w * q.hp / q.max, 5); }
+      for (const f of game.fx) if (f.k === "glassbreak") { const c0 = P(f.x, f.y, HZ), u = f.t / f.life; for (let n = 0; n < 7; n++) { const a = n * 0.9 + 0.3; ctx.fillStyle = `rgba(220,235,255,${1 - u})`; ctx.fillRect(c0[0] + Math.cos(a) * c0[2] * u * 0.8, c0[1] + Math.sin(a) * c0[2] * u * 0.5 + u * u * 30, 4, 4); } }
+    }
+    if (game.stage.masks) for (const e of game.enemies) {   // lab L3 (LAB-04): in the glass each mask walks bare-faced: a guest warm, an assassin red with a drawn knife
+      if (!e.mask || e.reflX === undefined) continue; const rp = e._rp || (e._rp = {}); Object.assign(rp, e, { type: e.mask === "assassin" ? "maskAssassin" : "maskGuest", x: e.reflX, y: e.reflY, face: -(e.face || 1), id: e.id + 100000, flash: 0, hp: e.hp, _lx: rp._lx, _ly: rp._ly, _ph: rp._ph, _amp: rp._amp });
+      const [sx, sy, k] = P(rp.x, rp.y, 0); ctx.save(); ctx.globalAlpha = 0.9; drawEnemy(ctx, rp, sx, sy, k, clock); ctx.restore();   // its own colour: maskGuest / maskAssassin
+      if (e.mask === "assassin") { const hy = sy - k * enemyHeight(e.type) * 0.45, hx = sx + rp.face * k * 0.2; ctx.strokeStyle = "#e9eef5"; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(hx, hy); ctx.lineTo(hx + rp.face * k * 0.18, hy - k * 0.14); ctx.stroke(); ctx.strokeStyle = "#5a2a1a"; ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(hx, hy); ctx.lineTo(hx - rp.face * k * 0.05, hy + k * 0.04); ctx.stroke(); }
+    }
+    if (game.beat) for (const [zi, z] of game.beat.zones.entries()) {
+      const col = ZONE_COL[zi % 2], corners = [P(z.x0 - 0.47, 0.53, 0.02), P(z.x1 + 0.47, 0.53, 0.02), P(z.x1 + 0.47, H - 1.53, 0.02), P(z.x0 - 0.47, H - 1.53, 0.02)];
+      ctx.save(); ctx.setLineDash([8, 5]); ctx.strokeStyle = col; ctx.globalAlpha = 0.7; ctx.lineWidth = 2.5; poly(ctx, corners); ctx.stroke(); ctx.restore();
+      // the metronome's arm, swinging from side to side once a beat, and its tempo word
+      const [mx, my] = z.metronome, base = P(mx, my, HZ * 0.3), len = base[2] * 1.15, sw = (z.n % 2 ? 1 : -1) * Math.cos(Math.PI * z.ph) * 0.55;
+      ctx.strokeStyle = "#f2e2b8"; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(base[0], base[1]); ctx.lineTo(base[0] + Math.sin(sw) * len, base[1] - Math.cos(sw) * len); ctx.stroke();
+      ctx.fillStyle = "#c9a35a"; ctx.beginPath(); ctx.arc(base[0] + Math.sin(sw) * len * 0.7, base[1] - Math.cos(sw) * len * 0.7, 4, 0, Math.PI * 2); ctx.fill();
+      const word = ["느리게", "보통", "빠르게"][z.level], wc = ["#8fc8ff", "#e8ebf0", "#ff8a7a"][z.level], foot = P(mx, my + 0.42, 0.02);   // the words go at its foot: above it is the HUD
+      text(word + (z.kept || z.batoned ? (z.kept && z.batoned ? " · 상쇄" : z.kept ? " · 붙듦" : " · 지휘봉") : ""), foot[0], foot[1] + 4, 14, wc, { align: "center", weight: 900, shadow: true });
+    }
+    if (game.beat) for (const e of game.enemies) if (e.restUntilDown) { const c0 = P(e.x, e.y, 0.02); text("쉼", c0[0] + c0[2] * 0.3, c0[1] - c0[2] * 0.2, 13, "#f0e6c8", { align: "center", weight: 800, shadow: true }); }
+    for (const c of game.chimneys || []) {
+      const col = CHIM_COL[c.i % 4], top = P(c.at[0], c.at[1], HZ * 1.7), open = c.bridge.some(([x, y]) => tileAt(x, y) === "^");
+      // a thin dotted line from the chimney to the middle of its bridge, in this chimney's colour
+      const bm = c.bridge.reduce((a, q) => [a[0] + q[0] / c.bridge.length, a[1] + q[1] / c.bridge.length], [0, 0]), b0 = P(bm[0], bm[1], 0.03), a0 = P(c.at[0], c.at[1], 0.03);
+      ctx.save(); ctx.setLineDash([2, 4]); ctx.strokeStyle = col; ctx.globalAlpha = 0.85; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(a0[0], a0[1]); ctx.lineTo(b0[0], b0[1]); ctx.stroke(); ctx.restore();
+      for (const [x, y] of c.bridge) { const q = quad(x, y, 0.02); poly(ctx, q); ctx.strokeStyle = col; ctx.globalAlpha = tileAt(x, y) === "^" ? 0.55 : 0.25; ctx.lineWidth = 1.5; ctx.stroke(); ctx.globalAlpha = 1; }
+      // smoke rising while its bridge is there
+      if (open) for (let i = 0; i < 3; i++) { const u = ((clock * 0.45 + i / 3 + c.i * 0.17) % 1), r = top[2] * (0.12 + u * 0.22); ctx.fillStyle = `rgba(190,175,215,${0.45 * (1 - u)})`; ctx.beginPath(); ctx.arc(top[0] + Math.sin(u * 5 + i) * top[2] * 0.12, top[1] - u * top[2] * 0.9, r, 0, Math.PI * 2); ctx.fill(); }
+      // its clock: filling white while one of ours stops it (the bridge goes when it is full), draining in its colour while nobody does and the bridge is gone
+      const broken = c.brokenUntil > game.t, R = 15, cy = top[1] - top[2] * 0.25;
+      let fr = null, rc = "#fff"; if (!broken && c.kept && !c.shut) fr = c.stopT / c.close; else if (c.shut && !c.kept) { fr = 1 - c.freeT / c.open; rc = col; }
+      ctx.fillStyle = "rgba(10,10,14,.6)"; ctx.beginPath(); ctx.arc(top[0], cy, R, 0, Math.PI * 2); ctx.fill();
+      if (fr !== null) { ctx.strokeStyle = rc; ctx.lineWidth = 4; ctx.beginPath(); ctx.arc(top[0], cy, R - 3, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * Math.max(0, Math.min(1, fr))); ctx.stroke(); }
+      ctx.strokeStyle = col; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(top[0], cy, R, 0, Math.PI * 2); ctx.stroke();
+      if (broken) {   // cleared by the sweep: a broken grate and the seconds before it can be stopped again
+        ctx.strokeStyle = "#ffcf6a"; ctx.lineWidth = 2; for (const d of [-5, 0, 5]) { ctx.beginPath(); ctx.moveTo(top[0] + d - 3, cy - 7); ctx.lineTo(top[0] + d + 3, cy + 7); ctx.stroke(); }
+        text(`${Math.ceil(c.brokenUntil - game.t)}`, top[0], cy - R - 4, 13, "#ffcf6a", { align: "center", font: FONT_NUM, weight: 700, shadow: true });
+      } else text(c.shut ? "끊김" : c.kept ? "막는 중" : "", top[0], cy + R + 14, 12, c.shut ? col : "#fff", { align: "center", weight: 800, shadow: true });
+    }
+    // foes: about to leap (their ring pulses), in the air (a curved broom trail), at work beside a chimney (the sweep's clock)
+    for (const e of game.enemies) {
+      if (e.leapWarn && !e.leap) { const c0 = P(e.x, e.y, 0.02), pl = 0.5 + 0.5 * Math.sin(clock * 12); ctx.strokeStyle = `rgba(255,120,90,${0.4 + 0.6 * pl})`; ctx.lineWidth = 3; ctx.beginPath(); ctx.ellipse(c0[0], c0[1], c0[2] * 0.36, c0[2] * 0.15, 0, 0, Math.PI * 2); ctx.stroke(); }
+      if (e.sweepT > 0) { const c0 = P(e.x, e.y, 0.02); ctx.strokeStyle = "#ffcf6a"; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(c0[0], c0[1] - c0[2] * 1.25, 9, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * Math.min(1, e.sweepT / e.def.sweeper.dur)); ctx.stroke(); }
+    }
+    for (const f of game.fx) if (f.k === "leap") { const a = P(f.x0, f.y0, 0.05), b = P(f.x1, f.y1, 0.05), mx = (a[0] + b[0]) / 2, my = Math.min(a[1], b[1]) - a[2] * 1.6, u = f.t / f.life;
+      ctx.save(); ctx.setLineDash([6, 5]); ctx.strokeStyle = `rgba(255,170,120,${0.9 * (1 - u * 0.5)})`; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.quadraticCurveTo(mx, my, b[0], b[1]); ctx.stroke(); ctx.restore();
+      ctx.strokeStyle = "rgba(255,170,120,.9)"; ctx.lineWidth = 2; ctx.beginPath(); ctx.ellipse(b[0], b[1], b[2] * 0.3, b[2] * 0.12, 0, 0, Math.PI * 2); ctx.stroke(); }
+  }
   function drawFires() {
     if (!game) return;
     bossTags = new Map(); lateLabels = []; lampLab = new Map();
@@ -9465,7 +9993,7 @@ window.BGM = (() => {
 
   let scale = 1, dpr = 1, terrain = null;
   // The board is drawn once into a layer; a stage whose gates give way (stage.shifts) is drawn again whenever the number of shifts done changes.
-  let terrainShifts = 0;
+  let terrainShifts = 0, terrainVer = 0;   // terrainVer: the game's boardVer the board was last drawn at (lab: squares changed by setTile)
   const shiftsDone = () => game && game.shifts ? game.shifts.filter((s) => s.done).length : 0;
   // render quality: 2 full, 1 for phones and tablets, 0 when a device can't keep up (fewer particles, no soft blurs, fewer pixels)
   const TOUCH = window.matchMedia && matchMedia("(pointer: coarse)").matches;
@@ -9632,6 +10160,11 @@ window.BGM = (() => {
       for (const x of xs) {
         const ch = T(x, y);
         if (ch === "h") continue;
+        if (ch === "_") {   // lab L1: night air between the roofs: deep blue-black, a few stars
+          poly(g, quad(x, y, -0.08)); g.fillStyle = "#05070f"; g.fill();
+          for (let i = 0; i < 3; i++) { const sd = (x * 37 + y * 91 + i * 53) % 97, st = P(x - 0.4 + (sd % 9) * 0.1, y - 0.4 + ((sd / 9) | 0) % 9 * 0.1, -0.08); g.fillStyle = `rgba(220,230,255,${0.35 + (sd % 5) * 0.1})`; g.fillRect(st[0], st[1], 1.6, 1.6); }
+          continue;
+        }
         const q = quad(x, y, solid(ch) ? -0.04 : 0);
         poly(g, q);
         if (solid(ch)) {
@@ -9650,6 +10183,8 @@ window.BGM = (() => {
         else if (ch === "~") { gr.addColorStop(0, "#3f3326"); gr.addColorStop(1, "#4c3d2c"); }   // mud: a dark wet brown, rippled below
         else if (ch === "=") { gr.addColorStop(0, "#7d97a6"); gr.addColorStop(1, "#93adbb"); }   // thin ice: pale, cracked below
         else if (ch === "-") { gr.addColorStop(0, "#4f6a7c"); gr.addColorStop(1, "#5e7d90"); }   // an ice sheet: deep and glossy, for walking only
+        else if (ch === "^") { gr.addColorStop(0, "#3c3352"); gr.addColorStop(1, "#4a4066"); }
+        else if (ch === "R") { gr.addColorStop(0, "#3a3532"); gr.addColorStop(1, "#45403b"); }   // lab L2: a rest: walked, not stood on (its sign is laid on below)   // lab L1: a smoke bridge, for walking only (its puffs are laid on below)
         else { gr.addColorStop(0, "#4a4e56"); gr.addColorStop(1, "#565b64"); }
         g.fillStyle = gr; g.fill(); if (dimT(x, y)) { g.fillStyle = "rgba(6,7,9,.62)"; g.fill(); }
         g.strokeStyle = "rgba(0,0,0,.55)"; g.lineWidth = 1.5; g.stroke();
@@ -9664,6 +10199,15 @@ window.BGM = (() => {
           if (ch === "=") { g.strokeStyle = "rgba(40,60,75,.65)"; g.lineWidth = 1.2; const sd = x * 13 + y * 7;
             for (let i = 0; i < 3; i++) { const a0 = P(x - 0.3 + ((sd + i * 5) % 5) * 0.12, y - 0.3 + i * 0.25, 0), a1 = P(x + 0.05 + ((sd + i * 3) % 4) * 0.08, y - 0.1 + i * 0.2, 0), a2 = P(x + 0.3, y + 0.05 + i * 0.12, 0);
               g.beginPath(); g.moveTo(a0[0], a0[1]); g.lineTo(a1[0], a1[1]); g.lineTo(a2[0], a2[1]); g.stroke(); } }
+          g.restore();
+        }
+        if (ch === "R") {   // the rest: a quarter-rest sign painted on the floor
+          const c0 = P(x, y, 0), k0 = c0[2]; g.strokeStyle = "rgba(240,230,200,.8)"; g.lineWidth = Math.max(2, k0 * 0.05); g.lineJoin = "round"; g.beginPath();
+          g.moveTo(c0[0] - k0 * 0.04, c0[1] - k0 * 0.22); g.lineTo(c0[0] + k0 * 0.07, c0[1] - k0 * 0.1); g.lineTo(c0[0] - k0 * 0.06, c0[1]); g.lineTo(c0[0] + k0 * 0.07, c0[1] + k0 * 0.1); g.quadraticCurveTo(c0[0] - k0 * 0.12, c0[1] + k0 * 0.06, c0[0] - k0 * 0.02, c0[1] + k0 * 0.22); g.stroke();
+        }
+        if (ch === "^") {   // the smoke bridge: a pale violet band of puffs
+          g.save(); poly(g, quad(x, y, 0)); g.clip();
+          for (let i = 0; i < 5; i++) { const c0 = P(x - 0.4 + i * 0.2, y + ((x * 3 + i * 7) % 5 - 2) * 0.06, 0), k0 = c0[2]; g.fillStyle = "rgba(205,185,240,.32)"; g.beginPath(); g.ellipse(c0[0], c0[1], k0 * 0.17, k0 * 0.09, 0, 0, Math.PI * 2); g.fill(); }
           g.restore();
         }
         if (ch === "~") {   // puddles and ruts in the mud
@@ -9723,6 +10267,33 @@ window.BGM = (() => {
         poly(g, top); const gw = g.createLinearGradient(0, top[0][1], 0, top[2][1]); gw.addColorStop(0, "#5b544c"); gw.addColorStop(1, "#6a625a");
         g.fillStyle = gw; g.fill(); if (dm) { g.fillStyle = "rgba(6,7,9,.62)"; g.fill(); } g.strokeStyle = "rgba(0,0,0,.55)"; g.lineWidth = 1.5; g.stroke();
         g.beginPath(); g.moveTo(top[3][0], top[3][1]); g.lineTo(top[2][0], top[2][1]); g.strokeStyle = "rgba(255,240,220,.22)"; g.lineWidth = 1.5; g.stroke();
+      }
+      // lab L1: chimneys of this row: a brick stack, taller than a wall, with its dark mouth on top
+      for (const x of xs) {
+        if (T(x, y) !== "C") continue;
+        const CZ = HZ * 1.7, top = quad(x, y, CZ).map((p) => { const c0 = P(x, y, CZ); return [c0[0] + (p[0] - c0[0]) * 0.7, c0[1] + (p[1] - c0[1]) * 0.7]; }), bot = quad(x, y, 0).map((p) => { const c0 = P(x, y, 0); return [c0[0] + (p[0] - c0[0]) * 0.7, c0[1] + (p[1] - c0[1]) * 0.7]; });
+        const side = (i, j, col) => { poly(g, [top[i], top[j], bot[j], bot[i]]); g.fillStyle = col; g.fill(); g.strokeStyle = "rgba(0,0,0,.6)"; g.lineWidth = 1.2; g.stroke();
+          g.save(); poly(g, [top[i], top[j], bot[j], bot[i]]); g.clip(); g.strokeStyle = "rgba(30,10,5,.45)"; g.lineWidth = 1;
+          for (let k = 1; k < 6; k++) { const a = [top[i][0] + (bot[i][0] - top[i][0]) * k / 6, top[i][1] + (bot[i][1] - top[i][1]) * k / 6], b = [top[j][0] + (bot[j][0] - top[j][0]) * k / 6, top[j][1] + (bot[j][1] - top[j][1]) * k / 6]; g.beginPath(); g.moveTo(a[0], a[1]); g.lineTo(b[0], b[1]); g.stroke(); }
+          g.restore(); };
+        side(1, 2, "#6b3424"); side(3, 0, "#6b3424"); side(2, 3, "#86432e");
+        poly(g, top); g.fillStyle = "#93503a"; g.fill(); g.strokeStyle = "rgba(0,0,0,.6)"; g.stroke();
+        const m0 = P(x, y, CZ); g.fillStyle = "#120806"; g.beginPath(); g.ellipse(m0[0], m0[1], m0[2] * 0.2, m0[2] * 0.08, 0, 0, Math.PI * 2); g.fill();
+      }
+      // lab L3: glass of this row: a tall thin pane of silvered glass along the column
+      for (const x of xs) {
+        if (T(x, y) !== "|") continue;
+        const GZ = HZ * 2.1, sl = (p, z) => { const c0 = P(x, y, z); return [c0[0] + (p[0] - c0[0]) * 0.28, c0[1] + (p[1] - c0[1]) * 0.98]; }, top = quad(x, y, GZ).map((p) => sl(p, GZ)), bot = quad(x, y, 0).map((p) => sl(p, 0));
+        for (const [i, j, col] of [[3, 0, "rgba(150,175,200,.75)"], [1, 2, "rgba(150,175,200,.75)"], [2, 3, "rgba(200,220,240,.85)"]]) { poly(g, [top[i], top[j], bot[j], bot[i]]); g.fillStyle = col; g.fill(); g.strokeStyle = "rgba(230,240,255,.8)"; g.lineWidth = 1; g.stroke(); }
+        poly(g, top); g.fillStyle = "rgba(235,245,255,.9)"; g.fill();
+        g.strokeStyle = "rgba(255,255,255,.55)"; g.lineWidth = 2; g.beginPath(); g.moveTo(bot[3][0] + (bot[2][0] - bot[3][0]) * 0.25, bot[3][1] - 6); g.lineTo(top[3][0] + (top[2][0] - top[3][0]) * 0.6, top[3][1] + 8); g.stroke();
+      }
+      // lab L2: metronomes of this row: a wooden pyramid on a low plinth (its arm swings with the beat: drawLabFloor)
+      for (const x of xs) {
+        if (T(x, y) !== "M") continue;
+        const b = quad(x, y, 0).map((p) => { const c0 = P(x, y, 0); return [c0[0] + (p[0] - c0[0]) * 0.75, c0[1] + (p[1] - c0[1]) * 0.75]; }), apex = P(x, y, HZ * 1.6);
+        for (const [i, j, col] of [[3, 0, "#6b4a2a"], [1, 2, "#6b4a2a"], [2, 3, "#8a6236"]]) { poly(g, [b[i], b[j], apex]); g.fillStyle = col; g.fill(); g.strokeStyle = "rgba(0,0,0,.55)"; g.lineWidth = 1.2; g.stroke(); }
+        g.fillStyle = "rgba(255,235,190,.25)"; g.beginPath(); g.moveTo(b[2][0], b[2][1]); g.lineTo(b[3][0], b[3][1]); g.lineTo(apex[0], apex[1]); g.closePath(); g.fill();
       }
       // high ground blocks of this row
       for (const x of xs) {
@@ -10059,7 +10630,7 @@ window.BGM = (() => {
   const EN_TINT = { chxelite: "saturate(1.25) hue-rotate(-20deg) brightness(.82) contrast(1.15)", frosthound: "hue-rotate(185deg) saturate(.7) brightness(1.25)", frostmage: "hue-rotate(160deg) saturate(1.3) brightness(1.1)", icestalker: "grayscale(.85) brightness(1.55)", berserk: "sepia(.6) hue-rotate(-30deg) saturate(2.2) brightness(.95)",
     chasseur: "hue-rotate(70deg) saturate(1.1) brightness(.9)", colonel: "hue-rotate(190deg) saturate(.9) brightness(.9)", armour: "grayscale(1) brightness(.75) contrast(1.3)", kingarmour: "sepia(1) saturate(1.6) brightness(.9) contrast(1.2)", emperor: "hue-rotate(95deg) saturate(.7) brightness(1.15)", snuffer: "hue-rotate(200deg) saturate(.8) brightness(.7)", mouchard: "grayscale(.9) brightness(.85)",
     grenadier: "hue-rotate(200deg) saturate(.75) brightness(.8) contrast(1.15)", drummer: "hue-rotate(-35deg) saturate(1.5) brightness(1.15)", vicar: "grayscale(.85) brightness(.55) contrast(1.3)", lancer: "hue-rotate(95deg) saturate(1.25) brightness(.95)",
-    lampbreaker: "sepia(.8) hue-rotate(-25deg) saturate(1.6) brightness(.7)", cuirassier: "grayscale(.4) sepia(.3) hue-rotate(170deg) saturate(1.4) brightness(.9)" };   // chapter 2's roster has its own drawings now   // the lamp-breaker in red-brown, the cuirassier in steel blue
+    lampbreaker: "sepia(.8) hue-rotate(-25deg) saturate(1.6) brightness(.7)", sweep: "grayscale(1) brightness(.5) contrast(1.25)", masked: "grayscale(.7) brightness(1.3)", maskGuest: "sepia(.85) saturate(1.8) brightness(1.2)", maskAssassin: "sepia(1) hue-rotate(-45deg) saturate(5) brightness(.8)", baton: "sepia(.7) saturate(1.4) brightness(1.35)", cuirassier: "grayscale(.4) sepia(.3) hue-rotate(170deg) saturate(1.4) brightness(.9)" };   // chapter 2's roster has its own drawings now   // the lamp-breaker in red-brown, the cuirassier in steel blue
   const RIGS = {};   // enemy walk rigs, cut from their sprites on first draw
   function enemyHeight(type) { return BODY * enemyHeight0(type); }
   // how high a flier rides over its shadow (tiles): the airship sails well above the drones
@@ -10383,9 +10954,11 @@ window.BGM = (() => {
   EN_POSED.chouang = EN_POSED.chouan;
   // chapter 3, borrowed until drawn: the Guard chasseur (the skirmisher in green), the lamp-snuffer (the straggler, dark blue), the informer (the fowler, grey)
   EN_POSED.chasseur = Object.assign({}, EN_POSED.hexer, { h: 1.3 }); EN_POSED.armour = Object.assign({}, EN_POSED.yshield, { h: 1.4 }); EN_POSED.kingarmour = Object.assign({}, EN_POSED.iceguard, { h: 1.9 }); EN_POSED.snuffer = Object.assign({}, EN_POSED.strag, { h: 1.25 }); EN_POSED.mouchard = Object.assign({}, EN_POSED.chxbow, { h: 1.12, aim: undefined });   // the same figure: only what he does differs
-  EN_POSED.lampbreaker = EN_POSED.snuffer; EN_POSED.cuirassier = EN_POSED.armour;   // the lamp-breaker is drawn as the snuffer and the cuirassier on foot as the empty armour, each in its own colour
+  EN_POSED.lampbreaker = EN_POSED.snuffer; EN_POSED.cuirassier = EN_POSED.armour; EN_POSED.sweep = EN_POSED.snuffer;   // lab L1: the chimney sweep wears the snuffer, in soot grey   // the lamp-breaker is drawn as the snuffer and the cuirassier on foot as the empty armour, each in its own colour
   // borrowed figures for the second half of chapter 2, until their own are drawn: the Old Guard grenadier (the grenadier, darker), the old drummer (the line soldier, red), the refractory priest (the Chouan, in black)
   EN_POSED.grenadier = Object.assign({}, EN_POSED.heavy, { h: 1.56 }); EN_POSED.drummer = Object.assign({}, EN_POSED.soldier, { h: 1.08 }); EN_POSED.vicar = Object.assign({}, EN_POSED.chouan, { h: 1.24 }); EN_POSED.lancer = Object.assign({}, EN_POSED.hexer, { h: 1.36, aim: undefined, scope: undefined, lunge: 1.2 });   // the pikeman: on foot, the skirmisher's figure a size up, in green   // the old hand: the huntsman, a size bigger and darker
+  EN_POSED.baton = EN_POSED.drummer;   // lab L2: the baton wears the drummer, in pale gold
+  EN_POSED.masked = EN_POSED.maskGuest = EN_POSED.maskAssassin = EN_POSED.mouchard;   // lab L3 (LAB-04): the masked figure wears the informer, pale (its half-mask is drawn over it: drawMasksTop)
   function drawPosedEnemy(g, e, sx, sy, k, t, D) {
     const f = e.face || 1;
     const d = e._lx === undefined ? 0 : Math.hypot(e.x - e._lx, e.y - e._ly); e._lx = e.x; e._ly = e.y;
@@ -10695,6 +11268,7 @@ window.BGM = (() => {
         if (k.startsWith("atk:")) SFX.play(atkSound(k.slice(4)), 0.55);
         else if (k === "die") SFX.play("die", 0.6); else if (k === "hurt") SFX.play("hurt", 0.35);
         else if (k === "retreat") SFX.play("retreat", 0.7); else if (k === "down") SFX.play("glass", 0.7);
+        else if (k === "chime") SFX.play("coin", 0.6);   // lab L2: on the beat (a stand-in chime)
       }
       game.sfx.length = 0;
     }
@@ -10761,6 +11335,11 @@ window.BGM = (() => {
     if (hadTip) return;
     if (phase !== "play") return;
     [vx, vy] = camInv(vx, vy);
+    if (game.stage.masks) {   // lab L3 (LAB-04): the two buttons over the picked mask, then a tap on a mask picks it (a tap anywhere else drops it)
+      const mb = maskBtns.find((b) => vx >= b.x && vy >= b.y && vx <= b.x + b.w && vy <= b.y + b.h); if (mb) { game.judge(mb.e, mb.how); maskSel = null; return; }
+      let hitM = null; for (const e of game.enemies) { if (!e.mask || e.judged || e.passed || e.dead) continue; const [sx, sy, k] = P(e.x, e.y, 0); if (vx > sx - k * 0.32 && vx < sx + k * 0.32 && vy > sy - k * 1.1 && vy < sy + k * 0.15) hitM = e; }
+      maskSel = hitM; if (hitM) return;
+    }
     if (inspect >= 0 && pending < 0) { inspect = -1; return; }
     inspect = -1;
     if (aim) {
@@ -10773,6 +11352,7 @@ window.BGM = (() => {
     // operators are tall sprites, so let a tap on the body count, not just the floor tile
     let hitU = null, best = 1e9;
     for (const u of game.units) {
+      if (u.image) continue;   // lab L3: an image in the glass is not picked; its operator is
       const [sx, sy, k] = unitScreen(u);
       if (vx > sx - k * 0.32 && vx < sx + k * 0.32 && vy > sy - k * 0.95 && vy < sy + k * 0.12) { const d = Math.abs(vy - (sy - k * 0.45)); if (d < best) { best = d; hitU = u; } }
     }
@@ -10783,7 +11363,7 @@ window.BGM = (() => {
       if (t && game.canDeployAt(c, t.x, t.y)) { aim = { card: pending, x: t.x, y: t.y, dir: 0 }; pending = -1; return; }
       pending = -1;
     }
-    const u = t && game.unitAt(t.x, t.y);
+    const u0 = t && game.unitAt(t.x, t.y), u = u0 && u0.image ? null : u0;
     selected = u || null;
     if (!u && UZ.z > 1.01) { const [rx, ry] = toV(ev); panDrag = { sx: rx, sy: ry, x0: UZ.x, y0: UZ.y, moved: false }; }   // zoomed in: drag the empty field to look around
     if (!u && t && phase === "play" && !game.over) { const si = SPAWNS.findIndex((q) => q[0] === t.x && q[1] === t.y); if (si >= 0) replayRoutes(si); }
@@ -13633,13 +14213,14 @@ window.BGM = (() => {
     ctx.fillStyle = "#0b0c0e"; ctx.fillRect(0, 0, VW, VH);
     const CM = camM();
     ctx.save(); ctx.translate(ox, oy); ctx.transform(CM[0], CM[1], CM[2], CM[3], CM[4], CM[5]);
-    if (game && game.shifts && game.shifts.length && shiftsDone() !== terrainShifts && canvas.width) { terrainShifts = shiftsDone(); terrain = drawTerrain(); }   // a gate gave way since the board was last drawn
+    if (game && game.shifts && game.shifts.length && shiftsDone() !== terrainShifts && canvas.width) { terrainShifts = shiftsDone(); terrain = drawTerrain(); }
+    if (game && (game.boardVer || 0) !== terrainVer && canvas.width) { terrainVer = game.boardVer || 0; terrain = drawTerrain(); }   // lab: a square changed (a bridge went or came back)   // a gate gave way since the board was last drawn
     ctx.drawImage(terrain, 0, 0, VW, VH);
 
     // enemy route previews
     for (const r of routes) drawRouteLine(r);
 
-    prayGround(); drawYuiCracks(); judgeFloor(); slamFloor(); drawMaze(); drawChessField(); drawSkBoards(); drawSnEmbers(); drawTkField(); drawTrapsFloor(); drawFires(); drawPoints(); drawEgYard(); drawAnField(); drawPFX("floor");
+    prayGround(); drawYuiCracks(); judgeFloor(); slamFloor(); drawMaze(); drawChessField(); drawSkBoards(); drawSnEmbers(); drawTkField(); drawTrapsFloor(); drawFires(); drawLabFloor(); drawPoints(); drawEgYard(); drawAnField(); drawPFX("floor");
     // placement highlights
     const placingCard = drag ? drag.card : pending >= 0 ? pending : -1;
     if (placingCard >= 0) {
@@ -13655,6 +14236,7 @@ window.BGM = (() => {
     // entities, far to near
     const ents = [], overUI = [], boxes = [];   // boxes: where each figure stands on screen, so the bars over them can go see-through
     for (const u of game.units) ents.push({ y: u.y, u });
+    if (game.vip) ents.push({ y: game.vip.y, vip: game.vip });   // lab: the ally who walks
     for (const e of game.enemies) ents.push({ y: e.y + (e.def.flying ? 0.3 : -0.8), e });   // a foe that overlaps an operator goes behind her; only one a full row nearer covers her
     for (const f of game.fx) if (f.k === "down" && (f.id === "yui" || f.id === "atat" || f.id === "belina" || f.id === "hakuren" || f.id === "miho" || f.id === "lulu" || f.id === "irins" || f.id === "alpha" || f.id === "skakea" || f.id === "ker" || f.id === "sunae" || f.id === "teka" || f.id === "capy" || C3PUP[f.id]) && !f.seenC) { f.seenC = true; corpses.push({ id: f.id, el: f.el, x: f.x, y: f.y, dir: f.dir, start: game.t }); if (f.id === "atat") atatDown(f); }
     corpses = corpses.filter((c) => game.t - c.start < (c.id === "atat" || c.id === "belina" || c.id === "hakuren" || c.id === "miho" || c.id === "lulu" || c.id === "irins" || c.id === "alpha" || c.id === "skakea" || c.id === "ker" || c.id === "sunae" || c.id === "teka" || c.id === "capy" || C3PUP[c.id] ? 1.4 : YC.die.dur));
@@ -13663,6 +14245,13 @@ window.BGM = (() => {
     for (const d of foeDead) ents.push({ y: d.e.y - 0.8, fd: d });
     ents.sort((a, b) => a.y - b.y);
     for (const it of ents) {
+      if (it.vip) {   // lab: the walking ally, in her own figure, a white ring under her, her name over her and a health bar in our colour; lying low and grey once she is down
+        const V = it.vip, [sx, sy, k] = P(V.x, V.y, zOf(Math.round(V.x), Math.round(V.y)));
+        ctx.save(); if (V.dead) { ctx.globalAlpha = 0.5; if ("filter" in ctx) ctx.filter = "grayscale(1)"; }
+        drawOperator(ctx, V.sprite, sx, sy, k * 0.8 * BODY, { face: V.face || 1, t: clock, seed: 977, flash: game.t - V.hitAt < 0.12 }); ctx.filter = "none"; ctx.restore();
+        vipTop = [sx, sy, k];   // her ring, name and bar go on after every figure (drawVipTop)
+        continue;
+      }
       if (it.fd) {   // a fallen foe: it staggers back, tips over and burns away to ash from the feet up
         const d = it.fd, e = d.e, u = (game.t - d.start) / d.life, [sx, sy, k] = P(e.x, e.y, e._z || 0);
         if (d.ney || EN_POSED[e.type] || AIR_ART[e.type]) {   // the marshal, and any foe with its own fall drawn: the last round comes home, he goes down on his knees, and the blue goes out of him
@@ -13728,7 +14317,9 @@ window.BGM = (() => {
           if (u.def.id === "smoqueen" && u.skill.id === "sq_star" && u.skillT > 0) face = u.dir === 2 ? -1 : u.dir === 0 ? 1 : (u._sqFace || u.face || 1);   // 죽음의 성좌: she faces where she was set down, and does not turn
           else if (u.def.id === "smoqueen") u._sqFace = face;
         }
+        if (u.image) { ctx.save(); ctx.globalAlpha = 0.62; if ("filter" in ctx) ctx.filter = "grayscale(.6) sepia(.3) hue-rotate(170deg) saturate(2.2) brightness(1.15)"; }   // lab L3: an image in the glass, cool blue and see-through
         drawOperator(ctx, u.def.id, sx, sy, k * 0.8 * BODY, Object.assign({ face, t: clock, swing: u.swing, flash: u.flash > 0, seed: u.id, unit: u, out: (u._draw = u._draw || {}), clip: u.def.id === "yui" && u._an ? u._an.want : null }, poseOf(u)));
+        if (u.image) { ctx.filter = "none"; ctx.restore(); }
         if (u.ward > 0 && u.def.id !== "eungyeol") {   // a ward from 방호학파 / 구원: a thin bubble of pale-blue light round them, a hexagon pattern turning slowly
           const kk = k * 0.8, wf = Math.min(1, u.ward / ((u.hpTop || u.maxHp) * 0.2)), cy = sy - kk * 0.55, rx = kk * 0.5, ry = kk * 0.68;
           ctx.save(); ctx.globalCompositeOperation = "lighter"; ctx.globalAlpha = 0.05 + 0.08 * wf;
@@ -13756,7 +14347,7 @@ window.BGM = (() => {
       } else {
         const e = it.e;
         if (e.def.perch) { const zt = (TD.tileAt(Math.round(e.x), Math.round(e.y)) === "h" ? HZ : 0) + (e.perchFire ? LIGHT_H : 0); e._z = e._z === undefined ? zt : e._z + (zt - e._z) * Math.min(1, dtReal * 8); }   // up on the rise, and down off it
-        let [sx, sy, k] = P(e.x, e.y, e._z || 0);
+        let [sx, sy, k] = P(e.x, e.y, (e._z || 0) + (e.leap ? Math.sin(Math.PI * Math.min(1, e.leap.t / e.leap.dur)) * 1.3 : 0));   // lab L1: in the air on its leap
         if (e.perchFire) sx = P(e.x, e.y, HZ)[0];   // on top of the lighthouse, which stands straight
         if (e.dropT !== undefined && game.t - e.dropT < 0.3) sy -= k * 0.9 * (1 - (game.t - e.dropT) / 0.3) ** 2;   // dropped from the drone or down the airship's rope: he falls the last bit
         if (e.prevX !== undefined && Math.abs(e.x - e.prevX) > 1e-4) e.face = e.x > e.prevX ? 1 : -1;
@@ -13816,6 +14407,9 @@ window.BGM = (() => {
       }
     }
 
+    if (game.vip && vipTop) drawVipTop(); vipTop = null;   // lab: the walking ally's ring, name tag and bar, over every figure
+    if (game.stage.masks) drawMasksTop();   // lab L3 (LAB-04): half-masks, clocks, judgments and the two buttons
+    for (const f of game.fx) if (f.k === "onbeat") { const c0 = P(f.x, f.y, zOf(f.x, f.y)), u = f.t / f.life; text(f.deploy ? "맞음! 재배치 절반" : "맞음!", c0[0], c0[1] - c0[2] * (1.35 + u * 0.4), 18, `rgba(255,228,120,${1 - u * 0.7})`, { align: "center", weight: 900, shadow: true }); }   // lab L2: on the beat
     drawRain(); drawFoxfire();
     // effects
     for (const f of game.fx) if (!f.vfx) { f.vfx = 1; if (FX[f.k]) FX[f.k](f); }
@@ -14362,11 +14956,16 @@ window.BGM = (() => {
     text("ENEMY", cx - 150, 49, 9, "#3a1a06", { align: "center", font: FONT_NUM, weight: 700 });
     text(`${game.killed}/${game.total}`, cx - 82, 38, 28, "#fff", { align: "center", font: FONT_NUM, weight: 400 });
     // life: a blue tower, the number in coral
+    const showLife = !game.goal || (game.goal.hud || []).some((q) => q.life);   // lab: a goal stage shows life only if its goal lists it
+    if (showLife) {
     ctx.save(); ctx.translate(cx + 74, 26); ctx.fillStyle = "#3fa9ff";
     ctx.fillRect(-14, 10, 28, 6); ctx.fillRect(-9, -6, 18, 16); ctx.fillRect(-13, -16, 6, 8); ctx.fillRect(-3, -16, 6, 8); ctx.fillRect(7, -16, 6, 8); ctx.fillRect(-13, -9, 26, 4);
     ctx.fillStyle = "#fff"; ctx.fillRect(-4, -2, 8, 12);
     ctx.fillStyle = "rgba(63,169,255,.55)"; ctx.fillRect(-22, -12, 3, 24); ctx.fillRect(19, -12, 3, 24); ctx.restore();
     text(`${game.life}`, cx + 150, 38, 28, "#ff7f6e", { align: "center", font: FONT_NUM, weight: 400 });
+    }
+    if (game.goal) drawGoalStrip();
+    if (game.beat) drawBeatBars();
     if (startOpt.practice) {
       rect(cx - 236, 52, 472, 24, "rgba(170,22,30,.88)");
       const dm = (x, d) => { ctx.strokeStyle = "rgba(255,255,255,.75)"; ctx.lineWidth = 2; for (let i = 0; i < 2; i++) { const xx = x + d * i * 12; ctx.beginPath(); ctx.moveTo(xx, 58); ctx.lineTo(xx + 6, 64); ctx.lineTo(xx, 70); ctx.lineTo(xx - 6, 64); ctx.closePath(); ctx.stroke(); } };
@@ -14402,6 +15001,40 @@ window.BGM = (() => {
     ctx.beginPath(); ctx.moveTo(VW - 52, 84); ctx.lineTo(VW - 44, 84); ctx.moveTo(VW - 28, 84); ctx.lineTo(VW - 20, 84); ctx.moveTo(VW - 52, 110); ctx.lineTo(VW - 44, 110); ctx.moveTo(VW - 28, 110); ctx.lineTo(VW - 20, 110); ctx.stroke();
   }
 
+  // lab (L0): the goal strip, hung from the middle of the top bar where the life counter would be (the top left holds the new-foe notes), one row per goal.hud item:
+  // a gauge (label, bar, number), the walking ally (name, health bar), the time left
+  function drawGoalStrip() {
+    const items = (game.goal.hud || []).filter((q) => !q.life), w = 250, x = VW / 2 - w / 2, rh = 30; let y = 60;
+    if (!items.length) return;
+    ctx.fillStyle = "rgba(14,15,18,.72)"; ctx.fillRect(x, y - 4, w, items.length * rh + 8); ctx.fillStyle = "rgba(255,255,255,.08)"; ctx.fillRect(x, y - 4, w, 2);
+    const bar = (fr, col, warn) => { ctx.fillStyle = "rgba(255,255,255,.12)"; ctx.fillRect(x + 92, y + 7, 100, 10); ctx.fillStyle = col; ctx.fillRect(x + 92, y + 7, 100 * Math.max(0, Math.min(1, fr)), 10);
+      if (warn) { ctx.strokeStyle = `rgba(255,90,90,${0.5 + 0.5 * Math.sin(clock * 8)})`; ctx.lineWidth = 2; ctx.strokeRect(x + 91, y + 6, 102, 12); } };
+    for (const q of items) {
+      if (q.meter) { const m = game.meters[q.meter] || { v: 0, label: q.meter }, top = m.max !== undefined ? m.max : Math.max(1, m.v), fr = (m.v - (m.min || 0)) / Math.max(1, top - (m.min || 0));
+        text(m.label, x + 10, y + 17, 15, "#e8ebf0", { weight: 700 }); bar(fr, fr >= 0.67 ? "#ff5a5f" : "#ffb02e", fr >= 0.67);
+        text(m.max !== undefined ? `${m.v}/${m.max}` : `${m.v}`, x + 240, y + 17, 15, "#fff", { align: "right", font: FONT_NUM, weight: 600 }); }
+      else if (q.vip && game.vip) { const V = game.vip, fr = V.hp / V.maxHp;
+        text(V.name, x + 10, y + 17, 15, "#e8ebf0", { weight: 700 }); bar(fr, V.dead ? "#555" : "#3fb6ff", !V.dead && fr < 0.3);
+        text(V.dead ? "쓰러짐" : `${Math.ceil(V.hp)}`, x + 240, y + 17, 15, V.dead ? "#ff8a8a" : "#fff", { align: "right", font: FONT_NUM, weight: 600 }); }
+      else if (q.time !== undefined) { const left = Math.max(0, q.time - game.t), sec = Math.ceil(left), mm = `${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, "0")}`;
+        text("남은 시간", x + 10, y + 17, 15, "#e8ebf0", { weight: 700 }); bar(1 - left / Math.max(1, q.time), "#9be15d");
+        text(mm, x + 240, y + 17, 15, "#fff", { align: "right", font: FONT_NUM, weight: 600 }); }
+      y += rh;
+    }
+  }
+  // lab L2: a beat bar per zone either side of the goal strip, in the zone's colour: four cells (the downbeat's larger), the current one lit; under it the next four
+  // measures, each coloured by the tempo the zone will have if nothing changes
+  function drawBeatBars() {
+    const Z = game.beat.zones, TC = ["#5aa8ff", "#c8ccd4", "#ff6a5a"];
+    Z.forEach((z, zi) => { const w = 186, x = zi === 0 ? VW / 2 - 135 - w : VW / 2 + 135, y = 60, col = ZONE_COL[zi % 2];
+      ctx.fillStyle = "rgba(14,15,18,.72)"; ctx.fillRect(x, y - 4, w, 56);
+      text(`${z.id} · ${["느리게", "보통", "빠르게"][z.level]}`, x + 8, y + 14, 13, col, { weight: 800 });
+      const cur = z.n % 4; let cx = x + 8;
+      for (let b = 0; b < 4; b++) { const cw = b === 0 ? 40 : 28, lit = b === cur; ctx.fillStyle = lit ? col : "rgba(255,255,255,.12)"; ctx.fillRect(cx, y + 20, cw, 14); if (lit) { ctx.strokeStyle = "#fff"; ctx.lineWidth = 1.5; ctx.strokeRect(cx, y + 20, cw, 14); } cx += cw + 4; }
+      text(`${(game.beat ? [2.0, 1.4, 0.9][z.level] : 0).toFixed(1)}초`, x + w - 8, y + 31, 12, "#fff", { align: "right", font: FONT_NUM, weight: 600 });
+      for (let m = 0; m < 4; m++) { ctx.fillStyle = TC[z.level]; ctx.globalAlpha = 0.85 - m * 0.15; ctx.fillRect(x + 8 + m * 43, y + 40, 39, 6); ctx.globalAlpha = 1; }
+    });
+  }
   function drawHud() {
     drawHudTop();
 
@@ -14530,7 +15163,10 @@ window.BGM = (() => {
     const st = game.stage;
     text(st.code, 120, 262, 84, "#fff", { font: FONT_NUM, weight: 700 });
     text(st.name, 360, 258, st.name.length > 4 ? 40 : 46, "#fff", { weight: 900 });
-    wrapText(st.desc, 120, 316, 560, 18, "#c8ccd4", 30);
+    const gt = st.goal && st.goal.text;   // lab: a stage with its own goal says how it is won and lost first
+    if (gt) { text("이기는 법", 120, 312, 16, "#9be15d", { weight: 800 }); text(gt.win || "", 210, 312, 16, "#e8ebf0", { weight: 600 });
+      text("지는 법", 120, 340, 16, "#ff8a8a", { weight: 800 }); text(gt.lose || "", 210, 340, 16, "#e8ebf0", { weight: 600 }); }
+    wrapText(st.desc, 120, gt ? 376 : 316, 560, 18, "#c8ccd4", 30);
     // stage picker
     STAGES.forEach((s, i) => {
       const bx = 120 + i * 150, by = 470, on = i === game.stageIdx;
@@ -14689,6 +15325,36 @@ window.BGM = (() => {
       { waitFoe: "colonel" }, { wait: 1.2 },
       { focusFoe: "colonel", who: "yui", say: "의장 포병 대령. 문 아래 서 있는 동안은 포를 멈추거나 빼앗을 수 없습니다. 내려오면서는 손으로 가리킨 자리에 포탄을 부릅니다.", tap: true, at: "bottom" },
       { focusFoe: "colonel", who: "alpha", say: "가리키는 건 의무부터야. 그 애 옆 칸은 비워 둬. \"소등\" 소리가 나면 등 셋 다 꺼져. 옆에 서 있던 애가 다시 켜긴 하는데 오래 걸려. 급한 등엔 새로 한 명 세워.", tap: true, at: "bottom", blink: [[4, 1], [10, 1]] },
+    ],
+    // the lab (L0): LAB-00 「버티기」 (a lab stage has no save to mark, so this plays every time)
+    "LAB-00": [
+      { wait: 0.8 },
+      { say: "이 판은 유이가 90초 동안 버티면 이깁니다. 유이가 쓰러지거나 동요가 6이 되면 집니다.", tap: true },
+      { say: "농장 안길 서쪽을 막고, 고지에서 북쪽 들판의 사냥개를 쏘십시오.", tap: true },
+    ],
+    // LAB-04 「가면무도회」
+    "LAB-04": [
+      { wait: 0.8 },
+      { say: "가면 쓴 손님은 들여보내고, 자객은 막아야 합니다. 맨얼굴은 거울 속에서만 보입니다.", tap: true },
+      { say: "막고, 거울을 보고, 누르십시오. 막아 세운 사람을 누르면 통과와 처치를 고를 수 있습니다.", tap: true },
+    ],
+    // LAB-03 「거울의 방」
+    "LAB-03": [
+      { wait: 0.8 },
+      { say: "왼쪽에 세운 가사인격은 거울 속 같은 자리에 상을 세웁니다. 거울 속 방은 상으로만 막을 수 있습니다.", tap: true },
+      { say: "두 방의 문이 어긋나 있습니다. 양쪽 길이 다 지나는 줄에 세우십시오. 거울을 치는 척탄병부터 잡으십시오.", tap: true },
+    ],
+    // LAB-02 「네 박자」
+    "LAB-02": [
+      { wait: 0.8 },
+      { say: "적은 박자에만 한 칸씩 움직입니다. 메트로놈 옆 칸에 서면 그 구역이 느려집니다. 우리 공격도 함께 느려집니다.", tap: true },
+      { say: "서쪽 메트로놈을 붙들고, 지휘봉부터 쏘십시오. 첫 박에 누른 스킬은 30% 더 갑니다.", tap: true },
+    ],
+    // LAB-01 「지붕 위」
+    "LAB-01": [
+      { wait: 0.8 },
+      { who: "yui", say: "굴뚝 넷, 다리 넷. 굴뚝 옆에 서면 그 다리는 끊깁니다. 본 개체도 다리 없이는 건너지 못합니다.", tap: true },
+      { who: "alpha", say: "길을 우리가 고르는 거야. 유이가 건널 때만 하나 열어.", tap: true },
     ],
     "WL-06": [
       { wait: 1.2 },
@@ -15404,6 +16070,7 @@ window.BGM = (() => {
   };
   const PORTRAIT = {};
   window.__tdGame = () => game;
+  window.__tdMaskPick = (e) => { maskSel = e || null; };   // lab L3 (LAB-04): pick a mask for judging, as a tap would (for test shots)
   window.__tdDrawOp = (g, id, x, y, k, o) => drawOperator(g, id, x, y, k, o || {});
   window.__tdUI = () => ({ aim, drag, pending, inspect });
   window.__tdInspect = (i) => { inspect = i; };
@@ -17354,7 +18021,9 @@ window.BSL_ECON = (() => {
     ...Object.keys(window.BSL_ECON.SUPPLY).flatMap((site) => Array.from({ length: window.BSL_ECON.SUPPLY[site].tiers }, (_, k) => k + 1).map((tier) => { const sm = window.BSL_ECON.SUPPLY_META(site, tier);
       return { cost: sm.cost, first: { orb: 0 }, coin: sm.coin, exp: sm.exp, rec: `정예화 ${sm.rec[0]} · Lv.${sm.rec[1]}`, supply: site, tier,
         unlockAt: sm.unlock }; })),
-  ].map((m) => { if (typeof m.branch === "string") m.branch = TD.STAGES.findIndex((q) => q.code === m.branch); return m; }).map((m, i) => Object.assign(m, { ep: m.ep || (m.supply ? 0 : 1), unlock: m.supply ? (s) => ((s.stages[m.unlockAt] || {}).stars || 0) > 0 : m.open ? (s) => ((s.stages[m.open] || {}).stars || 0) > 0 : m.branch !== undefined ? (s) => ((s.stages[TD.STAGES[m.branch].code] || {}).stars || 0) > 0
+    // the lab (실험실): one entry per lab stage, at the very end as in TD.STAGES. Always open, free, and they give nothing; only the lab menu lists them
+    ...TD.STAGES.filter((q) => q.lab).map(() => ({ ep: 0, lab: true, cost: 0, first: { orb: 0 }, coin: 0, exp: 0, rec: "" })),
+  ].map((m) => { if (typeof m.branch === "string") m.branch = TD.STAGES.findIndex((q) => q.code === m.branch); return m; }).map((m, i) => Object.assign(m, { ep: m.lab ? 0 : m.ep || (m.supply ? 0 : 1), unlock: m.lab ? () => true : m.supply ? (s) => ((s.stages[m.unlockAt] || {}).stars || 0) > 0 : m.open ? (s) => ((s.stages[m.open] || {}).stars || 0) > 0 : m.branch !== undefined ? (s) => ((s.stages[TD.STAGES[m.branch].code] || {}).stars || 0) > 0
     : m.after ? (s) => ((s.stages[m.after] || {}).stars || 0) > 0
     : i === 0 ? () => true : (s) => ((s.stages[TD.STAGES[i - 1].code] || {}).stars || 0) > 0 }))
   // a stage already cleared on this save stays open whatever sits before it now (a story entry added later must not shut a stage behind it)
@@ -18278,6 +18947,13 @@ window.BSL_ECON = (() => {
   .lb-news .nw { position:absolute; right:8px; bottom:8px; background:#ff3b30; color:#fff; font-size:15px; font-weight:700; padding:1px 8px; }
   .lb-small { position:absolute; left:330px; width:170px; height:58px; background:rgba(28,30,34,.92); display:flex; align-items:center; justify-content:space-between; padding:0 14px; }
   .lb-small svg { width:30px; height:30px; } .lb-small span { font-size:20px; font-weight:900; }
+  .lab-l { position:absolute; left:110px; right:110px; top:96px; bottom:30px; overflow-y:auto; color:#2b2c2f; }
+  .lab-h { font-size:34px; font-weight:900; color:#2b2c2f; margin:0 0 6px 4px; } .lab-h small { font-size:16px; color:#8a8f99; margin-left:12px; letter-spacing:.1em; }
+  .lab-note { font-size:17px; font-weight:700; color:#d0451b; margin:0 0 14px 4px; }
+  .lab-r { position:relative; display:flex; align-items:center; gap:22px; background:rgba(255,255,255,.88); border-left:6px solid #2b2c2f; padding:14px 160px 14px 20px; margin-bottom:12px; box-shadow:0 3px 8px rgba(0,0,0,.12); }
+  .lab-r .c { font-size:30px; font-weight:700; color:#2b2c2f; min-width:120px; } .lab-r .n { font-size:24px; font-weight:900; } .lab-r .d { font-size:16px; color:#555a63; margin:4px 0 6px; }
+  .lab-r .g { font-size:15px; font-weight:600; margin-top:2px; } .lab-r .g b { display:inline-block; width:78px; } .lab-r .g b.w { color:#2f8f3a; } .lab-r .g b.l { color:#c0392b; }
+  .lab-go { position:absolute; right:20px; top:50%; transform:translateY(-50%); width:120px; height:54px; background:#2b2c2f; color:#fff; font-size:22px; font-weight:900; display:grid; place-items:center; }
   .lb-date { position:absolute; right:26px; top:6px; font-size:16px; color:#c8ccd4; letter-spacing:.08em; text-shadow:0 1px 3px #000; }
   .lb-ui > .res { top:26px; }
   .lb-panel { position:absolute; left:650px; top:76px; width:610px; height:628px; transform:perspective(1500px) rotateY(-16deg) rotateZ(-1.5deg); transform-origin:100% 50%; }
@@ -19066,7 +19742,7 @@ window.BSL_ECON = (() => {
   let route = { name: "lobby" };
   // moving to another screen is never a cut: the old one fades out as the new one fades in
   let wipe = false;
-  const toStage = (i) => go(STAGE_META[i].supply ? "supplymap" : "terminal", i);   // back to the map an operation was picked from
+  const toStage = (i) => STAGE_META[i].lab ? go("lab") : go(STAGE_META[i].supply ? "supplymap" : "terminal", i);   // a lab stage goes back to the lab menu   // back to the map an operation was picked from
   const shutToday = (i) => !!STAGE_META[i].supply && !EC.OPEN[new Date().getDay()].includes(STAGE_META[i].supply);
   function go(name, arg) { wipe = route.name !== name; if (!/^(roster|opdetail|levelup|promote)$/.test(name)) rsMark = null; route = { name, arg }; render(); }
   function render() {
@@ -19091,8 +19767,8 @@ window.BSL_ECON = (() => {
   const nm = (id) => TD.nameOf(def(id), S.ops[id] ? S.ops[id].elite : 0);
   const epHtml = (id, big) => { const r = nm(id).ruby; return r ? `<div class="${big ? "ep-big" : "epi"}">${esc(r)}</div>` : ""; };   // the epithet: its own quiet line over the name, never squeezed onto it
   const nameHtml = (id, big) => { const n = nm(id); return `${esc(n.main)}${n.sub ? `<span class="sub-nm"${big ? ' style="font-size:21px"' : ""}>${esc(n.sub)}</span>` : ""}`; };
-  const curStage = () => { let i = 0; STAGE_META.forEach((m, k) => { if (m.unlock(S) && m.branch === undefined && !m.supply) i = k; }); return i; };
-  const MAIN = () => TD.STAGES.filter((q, i) => STAGE_META[i].branch === undefined && !STAGE_META[i].supply);   // the story's own operations   // side branches never become "current"
+  const curStage = () => { let i = 0; STAGE_META.forEach((m, k) => { if (m.unlock(S) && m.branch === undefined && !m.supply && !m.lab) i = k; }); return i; };
+  const MAIN = () => TD.STAGES.filter((q, i) => STAGE_META[i].branch === undefined && !STAGE_META[i].supply && !STAGE_META[i].lab);   // the story's own operations   // side branches never become "current"
 
   const SCREENS = {
     lobby(el) {
@@ -19125,7 +19801,8 @@ window.BSL_ECON = (() => {
       news.style.backgroundImage = `url(${opArt(nb.art[nb.art.length - 1], "full")})`; news.onclick = () => go("gacha", { banner: NEWS }); ui.appendChild(news);
       const s1 = h("div", "btn lb-small", `${ICON.drill}<span>훈련장</span>`); s1.style.top = "578px"; s1.onclick = () => go("sandbox");
       const s2 = h("div", "btn lb-small", `${ICON.file}<span>파일</span>`); s2.style.top = "646px"; s2.onclick = () => filesBox();
-      ui.append(s1, s2);
+      const s3 = h("div", "btn lb-small", `${ICON.drill}<span>실험실</span>`); s3.style.top = "510px"; s3.onclick = () => go("lab");   // the lab: prototype stages, outside every chapter
+      ui.append(s1, s2, s3);
       // top right: the date, and the purse
       const dt = new Date(), p2 = (n) => String(n).padStart(2, "0");
       ui.appendChild(h("div", "lb-date en", `${dt.getFullYear()}/${p2(dt.getMonth() + 1)}/${p2(dt.getDate())} ${p2(dt.getHours())}:${p2(dt.getMinutes())}`));
@@ -19209,7 +19886,7 @@ window.BSL_ECON = (() => {
       // the stages that have opened, at different heights, joined by straight runs from one to the next
       const strip = h("div", "strip"), track = h("div", "track"), GAP = 214, X0 = 110, n = TD.STAGES.length;
       const inEp = (i) => (STAGE_META[i].ep || 1) === EP;
-      const isMain = (i) => STAGE_META[i].branch === undefined && !STAGE_META[i].supply && inEp(i);
+      const isMain = (i) => STAGE_META[i].branch === undefined && !STAGE_META[i].supply && !STAGE_META[i].lab && inEp(i);
       const epMain = TD.STAGES.map((q, i) => i).filter((i) => isMain(i)), slot = (i) => epMain.indexOf(i);
       const shown = epMain.filter((i) => STAGE_META[i].unlock(S)).length;
       const cleared = (i) => ((S.stages[TD.STAGES[i].code] || {}).stars || 0) > 0;
@@ -19224,7 +19901,7 @@ window.BSL_ECON = (() => {
         + branchIdx.map((i) => { const f = STAGE_META[i].branch; return `<path d="M${cx(f)} ${cy(f)} L${cx(f)} ${cy(i)} L${cx(i)} ${cy(i)}" stroke="rgba(255,255,255,.55)" stroke-width="2" stroke-dasharray="6 5" fill="none"/>`; }).join("") + `</svg>`;
       const nodes = [], dm = (c) => { const k = (EC.DROPS[c] || {}).main; return k && ITEM[k] ? `<div class="dm t${ITEM[k].tier || 0}">${icn(ITEM[k].ic)}</div>` : ""; };   // the main drop, in a disc at the tag's end
       TD.STAGES.forEach((st, i) => {
-        if (!STAGE_META[i].unlock(S) || STAGE_META[i].supply || !inEp(i)) return;
+        if (!STAGE_META[i].unlock(S) || STAGE_META[i].supply || STAGE_META[i].lab || !inEp(i)) return;
         const story = !!STAGE_META[i].story;   // a story-only entry: tagged STORY, nothing hangs off it
         const nd = h("div", "btn node" + (cleared(i) ? " clear" : " next") + (isMain(i) ? "" : " tr") + (story ? " st" : ""), `<div class="lab en">${story ? "STORY" : isMain(i) ? "OPERATION" : "TUTORIAL"}</div><div class="box"><div class="hx"><i></i></div><div class="c en">${st.code}</div></div>${story ? "" : dm(st.code)}`);
         Object.assign(nd.style, { left: nx(i) + "px", top: ny(i) + "px" });
@@ -19459,6 +20136,7 @@ window.BSL_ECON = (() => {
     prep(el, sel) {
       const practice = typeof sel === "object" && !!sel.practice; if (typeof sel === "object") sel = sel.sel;
       const s = TD.STAGES[sel], m = STAGE_META[sel];
+      if (m.lab) return labPrep(el, sel);   // a lab stage: its own squad check, which spends nothing
       el.appendChild(h("div", "lt-bg")); el.appendChild(h("div", "lt-wm en", "SQUAD·CHECK"));
       el.appendChild(topBar("", "", () => toStage(sel), { res: false }));
       el.appendChild(h("div", "sq-stage", `<span class="en">${s.code}</span>${esc(s.name)}${practice ? `<b>연습</b>` : `<i class="en">⚡ ${S.res.stam}</i>`}`));
@@ -19490,6 +20168,21 @@ window.BSL_ECON = (() => {
         else launch(sel);
       };
       el.appendChild(g);
+    },
+
+    // the lab (실험실): every lab stage, each with its code, name, how it is won and lost, the first sentence of its description and a start button. Always open;
+    // nothing here touches the story, the purse or the records
+    lab(el) {
+      el.appendChild(h("div", "lt-bg")); el.appendChild(h("div", "lt-wm en", "LAB"));
+      el.appendChild(topBar("", "", () => go("lobby"), { res: false }));
+      const box = h("div", "lab-l"); el.appendChild(box);
+      box.appendChild(h("div", "lab-h", `실험실<small class="en">LAB</small>`));
+      box.appendChild(h("div", "lab-note", "실험 중인 판입니다. 그림과 수치는 임시입니다."));
+      TD.STAGES.forEach((s, i) => { if (!STAGE_META[i] || !STAGE_META[i].lab) return;
+        const gt = s.goal && s.goal.text, parts = (s.desc || "").split(/(?<=[.!?])\s/), one = parts[0].length < 12 && parts[1] ? parts[0] + " " + parts[1] : parts[0];   // a very short first sentence takes the next one with it
+        const row = h("div", "lab-r", `<div class="c en">${esc(s.code)}</div><div class="tx"><div class="n">${esc(s.name)}</div><div class="d">${esc(one)}</div>
+          ${gt ? `<div class="g"><b class="w">이기는 법</b>${esc(gt.win || "")}</div><div class="g"><b class="l">지는 법</b>${esc(gt.lose || "")}</div>` : ""}</div>`);
+        const go1 = h("div", "btn lab-go", "시작"); go1.onclick = () => go("prep", i); row.appendChild(go1); box.appendChild(row); });
     },
 
     // squads, after the original: a light room, twelve cards in two rows, arrows to page through the squads, their tabs along the bottom
@@ -20135,7 +20828,7 @@ window.BSL_ECON = (() => {
     const out = [], DAYN = "일월화수목금토", today = new Date().getDay();
     if (!EC.ITEMS[k]) return out;
     TD.STAGES.forEach((st, i) => {
-      const m = STAGE_META[i]; if (!m) return;
+      const m = STAGE_META[i]; if (!m || m.lab) return;
       if (m.supply) {
         const sp = EC.SUPPLY[m.supply], keys = EC.supplyKeys(m.supply, m.tier);
         if (!keys.includes(k)) return;
@@ -20472,16 +21165,17 @@ window.BSL_ECON = (() => {
       mo.querySelectorAll(".tb").forEach((t) => t.onclick = () => { sortBy = t.dataset.k; draw(); });
       mo.querySelectorAll(".pc").forEach((c) => c.onclick = () => {
         const id = c.dataset.id, n = sel.indexOf(id); focus = id;
-        if (n >= 0) sel.splice(n, 1); else if (sel.length < cap) sel.push(id); else { toast(`최대 ${cap}명까지 배치할 수 있습니다`); }
+        if (n >= 0) sel.splice(n, 1); else if (sel.length < cap) sel.push(id); else { const out = sel.pop(); sel.push(id); toast(`${nm(out).main} 대신 ${nm(id).main}`); }   // full: the new one takes the last one's place
         const gl = mo.querySelector(".gl"), st = gl.scrollTop; draw(); mo.querySelector(".gl").scrollTop = st;
       });
       mo.querySelector(".clr").onclick = () => { sel = []; draw(); };
       mo.querySelector(".bk").onclick = () => mo.remove();
       mo.querySelector(".ok").onclick = () => {
-        baseTick(); const before = isD ? b.dorm.rest.slice() : R.g.slice();
+        try { baseTick(); } catch (e) { console.error(e); } const before = isD ? b.dorm.rest.slice() : R.g.slice();
         for (const id of before) if (!sel.includes(id)) setPost(id, null);
         for (const id of sel) setPost(id, target);
-        save(); mo.remove(); after && after();
+        save(); mo.remove(); toast(sel.length ? `${sel.length}명 배치 완료` : "배치 해제");
+        try { after && after(); } catch (e) { console.error(e); go(isD ? "dorm" : "room", isD ? undefined : target); }
       };
     };
     draw();
@@ -20514,7 +21208,7 @@ window.BSL_ECON = (() => {
     mo.innerHTML = `<div class="term-bg" style="background-image:url(${ART.st_war || ART.bg})"></div><div class="term-shade"></div>
       <div class="zm-ttl"><small class="en">DISPATCH ROOM ${r + 1} · GATHERING SITE</small><b>채집지 선택</b><span>장마다 채집지는 두 곳입니다. 지키면서 그곳의 자원을 채집합니다.</span></div><div class="btn zm-bk">‹</div>`;
     mo.querySelector(".zm-bk").onclick = () => mo.remove();
-    const main = TD.STAGES.map((q, i) => i).filter((i) => STAGE_META[i].branch === undefined && !STAGE_META[i].supply && !STAGE_META[i].story);   // story entries hold no ground
+    const main = TD.STAGES.map((q, i) => i).filter((i) => STAGE_META[i].branch === undefined && !STAGE_META[i].supply && !STAGE_META[i].story && !STAGE_META[i].lab);   // story entries hold no ground
     const GAP = 214, X0 = 110, YS = [150, 236, 128, 222, 140, 232, 150], nx = (k) => X0 + k * GAP, ny = (k) => YS[k % YS.length];
     const strip = h("div", "strip zm-strip"), track = h("div", "track"); track.style.width = (X0 * 2 + main.length * GAP + 520) + "px";
     track.innerHTML = `<svg width="${X0 * 2 + main.length * GAP + 520}" height="420"><path d="${main.map((i, k) => (k ? "L" : "M") + (nx(k) + 50) + " " + (ny(k) + 26)).join(" ")}" stroke="rgba(255,255,255,.8)" stroke-width="2.5" fill="none"/></svg>`;
@@ -22130,6 +22824,33 @@ window.BSL_ECON = (() => {
     const squad = sel.filter((q) => S.ops[q.id]).slice(0, 12).map((q) => { const o = S.ops[q.id]; return { id: q.id, skillIdx: Math.min(q.s || 0, o.elite, Math.max(0, (def(q.id).skills || []).length - 1)), mult: mult(q.id), elite: o.elite, look: lookElite(q.id), pot: o.pot, slv: o.sl || 1 }; });
     host.hidden = true;
     B.start("sandbox", squad, () => { host.hidden = false; render(); });
+  }
+
+  // ---------- the lab ----------
+  // the squad check for a lab stage: the stage's fixed squad if it has one, else the current squad as for any operation; no stamina, no rewards
+  function labPrep(el, sel) {
+    const s = TD.STAGES[sel], m = STAGE_META[sel];
+    el.appendChild(h("div", "lt-bg")); el.appendChild(h("div", "lt-wm en", "SQUAD·CHECK"));
+    el.appendChild(topBar("", "", () => go("lab"), { res: false }));
+    el.appendChild(h("div", "sq-stage", `<span class="en">${s.code}</span>${esc(s.name)}<b>실험</b>`));
+    if (m.fixed) { const row = h("div", "fixed-sq"); el.appendChild(row); const keep = {};
+      for (const [id, elite, lvl] of m.fixed) { if (!S.ops[id]) { keep[id] = true; S.ops[id] = { lvl, elite, pot: 1, skill: 0, got: 0 }; } const c = opCard(id); c.onclick = null; row.appendChild(c); }
+      for (const id in keep) delete S.ops[id];
+      el.appendChild(h("div", "cap-note", `<b>고정 편성</b> · 이 판은 정해진 가사인격으로 출전합니다`)); }
+    else squadView(el, () => go("prep", sel), { prep: sel });
+    const ok = m.fixed || squadIds().length > 0;
+    const g = h("div", "btn go sq-go prc" + (ok ? "" : " dis"), `<div class="a">실험 개시</div><div class="b">보상 · 기록 없음</div>`);
+    g.onclick = () => { if (!m.fixed && !squadIds().length) return toast("편성에 가사인격이 없습니다"); launchLab(sel); };
+    el.appendChild(g);
+  }
+  // a lab battle: the progress pointer, stamina, clears, rewards, missions and the scenes-seen list are all left as they were; the stage's script plays every time
+  function launchLab(sel) {
+    const m = STAGE_META[sel], fx = m.fixed;
+    const squad = fx ? fx.map(([id, elite, lvl]) => ({ id, skillIdx: 0, mult: TD.growth(def(id), elite, lvl, maxLv(id, elite)), elite, pot: 1 }))
+      : squadIds().slice(0, m.squad || 12).map((id) => ({ id, skillIdx: S.ops[id].skill, mult: mult(id), elite: S.ops[id].elite, look: lookElite(id), pot: S.ops[id].pot, slv: S.ops[id].sl || 1 }));
+    host.hidden = true;
+    B.start(sel, squad, (r) => { host.hidden = false; if (r.quit) return go("lab"); go("result", Object.assign({}, r, { reward: { lab: true } })); },
+      { seen: {}, mark: () => {}, practice: false, cost: 0, me: S.name || "지휘관", lab: true });
   }
 
   // ---------- battles ----------
