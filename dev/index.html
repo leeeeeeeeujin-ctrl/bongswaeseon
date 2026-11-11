@@ -3799,10 +3799,10 @@ window.BGM = (() => {
     // the board is laid together, and the line falls in behind him). When he first falls he sets the crown on his head once more: three seconds untouchable, then the second
     // stage opens with the same order and he breaks once through whoever holds him. In the second stage, at half, he stands still for six seconds with his guard down.
     // Reaching a point loses the operation (life 10).
-    emperor: { name: "황제", info: ["관을 쓴 쪽. 능선 건너 지휘 위치에 서 있다가, 근위대가 꺾이면 직접 내려온다. 둘 몫으로 저지된다. 둘레 2.4칸의 적은 빨라지고 세진다. 방어 지점에 닿으면 작전은 실패한다.", "체력이 절반이 되면 \"전군\": 모든 돌격과 포격이 한꺼번에 예고되고 포도탄이 능선마루를 넘는다. 명한 뒤 4초 동안은 걸음을 멈춘다. 쓰러지면 관을 다시 쓰고 일어난다(3초 동안 피해를 받지 않는다). 일어나며 다시 \"전군\"을 명하고, 막아선 가사인격을 한 번 뚫는다. 그 뒤 체력이 절반이 되면 6초 멈춰 서며 방어가 무너진다. 빼앗은 포는 한 발마다 그의 최대 체력의 10%를 깎는다."],
-      hp: 10000, atk: 640, def: 300, res: 30, speed: 0.4, interval: 2.2, weight: 2, mass: 4, life: 10, boss: true, noMul: true, gunner: true,
+    emperor: { name: "황제", info: ["관을 쓴 쪽. 능선 건너 지휘 위치에 서 있다가, 근위대가 꺾이면 직접 내려온다. 둘 몫으로 저지된다. 그가 닿으면, 막고 있던 적을 놓고 그를 붙든다. 둘레 2.4칸의 적은 빨라지고 세진다. 방어 지점에 닿으면 작전은 실패한다.", "체력이 절반이 되면 \"전군\": 모든 돌격과 포격이 한꺼번에 예고되고 포도탄이 능선마루를 넘는다. 명한 뒤 4초 동안은 걸음을 멈춘다. 쓰러지면 관을 다시 쓰고 일어난다(3초 동안 피해를 받지 않는다). 일어나며 다시 \"전군\"을 명하고, 막아선 가사인격을 한 번 뚫는다. 그 뒤 체력이 7할로 줄면 6초 멈춰 서며 방어가 무너진다. 빼앗은 포는 한 발마다 그의 최대 체력의 10%를 깎는다."],
+      hp: 8000, atk: 640, def: 300, res: 30, speed: 0.4, interval: 2.2, weight: 2, mass: 4, life: 10, boss: true, noMul: true, gunner: true, claim: true,
       rally: { r: 2.4, speed: 1.25, atk: 1.2 }, call: { at: [0.5], phase: 1, type: "soldier", n: 2, barrage: true, gate: 1, via: [[11, 4], [7, 4], [2, 4]], stall: 4 },   // stall: after the order he stands 4 s with his arm raised
-      phase2: { hp: 10000, invul: 3, def: 220, atk: 640, speed: 0.5, barrage: true }, falter: { at: 0.5, phase: 2, dur: 6, r: 3, bare: true },
+      phase2: { hp: 8000, invul: 3, def: 220, atk: 640, speed: 0.5, barrage: true }, falter: { at: 0.7, phase: 2, dur: 6, r: 3, bare: true },
       charge: { every: 1e9, dur: 1.6, mult: 1.0, hit: 2, breach: { at: 1, phase: 2, push: 1.1 } } },   // the charge is kept only for the breach: he never charges on his own
     // WL-09, the phantom army the confessor rings up out of the palace armoury (Faust II, act 4): old armour with nobody in it
     armour: { name: "빈 갑주", info: ["아무도 들어 있지 않은 옛 갑옷. 느리고 단단하다.", "어둠 속에서 쓰러지면 5초 뒤 다시 일어난다(한 번)."],
@@ -4757,21 +4757,22 @@ window.BGM = (() => {
         [144, "chasseur", 1, 1, 0, MW], [150, "grenadier", 1, 1, 0, ME], [152, "drummer", 1, 1, 0, MW], [156, "soldier", 1, 3, 1.4, MW], [160, "lancer", 2, 2, 2, EB], [164, "soldier", 0, 2, 1.5, WX], [168, "grenadier", 2, 1, 0, EA], [172, "soldier", 1, 3, 1.3, ME], [176, "lancer", 1, 1, 0, MW]]); })(),
       boss: ["", ""], desc: "능선 한가운데의 농장. 적은 북쪽에서 두 길로 내려오고, 방어 지점은 두 길의 끝, 둘입니다. 두 길의 바깥 줄에는 기병 돌격, 방어 지점 앞을 가로지르는 길에는 포도탄이 옵니다(붙어 선 가사인격은 1.6배). 가운데 농장은 우리 고지입니다. 100초에 농장의 북쪽 문이 부서지면, 안뜰이 세 번째 길이 되어 가로지르는 길 한복판으로 이어집니다.",
       lose: "동쪽 끝 고지에서 보초를 쓰러뜨리고, 포가 처음 쏘기 전(62초)에 포구 앞 칸을 8초 지켜 포를 빼앗으세요. 그다음 두 방어 지점 앞, 가로지르는 길 위에 둘씩 세우면 세 길이 모두 그 앞을 지납니다. 빼앗은 포는 13초마다 그 길 위의 적을 최대 체력의 30%씩 깎습니다." },
-    { code: "WL-08", name: "몽생장 능선", map: MAP_C3.ridge, bg: null, hz: 0.5, ep: 3, startCost: 24, mul: { hp: 0.88, atk: 0.98, def: 0.85 }, rmul: { hp: 1, atk: 0.75 }, crest: 4,
-      volleys: [{ kind: "charge", first: 34, every: 34, warn: 5, dmg: 1100, pct: 0.6, leave: { type: "cuirassier", n: 1, from: 4 }, tiles: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((x) => [x, 1]) },
+    { code: "WL-08", name: "몽생장 능선", map: MAP_C3.ridge, bg: null, hz: 0.5, ep: 3, startCost: 24, mul: { hp: 0.66, atk: 0.735, def: 0.85 }, rmul: { hp: 1, atk: 0.75 }, crest: 4,
+      // 임시 (TEMPORARY, spec 5A4 lever iv, last resort): mul is 0.75 x its 5A3 value (hp 0.88, atk 0.98). To be removed at the chapter review
+      volleys: [{ kind: "charge", first: 34, every: 34, warn: 5, dmg: 1100, pct: 0.6, tiles: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((x) => [x, 1]) },
                 { kind: "charge", first: 51, every: 34, warn: 5, dmg: 1100, pct: 0.6, tiles: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((x) => [x, 6]) },
-                { first: 68, every: 34, warn: 4, dmg: 700, pct: 0.3, foe: 0.3, mine: 1.7, pack: 1.6, capture: 8, linger: 20, muzzle: [12, 3], gun: [13, 3], mineEvery: 12, bossPct: 0.10, full: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((x) => [x, 3]), tiles: [5, 6, 7, 8, 9, 10, 11].map((x) => [x, 3]) }],   // the shot stops at the crest: west of column 5 the centre is in dead ground
+                { first: 68, every: 34, warn: 4, dmg: 700, pct: 0.3, foe: 0.3, mine: 1.7, pack: 1.6, capture: 8, linger: 20, muzzle: [12, 3], gun: [13, 3], mineEvery: 8, bossPct: 0.10, full: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((x) => [x, 3]), tiles: [5, 6, 7, 8, 9, 10, 11].map((x) => [x, 3]) }],   // the shot stops at the crest: west of column 5 the centre is in dead ground
       // gates: 0 the upper road, 1 the centre, 2 the lower. The Emperor stands at his post on the gun's muzzle square from the first moment (in plain sight) until 118, then comes
-      // down the centre. Four movements: the line (5-45), horse and gun (60-108), the Guard and the Emperor himself (118-160: the centre is left to him, the rest takes the outer roads), and what is left (165-195)
+      // down the centre. Four movements: the line (5-45), horse and gun (60-108), the Guard and the Emperor himself (118-160: the centre is left to him, and the outer roads carry only light foot), and what is left (165-195)
       waves: (() => { const N1 = { via: [[12, 1], [2, 1], [1, 3]] }, N2 = { via: [[12, 2], [7, 2], [2, 2], [1, 3]] }, C3 = { via: [[11, 3], [7, 3], [2, 3]] }, C4 = { via: [[11, 4], [7, 4], [2, 4]] }, S5 = { via: [[12, 6], [2, 6], [2, 4]] }, S6 = { via: [[12, 6], [2, 6], [2, 4]] },
         POST = { at: [12, 3], until: 118, seen: true, via: [[5, 3], [2, 3]] };
         return W1([[0.5, "emperor", 1, 1, 0, POST],
         [5, "soldier", 0, 2, 2, N2], [18, "soldier", 2, 2, 2, S6], [30, "soldier", 1, 2, 2, C4], [40, "chasseur", 0, 1, 0, N1], [46, "lancer", 1, 1, 0, C3],
         [60, "soldier", 1, 3, 1.5, C4], [66, "lancer", 0, 2, 2, N1], [72, "grenadier", 1, 1, 0, C3], [80, "soldier", 2, 3, 1.5, S6], [82, "drummer", 2, 1, 0, S5], [90, "chasseur", 1, 1, 0, C4], [96, "lancer", 2, 1, 0, S5], [102, "soldier", 0, 3, 1.4, N2],
-        [118, "grenadier", 2, 1, 0, S6], [124, "soldier", 0, 3, 1.4, N1], [128, "soldier", 2, 2, 1.5, S6], [136, "grenadier", 0, 1, 0, N2], [138, "drummer", 2, 1, 0, S6], [146, "lancer", 0, 2, 2, N2], [150, "lancer", 2, 1, 0, S5], [156, "chasseur", 2, 1, 0, S6],
+        [124, "soldier", 0, 3, 1.4, N1], [128, "soldier", 2, 2, 1.5, S6], [138, "drummer", 2, 1, 0, S6], [156, "chasseur", 2, 1, 0, S6],   // his descent: no weight-2 men and no lancers on the outer roads
         [166, "soldier", 1, 3, 1.4, C4], [172, "grenadier", 0, 1, 0, N2], [176, "soldier", 2, 3, 1.4, S5], [184, "lancer", 1, 2, 2, C4], [190, "soldier", 0, 3, 1.3, N1]]); })(),
       boss: ["경고: 황제", "관을 쓴 쪽 · WARNING"], desc: "능선. 길 셋이 서쪽의 방어 지점으로 옵니다. 바깥 두 줄에는 기병 돌격, 가운데 길의 위쪽 줄에는 포도탄이 옵니다. 포도탄은 능선마루를 넘지 못합니다. 황제는 포구 앞에서 지휘하다가 118초에 가운데 길로 내려옵니다. 황제가 방어 지점에 닿으면 작전은 실패합니다.",
-      lose: "황제는 둘 몫으로 저지됩니다. 쓰러뜨려도 관을 다시 쓰고 한 번 일어나며, 그때 막아선 가사인격을 뚫으니 두 겹으로 받으세요. \"전군\"에는 포도탄도 능선마루를 넘습니다. 그가 떠난 포구 앞 칸을 8초 지키면 포는 우리 것입니다. 12초마다 그의 체력을 10%씩 깎으니, 능선마루 동쪽 포격 줄 위에서 붙잡으세요. 멈춰 선 6초에 모든 것을 쏟으세요." },
+      lose: "황제는 둘 몫으로 저지됩니다. 쓰러뜨려도 관을 다시 쓰고 한 번 일어나며, 그때 막아선 가사인격을 뚫으니 두 겹으로 받으세요. \"전군\"에는 포도탄도 능선마루를 넘습니다. 그가 떠난 포구 앞 칸을 8초 지키면 포는 우리 것입니다. 8초마다 그의 체력을 10%씩 깎으니, 능선마루 동쪽 포격 줄 위에서 붙잡으세요. 그가 닿으면 가사인격은 막던 적을 놓고 그를 붙듭니다. 두 번째 줄은 능선마루 바로 서쪽에. 멈춰 선 6초에 모든 것을 쏟으세요." },
     { code: "WL-09", name: "튈르리", map: MAP_C3.palace, bg: null, hz: 0.5, ep: 3, startCost: 24, mul: { hp: 0.898, atk: 0.986, def: 0.85 }, rmul: { hp: 1, atk: 0.75 },
       lamps: { r: 2 },
       // gates: 0 the palace door, 1 the upper east gate, 2 the lower. The Emperor is beaten; the confessor rings the armoury awake. Empty armour that falls in the dark gets up again:
@@ -6001,6 +6002,15 @@ window.BGM = (() => {
       else if (u.def.id !== "lulu") this.fx.push({ k: "slash", x: e.x, y: e.y, heavy: !!u.def.windup, bash: u.def.id === "yui", paint: u.def.id === "belina", ux: u.x, uy: u.y, dir: u.dir, face: u.face, t: 0, life: u.def.windup ? 0.45 : 0.2 });
     }
     blockLoad(u) { return this.enemies.reduce((s, e) => s + (e.blockedBy === u ? e.def.weight : 0), 0); }
+    // claim (a def flag, the Emperor's): when he reaches one of ours on the ground who could hold him by block count alone but whose hands are full, that operator
+    // lets go of as many of those it holds as needed (the most recently taken first, never another claimer) and takes him. Those let go walk on at once
+    claimBlocker(e, u) { const B = this.stat(u, "block"), W = e.def.weight; let load = this.blockLoad(u);
+      if (B < W || load + W <= B) return false;
+      const held = this.enemies.filter((q) => q.blockedBy === u && !q.def.claim).sort((a, b) => (b.blockedAt || 0) - (a.blockedAt || 0)), drop = [];
+      for (const q of held) { if (load + W <= B) break; drop.push(q); load -= q.def.weight; }
+      if (load + W > B) return false;
+      for (const q of drop) q.blockedBy = null;
+      this.fx.push({ k: "claim", x: u.x, y: u.y, t: 0, life: 0.9 }); return true; }
     useSkill(u) {
       const s = u.skill;
       if (u.sp < s.sp || u.skillT > 0 || u.frozenT > 0) return false;   // nobody frozen can act
@@ -6391,8 +6401,9 @@ window.BGM = (() => {
           if (!e.def.flying) {
             const tx = Math.round(e.x), ty = Math.round(e.y);
             const u = this.unitAt(tx, ty);
+            if (e.def.claim && u && this.onGround(u) && !(e.breachT > this.t && e.breachFrom === u)) this.claimBlocker(e, u);   // a boss is never walked past: a full blocker lets go of others to take him
             if (u && this.onGround(u) && !(e.breachT > this.t && e.breachFrom === u) && this.blockLoad(u) + e.def.weight <= this.stat(u, "block")) {
-              e.blockedBy = u;
+              e.blockedBy = u; e.blockedAt = this.t;
               // stop at the edge of the blocker's tile
               const d = Math.hypot(e.x - u.x, e.y - u.y);
               if (d < 0.45) { e.x = sx; e.y = sy; e.seg = sseg; e.segT = st; this.advance(e, 0); }
@@ -8181,6 +8192,7 @@ window.BGM = (() => {
         if (X >= VW / 2) X = r[0] - w / 2 - 4; else X = r[2] + w / 2 + 4; }
       Y = Math.max(100 + h, Y);   // clear of the bar across the top
       const [lx, ly] = camInv(X, Y);
+      rect(lx - w / 2 - 3, ly - size - 3, w + 6, h + 2, "rgba(10,11,13,.72)");   // the order strip's plate, so it reads over the red gate cubes
       text(str, lx, ly, size, v.ours ? "rgba(130,240,170,.98)" : "rgba(255,225,150,.98)", { align: "center", weight: 800, shadow: true }); }
   }
   // The parts of the screen the battle's panels cover (screen space): the speed and pause buttons at the top right, the cost box and the deck at the bottom right.
@@ -8211,13 +8223,17 @@ window.BGM = (() => {
   const isDown = (e) => !!(e && e.def.revive && !e.dead && (e.downUntil > game.t || game.fx.some((f) => f.k === "rise" && f.e === e && f.t < f.life)));
   // the Emperor between his two stages: untouchable until crownUntil
   const isCrowning = (e) => !!(e && e.crownUntil !== undefined && !e.crowned && game.t < e.crownUntil);
-  // The labels of one lamp on the dark streets sit in one row over it, in fixed slots, so they never overlap: the cross of a lamp that is out on the left,
-  // the word just said (소등 / 점등) in the middle, and the seconds (점등 N, 꺼짐 N) on the right. Null off the dark streets, where labels stay as they were.
+  // One lamp on the dark streets shows one label at a time, centred just above its post (above the bars of those standing beside it on the high ground, below the
+  // feet of those on the row behind): a running clock (점등 N, 꺼짐 N) first, else the cross of a lamp that is out, else the word just said (소등 / 점등).
+  // Null off the dark streets, where labels stay as they were.
   function lampSlots(x, y) {
     if (!game.stage.lamps || tileAt(x, y) !== "F") return null;
-    const c = P(x, y, 0.72), k = c[2];   // just over the post, below where the figures on the row behind have their bars
-    return { l: [c[0] - k * 0.38, c[1] - 5], c: [c[0], c[1]], r: [c[0] + k * 0.23, c[1]] };
+    const c = P(x, y, 0.82);
+    return { l: [c[0], c[1] - 5], c: [c[0], c[1]], r: [c[0], c[1]] };
   }
+  // keep only the most important label of each lamp this frame (priority: 3 a clock, 2 the cross, 1 a word); they are drawn after the figures and bars
+  let lampLab = new Map();
+  function lampLabel(x, y, pri, fn) { const key = y * 100 + x, cur = lampLab.get(key); if (!cur || pri > cur.pri) lampLab.set(key, { pri, fn }); }
   // the square a lamp's light reaches (its reach and half a square more), dashed, and cut off at the edge of the board
   function lampSquare(x, y, col, dash) {
     const R = ((game.stage.lamps && game.stage.lamps.r) || 1) + 0.5;
@@ -8226,9 +8242,28 @@ window.BGM = (() => {
   }
   // the burning villages: a warned square pulses red, a lit one flickers and throws sparks and smoke, a burnt-out one lies dark;
   // and the infernal machines going off, and the hedge-fowlers' muzzle flashes
+  // A charge lane's label: just off the board beyond the lane's first end (its last end when that spot falls under the screen's panels), on the order strip's plate
+  function chargeLabel(tiles, str) {
+    const n = tiles.length, ends = [[tiles[0], n > 1 ? tiles[1] : tiles[0]], [tiles[n - 1], n > 1 ? tiles[n - 2] : tiles[n - 1]]];
+    ctx.font = `800 18px ${FONT_KR}`; const w = ctx.measureText(str).width + 14, h = 26;
+    let best = null;
+    for (const [a, b] of ends) { let dx = Math.sign(a[0] - b[0]), dy = Math.sign(a[1] - b[1]); if (!dx && !dy) dx = -1;
+      let x = a[0], y = a[1]; while (x >= 0 && y >= 0 && x < W && y < H) { x += dx; y += dy; }   // walk out past the edge of the board
+      const p = P(x - dx * 0.35, y - dy * 0.35, 0.3), [X, Y] = camApply(p[0], p[1]);
+      const under = hudRects().some((r) => X + w / 2 > r[0] && X - w / 2 < r[2] && Y > r[1] && Y - h < r[3]) || Y < 100 + h || X - w / 2 < 4 || X + w / 2 > VW - 4;
+      if (!best || (best.under && !under)) best = { X: Math.max(4 + w / 2, Math.min(VW - 4 - w / 2, X)), Y: Math.max(100 + h, Y), under }; }
+    const [lx, ly] = camInv(best.X, best.Y);
+    rect(lx - w / 2, ly - 19, w, h, "rgba(10,11,13,.72)");
+    text(str, lx, ly, 18, "rgba(190,215,255,.98)", { align: "center", weight: 800 });
+  }
   function drawFires() {
     if (!game) return;
-    bossTags = new Map(); lateLabels = [];
+    bossTags = new Map(); lateLabels = []; lampLab = new Map();
+    // A lamp due to go out by the clock (stage.lamps.events) gets its flicker only if nobody guarded it when the warning began; when its guard steps away
+    // later, the flicker is started here, for the seconds still left (a visual effect only: the game puts the lamp out on its own clock)
+    if (game.stage.lamps && game.lampEv && game.lampLit && game.lampGuarded) for (const ev of game.lampEv) if (ev.warned && !ev.done && game.t < ev.t)
+      for (const [x, y] of ev.off || []) if (game.lampLit(x, y) && !game.lampGuarded(x, y) && !game.fx.some((f) => f.k === "flicker" && f.x === x && f.y === y && f.t < f.life))
+        game.fx.push({ k: "flicker", x, y, t: 0, life: ev.t - game.t, late: true });
     const F = game.fires || [];
     ctx.save();
     for (const f of F) {
@@ -8292,12 +8327,12 @@ window.BGM = (() => {
         ctx.fillStyle = "#17130f"; ctx.beginPath(); ctx.ellipse(t0[0], t0[1], w0, w0 * 0.42, 0, 0, Math.PI * 2); ctx.fill();
         const slot = lampSlots(x, y), xc = slot ? slot.l : P(x, y, 1.1), xh = k0 * (slot ? 0.09 : 0.15);   // a small grey cross over the cold post, so a lamp that is out reads at a glance (on the dark streets: the left of the lamp's row of labels)
         const cross = () => { ctx.save(); ctx.strokeStyle = "rgba(170,185,220,.9)"; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(xc[0] - xh, xc[1] - xh); ctx.lineTo(xc[0] + xh, xc[1] + xh); ctx.moveTo(xc[0] + xh, xc[1] - xh); ctx.lineTo(xc[0] - xh, xc[1] + xh); ctx.stroke(); ctx.restore(); };
-        if (slot) lateLabels.push(cross); else cross();   // a lamp's row of labels goes on after the figures and their bars, so its keepers do not hide it
+        if (slot) lampLabel(x, y, 2, cross); else cross();   // a lamp's label goes on after the figures and their bars, so its keepers do not hide it
         ctx.restore();
         // one of ours standing right beside it, and the game counting down to its relighting: the seconds left, flickering like the count of a lamp running dry
         const rt = game.relightAt && game.relightAt.get ? game.relightAt.get(y * 100 + x) : undefined;
         if (rt !== undefined && game.units.some((u) => Math.abs(u.x - x) + Math.abs(u.y - y) === 1)) { const on = Math.sin(clock * 22) > -0.2, col = on ? "rgba(255,210,120,.95)" : "rgba(255,210,120,.35)", str = "점등 " + Math.max(0, rt - game.t).toFixed(0);
-          if (slot) lateLabels.push(() => text(str, slot.r[0], slot.r[1], 16, col, { weight: 800, shadow: true })); else { const c1 = P(x, y, 1.5); text(str, c1[0], c1[1], 18, col, { align: "center", weight: 800, shadow: true }); } }
+          if (slot) lampLabel(x, y, 3, () => text(str, slot.r[0], slot.r[1], 16, col, { align: "center", weight: 800, shadow: true })); else { const c1 = P(x, y, 1.5); text(str, c1[0], c1[1], 18, col, { align: "center", weight: 800, shadow: true }); } }
         continue; }
       const c0 = P(x, y, 0), k0 = c0[2], fl = 0.5 + 0.5 * Math.sin(clock * 9 + x * 2 + y);
       ctx.save(); ctx.globalCompositeOperation = "lighter";
@@ -8331,7 +8366,7 @@ window.BGM = (() => {
     // the ones waiting about: a cold ring at the feet; the ones gone mad with the cold: a red one that grows
     for (const e of game.enemies) {
       if (BIG3(e) && !e.dead) {   // a boss of chapter 3: a fixed thin red-gold ring on the floor under him at all times (pale blue for one who stands with us)
-        const c0 = P(e.x, e.y, (e._z || 0) + 0.02), k0 = c0[2] * BOSS3;
+        const c0 = P(e.x, e.y, (e._z || 0) + 0.02), k0 = c0[2] * bossScale(e);
         ctx.save(); ctx.lineWidth = 3; ctx.strokeStyle = e.ally ? "rgba(110,180,255,.8)" : "rgba(200,40,30,.85)"; ctx.beginPath(); ctx.ellipse(c0[0], c0[1], k0 * 0.44, k0 * 0.18, 0, 0, Math.PI * 2); ctx.stroke();
         ctx.lineWidth = 1.3; ctx.strokeStyle = e.ally ? "rgba(220,240,255,.85)" : "rgba(255,205,110,.95)"; ctx.beginPath(); ctx.ellipse(c0[0], c0[1], k0 * 0.38, k0 * 0.155, 0, 0, Math.PI * 2); ctx.stroke(); ctx.restore();
       }
@@ -8392,7 +8427,7 @@ window.BGM = (() => {
         else if (fx.k === "hookhit") text("끌려 내려옴", c1[0], c1[1] - k1 * 0.6 - u * 14, 20, `rgba(255,220,150,${1 - u})`, { align: "center", weight: 800, shadow: true });
       } else if (fx.k === "snuff" || fx.k === "relight") {
         const c0 = P(fx.x, fx.y, 1.2), u = fx.t / fx.life, slot = lampSlots(fx.x, fx.y), col = fx.k === "snuff" ? `rgba(160,185,230,${1 - u})` : `rgba(255,210,120,${1 - u})`;
-        if (slot) lateLabels.push(() => text(fx.k === "snuff" ? "소등" : "점등", slot.c[0], slot.c[1], 16, col, { align: "center", weight: 800, shadow: true }));   // the middle of the lamp's row of labels: it stays put and fades
+        if (slot) lampLabel(fx.x, fx.y, 1, () => text(fx.k === "snuff" ? "소등" : "점등", slot.c[0], slot.c[1], 16, col, { align: "center", weight: 800, shadow: true }));   // the middle of the lamp's row of labels: it stays put and fades
         else text(fx.k === "snuff" ? "소등" : "점등", c0[0], c0[1] - u * 14, 22, col, { align: "center", weight: 800, shadow: true });
       } else if (fx.k === "marked") {   // pointed out by an informer: a white eye-ring under them for as long as it lasts, and a line from the finger
         if (!game.units.includes(fx.u)) { fx.t = fx.life; } else { const c0 = P(fx.u.x, fx.u.y, tileAt(fx.u.x, fx.u.y) === "h" ? HZ + 0.02 : 0.02), k0 = c0[2], pl = 0.5 + 0.5 * Math.sin(clock * 10);
@@ -8403,7 +8438,9 @@ window.BGM = (() => {
         for (const [x, y] of fx.tiles) { if (crest !== null && x <= crest) {   // "전군": the shot carries over the crest, and the part of the line west of it pulses brighter than the rest
             const p2 = 0.5 + 0.5 * Math.sin(clock * (12 + 10 * u)); poly(ctx, quad(x, y, 0.015)); ctx.fillStyle = `rgba(255,70,40,${0.28 + 0.4 * p2})`; ctx.fill(); ctx.strokeStyle = `rgba(255,225,190,${0.6 + 0.4 * p2})`; ctx.lineWidth = 2.5; ctx.stroke(); continue; }
           poly(ctx, quad(x, y, 0.015)); ctx.fillStyle = fx.charge ? `rgba(120,170,255,${0.12 + 0.25 * u * pl})` : fx.ours ? `rgba(90,220,140,${0.1 + 0.2 * u * pl})` : `rgba(255,50,40,${0.12 + 0.25 * u * pl})`; ctx.fill(); ctx.strokeStyle = fx.charge ? `rgba(150,195,255,${0.5 + 0.4 * u})` : fx.ours ? `rgba(120,235,160,${0.5 + 0.4 * u})` : `rgba(255,90,70,${0.5 + 0.4 * u})`; ctx.lineWidth = 1.5; ctx.stroke(); }
-        if (fx.charge && fx.tiles.length) { const last = fx.tiles[fx.tiles.length - 1], m = last[0] >= 11 ? fx.tiles[0] : last, h0 = P(m[0], m[1], 0.6);   /* at the line's end, or at its other end when that end lies under the panels on the right */ text("기병 돌격 " + Math.max(0, fx.life - fx.t).toFixed(0), h0[0], h0[1], 20, "rgba(190,215,255,.95)", { align: "center", weight: 800, shadow: true }); }
+        if (fx.charge && fx.tiles.length) { const str = "기병 돌격 " + Math.max(0, fx.life - fx.t).toFixed(0);
+          if (C3()) lateLabels.push(() => chargeLabel(fx.tiles, str));   // chapter 3: at the lane's end off the board, on a plate, over everything
+          else { const last = fx.tiles[fx.tiles.length - 1], m = last[0] >= 11 ? fx.tiles[0] : last, h0 = P(m[0], m[1], 0.6);   /* at the line's end, or at its other end when that end lies under the panels on the right */ text(str, h0[0], h0[1], 20, "rgba(190,215,255,.95)", { align: "center", weight: 800, shadow: true }); } }
       } else if (fx.k === "falter") {   // the other one looks out of his eyes: a pale ring, and no word over it
         if (fx.e && !fx.e.dead) { const c0 = P(fx.e.x, fx.e.y, 0.03), k0 = c0[2], u = fx.t / fx.life, pl = 0.5 + 0.5 * Math.sin(clock * 3);
           ctx.strokeStyle = `rgba(235,235,225,${0.75 * (1 - u * 0.5)})`; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.ellipse(c0[0], c0[1], k0 * (0.5 + 0.08 * pl), k0 * (0.5 + 0.08 * pl) * 0.42, 0, 0, Math.PI * 2); ctx.stroke();
@@ -8411,14 +8448,15 @@ window.BGM = (() => {
           else { const h0 = P(fx.e.x, fx.e.y, 2.0); text("……", h0[0], h0[1], 24, `rgba(235,235,225,${0.9 * (1 - u * 0.5)})`, { align: "center", weight: 800, shadow: true }); } }
       } else if (fx.k === "rise") {   // fallen apart in the dark: the pieces lie there with a pulsing outline, and a count over them until they stand up
         const e = fx.e && !fx.e.dead ? fx.e : null, left = Math.max(0, fx.life - fx.t), str = "다시 일어남 " + Math.ceil(left - 1e-6);
-        if (e && C3()) { const c0 = P(e.x, e.y, zOf(Math.round(e.x), Math.round(e.y)) + 0.03), k0 = c0[2] * (BIG3(e) ? BOSS3 : 1), pl = 0.5 + 0.5 * Math.sin(clock * (left < 1.5 ? 16 : 7));
+        if (e && C3()) { const c0 = P(e.x, e.y, zOf(Math.round(e.x), Math.round(e.y)) + 0.03), k0 = c0[2] * (BIG3(e) ? bossScale(e) : 1), pl = 0.5 + 0.5 * Math.sin(clock * (left < 1.5 ? 16 : 7));
           ctx.save(); ctx.strokeStyle = `rgba(170,195,255,${0.45 + 0.5 * pl})`; ctx.lineWidth = 2 + 1.5 * pl; ctx.setLineDash([6, 4]); ctx.lineDashOffset = -clock * 18;
           ctx.beginPath(); ctx.ellipse(c0[0], c0[1] - k0 * 0.08, k0 * (0.5 + 0.05 * pl), k0 * (0.24 + 0.03 * pl), 0, 0, Math.PI * 2); ctx.stroke(); ctx.setLineDash([]); ctx.restore();
           if (BIG3(e)) tagBoss(e, { str, size: 18, col: "rgba(185,205,245,.98)" }); else { const h0 = P(e.x, e.y, 0.75); lateLabels.push(() => text(str, h0[0], h0[1], 18, "rgba(185,205,245,.98)", { align: "center", weight: 800, shadow: true })); } }   // over the body lying there, not under it
         else { const c0 = P(fx.x, fx.y, 1.2); text(str, c0[0], c0[1], 18, "rgba(170,190,235,.95)", { align: "center", weight: 800, shadow: true }); }
       } else if (fx.k === "flicker") {   // a lamp running dry: it gutters, and a count over it
         const c0 = P(fx.x, fx.y, 1.5), on = Math.sin(clock * 22) > -0.2, slot = lampSlots(fx.x, fx.y), str = "꺼짐 " + Math.max(0, fx.life - fx.t).toFixed(0), col = on ? "rgba(255,210,120,.95)" : "rgba(255,210,120,.35)";
-        if (slot) lateLabels.push(() => text(str, slot.r[0], slot.r[1], 16, col, { weight: 800, shadow: true })); else text(str, c0[0], c0[1], 18, col, { align: "center", weight: 800, shadow: true });
+        if (game.lampGuarded && game.lampGuarded(fx.x, fx.y)) { /* a keeper stands by it now: it will not go out, so no count */ }
+        else if (slot) lampLabel(fx.x, fx.y, 3, () => text(str, slot.r[0], slot.r[1], 16, col, { align: "center", weight: 800, shadow: true })); else text(str, c0[0], c0[1], 18, col, { align: "center", weight: 800, shadow: true });
       } else if (fx.k === "gunours" || fx.k === "gunlost") {
         const c0 = P(fx.x, fx.y, 1.6), u = fx.t / fx.life; text(fx.k === "gunours" ? "대포 탈취" : "대포 빼앗김", c0[0], c0[1] - u * 14, 22, fx.k === "gunours" ? `rgba(130,240,170,${1 - u})` : `rgba(255,120,100,${1 - u})`, { align: "center", weight: 800, shadow: true });
       } else if (fx.k === "point") {   // the colonel's arm: a line from him to the one he has picked
@@ -10391,8 +10429,31 @@ window.BGM = (() => {
     else if (game && C3() && isDown(e)) f += " brightness(.5) saturate(.6)";
     return f.trim();
   }
+  // How much a boss of chapter 3 is drawn up: at least BOSS3, and enough that his figure stands at least 1.35 times as tall as a grenadier's would on the same square
+  // (both measured once off their own sprites), never more than 2.2. The ring and the bar under and over him follow the same factor
+  const BOSS_SC = {};
+  function bossScale(e) {
+    if (BOSS_SC[e.type]) return BOSS_SC[e.type];
+    const hb = drawnH(e.type), hg = drawnH("grenadier");
+    if (hb < 0 || hg < 0) return (BOSS_SC[e.type] = BOSS3);   // the canvas cannot be read back: the plain size-up, for good
+    if (!(hb > 0 && hg > 0)) return BOSS3;   // a sprite not loaded yet: the plain size-up for now, measured again next time
+    return (BOSS_SC[e.type] = Math.min(2.2, Math.max(BOSS3, 1.35 * hg / hb)));
+  }
+  // the height in pixels an enemy's standing figure is drawn at for k = 100 (its shadow left out), found by drawing it once on a scratch canvas; 0 while its sprite
+  // is still loading, -1 when the canvas cannot be read back
+  function drawnH(type) {
+    const ea = EN_ART[type], D = EN_POSED[type];
+    if (D ? !ready(IMG[D.atlas]) : !(ea && ready(IMG["en_" + ea[0]]))) return 0;
+    try {
+      const N = 420, c = document.createElement("canvas"); c.width = N; c.height = N; const g = c.getContext("2d");
+      drawEnemy(g, { type, def: Object.assign({}, TD.ENEMIES[type], { boss: false }), face: 1, id: 0, x: 0, y: 0, hp: 1, maxHp: 1 }, N / 2, N - 20, 100 / BODY, 0);
+      const d = g.getImageData(0, 0, N, N).data; let top = -1, bot = -1;
+      for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) if (d[(y * N + x) * 4 + 3] > 120) { if (top < 0) top = y; bot = y; break; }
+      return top < 0 ? 0 : bot - top + 1;
+    } catch (err) { return -1; }   // a page that cannot read its own canvas back
+  }
   function drawEnemy(g, e, sx, sy, k, t) {
-    k *= BODY * (BIG3(e) ? BOSS3 : 1);   // a boss of chapter 3 stands a size up
+    k *= BODY * (BIG3(e) ? bossScale(e) : 1);   // a boss of chapter 3 stands a size up
     if (e.type === "ney") { if (e.perchFire) drawLighthouse(g, e, t); return drawNey(g, e, sx, sy, k, t); }
     if (EN_POSED[e.type]) return drawPosedEnemy(g, e, sx, sy, k, t, EN_POSED[e.type]);
     if (AIR_ART[e.type] && drawFlier(g, e, sx, sy, k, t)) return;
@@ -10897,7 +10958,8 @@ window.BGM = (() => {
   // where he calls or falters, two pips beside it for a boss with a second stage (filled = stages left), "무적" under it while he sets the crown on again, and the words
   // gathered for him this frame (bossTags) stacked upward over it: the lamp mark first, then "명령 중" with its countdown arc, then the rest
   function drawBossTop(e, sx, by0, k, down) {
-    const w = k * 0.62 * 1.6, h = Math.max(6, k * 0.085), x0 = sx - w / 2, y0 = by0 + 4, ph = e.phase || 1, f = Math.max(0, Math.min(1, e.hp / e.maxHp));
+    const w = k * 0.62 * 1.6 * Math.min(1.5, bossScale(e) / BOSS3), h = Math.max(6, k * 0.085), x0 = sx - w / 2, y0 = by0 + 4, ph = e.phase || 1, f = Math.max(0, Math.min(1, e.hp / e.maxHp));
+    rect(x0 - 7, y0 - 6, w + 14 + (e.def.phase2 ? 30 : 0), h + 12, "rgba(10,11,13,.72)");   // a plate under the bar and its pips, so they read over a gate cube behind him
     rect(x0 - 2, y0 - 2, w + 4, h + 4, "rgba(0,0,0,.8)");
     ctx.strokeStyle = e.ally ? "rgba(150,210,255,.85)" : "rgba(255,200,110,.8)"; ctx.lineWidth = 1; ctx.strokeRect(x0 - 2.5, y0 - 2.5, w + 5, h + 5);
     rect(x0, y0, w * f, h, e.ally ? "#3fb6ff" : "#ff5a5f");
@@ -10916,6 +10978,8 @@ window.BGM = (() => {
     const tags = (bossTags.get(e) || []).slice(), st = stallLeft(e);
     if (st > 0) tags.unshift({ str: "명령 중", size: 18, col: "rgba(255,225,160,.98)", arc: Math.min(1, st / (e.stallDur || (cl && cl.stall) || 4)) });   // e.stallDur: the length the game gives (spec 5A3)
     for (const t of tags) {
+      ctx.font = `800 ${t.size}px ${FONT_KR}`; const tw = ctx.measureText(t.str).width + (t.arc !== undefined ? 30 : 0);
+      rect(sx - tw / 2 - 6 - (t.arc !== undefined ? 14 : 0), yy - t.size - 1, tw + 12, t.size + 7, "rgba(10,11,13,.6)");
       text(t.str, sx, yy, t.size, t.col, { align: "center", weight: 800, shadow: true });
       if (t.arc !== undefined) { ctx.font = `800 ${t.size}px ${FONT_KR}`; const ax = sx - ctx.measureText(t.str).width / 2 - 13, ay = yy - t.size * 0.36;   // the thin arc of the seconds left
         ctx.strokeStyle = "rgba(0,0,0,.6)"; ctx.lineWidth = 4; ctx.beginPath(); ctx.arc(ax, ay, 7, 0, Math.PI * 2); ctx.stroke();
@@ -12763,6 +12827,9 @@ window.BGM = (() => {
       const [x, y, k] = SP(f.x, f.y, 1.2);
       for (let i = 0; i < 22; i++) { const a = rr(0, 6.28), v = rr(60, 220); emit({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v * 0.6 - 50, life: rr(0.6, 1.2), tex: TEX.core, col: i % 2 ? "#ffd66a" : "#fff4cc", size: k * rr(0.05, 0.1), add: true, drag: 2 }); }
     },
+    claim(f) {   // an operator lets go of the others she holds to take the Emperor (spec 5A4): a short floating word over her
+      const [x, y, k] = SP(f.x, f.y, 1.3); floaters.push({ x, y: y - k * 0.1, txt: "황제를 붙든다", col: "#ffe2a0", t: 0, life: 1.4, size: 15 });
+    },
     shiftwarn() { orderBanner("문이 부서진다", "THE GATE IS GIVING WAY", "small"); },
     shift(f) {   // the gate gives way: splinters and dust on its squares, the board shakes, and the board is drawn again without it
       for (const [tx, ty] of f.tiles || []) { const [x, y, k] = SP(tx, ty, 0.4);
@@ -13726,9 +13793,9 @@ window.BGM = (() => {
         if (itraps.length) drawTrapsTop(e);
         if (e.hired) drawHired(e, sx, sy, k);
         const lift = e.def.flying ? k * liftOf(e) : 0;
-        const big = BIG3(e), down = C3() && isDown(e), eh = enemyHeight(e.type) * (big ? BOSS3 : 1) * (down ? 0.45 : 1);   // a boss of chapter 3 stands a size up; one lying down is low
+        const big = BIG3(e), down = C3() && isDown(e), bsc = big ? bossScale(e) : 1, eh = enemyHeight(e.type) * bsc * (down ? 0.45 : 1);   // a boss of chapter 3 stands a size up; one lying down is low
         const by0 = sy - lift - k * (eh + 0.12), bk = k * (e.def.boss ? 1.3 : 1);
-        boxes.push([sx - k * 0.3 * (e.def.boss ? 1.3 : 1) * (big ? BOSS3 : 1), sy - lift - k * eh, k * 0.6 * (e.def.boss ? 1.3 : 1) * (big ? BOSS3 : 1), k * eh]);
+        boxes.push([sx - k * 0.3 * (e.def.boss ? 1.3 : 1) * bsc, sy - lift - k * eh, k * 0.6 * (e.def.boss ? 1.3 : 1) * bsc, k * eh]);
         overUI.push(() => {
           if (big) { drawBossTop(e, sx, by0, k, down); return; }   // its own bar, notches, pips and the words stacked over them
           if (e.hp < e.maxHp && !down && !(e.stealth && !e.blockedBy && !e.def.boss)) bars(sx, by0, bk, e.hp / e.maxHp, undefined, false, !e.ally);   // those who stand with us get the operators' colour
@@ -13757,6 +13824,7 @@ window.BGM = (() => {
     }
     drawGunLabels();   // over the bars
     for (const f of lateLabels) f();
+    for (const l of lampLab.values()) l.fn();
     drawKillCost();
     drawFloaters();
     drawPFX("top"); drawIceTop(); drawMolotov();
@@ -17285,7 +17353,7 @@ window.BSL_ECON = (() => {
     : m.after ? (s) => ((s.stages[m.after] || {}).stars || 0) > 0
     : i === 0 ? () => true : (s) => ((s.stages[TD.STAGES[i - 1].code] || {}).stars || 0) > 0 }))
   // a stage already cleared on this save stays open whatever sits before it now (a story entry added later must not shut a stage behind it)
-  .map((m, i) => { const base = m.unlock; m.unlock = (s) => base(s) || ((s.stages[TD.STAGES[i].code] || {}).stars || 0) > 0; return m; });
+  .map((m, i) => { const base = m.unlock; m.unlock = (s) => true || base(s) || ((s.stages[TD.STAGES[i].code] || {}).stars || 0) > 0; return m; });
   // the main story's episodes: their names and their backdrops
   const EPISODES = { 1: { no: "01", t: "망자의 행진", en: "THE MARCH OF THE DEAD", art: "st_war" }, 2: { no: "02", t: "지옥 기계", en: "THE INFERNAL MACHINE", art: "st_lane" }, 3: { no: "03", t: "쏘지 않은 탄환", en: "THE UNFIRED BULLET", art: "st_parade" } };   // chapter 3: a working title and a borrowed backdrop until its own is drawn
   const epArt = (n) => ART[(EPISODES[n] || EPISODES[1]).art] || ART.st_war || ART.bg;
