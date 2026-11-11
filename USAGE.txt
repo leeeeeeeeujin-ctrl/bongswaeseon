@@ -28,3 +28,10 @@ GITHUB ACTIONS (branch solver)
   ./ci.sh push | run mode=search stages=IM-02 decks=starter crit=lost1 hours=1 | status [RUN] | wait RUN | pull | speed RUN
 SPEED
   node bench2.js [--workers N]
+AKBENCH (PRIVATE Arknights benchmark; AK data and anything converted from it never go into a repo, the game, a site, a CI artifact or a log)
+  node akbench.js fetch --out DIR [--stages 1-7,4-2]        AK level files + enemy tables from Kengxxiao/ArknightsGameData_YoStar, into DIR (private)
+  node akbench.js convert --raw DIR/.. --out FILE           -> FILE {stages, enemies, reports} (akconvert.js documents the tile / route / wave / enemy mapping)
+  node akbench.js validate --file FILE [--akdata D]         empty-squad run of each stage (errors, all foes reach a point, first leak vs AK's pressure clock, BFS vs AK path)
+  AKBENCH_STAGES=FILE SOLVER_MAXT=900 SOLVER_RESULTS=<private dir> node search.js run --stages AK1-7,AK4-2 ...   (akload.js adds the stages in memory)
+  node akbench.js summarize --results <dir> --out F         numbers only (min rung, life lost, win time)
+  ./ci.sh run mode=akbench stages=1-7,4-2 decks=starter,T4,T5,T6 crit=lost1,full split=stage-deck hours=2   -> results/akbench/{latest,run_<id>}.json (numbers only)

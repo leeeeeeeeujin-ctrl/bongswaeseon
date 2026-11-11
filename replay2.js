@@ -8,7 +8,7 @@ const fs = require("fs");
 const path = require("path");
 const S = require("./sim.js");
 const { TD } = S;
-const FPS = 30, MAXF = 420 * FPS;
+const FPS = 30, MAXF = +(process.env.SOLVER_MAXT || 420) * FPS;
 const formation = (squad, plan) => squad.length <= 12 ? squad : S.squadIdsOf(plan, squad);
 
 // a record from a solved result {stage, min, plan, squad, crit, lives}

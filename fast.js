@@ -7,7 +7,7 @@
 "use strict";
 const S = require("./sim.js");
 const { TD } = S;
-const FPS = 30, MAXT = 420, LIFE_PAD = 1000, CK = +(process.env.FAST_CK || 30);
+const FPS = 30, MAXT = +(process.env.SOLVER_MAXT || 420), LIFE_PAD = 1000, CK = +(process.env.FAST_CK || 30);
 const NOOP = () => {};
 const NULLFX = { push() { return 0; }, pop() { return undefined; }, filter() { return NULLFX; }, [Symbol.iterator]() { return [][Symbol.iterator](); }, length: 0 };
 

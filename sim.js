@@ -10,9 +10,10 @@ global.window = global;
 require(path.join(GAME_DIR, "econ.js"));
 require(path.join(GAME_DIR, "game.js"));
 const TD = global.TD;
+if (process.env.AKBENCH_STAGES) require("./akload.js").install(TD, process.env.AKBENCH_STAGES);   // akbench (private benchmark): converted stages added in memory; unset = no change
 
 const MAXLV = { 3: [40, 55], 4: [45, 60, 70], 5: [50, 70, 80], 6: [50, 80, 90] };   // same table as im_sim / meta
-const FPS = 30, MAXT = 420;
+const FPS = 30, MAXT = +(process.env.SOLVER_MAXT || 420);   // SOLVER_MAXT: a longer clock for long stages (akbench); unset = 420 s
 const LIFE_PAD = 1000;
 const NOOP = () => {};
 const NULLFX = { push() { return 0; }, pop() { return undefined; }, filter() { return NULLFX; }, [Symbol.iterator]() { return [][Symbol.iterator](); }, length: 0 };   // the run is played with a padded life pool so a losing plan still plays out every wave (smooth fitness); real life = 10 - lost

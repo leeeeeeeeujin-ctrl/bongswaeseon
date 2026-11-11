@@ -5,11 +5,14 @@
 #  - a push to `solver` that changes ci/request.json (the inputs as JSON): `ci.sh run` commits the request and pushes it (works with a token that can push).
 # Fan-out: one job per stage (or stage x deck), each with every vCPU as a worker, stopping cleanly before ~5.5 h; rerun the same dispatch to resume.
 # Each job uploads the files it changed as an artifact; the collect job merges them, rebuilds rankings / report / sheet, retrains the surrogate, and commits results/.
+# mode akbench (the PRIVATE Arknights benchmark; jobs akrun / akcollect): each job downloads AK data at run time from Kengxxiao/ArknightsGameData_YoStar, converts
+# it inside the runner ($RUNNER_TEMP, never the checkout), searches, and keeps ONLY derived numbers (min rung, life lost, win time). Converted stages, maps, waves,
+# plans and replays never reach an artifact, a log or a commit; the search log stays in $RUNNER_TEMP and only counts are printed.
 name: solver
 on:
   workflow_dispatch:
     inputs:
-      mode: { description: "search | query | verify | recheck | trace | bench", required: true, default: "search", type: choice, options: [search, query, verify, recheck, trace, bench] }
+      mode: { description: "search | query | verify | recheck | trace | bench | akbench", required: true, default: "search", type: choice, options: [search, query, verify, recheck, trace, bench, akbench] }
       stages: { description: "stages, e.g. IM-02..WL-09 or IM-02,IM-05", required: false, default: "IM-02..WL-09" }
       decks: { description: "decks (search / verify / recheck)", required: false, default: "starter,T4,T5,T6" }
       crit: { description: "criteria: lost1,full (search) | lost1 | full | both (query)", required: false, default: "lost1,full" }
@@ -46,7 +49,7 @@ jobs:
         run: node ci_matrix.js --github "$EV" >> "$GITHUB_OUTPUT"
   run:
     needs: plan
-    if: needs.plan.outputs.mode != 'none'
+    if: needs.plan.outputs.mode != 'none' && needs.plan.outputs.mode != 'akbench'
     runs-on: ubuntu-latest
     timeout-minutes: 355
     strategy:
@@ -99,7 +102,7 @@ jobs:
           retention-days: 30
   collect:
     needs: [plan, run]
-    if: always() && needs.plan.outputs.mode != 'none'
+    if: always() && needs.plan.outputs.mode != 'none' && needs.plan.outputs.mode != 'akbench'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -125,4 +128,74 @@ jobs:
           git add -A results
           git diff --cached --quiet && { echo "nothing to commit"; exit 0; }
           git commit -q -m "$MSG"
+          for i in 1 2 3 4 5; do git pull -q --rebase origin solver && git push -q origin HEAD:solver && exit 0; sleep $((i*7)); done; exit 1
+  akrun:
+    needs: plan
+    if: needs.plan.outputs.mode == 'akbench'
+    runs-on: ubuntu-latest
+    timeout-minutes: 355
+    strategy:
+      fail-fast: false
+      max-parallel: 20
+      matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+        with: { ref: solver, fetch-depth: 1 }
+      - uses: actions/setup-node@v4
+        with: { node-version: "22" }
+      - name: akbench (fetch, convert, search; numbers only)
+        env:
+          STAGE: ${{ matrix.stage }}
+          DECK: ${{ matrix.deck }}
+          LABEL: ${{ matrix.label }}
+          CRIT: ${{ needs.plan.outputs.crit }}
+          HOURS: ${{ needs.plan.outputs.hours }}
+          EXTRA: ${{ needs.plan.outputs.extra }}
+        run: |
+          AK="$RUNNER_TEMP/ak"; mkdir -p "$AK" out/akbench
+          node akbench.js fetch --out "$AK/raw" --stages "$STAGE"
+          node akbench.js convert --raw "$AK/raw" --out "$AK/stages.json" --stages "$STAGE"
+          export AKBENCH_STAGES="$AK/stages.json" SOLVER_RESULTS="$AK/res" SOLVER_MAXT=900
+          node akbench.js validate --file "$AK/stages.json" --quiet || echo "validation reported a problem (details stay in the runner)"
+          T0=$(date +%s)
+          node search.js run --stages "AK$STAGE" --decks "$DECK" --crit "$CRIT" --hours "$HOURS" --workers "$(nproc)" --nokeyops $EXTRA > "$AK/search.log" 2>&1 || echo "search exited with $?"
+          echo "search: $(grep -c ' DONE ' "$AK/search.log" || true) jobs done in $(( $(date +%s) - T0 )) s; $(grep -c 'FATAL' "$AK/search.log" || true) fatal"
+          node akbench.js summarize --results "$AK/res" --stages "$STAGE" --out "out/akbench/$LABEL.json"
+          node -e "const o=require('./out/akbench/$LABEL.json');o.run='${{ github.run_id }}';o.label='$LABEL';o.cpus=require('os').cpus().length;require('fs').writeFileSync('out/akbench/$LABEL.json',JSON.stringify(o,null,1))"
+          rm -rf "$AK"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: akbench-${{ github.run_id }}-${{ matrix.label }}
+          path: out/akbench/
+          if-no-files-found: ignore
+          retention-days: 30
+  akcollect:
+    needs: [plan, akrun]
+    if: always() && needs.plan.outputs.mode == 'akbench'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { ref: solver, fetch-depth: 1 }
+      - uses: actions/setup-node@v4
+        with: { node-version: "22" }
+      - uses: actions/download-artifact@v4
+        with: { path: incoming, pattern: "akbench-${{ github.run_id }}-*", merge-multiple: true }
+      - name: merge (numbers only)
+        run: |
+          mkdir -p results/akbench
+          node -e "
+            const fs=require('fs'),p=require('path'),dir='incoming';const rows=[];
+            for(const f of fs.existsSync(dir)?fs.readdirSync(dir).filter(f=>f.endsWith('.json')):[]){const o=JSON.parse(fs.readFileSync(p.join(dir,f),'utf8'));for(const r of o.rows||[])rows.push(Object.assign({run:o.run},r));}
+            fs.writeFileSync('results/akbench/run_${{ github.run_id }}.json',JSON.stringify({run:'${{ github.run_id }}',made:new Date().toISOString(),note:'derived numbers only',rows},null,1));
+            const L='results/akbench/latest.json';let cur={rows:[]};try{cur=JSON.parse(fs.readFileSync(L,'utf8'));}catch(e){}
+            const k=r=>r.stage+'|'+r.deck+'|'+r.crit;const m=new Map(cur.rows.map(r=>[k(r),r]));for(const r of rows){const o=m.get(k(r));if(!o||!o.done||r.done)m.set(k(r),r);}
+            fs.writeFileSync(L,JSON.stringify({made:new Date().toISOString(),note:'derived numbers only',rows:[...m.values()].sort((a,b)=>k(a)<k(b)?-1:1)},null,1));
+            console.log(rows.length+' rows merged');"
+      - name: commit numbers
+        run: |
+          git config user.name "solver-bot"; git config user.email "solver-bot@users.noreply.github.com"
+          git add results/akbench
+          git diff --cached --quiet && { echo "nothing to commit"; exit 0; }
+          git commit -q -m "akbench numbers (run ${{ github.run_id }})"
           for i in 1 2 3 4 5; do git pull -q --rebase origin solver && git push -q origin HEAD:solver && exit 0; sleep $((i*7)); done; exit 1

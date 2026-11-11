@@ -14,9 +14,13 @@ if (mode === "--github") {
   IN.hours = String(Math.min(5.5, Math.max(0.05, +IN.hours || 5.4)));
   [mode, stages, decks, split] = [IN.mode, IN.stages, IN.decks, IN.split];
 }
-const st = range(stages), dk = (decks || "starter,T4,T5,T6").split(",").filter(Boolean);
+const st = mode === "akbench" ? [] : range(stages), dk = (decks || "starter,T4,T5,T6").split(",").filter(Boolean);
 let inc;
 if (mode === "none") inc = [{ stage: "none", deck: "none", label: "none" }];
+else if (mode === "akbench") {   // the private AK benchmark: one job per AK stage (x deck with split=stage-deck); codes from akbench.js (stage codes only, no AK data)
+  const AK = require("./akbench.js"), list = (!stages || stages === DEF.stages ? AK.BENCH.map((b) => b[0]) : AK.pick(stages).map((b) => b[0]));
+  inc = split === "stage-deck" ? list.flatMap((s) => dk.map((d) => ({ stage: s, deck: d, label: `ak-${s}-${d}` }))) : list.map((s) => ({ stage: s, deck: dk.join(","), label: `ak-${s}` }));
+}
 else if (mode === "trace") inc = [{ stage: "all", deck: "all", label: "trace" }];
 else if ((mode === "search" || mode === "recheck") && split === "stage-deck") inc = st.flatMap((s) => dk.map((d) => ({ stage: s, deck: d, label: `${s}-${d}` })));
 else inc = st.map((s) => ({ stage: s, deck: dk.join(","), label: s }));
