@@ -3800,7 +3800,7 @@ window.BGM = (() => {
     // stage opens with the same order and he breaks once through whoever holds him. In the second stage, at half, he stands still for six seconds with his guard down.
     // Reaching a point loses the operation (life 10).
     emperor: { name: "황제", info: ["관을 쓴 쪽. 능선 건너 지휘 위치에 서 있다가, 근위대가 꺾이면 직접 내려온다. 둘 몫으로 저지된다. 그가 닿으면, 막고 있던 적을 놓고 그를 붙든다. 둘레 2.4칸의 적은 빨라지고 세진다. 방어 지점에 닿으면 작전은 실패한다.", "체력이 절반이 되면 \"전군\": 모든 돌격과 포격이 한꺼번에 예고되고 포도탄이 능선마루를 넘는다. 명한 뒤 4초 동안은 걸음을 멈춘다. 쓰러지면 관을 다시 쓰고 일어난다(3초 동안 피해를 받지 않는다). 일어나며 다시 \"전군\"을 명하고, 막아선 가사인격을 한 번 뚫는다. 그 뒤 체력이 7할로 줄면 6초 멈춰 서며 방어가 무너진다. 빼앗은 포는 한 발마다 그의 최대 체력의 10%를 깎는다."],
-      hp: 8000, atk: 640, def: 300, res: 30, speed: 0.4, interval: 2.2, weight: 2, mass: 4, life: 10, boss: true, noMul: true, gunner: true, claim: true,
+      hp: 10000, atk: 640, def: 300, res: 30, speed: 0.4, interval: 2.2, weight: 2, mass: 4, life: 10, boss: true, noMul: true, gunner: true, claim: true,
       rally: { r: 2.4, speed: 1.25, atk: 1.2 }, call: { at: [0.5], phase: 1, type: "soldier", n: 2, barrage: true, gate: 1, via: [[11, 4], [7, 4], [2, 4]], stall: 4 },   // stall: after the order he stands 4 s with his arm raised
       phase2: { hp: 8000, invul: 3, def: 220, atk: 640, speed: 0.5, barrage: true }, falter: { at: 0.7, phase: 2, dur: 6, r: 3, bare: true },
       charge: { every: 1e9, dur: 1.6, mult: 1.0, hit: 2, breach: { at: 1, phase: 2, push: 1.1 } } },   // the charge is kept only for the breach: he never charges on his own
@@ -4757,8 +4757,7 @@ window.BGM = (() => {
         [144, "chasseur", 1, 1, 0, MW], [150, "grenadier", 1, 1, 0, ME], [152, "drummer", 1, 1, 0, MW], [156, "soldier", 1, 3, 1.4, MW], [160, "lancer", 2, 2, 2, EB], [164, "soldier", 0, 2, 1.5, WX], [168, "grenadier", 2, 1, 0, EA], [172, "soldier", 1, 3, 1.3, ME], [176, "lancer", 1, 1, 0, MW]]); })(),
       boss: ["", ""], desc: "능선 한가운데의 농장. 적은 북쪽에서 두 길로 내려오고, 방어 지점은 두 길의 끝, 둘입니다. 두 길의 바깥 줄에는 기병 돌격, 방어 지점 앞을 가로지르는 길에는 포도탄이 옵니다(붙어 선 가사인격은 1.6배). 가운데 농장은 우리 고지입니다. 100초에 농장의 북쪽 문이 부서지면, 안뜰이 세 번째 길이 되어 가로지르는 길 한복판으로 이어집니다.",
       lose: "동쪽 끝 고지에서 보초를 쓰러뜨리고, 포가 처음 쏘기 전(62초)에 포구 앞 칸을 8초 지켜 포를 빼앗으세요. 그다음 두 방어 지점 앞, 가로지르는 길 위에 둘씩 세우면 세 길이 모두 그 앞을 지납니다. 빼앗은 포는 13초마다 그 길 위의 적을 최대 체력의 30%씩 깎습니다." },
-    { code: "WL-08", name: "몽생장 능선", map: MAP_C3.ridge, bg: null, hz: 0.5, ep: 3, startCost: 24, mul: { hp: 0.66, atk: 0.735, def: 0.85 }, rmul: { hp: 1, atk: 0.75 }, crest: 4,
-      // 임시 (TEMPORARY, spec 5A4 lever iv, last resort): mul is 0.75 x its 5A3 value (hp 0.88, atk 0.98). To be removed at the chapter review
+    { code: "WL-08", name: "몽생장 능선", map: MAP_C3.ridge, bg: null, hz: 0.5, ep: 3, startCost: 24, mul: { hp: 0.88, atk: 0.98, def: 0.85 }, rmul: { hp: 1, atk: 0.75 }, crest: 4,
       volleys: [{ kind: "charge", first: 34, every: 34, warn: 5, dmg: 1100, pct: 0.6, tiles: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((x) => [x, 1]) },
                 { kind: "charge", first: 51, every: 34, warn: 5, dmg: 1100, pct: 0.6, tiles: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((x) => [x, 6]) },
                 { first: 68, every: 34, warn: 4, dmg: 700, pct: 0.3, foe: 0.3, mine: 1.7, pack: 1.6, capture: 8, linger: 20, muzzle: [12, 3], gun: [13, 3], mineEvery: 8, bossPct: 0.10, full: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((x) => [x, 3]), tiles: [5, 6, 7, 8, 9, 10, 11].map((x) => [x, 3]) }],   // the shot stops at the crest: west of column 5 the centre is in dead ground
@@ -4772,7 +4771,7 @@ window.BGM = (() => {
         [124, "soldier", 0, 3, 1.4, N1], [128, "soldier", 2, 2, 1.5, S6], [138, "drummer", 2, 1, 0, S6], [156, "chasseur", 2, 1, 0, S6],   // his descent: no weight-2 men and no lancers on the outer roads
         [166, "soldier", 1, 3, 1.4, C4], [172, "grenadier", 0, 1, 0, N2], [176, "soldier", 2, 3, 1.4, S5], [184, "lancer", 1, 2, 2, C4], [190, "soldier", 0, 3, 1.3, N1]]); })(),
       boss: ["경고: 황제", "관을 쓴 쪽 · WARNING"], desc: "능선. 길 셋이 서쪽의 방어 지점으로 옵니다. 바깥 두 줄에는 기병 돌격, 가운데 길의 위쪽 줄에는 포도탄이 옵니다. 포도탄은 능선마루를 넘지 못합니다. 황제는 포구 앞에서 지휘하다가 118초에 가운데 길로 내려옵니다. 황제가 방어 지점에 닿으면 작전은 실패합니다.",
-      lose: "황제는 둘 몫으로 저지됩니다. 쓰러뜨려도 관을 다시 쓰고 한 번 일어나며, 그때 막아선 가사인격을 뚫으니 두 겹으로 받으세요. \"전군\"에는 포도탄도 능선마루를 넘습니다. 그가 떠난 포구 앞 칸을 8초 지키면 포는 우리 것입니다. 8초마다 그의 체력을 10%씩 깎으니, 능선마루 동쪽 포격 줄 위에서 붙잡으세요. 그가 닿으면 가사인격은 막던 적을 놓고 그를 붙듭니다. 두 번째 줄은 능선마루 바로 서쪽에. 멈춰 선 6초에 모든 것을 쏟으세요." },
+      lose: "황제는 둘 몫으로 저지됩니다. 그가 닿으면 가사인격은 막던 적을 놓고 그를 붙듭니다. 저지선은 둘: 능선마루 동쪽의 포격 줄 위와, 능선마루. 화력과 의무는 방어 지점 앞에 남기지 말고 그 두 줄을 내려다보는 고지에 올리세요. 쓰러뜨려도 관을 다시 쓰고 한 번 일어나며, 그때 첫 줄을 뚫습니다. 그가 떠난 포구 앞 칸을 8초 지키면 포는 우리 것이고, 8초마다 그의 체력을 10%씩 깎습니다. \"전군\"에는 포도탄도 능선마루를 넘습니다. 멈춰 선 6초에 모든 것을 쏟으세요." },
     { code: "WL-09", name: "튈르리", map: MAP_C3.palace, bg: null, hz: 0.5, ep: 3, startCost: 24, mul: { hp: 0.898, atk: 0.986, def: 0.85 }, rmul: { hp: 1, atk: 0.75 },
       lamps: { r: 2 },
       // gates: 0 the palace door, 1 the upper east gate, 2 the lower. The Emperor is beaten; the confessor rings the armoury awake. Empty armour that falls in the dark gets up again:
@@ -14699,7 +14698,7 @@ window.BGM = (() => {
     "WL-08": [
       { wait: 1.5 },
       { focusFoe: "emperor", who: "yui", say: "황제 개체, 포구 앞에서 지휘 중. 118초에 가운데 길로 내려옵니다. 둘 몫으로 저지되며, 방어 지점에 닿으면 작전 실패입니다. 포도탄은 능선마루를 넘지 못합니다. \"전군\" 때만 넘습니다.", tap: true, at: "bottom" },
-      { focusFoe: "emperor", who: "alpha", say: "저 양반이 걸어 내려오면 포구 앞이 비어. 거길 뺏으면 포가 저 양반 등을 쳐. 한 번 쓰러져도 다시 일어나니까 줄은 두 겹으로.", tap: true, at: "bottom" },
+      { focusFoe: "emperor", who: "alpha", say: "저 양반이 걸어 내려오면 포구 앞이 비어. 거길 뺏으면 포가 저 양반 등을 쳐. 막는 줄은 둘, 쏘는 애들이랑 의무는 그 두 줄 위 고지로 올려. 뒤에 남겨 두면 늦어.", tap: true, at: "bottom" },
     ],
     "WL-09": [
       { wait: 5.5 }, { blink: [[11, 5]], who: "yui", say: "동쪽 끝 어둠 속에 쓰러진 갑주 하나. 재기동 확인. 어둠 속에서 쓰러뜨리면 저렇게 다시 일어납니다. 등불 아래로 끌어들이십시오.", tap: true },
