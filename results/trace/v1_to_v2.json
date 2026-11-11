@@ -6,7 +6,7 @@
   "newDir": "/tmp/claude-0/-home-claude/0f5894f6-5a4f-5270-947a-362dcd546bdc/scratchpad/solver2/game",
   "oldMd5": "2c01ad7111372bbfce32047c58b30304",
   "newMd5": "79c4fb6c29be9c13c2a27c7d949394d3",
-  "nChanges": 102,
+  "nChanges": 101,
   "life": 3
  },
  "changes": [
@@ -22,6 +22,7 @@
   },
   {
    "field": "unit:vanguard.skill.dp",
+   "old": 12,
    "new": 8
   },
   {
@@ -36,6 +37,7 @@
   },
   {
    "field": "unit:vanguard.skills.0.dp",
+   "old": 12,
    "new": 8
   },
   {
@@ -171,10 +173,6 @@
    "field": "unit:belina.skills.0.init",
    "old": 3,
    "new": 6
-  },
-  {
-   "field": "unit:belina.skills.0.dp",
-   "new": 12
   },
   {
    "field": "unit:belina.skills.1.sp",
@@ -338,6 +336,7 @@
   },
   {
    "field": "unit:tao.skills.0.dp",
+   "old": 10,
    "new": 8
   },
   {
@@ -386,6 +385,7 @@
   },
   {
    "field": "unit:rabi6.skills.2.ivMul",
+   "old": 1.5,
    "new": 1.7
   },
   {
@@ -410,6 +410,7 @@
   },
   {
    "field": "unit:piania.skills.1.healMul",
+   "old": 0.45,
    "new": 0.55
   },
   {
@@ -444,10 +445,12 @@
   },
   {
    "field": "unit:smoqueen.sleepEvery",
+   "old": 3,
    "new": 4
   },
   {
    "field": "unit:smoqueen.sleepDur",
+   "old": 2,
    "new": 1.2
   },
   {
@@ -562,21 +565,56 @@
      "id": "tao"
     },
     "new": {
-     "k": 660,
-     "t": 22,
-     "a": "skill",
-     "id": "tao"
+     "k": 471,
+     "t": 15.73,
+     "a": "kill",
+     "id": "soldier",
+     "eid": 2
     },
     "frame": 360
    },
-   "firstMaterial": null,
+   "firstMaterial": {
+    "i": 4,
+    "old": {
+     "k": 831,
+     "t": 27.73,
+     "a": "kill",
+     "id": "soldier",
+     "eid": 7
+    },
+    "new": {
+     "k": 750,
+     "t": 25.03,
+     "a": "kill",
+     "id": "soldier",
+     "eid": 7
+    },
+    "frame": 750
+   },
    "leaks": {
-    "old": [],
-    "new": []
+    "old": [
+     "yfang@172.3",
+     "yfang@173.3",
+     "bomber@183.6"
+    ],
+    "new": [
+     "bomber@188.8"
+    ]
    },
    "falls": {
     "old": [],
     "new": []
+   },
+   "contrast": {
+    "onlyOld": [
+     {
+      "k": 870,
+      "t": 29.03,
+      "a": "skill",
+      "id": "ayaki"
+     }
+    ],
+    "onlyNew": []
    },
    "candidates": [
     {
@@ -636,6 +674,7 @@
     },
     {
      "field": "unit:tao.skills.0.dp",
+     "old": 10,
      "new": 8
     }
    ],
@@ -822,22 +861,27 @@
    "minimalRevert": [
     {
      "field": "unit:tao.skills.0.dp",
+     "old": 10,
      "new": 8
     }
    ],
    "causeEffect": {
-    "frame": 4972,
-    "t": 165.7,
+    "frame": 1164,
+    "t": 38.8,
     "withoutCause": {
-     "k": 4972,
-     "t": 165.77,
-     "a": "fall",
-     "id": "yui",
-     "x": 4,
-     "y": 4,
-     "hp": -75
+     "k": 1164,
+     "t": 38.83,
+     "a": "kill",
+     "id": "yfang",
+     "eid": 14
     },
-    "withCause": null
+    "withCause": {
+     "k": 1275,
+     "t": 42.53,
+     "a": "kill",
+     "id": "yfang",
+     "eid": 14
+    }
    },
    "tests": 15,
    "verdict": "responsible: unit:tao.skills.0.dp"
@@ -884,21 +928,56 @@
      "id": "tao"
     },
     "new": {
-     "k": 660,
-     "t": 22,
-     "a": "skill",
-     "id": "tao"
+     "k": 471,
+     "t": 15.73,
+     "a": "kill",
+     "id": "soldier",
+     "eid": 2
     },
     "frame": 360
    },
-   "firstMaterial": null,
+   "firstMaterial": {
+    "i": 4,
+    "old": {
+     "k": 831,
+     "t": 27.73,
+     "a": "kill",
+     "id": "soldier",
+     "eid": 7
+    },
+    "new": {
+     "k": 750,
+     "t": 25.03,
+     "a": "kill",
+     "id": "soldier",
+     "eid": 7
+    },
+    "frame": 750
+   },
    "leaks": {
-    "old": [],
-    "new": []
+    "old": [
+     "yfang@172.3",
+     "yfang@173.3",
+     "yfang@174.3"
+    ],
+    "new": [
+     "bomber@190.93"
+    ]
    },
    "falls": {
     "old": [],
     "new": []
+   },
+   "contrast": {
+    "onlyOld": [
+     {
+      "k": 870,
+      "t": 29.03,
+      "a": "skill",
+      "id": "ayaki"
+     }
+    ],
+    "onlyNew": []
    },
    "candidates": [
     {
@@ -963,20 +1042,20 @@
     },
     {
      "field": "unit:tao.skills.0.dp",
+     "old": 10,
      "new": 8
     }
    ],
    "allReverted": {
-    "value": 2,
+    "value": 0,
     "lives": [
-     2,
-     2,
-     2,
-     2,
-     2
+     0,
+     0,
+     0,
+     0,
+     0
     ]
    },
-   "verdict": "reverting all 13 candidate data fields gives 2 (old 0, new 2): part of the cause is outside the data (code), or in fields outside this squad",
    "groups": {
     "unit:yui.skills.0": {
      "fields": [
@@ -994,17 +1073,17 @@
       ]
      },
      "applyOnly": {
-      "value": 2,
+      "value": 0,
       "lives": [
-       2,
-       2,
-       2,
-       2,
-       2
+       0,
+       0,
+       0,
+       0,
+       0
       ]
      },
      "necessary": false,
-     "sufficient": true
+     "sufficient": false
     },
     "unit:ker.skills.0": {
      "fields": [
@@ -1021,17 +1100,17 @@
       ]
      },
      "applyOnly": {
-      "value": 2,
+      "value": 0,
       "lives": [
-       2,
-       2,
-       2,
-       2,
-       2
+       0,
+       0,
+       0,
+       0,
+       0
       ]
      },
      "necessary": false,
-     "sufficient": true
+     "sufficient": false
     },
     "unit:ker.skills.1": {
      "fields": [
@@ -1048,17 +1127,17 @@
       ]
      },
      "applyOnly": {
-      "value": 2,
+      "value": 0,
       "lives": [
-       2,
-       2,
-       2,
-       2,
-       2
+       0,
+       0,
+       0,
+       0,
+       0
       ]
      },
      "necessary": false,
-     "sufficient": true
+     "sufficient": false
     },
     "unit:sunae.skills.0": {
      "fields": [
@@ -1075,17 +1154,17 @@
       ]
      },
      "applyOnly": {
-      "value": 2,
+      "value": 0,
       "lives": [
-       2,
-       2,
-       2,
-       2,
-       2
+       0,
+       0,
+       0,
+       0,
+       0
       ]
      },
      "necessary": false,
-     "sufficient": true
+     "sufficient": false
     },
     "unit:ayaki.skills.0": {
      "fields": [
@@ -1158,17 +1237,17 @@
       ]
      },
      "applyOnly": {
-      "value": 2,
+      "value": 0,
       "lives": [
-       2,
-       2,
-       2,
-       2,
-       2
+       0,
+       0,
+       0,
+       0,
+       0
       ]
      },
      "necessary": false,
-     "sufficient": true
+     "sufficient": false
     },
     "unit:tao.skills.0": {
      "fields": [
@@ -1202,25 +1281,41 @@
    },
    "minimalRevert": [
     {
+     "field": "unit:tao.skills.0.sp",
+     "old": 24,
+     "new": 28
+    },
+    {
+     "field": "unit:tao.skills.0.init",
+     "old": 12,
+     "new": 6
+    },
+    {
      "field": "unit:tao.skills.0.dp",
+     "old": 10,
      "new": 8
     }
    ],
    "causeEffect": {
-    "frame": 5038,
-    "t": 167.9,
+    "frame": 750,
+    "t": 25,
     "withoutCause": {
-     "k": 5038,
-     "t": 167.97,
-     "a": "fall",
-     "id": "yui",
-     "x": 4,
-     "y": 4,
-     "hp": -375
+     "k": 831,
+     "t": 27.73,
+     "a": "kill",
+     "id": "soldier",
+     "eid": 7
     },
-    "withCause": null
+    "withCause": {
+     "k": 750,
+     "t": 25.03,
+     "a": "kill",
+     "id": "soldier",
+     "eid": 7
+    }
    },
-   "tests": 18
+   "tests": 22,
+   "verdict": "responsible: unit:tao.skills.0.sp, unit:tao.skills.0.init, unit:tao.skills.0.dp"
   },
   {
    "cell": "IM-10:low",
@@ -1264,21 +1359,53 @@
      "id": "tao"
     },
     "new": {
-     "k": 660,
-     "t": 22,
-     "a": "skill",
-     "id": "tao"
+     "k": 487,
+     "t": 16.27,
+     "a": "kill",
+     "id": "soldier",
+     "eid": 2
     },
     "frame": 360
    },
-   "firstMaterial": null,
+   "firstMaterial": {
+    "i": 2,
+    "old": {
+     "k": 703,
+     "t": 23.47,
+     "a": "kill",
+     "id": "soldier",
+     "eid": 5
+    },
+    "new": {
+     "k": 692,
+     "t": 23.1,
+     "a": "kill",
+     "id": "soldier",
+     "eid": 6
+    },
+    "frame": 692
+   },
    "leaks": {
-    "old": [],
+    "old": [
+     "grenadier@161.13",
+     "yfang@172.3"
+    ],
     "new": []
    },
    "falls": {
     "old": [],
     "new": []
+   },
+   "contrast": {
+    "onlyOld": [
+     {
+      "k": 840,
+      "t": 28.03,
+      "a": "skill",
+      "id": "ayaki"
+     }
+    ],
+    "onlyNew": []
    },
    "candidates": [
     {
@@ -1363,6 +1490,7 @@
     },
     {
      "field": "unit:tao.skills.0.dp",
+     "old": 10,
      "new": 8
     },
     {
@@ -1377,16 +1505,15 @@
     }
    ],
    "allReverted": {
-    "value": 0,
+    "value": 1,
     "lives": [
-     0,
-     0,
-     0,
-     0,
-     0
+     1,
+     1,
+     1,
+     1,
+     1
     ]
    },
-   "verdict": "reverting all 19 candidate data fields gives 0 (old 1, new 3): part of the cause is outside the data (code), or in fields outside this squad",
    "groups": {
     "unit:defender.skills.0": {
      "fields": [
@@ -1408,13 +1535,13 @@
       ]
      },
      "applyOnly": {
-      "value": 0,
+      "value": 1,
       "lives": [
-       0,
-       0,
-       0,
-       0,
-       0
+       1,
+       1,
+       1,
+       1,
+       1
       ]
      },
      "necessary": false,
@@ -1435,13 +1562,13 @@
       ]
      },
      "applyOnly": {
-      "value": 0,
+      "value": 1,
       "lives": [
-       0,
-       0,
-       0,
-       0,
-       0
+       1,
+       1,
+       1,
+       1,
+       1
       ]
      },
      "necessary": false,
@@ -1463,13 +1590,13 @@
       ]
      },
      "applyOnly": {
-      "value": 0,
+      "value": 1,
       "lives": [
-       0,
-       0,
-       0,
-       0,
-       0
+       1,
+       1,
+       1,
+       1,
+       1
       ]
      },
      "necessary": false,
@@ -1491,13 +1618,13 @@
       ]
      },
      "applyOnly": {
-      "value": 0,
+      "value": 1,
       "lives": [
-       0,
-       0,
-       0,
-       0,
-       0
+       1,
+       1,
+       1,
+       1,
+       1
       ]
      },
      "necessary": false,
@@ -1518,13 +1645,13 @@
       ]
      },
      "applyOnly": {
-      "value": 0,
+      "value": 1,
       "lives": [
-       0,
-       0,
-       0,
-       0,
-       0
+       1,
+       1,
+       1,
+       1,
+       1
       ]
      },
      "necessary": false,
@@ -1546,13 +1673,13 @@
       ]
      },
      "applyOnly": {
-      "value": 0,
+      "value": 1,
       "lives": [
-       0,
-       0,
-       0,
-       0,
-       0
+       1,
+       1,
+       1,
+       1,
+       1
       ]
      },
      "necessary": false,
@@ -1565,13 +1692,13 @@
       "unit:tao.skills.0.dp"
      ],
      "revertOnly": {
-      "value": 2,
+      "value": 3,
       "lives": [
-       2,
-       2,
-       2,
-       2,
-       2
+       3,
+       3,
+       3,
+       3,
+       3
       ]
      },
      "applyOnly": {
@@ -1603,17 +1730,17 @@
       ]
      },
      "applyOnly": {
-      "value": 2,
+      "value": 3,
       "lives": [
-       2,
-       2,
-       2,
-       2,
-       2
+       3,
+       3,
+       3,
+       3,
+       3
       ]
      },
      "necessary": true,
-     "sufficient": false
+     "sufficient": true
     }
    },
    "minimalRevert": [
@@ -1623,8 +1750,26 @@
      "new": 35
     }
    ],
-   "causeEffect": null,
-   "tests": 19
+   "causeEffect": {
+    "frame": 1680,
+    "t": 56,
+    "withoutCause": {
+     "k": 1715,
+     "t": 57.2,
+     "a": "kill",
+     "id": "soldier",
+     "eid": 17
+    },
+    "withCause": {
+     "k": 1680,
+     "t": 56.03,
+     "a": "kill",
+     "id": "drummer",
+     "eid": 18
+    }
+   },
+   "tests": 19,
+   "verdict": "responsible: unit:brick.skills.0.sp"
   },
   {
    "cell": "IM-09:fire",
@@ -1680,29 +1825,27 @@
     "frame": 391
    },
    "firstMaterial": {
-    "i": 0,
+    "i": 2,
     "old": {
-     "k": 2398,
-     "t": 79.97,
-     "a": "fall",
-     "id": "sunae",
-     "x": 6,
-     "y": 4,
-     "hp": -370
+     "k": 998,
+     "t": 33.3,
+     "a": "kill",
+     "id": "strag",
+     "eid": 4
     },
     "new": {
-     "k": 2326,
-     "t": 77.57,
-     "a": "fall",
-     "id": "sunae",
-     "x": 6,
-     "y": 4,
-     "hp": -140
+     "k": 889,
+     "t": 29.67,
+     "a": "kill",
+     "id": "yfang",
+     "eid": 11
     },
-    "frame": 2326
+    "frame": 889
    },
    "leaks": {
-    "old": [],
+    "old": [
+     "iceguard@184.13"
+    ],
     "new": []
    },
    "falls": {
@@ -1715,13 +1858,22 @@
     ]
    },
    "contrast": {
-    "onlyOld": [],
+    "onlyOld": [
+     {
+      "k": 1321,
+      "t": 44.03,
+      "a": "deploy",
+      "id": "alpha",
+      "x": 11,
+      "y": 4
+     }
+    ],
     "onlyNew": [
      {
-      "k": 2764,
-      "t": 92.17,
+      "k": 901,
+      "t": 30.03,
       "a": "skill",
-      "id": "nana"
+      "id": "yui"
      }
     ]
    },
@@ -2033,25 +2185,21 @@
     }
    ],
    "causeEffect": {
-    "frame": 2326,
-    "t": 77.5,
+    "frame": 889,
+    "t": 29.6,
     "withoutCause": {
-     "k": 2398,
-     "t": 79.97,
-     "a": "fall",
-     "id": "sunae",
-     "x": 6,
-     "y": 4,
-     "hp": -370
+     "k": 998,
+     "t": 33.3,
+     "a": "kill",
+     "id": "strag",
+     "eid": 4
     },
     "withCause": {
-     "k": 2326,
-     "t": 77.57,
-     "a": "fall",
-     "id": "sunae",
-     "x": 6,
-     "y": 4,
-     "hp": -140
+     "k": 889,
+     "t": 29.67,
+     "a": "kill",
+     "id": "yfang",
+     "eid": 11
     }
    },
    "tests": 17,
@@ -2091,7 +2239,7 @@
    ],
    "seed": 1,
    "firstAny": {
-    "i": 2,
+    "i": 3,
     "old": {
      "k": 540,
      "t": 18,
@@ -2106,10 +2254,33 @@
     },
     "frame": 540
    },
-   "firstMaterial": null,
+   "firstMaterial": {
+    "i": 8,
+    "old": {
+     "k": 1954,
+     "t": 65.17,
+     "a": "kill",
+     "id": "chasseur",
+     "eid": 14
+    },
+    "new": {
+     "k": 1996,
+     "t": 66.57,
+     "a": "kill",
+     "id": "chasseur",
+     "eid": 14
+    },
+    "frame": 1954
+   },
    "leaks": {
-    "old": [],
-    "new": []
+    "old": [
+     "soldier@161.87",
+     "soldier@162.3",
+     "soldier@162.4"
+    ],
+    "new": [
+     "grenadier@150.83"
+    ]
    },
    "falls": {
     "old": [
@@ -2119,6 +2290,40 @@
     "new": [
      "caster@108.43",
      "hiro@146.4"
+    ]
+   },
+   "contrast": {
+    "onlyOld": [
+     {
+      "k": 2280,
+      "t": 76.03,
+      "a": "skill",
+      "id": "ayaki"
+     },
+     {
+      "k": 2401,
+      "t": 80.03,
+      "a": "deploy",
+      "id": "lilith",
+      "x": 1,
+      "y": 5
+     }
+    ],
+    "onlyNew": [
+     {
+      "k": 1981,
+      "t": 66.03,
+      "a": "deploy",
+      "id": "ayaki",
+      "x": 5,
+      "y": 3
+     },
+     {
+      "k": 2101,
+      "t": 70.03,
+      "a": "skill",
+      "id": "brick"
+     }
     ]
    },
    "candidates": [
@@ -2204,6 +2409,7 @@
     },
     {
      "field": "unit:tao.skills.0.dp",
+     "old": 10,
      "new": 8
     },
     {
@@ -2458,13 +2664,31 @@
    },
    "minimalRevert": [
     {
-     "field": "unit:tao.skills.0.dp",
-     "new": 8
+     "field": "unit:tao.skills.0.init",
+     "old": 12,
+     "new": 6
     }
    ],
-   "causeEffect": null,
-   "tests": 18,
-   "verdict": "responsible: unit:tao.skills.0.dp"
+   "causeEffect": {
+    "frame": 2627,
+    "t": 87.6,
+    "withoutCause": {
+     "k": 2627,
+     "t": 87.6,
+     "a": "kill",
+     "id": "soldier",
+     "eid": 18
+    },
+    "withCause": {
+     "k": 2659,
+     "t": 88.67,
+     "a": "kill",
+     "id": "soldier",
+     "eid": 26
+    }
+   },
+   "tests": 22,
+   "verdict": "responsible: unit:tao.skills.0.init"
   }
  ]
 }

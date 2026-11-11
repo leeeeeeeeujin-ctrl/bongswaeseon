@@ -1,5 +1,8 @@
 # 봉쇄선 solver v2 on GitHub Actions (branch `solver` only; never touches main / Pages).
-# Dispatch (REST): POST /repos/{owner}/{repo}/actions/workflows/solver.yml/dispatches {"ref":"solver","inputs":{...}}  (ci.sh run ... does this)
+# Two triggers with the same inputs:
+#  - workflow_dispatch (REST POST .../actions/workflows/solver.yml/dispatches, or the Actions tab). GitHub accepts it only for a workflow file that is also on the
+#    default branch, and only with a token allowed to write Actions;
+#  - a push to `solver` that changes ci/request.json (the inputs as JSON): `ci.sh run` commits the request and pushes it (works with a token that can push).
 # Fan-out: one job per stage (or stage x deck), each with every vCPU as a worker, stopping cleanly before ~5.5 h; rerun the same dispatch to resume.
 # Each job uploads the files it changed as an artifact; the collect job merges them, rebuilds rankings / report / sheet, retrains the surrogate, and commits results/.
 name: solver
@@ -15,26 +18,35 @@ on:
       hours: { description: "time limit per job in hours (max ~5.5)", required: false, default: "5.4" }
       split: { description: "stage | stage-deck (search fan-out)", required: false, default: "stage" }
       extra: { description: "extra CLI arguments for the job command", required: false, default: "" }
+  push:
+    branches: [solver]
+    paths: ["ci/request.json"]
 permissions:
   contents: write
-concurrency:
-  group: solver-${{ github.ref }}-${{ inputs.mode }}-${{ inputs.name }}
-  cancel-in-progress: false
 jobs:
   plan:
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.m.outputs.matrix }}
+      mode: ${{ steps.m.outputs.mode }}
+      stages: ${{ steps.m.outputs.stages }}
+      decks: ${{ steps.m.outputs.decks }}
+      crit: ${{ steps.m.outputs.crit }}
+      squad: ${{ steps.m.outputs.squad }}
+      name: ${{ steps.m.outputs.name }}
+      hours: ${{ steps.m.outputs.hours }}
+      extra: ${{ steps.m.outputs.extra }}
     steps:
       - uses: actions/checkout@v4
         with: { ref: solver, fetch-depth: 1 }
       - uses: actions/setup-node@v4
         with: { node-version: "22" }
       - id: m
-        env: { MODE: "${{ inputs.mode }}", STAGES: "${{ inputs.stages }}", DECKS: "${{ inputs.decks }}", SPLIT: "${{ inputs.split }}" }
-        run: echo "matrix=$(node ci_matrix.js "$MODE" "$STAGES" "$DECKS" "$SPLIT")" >> "$GITHUB_OUTPUT"
+        env: { EV: "${{ github.event_name }}", INPUTS: "${{ toJSON(inputs) }}" }
+        run: node ci_matrix.js --github "$EV" >> "$GITHUB_OUTPUT"
   run:
     needs: plan
+    if: needs.plan.outputs.mode != 'none'
     runs-on: ubuntu-latest
     timeout-minutes: 355
     strategy:
@@ -52,14 +64,14 @@ jobs:
           node bench2.js --workers "$(nproc)" | tee "results/logs/bench_${{ github.run_id }}_${{ matrix.label }}.json"
       - name: solve
         env:
-          MODE: ${{ inputs.mode }}
+          MODE: ${{ needs.plan.outputs.mode }}
           STAGE: ${{ matrix.stage }}
           DECK: ${{ matrix.deck }}
-          CRIT: ${{ inputs.crit }}
-          SQUAD: ${{ inputs.squad }}
-          QNAME: ${{ inputs.name }}
-          HOURS: ${{ inputs.hours }}
-          EXTRA: ${{ inputs.extra }}
+          CRIT: ${{ needs.plan.outputs.crit }}
+          SQUAD: ${{ needs.plan.outputs.squad }}
+          QNAME: ${{ needs.plan.outputs.name }}
+          HOURS: ${{ needs.plan.outputs.hours }}
+          EXTRA: ${{ needs.plan.outputs.extra }}
         run: |
           W=$(nproc); set -x
           case "$MODE" in
@@ -86,8 +98,8 @@ jobs:
           if-no-files-found: ignore
           retention-days: 30
   collect:
-    needs: run
-    if: always()
+    needs: [plan, run]
+    if: always() && needs.plan.outputs.mode != 'none'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -97,6 +109,7 @@ jobs:
       - uses: actions/download-artifact@v4
         with: { path: incoming, pattern: "results-${{ github.run_id }}-*", merge-multiple: true }
       - name: merge, rank, sheet, surrogate
+        env: { MODE: "${{ needs.plan.outputs.mode }}", STAGES: "${{ needs.plan.outputs.stages }}", DECKS: "${{ needs.plan.outputs.decks }}", CRIT: "${{ needs.plan.outputs.crit }}" }
         run: |
           [ -d incoming ] && cp -a incoming/. ./ || echo "no artifacts"
           node surrogate.js extract --memo results/memo --out "results/surrogate/data_v2.jsonl.gz" || true
@@ -104,9 +117,9 @@ jobs:
           [ -s /tmp/data.txt ] && node surrogate.js train --data "$(cat /tmp/data.txt)" --split tail --out results/surrogate/model_holdout.json || true
           [ -s /tmp/data.txt ] && node surrogate.js train --data "$(cat /tmp/data.txt)" || true
           node sheet3.js
-          node -e "const fs=require('fs');const b=fs.readdirSync('results/logs').filter(f=>f.startsWith('bench_${{ github.run_id }}_')).map(f=>JSON.parse(fs.readFileSync('results/logs/'+f)));fs.mkdirSync('results/runs',{recursive:true});fs.writeFileSync('results/runs/${{ github.run_id }}.json',JSON.stringify({run:'${{ github.run_id }}',mode:'${{ inputs.mode }}',stages:'${{ inputs.stages }}',decks:'${{ inputs.decks }}',crit:'${{ inputs.crit }}',finished:new Date().toISOString(),bench:b},null,1));" || true
+          node -e "const fs=require('fs');const b=fs.readdirSync('results/logs').filter(f=>f.startsWith('bench_${{ github.run_id }}_')).map(f=>JSON.parse(fs.readFileSync('results/logs/'+f)));fs.mkdirSync('results/runs',{recursive:true});fs.writeFileSync('results/runs/${{ github.run_id }}.json',JSON.stringify({run:'${{ github.run_id }}',mode:process.env.MODE,stages:process.env.STAGES,decks:process.env.DECKS,crit:process.env.CRIT,finished:new Date().toISOString(),bench:b},null,1));" || true
       - name: commit results
-        env: { MSG: "results: ${{ inputs.mode }} ${{ inputs.stages }} ${{ inputs.decks }} ${{ inputs.crit }} ${{ inputs.name }} (run ${{ github.run_id }})" }
+        env: { MSG: "results: ${{ needs.plan.outputs.mode }} ${{ needs.plan.outputs.stages }} ${{ needs.plan.outputs.decks }} ${{ needs.plan.outputs.crit }} ${{ needs.plan.outputs.name }} (run ${{ github.run_id }})" }
         run: |
           git config user.name "solver-bot"; git config user.email "solver-bot@users.noreply.github.com"
           git add -A results
