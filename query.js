@@ -55,10 +55,11 @@ async function main() {
   const name = (A.name || ("q-" + qidOf(ids, cons))).replace(/[^\w.-]/g, "_");
   const dir = path.join(R.RESULTS, "queries", name); fs.mkdirSync(dir, { recursive: true });
   const stages = E.stageRange(A.stages || "IM-02..WL-09"); const crits = (A.crit || "lost1") === "both" ? ["lost1", "full"] : [A.crit || "lost1"];
-  R.writeJSON(path.join(dir, "query.json"), { name, spec: A.squad || null, filter: A.filter || null, squad: ids, constraints: cons, gameHash: R.GAMEHASH, created: new Date().toISOString() });
+  R.writeJSON(path.join(dir, "query.json"), { name, spec: A.squad || null, filter: A.filter || null, squad: ids, constraints: cons, gameHash: R.GAMEHASH });   // identical in every parallel job
   const nW = Math.max(1, +(A.workers || 4)); const pool = new G.Pool(nW); await pool.started;
   const deadline = T0 + (+(A.hours || 5.5)) * 3600e3;
-  const log = (s) => { const line = `${new Date().toISOString()} ${s}`; console.log(line); fs.appendFileSync(path.join(dir, "progress.log"), line + "\n"); };
+  const LOGF = path.join(R.RESULTS, "logs", `query_${name}_${stages[0]}${stages.length > 1 ? "-" + stages[stages.length - 1] : ""}.log`); fs.mkdirSync(path.dirname(LOGF), { recursive: true });   // one log per job: parallel stage jobs never share a file
+  const log = (s) => { const line = `${new Date().toISOString()} ${s}`; console.log(line); fs.appendFileSync(LOGF, line + "\n"); };
   E.LOGS.groups = path.join(R.RESULTS, "surrogate", `groups_${name}_${process.pid}.jsonl`); fs.mkdirSync(path.dirname(E.LOGS.groups), { recursive: true });
   log(`=== query ${name}: ${ids.length} operators (${ids.join(",")}) constraints ${JSON.stringify(cons)} | stages ${stages.join(",")} | ${crits.join("+")} | game ${R.GAMEHASH} | workers ${nW}`);
   const opt = { refineSec: +(A.refine || 90), cdFams: A.cdfams || 4, passes: +(A.passes || 2), polish: +(A.polish || 20), verbose: !!A.verbose, must: cons.must, quota: cons.quota, deadline, log, label: name, memoTag: "q_" + name, famSource: A.nofam ? null : "q_" + name, deckName: name };

@@ -44,7 +44,7 @@ case "$cmd" in
       # REST dispatch refused (this token: 403 "Resource not accessible by integration"; GitHub also wants the file on the default branch): push a request instead
       echo "workflow_dispatch refused ($(head -c 160 "$S2/.dispatch_err" | tr '\n' ' ')); pushing ci/request.json" >&2
       [ -d "$CL/.git" ] || "$0" init; cd "$CL"; git pull -q --rebase origin "$BR" || true; mkdir -p ci
-      { printf '{"requested":"%s"' "$t0"; for k in "${!IN[@]}"; do printf ',"%s":%s' "$k" "$(node -e 'process.stdout.write(JSON.stringify(process.argv[1]))' "${IN[$k]}")"; done; printf '}\n'; } > ci/request.json
+      { printf '{"requested":"%s"' "$t0"; for k in "${!IN[@]}"; do printf ',"%s":%s' "$k" "$(node -e 'process.stdout.write(JSON.stringify(process.argv[1]))' -- "${IN[$k]}")"; done; printf '}\n'; } > ci/request.json
       git add ci/request.json; git commit -q -m "ci request: ${IN[mode]} ${IN[stages]} ${IN[decks]} ${IN[crit]} ${IN[name]}"; sha=$(git rev-parse HEAD)
       for i in 1 2 3; do git push -q origin "HEAD:refs/heads/$BR" 2>/dev/null && break; git pull -q --rebase origin "$BR"; sha=$(git rev-parse HEAD); done
       for i in $(seq 1 30); do sleep 4; id=$(api "repos/$OWNER/$REPO/actions/runs?branch=$BR&event=push&per_page=10" --jq "[.workflow_runs[] | select(.head_sha == \"$sha\")][0].id // empty"); [ -n "$id" ] && { echo "$id"; exit 0; }; done

@@ -167,6 +167,13 @@ if (require.main === module) {
     model.data = files.map((f) => path.basename(f)); model.holdout = rep;
     const out = A.out || MODEL_FILE; R.writeJSON(out, model, false);
     console.log(`trained on ${rows.length} rows in ${((Date.now() - t) / 1000).toFixed(1)} s -> ${out}`); if (rep) console.log(JSON.stringify(rep, null, 1));
+  } else if (cmd === "groups") {   // in-situ accuracy from the engine's logged candidate groups (fills and descent steps): the simulated ones vs their predicted order
+    const files = A._.slice(1).length ? A._.slice(1) : fs.readdirSync(path.join(R.RESULTS, "surrogate")).filter((f) => f.startsWith("groups_")).map((f) => path.join(R.RESULTS, "surrogate", f));
+    let n = 0, top1 = 0, rnd = 0; const rhos = [];
+    for (const f of files) for (const l of fs.readFileSync(f, "utf8").split("\n")) { if (!l) continue; const g = JSON.parse(l); const lost = g.kind === "cd" ? g.simLost : g.lost, kills = g.kind === "cd" ? g.simKills : g.kills; const pred = g.pred.slice(0, lost.length);
+      if (lost.length < 3 || pred.some((p) => p === null)) continue; const bad = lost.map((x, i) => x - (kills[i] || 0) / 1000); const best = Math.min(...bad); n++;
+      const pi = pred.indexOf(Math.max(...pred)); if (bad[pi] === best) top1++; rnd += bad.filter((b) => b === best).length / bad.length; rhos.push(spearman(pred.map((p) => -p), bad)); }
+    const ok = rhos.filter((r) => !isNaN(r)); console.log(JSON.stringify({ groups: n, top1Hit: n ? +(top1 / n).toFixed(3) : null, randomTop1: n ? +(rnd / n).toFixed(3) : null, meanSpearman: ok.length ? +(ok.reduce((a, b) => a + b, 0) / ok.length).toFixed(3) : null }));
   } else if (cmd === "eval") { const m = loadModel(A.model); const rows = loadData(A.data.split(",")); console.log(JSON.stringify(evaluate(m, rows), null, 1)); }
   else console.log("node surrogate.js extract|train|eval (see the header)");
 }

@@ -2,6 +2,7 @@
 // solver v2: cause tracing. When a cell's result flips between two game versions, replay the same plan on both, find the first frame where the runs diverge
 // materially (an operator falls, a foe leaks, a kill comes earlier or later), and name the changed field(s) responsible by bisection over the data diff.
 //   node trace.js --old <gameDir> --new <gameDir> --cells IM-10:base,IM-09:fire [--out results/trace/<name>.md]
+//   node trace.js --old <gameDir> --new <gameDir> --auto [--only up]   sweep every cell on both engines and trace each one that moved (after every game change)
 // A cell is an im_sim bot-sweep cell: stage x VARIANT (base|tank|fire|low) at the stage's recommended rung, im_sim's own plan P and squad build, seeds 1..N (N=5);
 // value = median lives left (0 = a loss), as in im_sim ALLV. (A solver plan can be traced too: --plan file.json --stage X --level E1L1.)
 // Bisection: the new engine is run with subsets of the changed data fields set back to their old values (post-load objects: units, enemies, stages, CFG). Code-only
@@ -153,7 +154,11 @@ function fmtE(e) { return e ? `${e.a} ${e.id}${e.eid !== undefined ? "#" + e.eid
 
 if (require.main === module) {
   const oldDir = abs(A.old || "game_v1"), newDir = abs(A.new || "game");
-  const cells = (A.cells || "IM-10:base,IM-10:tank,IM-10:low,IM-09:fire,WL-05:low").split(",");
+  let cells = (A.cells || "IM-10:base,IM-10:tank,IM-10:low,IM-09:fire,WL-05:low").split(",");
+  // --auto: the whole bot sweep (every stage of im_sim's P x base/tank/fire/low) on both engines; every cell whose value moved is traced
+  if (A.auto) { const STG = (A.stages || "IM-02,IM-03,IM-04,IM-05,IM-06,IM-07,IM-08,IM-09,IM-10,WL-01,WL-02,WL-03,WL-04,WL-05,WL-06,WL-07,WL-08,WL-09").split(","); const all = STG.flatMap((st) => ["base", "tank", "fire", "low"].map((v) => ({ stage: st, variant: v })));
+    const a = child({ dir: oldDir, cells: all }), b = child({ dir: newDir, cells: all }); cells = Object.keys(b).filter((k) => a[k] && a[k].value !== b[k].value);
+    console.log(`sweep: ${all.length} cells, ${cells.length} moved: ${cells.map((k) => `${k} ${a[k].value}->${b[k].value}`).join(", ")}`); if (A.only === "up") cells = cells.filter((k) => b[k].value > a[k].value); }
   const t0 = Date.now();
   const dOld = child({ dir: oldDir, dump: true }), dNew = child({ dir: newDir, dump: true });
   const chs = []; for (const root of Object.keys(dNew)) leafDiff(dOld[root], dNew[root], [root], chs);

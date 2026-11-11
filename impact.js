@@ -71,11 +71,17 @@ async function main() {
     return { key: s.key, stage: s.stage, deck: s.deck, crit: s.crit, lvl: s.lvl, touched, changedOps: hit, stageChanged: stageHit, dBad: d === null ? null : Math.round(d * 1000) / 1000, dWin: dw === null ? null : Math.round(dw * 1000) / 1000, predOld: pa, predNew: pb,
       priority: (touched ? 10 : 0) + (d === null ? 0 : Math.max(0, d)) * 2 + (dw === null ? 0 : Math.max(0, -dw)) * 3 + hit.length * 0.2 }; });
   rows.sort((x, y) => y.priority - x.priority);
-  const out = { old: { dir: oldDir, hash: a.hash }, new: { dir: newDir, hash: b.hash }, generated: new Date().toISOString(), changes, newUnits, touchedUnits: [...touchedUnits], touchedEnemies: [...touchedEnemies], order: rows, newOperatorFills: b.newFills || null };
+  // a new operator: per stage, its best forced fill vs the stored answers (of the decks that would contain it) -> the predicted gain; re-search the biggest gains first
+  const reSearch = [];
+  for (const [op, per] of Object.entries(b.newFills || {})) { const r = (b.units[op] || {}).rarity || 6; const decks = ["starter", "T4", "T5", "T6"].filter((d) => d === "T6" || (d === "T5" && r <= 5) || (d === "T4" && r <= 4));
+    for (const [st, fills] of Object.entries(per)) { if (!fills.length) continue; for (const d of decks) { const stored = rows.filter((x) => x.stage === st && x.deck === d && x.predNew && x.predNew.bad !== null).map((x) => x.predNew.bad);
+        const base = stored.length ? Math.min(...stored) : null; reSearch.push({ op, stage: st, deck: d, fill: fills[0], storedBad: base, gain: base === null ? null : Math.round((base - fills[0].bad) * 1000) / 1000 }); } } }
+  reSearch.sort((x, y) => (y.gain ?? 99) - (x.gain ?? 99));
+  const out = { old: { dir: oldDir, hash: a.hash }, new: { dir: newDir, hash: b.hash }, newOperatorReSearch: reSearch, generated: new Date().toISOString(), changes, newUnits, touchedUnits: [...touchedUnits], touchedEnemies: [...touchedEnemies], order: rows, newOperatorFills: b.newFills || null };
   // --check: replay every solution on the new game (5 seeds) and see how well the order puts the broken ones first
   if (A.check) {
     process.env.SOLVER_GAME_DIR = newDir; const G = require("./ga.js"); const S = require("./sim.js"); const pool = new G.Pool(+(A.workers || 2)); await pool.started;
-    try { for (const r of rows) { const s = sols.find((x) => x.key === r.key); const squad = s.deck === "starter" && s.src === "v1" ? S.starterParty() : (s.squad || S.squadIdsOf(s.plan));   // v1 starter mode: the whole party is the formation const lim = s.crit === "full" ? 0 : 1;
+    try { for (const r of rows) { const s = sols.find((x) => x.key === r.key); const squad = s.deck === "starter" && s.src === "v1" ? S.starterParty() : (s.squad || S.squadIdsOf(s.plan)); /* v1 starter mode: the whole party is the formation */ const lim = s.crit === "full" ? 0 : 1;
         const rs = await pool.all([1, 2, 3, 4, 5].map((sd) => ({ code: s.stage, lvl: s.lvl, plan: s.plan, opt: { seed: sd, squadIds: squad, sameRung: !(s.deck === "starter" && s.src === "v1") } })));
         r.truth = { lost: rs.map((x) => x.lost), holds: rs.every((x) => x.complete && x.lost <= lim) }; } } finally { pool.close(); }
     const broken = rows.filter((r) => r.truth && !r.truth.holds).length; let found = 0; const curve = [];
@@ -88,7 +94,7 @@ async function main() {
   console.log(`changes: ${changes.length} fields (${touchedUnits.size} units, ${touchedEnemies.size} enemies, ${touchedStages.size} stages${cfgChanged ? ", cfg" : ""})${newUnits.length ? "; new operators " + newUnits.join(",") : ""}`);
   console.log(`solutions: ${rows.length}; touched ${rows.filter((r) => r.touched).length}; re-verify order (top 15):`); for (const r of rows.slice(0, 15)) console.log(`  ${r.key.padEnd(28)} ${r.lvl} prio ${r.priority.toFixed(2)} dBad ${r.dBad} dWin ${r.dWin} ops ${r.changedOps.join(",")}${r.truth ? " | truth " + (r.truth.holds ? "holds" : "BROKEN") + " " + r.truth.lost.join("/") : ""}`);
   if (out.check) console.log("check:", JSON.stringify(out.check));
-  if (out.newOperatorFills) console.log("new operators:", JSON.stringify(out.newOperatorFills).slice(0, 2000));
+  if (reSearch.length) { console.log(`new operators: re-search order (predicted gain over the stored answer; null = no stored answer for that deck yet):`); for (const x of reSearch.slice(0, 12)) console.log(`  ${x.op} ${x.stage} ${x.deck}: fill ${x.fill.fam} slot ${x.fill.slot} (${x.fill.role}) at ${x.fill.lvl} bad ${x.fill.bad.toFixed(2)} vs stored ${x.storedBad === null ? "-" : x.storedBad.toFixed(2)} -> gain ${x.gain}`); }
   console.log("->", of);
 }
 main().catch((e) => { console.error(e); process.exit(1); });
