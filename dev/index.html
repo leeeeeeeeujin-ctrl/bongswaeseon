@@ -3803,15 +3803,15 @@ window.BGM = (() => {
       hp: 10000, atk: 640, def: 300, res: 30, speed: 0.4, interval: 2.2, weight: 2, mass: 4, life: 10, boss: true, noMul: true, gunner: true, claim: true,
       rally: { r: 2.4, speed: 1.25, atk: 1.2 }, call: { at: [0.5], phase: 1, type: "soldier", n: 2, barrage: true, gate: 1, via: [[11, 4], [7, 4], [2, 4]], stall: 4 },   // stall: after the order he stands 4 s with his arm raised
       phase2: { hp: 8000, invul: 3, def: 220, atk: 640, speed: 0.5, barrage: true }, falter: { at: 0.7, phase: 2, dur: 6, r: 3, bare: true },
-      charge: { every: 1e9, dur: 1.6, mult: 1.0, hit: 2, breach: { at: 1, phase: 2, push: 1.1 } } },   // the charge is kept only for the breach: he never charges on his own
+      charge: { every: 1e9, dur: 1.6, mult: 1.0, hit: 2, breach: { at: 1, phase: 2, push: 0.55 } } },   // the charge is kept only for the breach: he never charges on his own
     // WL-09, the phantom army the confessor rings up out of the palace armoury (Faust II, act 4): old armour with nobody in it
     armour: { name: "빈 갑주", info: ["아무도 들어 있지 않은 옛 갑옷. 느리고 단단하다.", "어둠 속에서 쓰러지면 5초 뒤 다시 일어난다(한 번)."],
       hp: 4200, atk: 420, def: 480, res: 10, speed: 0.6, interval: 2.4, weight: 1, mass: 3, life: 1, revive: { pct: 0.5, delay: 5, n: 1 } },
     // A cuirassier left on foot where a charge has passed (WL-08). A charge volley with "leave" sets him down at the far end of its line.
     cuirassier: { name: "말에서 내린 흉갑기병", info: ["돌격이 지나간 자리에 남은 기병. 흉갑을 입어 단단하다.", "돌격이 여러 번 지나간 뒤부터, 줄의 먼 쪽 끝에 남는다."],
       hp: 4800, atk: 520, def: 380, res: 10, speed: 0.7, interval: 2.4, weight: 2, mass: 3, life: 1 },
-    kingarmour: { name: "빈 왕좌의 갑주", info: ["대관식용 갑주. 관은 얹혀 있는데 머리가 없다. 셋 몫으로 저지된다.", "어둠 속에서 쓰러뜨리면 5초 뒤 체력 절반으로 다시 일어난다(두 번까지). 등불 아래에서 끝내야 한다. 둘레 2.2칸의 빈 갑주들은 빨라지고 세진다."],
-      hp: 12000, atk: 560, def: 420, res: 20, speed: 0.38, interval: 2.4, weight: 3, mass: 4, life: 3, boss: true, noMul: true, revive: { pct: 0.5, delay: 5, n: 2 }, rally: { r: 2.2, speed: 1.2, atk: 1.15 }, lantern: true,
+    kingarmour: { name: "빈 왕좌의 갑주", info: ["대관식용 갑주. 관은 얹혀 있는데 머리가 없다. 셋 몫으로 저지된다. 그가 닿으면, 막고 있던 적을 놓고 그를 붙든다.", "어둠 속에서 쓰러뜨리면 5초 뒤 체력 절반으로 다시 일어난다(두 번까지). 등불 아래에서 끝내야 한다. 둘레 2.2칸의 빈 갑주들은 빨라지고 세진다."],
+      hp: 12000, atk: 560, def: 420, res: 20, speed: 0.38, interval: 2.4, weight: 3, mass: 4, life: 3, boss: true, noMul: true, claim: true, revive: { pct: 0.5, delay: 5, n: 2 }, rally: { r: 2.2, speed: 1.2, atk: 1.15 }, lantern: true,
       call: { at: [0.5], darkNear: true } },   // at half his strength the lamp nearest him goes out, once; he calls nobody
     // the eagle-bearer: the Guard's standard, at his own scale (noMul). He plants the eagle in the square and the Guard forms on it: everyone round him marches faster and hits
     // harder; at two thirds and one third of his strength he raises it again — three of the line fall in behind him, and the blizzard blows out of the gate on his signal
@@ -4744,7 +4744,7 @@ window.BGM = (() => {
     { code: "WL-07", name: "라에생트", map: MAP_C3.sainte, bg: null, hz: 0.5, ep: 3, startCost: 26, mul: { hp: 0.88, atk: 0.98, def: 0.85 }, rmul: { hp: 1, atk: 0.75 },
       volleys: [{ kind: "charge", first: 30, every: 32, warn: 5, dmg: 1100, pct: 0.6, tiles: [1, 2, 3, 4, 5, 6].map((y) => [2, y]) },
                 { kind: "charge", first: 46, every: 32, warn: 5, dmg: 1100, pct: 0.6, tiles: [1, 2, 3, 4, 5, 6].map((y) => [11, y]) },
-                { first: 62, every: 32, warn: 4, dmg: 700, pct: 0.3, foe: 0.3, mine: 1.7, mineEvery: 13, minePct: 0.3, pack: 1.6, capture: 8, linger: 20, muzzle: [12, 5], gun: [13, 5], tiles: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((x) => [x, 5]) }],   // the gun on the cross road from 62 on: a packed square takes more of it
+                { first: 62, every: 32, warn: 4, dmg: 700, pct: 0.22, foe: 0.3, mine: 1.7, mineEvery: 13, minePct: 0.2, pack: 1.6, capture: 8, linger: 20, muzzle: [12, 5], gun: [13, 5], tiles: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((x) => [x, 5]) }],   // the gun on the cross road from 62 on: a packed square takes more of it
       shifts: [{ t: 100, warn: 12, set: [[6, 1, ","], [7, 1, ","]], banner: ["농장 문이 부서졌다", "THE GATE IS DOWN"] }],   // the farm's north gate breaks at 100 s
       // gates: 0 the west lane's head (3,0), 1 the farm gate (6,0), 2 the east lane's head (10,0), 3 the east side (13,2). Points: the foot of each lane. POST: the gun's picket.
       // Three movements: the two lanes in turn (5-50); the gun and the cross road (60-94); the gate falls at 100 and the yard is the main road (102-176)
@@ -4753,10 +4753,10 @@ window.BGM = (() => {
         return W1([[0.5, "soldier", 3, 1, 0, POST(12, 5)],
         [5, "soldier", 0, 2, 2, WB], [16, "soldier", 0, 2, 2, WA], [26, "lancer", 0, 1, 0, WB], [34, "soldier", 2, 2, 2, EB], [44, "soldier", 3, 2, 2, EG], [50, "chasseur", 2, 1, 0, EA],
         [60, "soldier", 2, 3, 1.5, EB], [64, "grenadier", 0, 1, 0, WB], [70, "lancer", 3, 1, 0, EG], [76, "soldier", 0, 2, 1.5, WX], [84, "soldier", 2, 2, 1.5, EA], [86, "drummer", 2, 1, 0, EB], [94, "chasseur", 0, 1, 0, WA],
-        [102, "soldier", 1, 3, 1.4, MW], [108, "lancer", 1, 2, 2, ME], [114, "mouchard", 3, 1, 0, EG], [118, "grenadier", 1, 1, 0, MW], [122, "soldier", 0, 3, 1.4, WB], [128, "soldier", 2, 3, 1.4, EA], [134, "soldier", 1, 3, 1.4, ME], [138, "lancer", 0, 1, 0, WA],
-        [144, "chasseur", 1, 1, 0, MW], [150, "grenadier", 1, 1, 0, ME], [152, "drummer", 1, 1, 0, MW], [156, "soldier", 1, 3, 1.4, MW], [160, "lancer", 2, 2, 2, EB], [164, "soldier", 0, 2, 1.5, WX], [168, "grenadier", 2, 1, 0, EA], [172, "soldier", 1, 3, 1.3, ME], [176, "lancer", 1, 1, 0, MW]]); })(),
+        [102, "soldier", 1, 3, 1.4, MW], [104, "soldier", 1, 2, 1.4, ME], [108, "lancer", 1, 2, 2, ME], [114, "mouchard", 3, 1, 0, EG], [118, "grenadier", 1, 1, 0, MW], [122, "soldier", 0, 3, 1.4, WB], [128, "soldier", 2, 3, 1.4, EA], [134, "soldier", 1, 3, 1.4, ME], [138, "lancer", 0, 1, 0, WA],
+        [144, "chasseur", 1, 1, 0, MW], [146, "lancer", 1, 2, 2, MW], [150, "grenadier", 1, 1, 0, ME], [152, "drummer", 1, 1, 0, MW], [156, "soldier", 1, 3, 1.4, MW], [160, "lancer", 2, 2, 2, EB], [164, "soldier", 0, 2, 1.5, WX], [168, "grenadier", 2, 1, 0, EA], [172, "soldier", 1, 3, 1.3, ME], [176, "lancer", 1, 1, 0, MW]]); })(),
       boss: ["", ""], desc: "능선 한가운데의 농장. 적은 북쪽에서 두 길로 내려오고, 방어 지점은 두 길의 끝, 둘입니다. 두 길의 바깥 줄에는 기병 돌격, 방어 지점 앞을 가로지르는 길에는 포도탄이 옵니다(붙어 선 가사인격은 1.6배). 가운데 농장은 우리 고지입니다. 100초에 농장의 북쪽 문이 부서지면, 안뜰이 세 번째 길이 되어 가로지르는 길 한복판으로 이어집니다.",
-      lose: "동쪽 끝 고지에서 보초를 쓰러뜨리고, 포가 처음 쏘기 전(62초)에 포구 앞 칸을 8초 지켜 포를 빼앗으세요. 그다음 두 방어 지점 앞, 가로지르는 길 위에 둘씩 세우면 세 길이 모두 그 앞을 지납니다. 빼앗은 포는 13초마다 그 길 위의 적을 최대 체력의 30%씩 깎습니다." },
+      lose: "동쪽 끝 고지에서 보초를 쓰러뜨리고, 포가 처음 쏘기 전(62초)에 포구 앞 칸을 8초 지켜 포를 빼앗으세요. 서쪽은 안쪽 칸(문 쪽)부터 세우세요. 그다음 두 방어 지점 앞, 가로지르는 길 위에 둘씩 세우면 세 길이 모두 그 앞을 지납니다. 빼앗은 포는 13초마다 그 길 위의 적을 최대 체력의 20%씩 깎습니다." },
     { code: "WL-08", name: "몽생장 능선", map: MAP_C3.ridge, bg: null, hz: 0.5, ep: 3, startCost: 24, mul: { hp: 0.88, atk: 0.98, def: 0.85 }, rmul: { hp: 1, atk: 0.75 }, crest: 4,
       volleys: [{ kind: "charge", first: 34, every: 34, warn: 5, dmg: 1100, pct: 0.6, tiles: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((x) => [x, 1]) },
                 { kind: "charge", first: 51, every: 34, warn: 5, dmg: 1100, pct: 0.6, tiles: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((x) => [x, 6]) },
@@ -5613,6 +5613,9 @@ window.BGM = (() => {
         u.stored = 0;
       }
     }
+    // can a foot soldier's way from its gate be built now? (a gate that is still shut has none). Flyers, posts, landings and drops do not ask
+    routeReady(type, s, o) { const d = ENEMIES[type]; if (!d || d.flying || (o && (o.at || o.land || o.drops))) return true;
+      const p = o && o.via ? viaPath(s, o.via) : this.stage.vias && this.stage.vias[s] ? viaPath(s, this.stage.vias[s]) : PATHS[s]; return !!(p && p.length); }
     spawn(type, s, o) {
       const d = ENEMIES[type];
       let path = o && o.at ? atPath(o.at, o.via) : o && o.land ? [SPAWNS[s].slice(), o.land.slice()] : o && o.drops ? [SPAWNS[s].slice(), ...o.drops.map((q) => q[0].slice()), BASE.slice()] : d.flying ? (o && o.air ? airPath(s, o.air) : AIR_PATHS[s]) : o && o.via ? viaPath(s, o.via) : this.stage.vias && this.stage.vias[s] ? viaPath(s, this.stage.vias[s]) : PATHS[s];   // a stage may send a gate's foot soldiers by its own way
@@ -6231,8 +6234,11 @@ window.BGM = (() => {
       // spawns
       while (this.waveIdx < this.waves.length && this.waves[this.waveIdx][0] <= this.t) {
         const [, type, s, o] = this.waves[this.waveIdx++];
+        if (!this.routeReady(type, s, o)) { (this.waitSpawn || (this.waitSpawn = [])).push({ type, s, o, next: this.t + 1 }); continue; }   // its way is still shut: it waits behind the gate
         this.spawn(type, s, o);
       }
+      if (this.waitSpawn && this.waitSpawn.length) for (const w of this.waitSpawn.slice()) if (this.t >= w.next) {   // tried again every second; it comes in the moment its way is open
+        if (this.routeReady(w.type, w.s, w.o)) { this.waitSpawn.splice(this.waitSpawn.indexOf(w), 1); this.spawn(w.type, w.s, w.o); } else w.next = this.t + 1; }
       if (this.extra) while (this.extra.length && this.extra[0][0] <= this.t) { const [, type, s] = this.extra.shift(); this.spawn(type, s); }
       // enemies move / attack
       const gates = this.units.filter((u) => u.skill.id === "eg_gate" && u.skillT > 0 && this.units.includes(u));   // 수문장: nobody small leaves his yard
@@ -6750,7 +6756,7 @@ window.BGM = (() => {
       for (const f of this.fx) f.t += dt;
       this.fx = this.fx.filter((f) => f.t < f.life);
       if (this.life <= 0 || (this.escort && this.escort.hp <= 0)) { this.life = Math.max(0, this.life); this.over = "lose"; this.escortLost = !!(this.escort && this.escort.hp <= 0); }
-      else if (this.waveIdx >= this.waves.length && !(this.extra && this.extra.length) && this.enemies.every((e) => e.ally) && !this.hold && !(this.march && !this.march.part.final)) this.over = "win";
+      else if (this.waveIdx >= this.waves.length && !(this.extra && this.extra.length) && !(this.waitSpawn && this.waitSpawn.length) && this.enemies.every((e) => e.ally) && !this.hold && !(this.march && !this.march.part.final)) this.over = "win";
     }
   }
 
