@@ -1,0 +1,38 @@
+--- a/replay.js
++++ b/replay.js
+@@ -23,7 +23,7 @@
+     if (!r) return null;
+     if (r.L && r.q) {   // packed
+       return { code: r.c, name: r.n || "", seed: r.s === undefined ? null : r.s, level: r.lv || "", variant: r.v || "base", src: r.src || "", K: r.k || 1,
+-        squad: r.q.map((q) => ({ id: q[0], elite: q[1], lvl: q[2], pot: q[3] || 1, skillIdx: q[4] || 0, slv: q[5] || undefined, mult: q[6] || undefined })),
++        squad: r.q.map((q) => ({ id: q[0], elite: q[1], lvl: q[2], pot: q[3] || 1, skillIdx: q[4] || 0, slv: q[5] || undefined, mult: q[6] || undefined, sm: q[7] || undefined })),
+         expect: { over: r.x[0], life: r.x[1], t: r.x[2], kills: r.x[3], total: r.x[4] },
+         log: r.L.map((q) => { const t = q[0], op = q[1];
+           if (op === "d") return { t, a: "deploy", id: q[2], x: q[3], y: q[4], d: q[5], sum: !!q[6] };
+@@ -36,7 +36,7 @@
+     const ex = r.expect || r.expected || r.result || {};
+     const lv = r.level || r.lvl || (r.E !== undefined ? `E${r.E}L${r.L}` : "");
+     const squad = (r.squad || []).map((s) => typeof s === "string" ? { id: s } : s).map((s) => ({ id: s.id, elite: s.elite !== undefined ? s.elite : s.e, lvl: s.lvl !== undefined ? s.lvl : s.lv !== undefined ? s.lv : s.l,
+-      pot: s.pot || 1, skillIdx: s.skillIdx !== undefined ? s.skillIdx : s.sk || 0, slv: s.slv || undefined, mult: s.mult || undefined }));
++      pot: s.pot || 1, skillIdx: s.skillIdx !== undefined ? s.skillIdx : s.sk || 0, slv: s.slv || undefined, mult: s.mult || undefined, sm: s.sm || undefined }));
+     const log = (r.log || r.actions || []).map((q) => { const a = q.a || q.type || q.kind || q.act, t = +q.t;
+       if (a === "deploy") return { t, a, id: q.id, x: q.x, y: q.y, d: q.d !== undefined ? q.d : q.dir, sum: !!(q.sum || q.summon) };
+       if (a === "skill" || a === "retreat") return { t, a, id: q.id, x: q.x, y: q.y, uid: q.uid };
+@@ -50,7 +50,7 @@
+   function pack(n) {
+     const r3 = (v) => Math.round(v * 1e4) / 1e4;
+     return { c: n.code, n: n.name, s: n.seed, lv: n.level, v: n.variant, src: n.src || undefined, k: n.K && n.K !== 1 ? n.K : undefined,
+-      q: n.squad.map((s) => { const a = [s.id, s.elite, s.lvl, s.pot || 1, s.skillIdx || 0, s.slv || 0, s.mult || 0]; while (a.length > 3 && !a[a.length - 1]) a.pop(); return a; }),
++      q: n.squad.map((s) => { const a = [s.id, s.elite, s.lvl, s.pot || 1, s.skillIdx || 0, s.slv || 0, s.mult || 0, s.sm || 0]; while (a.length > 3 && !a[a.length - 1]) a.pop(); return a; }),
+       x: [n.expect.over, n.expect.life, n.expect.t, n.expect.kills, n.expect.total],
+       L: n.log.map((q) => q.a === "deploy" ? [r3(q.t), "d", q.id, q.x, q.y, q.d].concat(q.sum ? [1] : []) : q.a === "skill" || q.a === "retreat" ? [r3(q.t), q.a[0], q.id, q.x === undefined ? null : q.x, q.y === undefined ? null : q.y].concat(q.uid !== undefined ? [q.uid] : [])
+         : q.a === "judge" ? [r3(q.t), "j", q.eid, q.how] : [r3(q.t), "c", q.m, q.args]) };
+@@ -58,7 +58,7 @@
+   // the squad as the sim builds it: { id, elite, mult: growth at that level, pot, skillIdx } (slv only when the record names one)
+   function buildSquad(TD, rep) {
+     return rep.squad.map((s) => { const d = TD.UNITS.find((u) => u.id === s.id); if (!d) return null; const ml = MAXLV[d.rarity] || MAXLV[3], el = Math.max(0, Math.min(s.elite || 0, ml.length - 1)), lv = Math.max(1, Math.min(s.lvl || 1, ml[el]));
+-      const o = { id: s.id, elite: el, mult: s.mult || TD.growth(d, el, lv, ml[el]), pot: s.pot || 1, skillIdx: s.skillIdx || 0 }; if (s.slv) o.slv = s.slv; return o; }).filter(Boolean);
++      const o = { id: s.id, elite: el, mult: s.mult || TD.growth(d, el, lv, ml[el]), pot: s.pot || 1, skillIdx: s.skillIdx || 0 }; if (s.slv) o.slv = s.slv; if (s.sm) o.sm = s.sm; return o; }).filter(Boolean);
+   }
+   // the level line for the HUD: the record's own, else the squad's highest
+   function levelOf(rep) { const m = /^E(\d)L(\d+)$/.exec(rep.level || ""); if (m) return [+m[1], +m[2]]; let e = 0, l = 1; for (const s of rep.squad) { if ((s.elite || 0) > e || ((s.elite || 0) === e && (s.lvl || 1) > l)) { e = s.elite || 0; l = s.lvl || 1; } } return [e, l]; }

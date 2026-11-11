@@ -1,0 +1,30 @@
+봉쇄선 solver v2. Runs against the engine snapshot in ./game (ci.sh push refreshes it from /home/claude/td); ./game_v1 = the v1 / life-3 engine (S/bak_v2).
+All state is under ./results (SOLVER_RESULTS overrides). Every runner is resumable and stops cleanly at --hours.
+
+SEARCH (decks: starter, T4, T5, T6; criteria lost1 = worst seed loses <= 1 life, full = none)
+  node search.js run --stages IM-02..WL-09 --decks starter,T4,T5,T6 --crit lost1,full [--hours 5.4] [--workers 4] [--refine 150] [--keysec 60]
+  node search.js verify [--order results/impact/<old>_<new>.json]     after a game change: replay stored answers (5 seeds), reopen the broken ones
+  node search.js recheck                                              an independent second search at the rung below each minimum
+  node search.js status
+SQUAD QUERIES
+  node query.js --squad "yui,tao,..." | "owned:<file>" | "deck:T4" | "filter:rarity<=4;no6;must=yui;ex=hiro;cost<=17;quota=medic>=1+defender<=2;cls=guard+sniper"
+                [--filter <spec>] --stages IM-02..WL-09 --crit lost1|full|both [--name NAME] [--keyops all|0] [--keysec 45] [--keybudget 600] [--refine 90]
+  -> results/queries/<NAME>/<STAGE>__<crit>.json (+ .replay.json): min level, worst-seed lost at it, win time, family, operators, key operators
+RANKINGS, REPORT, SHEET
+  node rank.js        results/answers.json, results/ranking.json (per stage and overall), results/report/operators.{md,json} (balance report)
+  node sheet3.js      results/sheet.html (filters: squad, kind, stage, criterion, max rarity, class, include/exclude operator, level, family tag)
+STRATEGY FAMILIES
+  node famtool.js import-v1 | import-memo | list [STAGE]     results/families/<STAGE>__<writer>.json (role-slot templates, clustered by slot layout)
+SURROGATE
+  node surrogate.js extract --memo results/memo [--out f]     features of evaluated plans (run under the engine the records were made on: SOLVER_GAME_DIR)
+  node surrogate.js train --data a.gz,b.gz [--split random|deck:T5|tail] [--out m.json]    held-out accuracy printed with --split
+IMPACT SCREENING (after a game change or a new operator)
+  node impact.js --old game_v1 --new game [--sources v1,v2,queries] [--check]   changed fields, re-verify order, new-operator fills; --check scores it vs the truth
+CAUSE TRACING
+  node trace.js --old game_v1 --new game --cells IM-10:base,IM-09:fire      first divergence + responsible fields -> results/trace/*.md
+REPLAYS (v1 long form + sm; td/replay.js reads them; viewer_sm.patch makes the viewer pass sm on)
+  node replay2.js verify <file|dir>   |   node replay2.js pack <dir> --out replay_data.js
+GITHUB ACTIONS (branch solver)
+  ./ci.sh push | run mode=search stages=IM-02 decks=starter crit=lost1 hours=1 | status [RUN] | wait RUN | pull | speed RUN
+SPEED
+  node bench2.js [--workers N]

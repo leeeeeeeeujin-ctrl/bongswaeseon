@@ -1,0 +1,88 @@
+#!/usr/bin/env node
+// solver v2 sheet: results/sheet.html (one self-contained page, the look of solver/sheet2.js) over every answer: deck searches and squad queries.
+// Filter by squad, kind, stage, criterion, highest rarity used, class used, operator included / excluded, level, strategy-family tag; sort by any column;
+// tap a row for the plan on the map. Tabs: answers, rankings (per stage and overall), operators (the balance report). Phone-friendly (one column, scrolling table).
+"use strict";
+const fs = require("fs");
+const path = require("path");
+function build() {
+  const RK = require("./rank.js"); const R = require("./roles.js"); const { S, TD } = R;
+  const { rows, rk, rep } = RK.build();
+  const U = {}; for (const u of TD.UNITS.concat(Object.values(TD.SUMMONS))) U[u.id] = { name: u.name, cls: R.CLS[u.cls] || u.cls, r: u.rarity || 0, block: u.block };
+  const stages = {}; for (const r of rows) if (!stages[r.stage]) { const st = TD.STAGES[S.stageIdx(r.stage)]; stages[r.stage] = { name: st.name, map: st.map }; }
+  const data = { generated: rk.generated, gameHash: R.GAMEHASH, rungs: rk.rungs, units: U, stages, rows: rows.map((r) => Object.assign({}, r, { squad: undefined, nsq: r.squad.length })), rank: rk, ops: rep.operators };
+  const html = `<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Solver v2 Answers</title>
+<style>
+:root{--bg:#f6f5f2;--fg:#1d1d1f;--mut:#666;--card:#fff;--line:#ddd;--wall:#3a3a40;--wall2:#5b4a3a;--ground:#c9c2b0;--road:#e8e2d2;--high:#8fa7b8;--spawn:#d9534f;--base:#3b7dd8;--lamp:#e6b422;--mud:#9b8463;--ice:#bfe3f0;--any:#b9d7a8;--grid:rgba(0,0,0,.18);--blk:#2e8b57;--rng:#7b5bd6;--med:#e05a9b;--arrow:#111;--hl:#fff4cc;--ok:#2e8b57;--bad:#c0392b;--acc:#3b7dd8}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141417;--fg:#ececec;--mut:#9a9a9a;--card:#1e1e22;--line:#333;--grid:rgba(255,255,255,.12);--arrow:#fff;--hl:#3a3420}}
+:root[data-theme="dark"]{--bg:#141417;--fg:#ececec;--mut:#9a9a9a;--card:#1e1e22;--line:#333;--grid:rgba(255,255,255,.12);--arrow:#fff;--hl:#3a3420}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:14px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif}main{max-width:1100px;margin:0 auto;padding:12px 16px 40px}
+h1{font-size:21px;margin:6px 0}.mut{color:var(--mut);font-size:12.5px}.f{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}.f label{font-size:12px;color:var(--mut);display:flex;flex-direction:column;min-width:0}
+select,input{font:inherit;padding:4px;background:var(--card);color:var(--fg);border:1px solid var(--line);border-radius:6px;max-width:44vw}.tw{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font-size:13px}th,td{border-bottom:1px solid var(--line);padding:5px 7px;text-align:left;vertical-align:top}th{cursor:pointer;white-space:nowrap;color:var(--mut);position:sticky;top:0;background:var(--card)}
+tr.r:hover{background:var(--hl);cursor:pointer}tr.sel{background:var(--hl)}.none{color:var(--bad)}.lv{font-weight:700}.tabs{display:flex;gap:6px;margin:8px 0}.tabs button{font:inherit;padding:6px 12px;border:1px solid var(--line);border-radius:16px;background:var(--card);color:var(--fg)}.tabs button.on{border-color:var(--acc);color:var(--acc);font-weight:600}
+.k{display:inline-block;border:1px solid var(--line);border-radius:10px;padding:0 6px;margin:1px;font-size:12px;white-space:nowrap}.k b{font-weight:600}.k.key{border-color:var(--bad)}.tag{display:inline-block;background:var(--hl);border-radius:4px;padding:0 5px;margin:1px;font-size:11.5px}
+#det{margin-top:14px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px}.map{width:100%;min-width:300px;height:auto;display:block;border-radius:6px}.ut{font:bold 13px system-ui;fill:#fff}.un{font:bold 13px system-ui;fill:#ffe066}.tl{font:bold 14px system-ui;fill:#fff}
+@media (max-width:600px){td,th{padding:4px 5px;font-size:12px}.hide-s{display:none}}
+</style></head><body><main>
+<h1>봉쇄선 solver v2 — answers</h1>
+<p class="mut">Every answer of the deck searches (starter / T4 / T5 / T6) and the squad queries. <b>min</b> = the lowest rung of ${rk.rungs.join(", ")} where a plan wins on all 5 seeds within the criterion (<b>lost1</b>: the worst seed loses ≤ 1 life; <b>full</b>: none). The strategy is searched for each squad (role-slot families, coordinate descent, a full local refinement); <b>family</b> is the stored strategy the answer is nearest to (new = a new one). <b>Key</b>: with that operator removed, a re-search from the families finds no plan at the same rung. Game ${data.gameHash}; generated <span id="gen"></span>.</p>
+<div class="tabs"><button data-t="a" class="on">answers</button><button data-t="r">rankings</button><button data-t="o">operators</button></div>
+<section id="ta">
+<div class="f"><label>squad<select id="fsrc"></select></label><label>kind<select id="fkind"><option value="">all</option><option>deck</option><option>query</option></select></label><label>stage<select id="fs"></select></label><label>criterion<select id="fc"><option value="">both</option><option>lost1</option><option>full</option></select></label>
+<label>max ★ used<select id="fr"><option value="">any</option><option>3</option><option>4</option><option>5</option><option>6</option></select></label><label>class used<select id="fcl"></select></label><label>includes op<input id="fin" list="opl" placeholder="id"></label><label>excludes op<input id="fex" list="opl" placeholder="id"></label>
+<label>level ≤<select id="fl"></select></label><label>family tag<select id="ft"></select></label></div><datalist id="opl"></datalist>
+<div class="tw"><table><thead><tr><th data-k="stage">stage</th><th data-k="source">squad</th><th data-k="crit">crit</th><th data-k="rung">min</th><th data-k="worstLost">lost</th><th data-k="winTime" class="hide-s">win</th><th data-k="family">family</th><th data-k="nops">operators</th><th data-k="nkeys">key</th></tr></thead><tbody id="tb"></tbody></table></div>
+<p class="mut" id="cnt"></p><div id="det" hidden></div></section>
+<section id="tr" hidden><div class="f"><label>criterion<select id="rc"><option>lost1</option><option>full</option></select></label></div><h2 style="font-size:16px">overall</h2><div class="tw"><table><thead><tr><th>#</th><th>squad</th><th>kind</th><th>stages</th><th>cleared</th><th>mean rung</th><th>lost sum</th></tr></thead><tbody id="rov"></tbody></table></div><h2 style="font-size:16px">per stage</h2><div id="rps"></div></section>
+<section id="to" hidden><p class="mut">Per operator over all answers with a clear: times used, times key, skills used, rung range. Flags: unused operators, unused skills, operators that are key in at least half of their checked clears.</p><div class="tw"><table><thead><tr><th>op</th><th>class</th><th>★</th><th>used</th><th>key</th><th>skills</th><th>rungs</th><th>flags</th></tr></thead><tbody id="otb"></tbody></table></div></section>
+<script>
+const D=${JSON.stringify(data).replace(/<\//g, "<\\/")};
+document.getElementById("gen").textContent=D.generated;
+const TILE={"#":"var(--wall)",".":"var(--ground)",",":"var(--road)",h:"var(--high)",S:"var(--spawn)",B:"var(--base)",W:"var(--wall2)",F:"var(--lamp)","~":"var(--mud)","=":"var(--ice)","*":"var(--any)",D:"var(--wall)","-":"var(--ice)"};
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"})[c]);
+const fmtT=s=>s==null?"–":Math.floor(s/60)+":"+String(Math.round(s%60)).padStart(2,"0");
+const uniq=a=>[...new Set(a)];
+D.rows.forEach(r=>{r.nops=r.ops.length;r.nkeys=r.keys.length;r.maxR=Math.max(0,...r.ops.map(o=>(D.units[o.id]||{}).r||0));r.cls=uniq(r.ops.map(o=>(D.units[o.id]||{}).cls));});
+const st=(k)=>{try{return localStorage.getItem("s3_"+k)}catch(e){return null}},sv=(k,v)=>{try{localStorage.setItem("s3_"+k,v)}catch(e){}};
+const sel=(id,vals,all)=>{const el=document.getElementById(id);el.innerHTML='<option value="">'+all+'</option>'+vals.map(v=>'<option>'+esc(v)+'</option>').join("");};
+sel("fsrc",uniq(D.rows.map(r=>r.source)).sort(),"all squads");sel("fs",uniq(D.rows.map(r=>r.stage)).sort(),"all stages");sel("fcl",uniq(D.rows.flatMap(r=>r.cls)).sort(),"any");sel("fl",D.rungs,"any");sel("ft",uniq(D.rows.flatMap(r=>r.tags)).sort(),"any");
+document.getElementById("opl").innerHTML=Object.keys(D.units).map(id=>'<option value="'+id+'">'+esc(D.units[id].name)+'</option>').join("");
+const F=["fsrc","fkind","fs","fc","fr","fcl","fin","fex","fl","ft"];F.forEach(id=>{const el=document.getElementById(id);const v=st(id);if(v)el.value=v;el.oninput=el.onchange=()=>{sv(id,el.value);draw();};});
+let sortK="stage",sortD=1,cur=null;
+document.querySelectorAll("#ta th").forEach(th=>th.onclick=()=>{const k=th.dataset.k;if(sortK===k)sortD=-sortD;else{sortK=k;sortD=1;}draw();});
+const order={starter:0,T4:1,T5:2,T6:3,lost1:0,full:1};
+function cmp(a,b){let x=a[sortK],y=b[sortK];if(x==null)x=1e9;if(y==null)y=1e9;if(typeof x==="string"&&typeof y==="string"){const c=x.localeCompare(y);if(c)return c*sortD;}else if(x!==y)return (x<y?-1:1)*sortD;return a.stage.localeCompare(b.stage)||a.rung-b.rung||(order[a.crit]-order[b.crit]);}
+const chip=(o,key)=>{const u=D.units[o.id]||{};return '<span class="k'+(key?" key":"")+'" title="'+esc(u.name)+'"><b>'+esc(o.id)+'</b> '+esc(o.sk||"")+' <span class="mut">'+(u.r?u.r+"★ ":"")+esc(u.cls||"")+'</span></span>';};
+function draw(){const v=Object.fromEntries(F.map(id=>[id,document.getElementById(id).value.trim()]));const li=v.fl?D.rungs.indexOf(v.fl):99;
+  const rows=D.rows.filter(r=>(!v.fsrc||r.source===v.fsrc)&&(!v.fkind||r.kind===v.fkind)&&(!v.fs||r.stage===v.fs)&&(!v.fc||r.crit===v.fc)&&(!v.fr||r.maxR<=+v.fr)&&(!v.fcl||r.cls.includes(v.fcl))&&(!v.fin||r.ops.some(o=>o.id===v.fin))&&(!v.fex||!r.ops.some(o=>o.id===v.fex))&&(!v.fl||(r.min&&r.rung<=li))&&(!v.ft||r.tags.includes(v.ft))).sort(cmp);
+  document.getElementById("cnt").textContent=rows.length+" of "+D.rows.length+" answers";
+  document.getElementById("tb").innerHTML=rows.map(r=>{const i=D.rows.indexOf(r);return '<tr class="r'+(cur===i?" sel":"")+'" data-i="'+i+'"><td><b>'+r.stage+'</b><div class="mut hide-s">'+esc(D.stages[r.stage].name)+'</div></td><td>'+esc(r.source)+'<div class="mut">'+r.kind+'</div></td><td>'+r.crit+'</td><td class="lv '+(r.min?"":"none")+'">'+(r.min||(r.done?"none":r.stale?"stale":"…"))+'</td><td>'+(r.worstLost==null?"–":r.worstLost)+'</td><td class="hide-s">'+fmtT(r.winTime)+'</td><td>'+(r.family?'<span class="mut">'+esc(r.family.replace(/^new:/,"new "))+'</span><br>':"")+r.tags.map(t=>'<span class="tag">'+esc(t)+'</span>').join("")+'</td><td>'+r.ops.map(o=>chip(o,r.keys.includes(o.id))).join("")+'</td><td>'+(r.keyDone?(r.keys.join(", ")||'<span class="mut">none</span>'):'<span class="mut">–</span>')+'</td></tr>';}).join("");
+  document.querySelectorAll("tr.r").forEach(tr=>tr.onclick=()=>{cur=+tr.dataset.i;draw();detail(D.rows[cur]);});}
+function mapSvg(stg,plan){const M=stg.map,H=M.length,W=M[0].length,C=40;let s='<svg viewBox="0 0 '+W*C+' '+H*C+'" class="map">';
+  for(let y=0;y<H;y++)for(let x=0;x<W;x++){const c=M[y][x]||"#";s+='<rect x="'+x*C+'" y="'+y*C+'" width="'+C+'" height="'+C+'" fill="'+(TILE[c]||"var(--wall)")+'" stroke="var(--grid)"/>';if(c==="S"||c==="B"||c==="F")s+='<text x="'+(x*C+20)+'" y="'+(y*C+25)+'" text-anchor="middle" class="tl">'+(c==="F"?"✶":c)+'</text>';}
+  const seen=new Map();let n=0;(plan.entries||[]).forEach(q=>{const first=!seen.has(q.id);if(first)seen.set(q.id,++n);const u=D.units[q.id]||{};const col=u.block>0?"var(--blk)":u.cls==="medic"?"var(--med)":"var(--rng)";const cx=q.x*C+20,cy=q.y*C+20,[dx,dy]=[[1,0],[0,1],[-1,0],[0,-1]][q.d];
+    s+='<circle cx="'+cx+'" cy="'+cy+'" r="16" fill="'+col+'" stroke="#000" stroke-width="2" '+(first?"":'stroke-dasharray="4 3" fill-opacity="0.45"')+'/><line x1="'+(cx+dx*15)+'" y1="'+(cy+dy*15)+'" x2="'+(cx+dx*25)+'" y2="'+(cy+dy*25)+'" stroke="var(--arrow)" stroke-width="4"/><text x="'+cx+'" y="'+(cy-2)+'" text-anchor="middle" class="ut">'+esc(q.id.slice(0,3))+'</text><text x="'+cx+'" y="'+(cy+11)+'" text-anchor="middle" class="un">'+seen.get(q.id)+(first?"":"′")+(q.from?"@"+q.from:"")+'</text>';});
+  return s+'</svg>';}
+function detail(r){const el=document.getElementById("det");el.hidden=false;const stg=D.stages[r.stage];
+  if(!r.plan){el.innerHTML='<b>'+r.stage+' · '+esc(r.source)+' · '+r.crit+'</b>: '+(r.done?"no clear on the ladder":"not finished");return;}
+  const sk=r.plan.skill||{};
+  el.innerHTML='<h2 style="margin:0 0 4px;font-size:17px">'+r.stage+' '+esc(stg.name)+' · '+esc(r.source)+' · '+(r.crit==="full"?"full block":"lost ≤ 1")+' · '+r.min+'</h2><p class="mut">worst-seed lost '+r.worstLost+' · win time '+fmtT(r.winTime)+' · family '+esc(r.family||"")+' '+r.tags.map(t=>'<span class="tag">'+esc(t)+'</span>').join("")+(r.replay?' · replay <code>'+esc(r.replay)+'</code>':"")+'</p>'
+   +'<div style="overflow-x:auto">'+mapSvg(stg,r.plan)+'</div><p class="mut">green blocker · purple ranged/support · pink medic · number = deploy order (′ a later square, @t not before t s) · bar = facing</p>'
+   +'<p>'+r.ops.map(o=>chip(o,r.keys.includes(o.id))).join("")+'</p>'+(r.subs.length?'<p class="mut">covered by a re-search without them: '+r.subs.map(([a,b])=>esc(a)+"→"+esc(b||"?")).join(", ")+'</p>':"")
+   +(Object.keys(sk).length?'<p class="mut">skill timing: '+Object.entries(sk).map(([id,s])=>esc(id)+" "+["asap","at "+s.t+"s","in range","held"][s.m]).join(", ")+'</p>':"")+((r.plan.retreats||[]).length?'<p class="mut">retreats: '+r.plan.retreats.map(q=>esc(q.id)+" @"+q.t+"s").join(", ")+'</p>':"");
+  el.scrollIntoView({behavior:"smooth",block:"nearest"});}
+function drawRank(){const c=document.getElementById("rc").value;const ov=D.rank.overall.filter(o=>o.crit===c);
+  document.getElementById("rov").innerHTML=ov.map((o,i)=>'<tr><td>'+(i+1)+'</td><td>'+esc(o.source)+'</td><td>'+o.kind+'</td><td>'+o.stages+'</td><td>'+o.cleared+'</td><td>'+o.meanRung+'</td><td>'+o.lostSum+'</td></tr>').join("");
+  document.getElementById("rps").innerHTML=Object.entries(D.rank.perStage).filter(([k])=>k.endsWith("|"+c)).sort().map(([k,a])=>'<details><summary><b>'+k.split("|")[0]+'</b> <span class="mut">best '+esc(a[0].source)+' '+(a[0].min||"none")+'</span></summary><div class="tw"><table><tbody>'+a.map(x=>'<tr><td>'+x.rank+'</td><td>'+esc(x.source)+'</td><td class="lv">'+(x.min||"none")+'</td><td>lost '+(x.worstLost??"–")+'</td><td>'+fmtT(x.winTime)+'</td></tr>').join("")+'</tbody></table></div></details>').join("");}
+document.getElementById("rc").onchange=drawRank;
+document.getElementById("otb").innerHTML=D.ops.map(x=>'<tr><td><b>'+esc(x.id)+'</b><div class="mut">'+esc(x.name)+'</div></td><td>'+esc(x.cls)+'<div class="mut">'+esc(x.sub)+'</div></td><td>'+x.rarity+'</td><td>'+x.used+'</td><td>'+x.key+(x.keyShare!=null?' <span class="mut">('+x.keyShare+')</span>':"")+'</td><td>'+Object.entries(x.skills).map(([k,n])=>k+"×"+n).join(" ")+'</td><td>'+(x.rungRange?x.rungRange.join("–"):"–")+'</td><td>'+x.flags.map(f=>'<span class="tag">'+esc(f)+'</span>').join("")+'</td></tr>').join("");
+document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>{document.querySelectorAll(".tabs button").forEach(x=>x.classList.toggle("on",x===b));["a","r","o"].forEach(t=>document.getElementById("t"+t).hidden=t!==b.dataset.t);sv("tab",b.dataset.t);});
+const t0=st("tab");if(t0){const b=document.querySelector('.tabs button[data-t="'+t0+'"]');if(b)b.click();}
+draw();drawRank();
+</script></main></body></html>`;
+  fs.writeFileSync(path.join(R.RESULTS, "sheet.html"), html);
+  return rows.length;
+}
+module.exports = { build };
+if (require.main === module) console.log(build(), "answers in results/sheet.html");

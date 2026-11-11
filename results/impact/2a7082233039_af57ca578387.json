@@ -1,0 +1,5774 @@
+{
+ "old": {
+  "dir": "/tmp/claude-0/-home-claude/0f5894f6-5a4f-5270-947a-362dcd546bdc/scratchpad/solver2/game_v1",
+  "hash": "2a7082233039"
+ },
+ "new": {
+  "dir": "/tmp/claude-0/-home-claude/0f5894f6-5a4f-5270-947a-362dcd546bdc/scratchpad/solver2/game",
+  "hash": "af57ca578387"
+ },
+ "generated": "2026-11-11T22:22:32.703Z",
+ "changes": [
+  {
+   "path": "unit:vanguard.skill.sp",
+   "old": 22,
+   "new": 34
+  },
+  {
+   "path": "unit:vanguard.skill.init",
+   "old": 14,
+   "new": 4
+  },
+  {
+   "path": "unit:vanguard.skill.dp",
+   "new": 8
+  },
+  {
+   "path": "unit:vanguard.skills",
+   "old": [
+    {
+     "name": "보급 신호",
+     "desc": "즉시 배치 코스트 +12",
+     "sp": 22,
+     "init": 14,
+     "mode": "manual",
+     "dur": 0
+    }
+   ],
+   "new": [
+    {
+     "name": "보급 신호",
+     "desc": "즉시 배치 코스트 +{dp}",
+     "sp": 34,
+     "init": 4,
+     "mode": "manual",
+     "dur": 0,
+     "dp": 8
+    }
+   ]
+  },
+  {
+   "path": "unit:guard.skill.sp",
+   "old": 18,
+   "new": 25
+  },
+  {
+   "path": "unit:guard.skill.atk",
+   "old": 1.9,
+   "new": 1.4
+  },
+  {
+   "path": "unit:guard.skills",
+   "old": [
+    {
+     "name": "맹습",
+     "desc": "{dur}초간 공격력 +{atk+%}",
+     "sp": 18,
+     "init": 0,
+     "mode": "auto",
+     "dur": 8,
+     "atk": 1.9,
+     "scale": {
+      "atk": "B"
+     }
+    }
+   ],
+   "new": [
+    {
+     "name": "맹습",
+     "desc": "{dur}초간 공격력 +{atk+%}",
+     "sp": 25,
+     "init": 0,
+     "mode": "auto",
+     "dur": 8,
+     "atk": 1.4,
+     "scale": {
+      "atk": "B"
+     }
+    }
+   ]
+  },
+  {
+   "path": "unit:defender.skill.sp",
+   "old": 28,
+   "new": 32
+  },
+  {
+   "path": "unit:defender.skill.def",
+   "old": 2.2,
+   "new": 1.6
+  },
+  {
+   "path": "unit:defender.skill.cure",
+   "old": 0.25,
+   "new": 0.15
+  },
+  {
+   "path": "unit:defender.skills",
+   "old": [
+    {
+     "name": "철벽",
+     "desc": "{dur}초간 방어력 +{def+%}, 저지 +1, 체력 {cure%} 회복",
+     "sp": 28,
+     "init": 12,
+     "mode": "manual",
+     "dur": 10,
+     "def": 2.2,
+     "cure": 0.25,
+     "scale": {
+      "def": "D",
+      "cure": "H"
+     }
+    }
+   ],
+   "new": [
+    {
+     "name": "철벽",
+     "desc": "{dur}초간 방어력 +{def+%}, 저지 +1, 체력 {cure%} 회복",
+     "sp": 32,
+     "init": 12,
+     "mode": "manual",
+     "dur": 10,
+     "def": 1.6,
+     "cure": 0.15,
+     "scale": {
+      "def": "D",
+      "cure": "H"
+     }
+    }
+   ]
+  },
+  {
+   "path": "unit:sniper.skill.sp",
+   "old": 16,
+   "new": 20
+  },
+  {
+   "path": "unit:sniper.skill.speed",
+   "old": 2,
+   "new": 1.6
+  },
+  {
+   "path": "unit:sniper.skills",
+   "old": [
+    {
+     "name": "속사",
+     "desc": "{dur}초간 공격 속도 {speed}배",
+     "sp": 16,
+     "init": 4,
+     "mode": "auto",
+     "dur": 10,
+     "speed": 2,
+     "scale": {
+      "speed": "C"
+     }
+    }
+   ],
+   "new": [
+    {
+     "name": "속사",
+     "desc": "{dur}초간 공격 속도 {speed}배",
+     "sp": 20,
+     "init": 4,
+     "mode": "auto",
+     "dur": 10,
+     "speed": 1.6,
+     "scale": {
+      "speed": "C"
+     }
+    }
+   ]
+  },
+  {
+   "path": "unit:medic.skill.sp",
+   "old": 20,
+   "new": 25
+  },
+  {
+   "path": "unit:medic.skill.cure",
+   "old": 0.35,
+   "new": 0.12
+  },
+  {
+   "path": "unit:medic.skills",
+   "old": [
+    {
+     "name": "응급 처치",
+     "desc": "범위 안 모든 아군 체력 {cure%} 회복",
+     "sp": 20,
+     "init": 6,
+     "mode": "auto",
+     "dur": 0,
+     "cure": 0.35,
+     "scale": {
+      "cure": "H"
+     }
+    }
+   ],
+   "new": [
+    {
+     "name": "응급 처치",
+     "desc": "범위 안 모든 아군 체력 {cure%} 회복",
+     "sp": 25,
+     "init": 6,
+     "mode": "auto",
+     "dur": 0,
+     "cure": 0.12,
+     "scale": {
+      "cure": "H"
+     }
+    }
+   ]
+  },
+  {
+   "path": "unit:yui.skills",
+   "old": [
+    {
+     "id": "e_mercy",
+     "name": "자애의 손길",
+     "desc": "피격 시 SP 1 회복. 발동 시 자신과 주위 8칸 중 체력 비율이 가장 낮은 아군의 체력을 공격력의 {cure%}만큼 회복",
+     "sp": 4,
+     "init": 0,
+     "mode": "auto",
+     "spType": "hit",
+     "dur": 0,
+     "cure": 1.8,
+     "scale": {
+      "cure": "E"
+     }
+    },
+    {
+     "id": "e_pray",
+     "name": "고해의 기도",
+     "desc": "{dur}초간 공격하지 않음. 받는 피해 -{taken-%}, 주위 8칸의 아군이 받는 피해의 50%를 대신 받음",
+     "sp": 30,
+     "init": 15,
+     "mode": "manual",
+     "dur": 15,
+     "taken": 0.5,
+     "scale": {
+      "taken": "R"
+     }
+    },
+    {
+     "id": "e_judge",
+     "name": "편린의 심판",
+     "desc": "{dur}초간 공격하지 않고 초당 최대 체력 2%를 잃음. 주위 2칸 적의 이동 속도 -{slow%}. 종료 시 그동안 받은 모든 피해의 {mul%}를 주위 2칸의 적에게 고정 피해로 돌려주고 밀쳐냄(힘 {force}, {stun}초 기절)",
+     "sp": 40,
+     "init": 20,
+     "mode": "manual",
+     "dur": 12,
+     "slow": 0.6,
+     "force": 3,
+     "stun": 0.8,
+     "mul": 1,
+     "scale": {
+      "slow": "F",
+      "force": "K",
+      "stun": "G",
+      "mul": "A"
+     }
+    }
+   ],
+   "new": [
+    {
+     "id": "e_mercy",
+     "name": "자애의 손길",
+     "desc": "피격 시 SP 1 회복. 발동 시 자신과 주위 8칸 중 체력 비율이 가장 낮은 아군의 체력을 공격력의 {cure%}만큼 회복",
+     "sp": 5,
+     "init": 0,
+     "mode": "auto",
+     "spType": "hit",
+     "dur": 0,
+     "cure": 1.4,
+     "scale": {
+      "cure": "E"
+     }
+    },
+    {
+     "id": "e_pray",
+     "name": "고해의 기도",
+     "desc": "{dur}초간 공격하지 않음. 받는 피해 -{taken-%}, 주위 8칸의 아군이 받는 피해의 50%를 대신 받음",
+     "sp": 30,
+     "init": 15,
+     "mode": "manual",
+     "dur": 15,
+     "taken": 0.5,
+     "scale": {
+      "taken": "R"
+     }
+    },
+    {
+     "id": "e_judge",
+     "name": "편린의 심판",
+     "desc": "{dur}초간 공격하지 않고 초당 최대 체력 2%를 잃음. 주위 2칸 적의 이동 속도 -{slow%}. 종료 시 그동안 받은 모든 피해의 {mul%}를 주위 2칸의 적에게 고정 피해로 돌려주고 밀쳐냄(힘 {force}, {stun}초 기절)",
+     "sp": 40,
+     "init": 20,
+     "mode": "manual",
+     "dur": 12,
+     "slow": 0.6,
+     "force": 3,
+     "stun": 0.8,
+     "mul": 1,
+     "scale": {
+      "slow": "F",
+      "force": "K",
+      "stun": "G",
+      "mul": "A"
+     }
+    }
+   ]
+  },
+  {
+   "path": "unit:atat.summon.maxE",
+   "new": [
+    2,
+    3,
+    3
+   ]
+  },
+  {
+   "path": "unit:atat.summon.hpE",
+   "new": [
+    950,
+    1150,
+    1350
+   ]
+  },
+  {
+   "path": "unit:atat.summon.atkE",
+   "new": [
+    300,
+    340,
+    380
+   ]
+  },
+  {
+   "path": "unit:atat.talents",
+   "old": [
+    {
+     "elite": 0,
+     "name": "그려진 아이",
+     "desc": "배치 중 소환물 '낙서'를 지상에 2개까지 배치 가능(찢어지면 15초 뒤 다시). 종이 몸: 척탄병에게 받는 피해 +50%"
+    }
+   ],
+   "new": [
+    {
+     "elite": 0,
+     "name": "그려진 아이",
+     "desc": "배치 중 소환물 '낙서'를 지상에 2개(정예화 1부터 3개)까지 배치 가능(찢어지면 15초 뒤 다시). 낙서의 체력·공격력은 정예화할수록 오른다. 종이 몸: 척탄병에게 받는 피해 +50%"
+    }
+   ]
+  },
+  {
+   "path": "unit:belina.skills",
+   "old": [
+    {
+     "id": "b_chant",
+     "name": "구호",
+     "desc": "피격 시 SP 1 회복. 발동 시 즉시 코스트 +12",
+     "sp": 10,
+     "init": 3,
+     "mode": "auto",
+     "spType": "hit",
+     "dur": 0
+    },
+    {
+     "id": "b_roar",
+     "name": "1억 명의 함성",
+     "desc": "피격 시 SP 1 회복. {dur}초 동안 코스트 +{roarDp}을 나눠 얻고 아군 [선봉] 전원 공격력·방어력 +{atk+%}. 지속 중 자신이 적을 처치할 때마다 코스트 +1",
+     "sp": 20,
+     "init": 8,
+     "mode": "manual",
+     "spType": "hit",
+     "dur": 10,
+     "atk": 1.4,
+     "roarDp": 10,
+     "scale": {
+      "atk": "B"
+     }
+    }
+   ],
+   "new": [
+    {
+     "id": "b_chant",
+     "name": "구호",
+     "desc": "피격 시 SP 1 회복. 발동 시 즉시 코스트 +{dp}",
+     "sp": 30,
+     "init": 6,
+     "mode": "auto",
+     "spType": "hit",
+     "dur": 0,
+     "dp": 12
+    },
+    {
+     "id": "b_roar",
+     "name": "1억 명의 함성",
+     "desc": "피격 시 SP 1 회복. {dur}초 동안 코스트 +{roarDp}을 나눠 얻고 아군 [선봉] 전원 공격력·방어력 +{atk+%}. 지속 중 자신이 적을 처치할 때마다 코스트 +1",
+     "sp": 30,
+     "init": 8,
+     "mode": "manual",
+     "spType": "hit",
+     "dur": 10,
+     "atk": 1.25,
+     "roarDp": 10,
+     "scale": {
+      "atk": "B"
+     }
+    }
+   ]
+  },
+  {
+   "path": "unit:hakuren.skills",
+   "old": [
+    {
+     "id": "h_flow",
+     "name": "긍정적 흐름",
+     "desc": "{dur}초 동안 코스트 +{dp}를 나눠 얻는다",
+     "sp": 20,
+     "init": 10,
+     "mode": "auto",
+     "dur": 8,
+     "dp": 14
+    },
+    {
+     "id": "h_none",
+     "name": "그녀는 아무것도 하지 않았다",
+     "desc": "{dur}초 동안 코스트 +{dp}을 나눠 얻고, 주위 8칸 아군의 HP를 매초 최대 HP의 {heal%}씩 회복한다",
+     "sp": 32,
+     "init": 16,
+     "mode": "manual",
+     "dur": 16,
+     "dp": 10,
+     "heal": 0.03,
+     "scale": {
+      "heal": "H"
+     }
+    }
+   ],
+   "new": [
+    {
+     "id": "h_flow",
+     "name": "긍정적 흐름",
+     "desc": "{dur}초 동안 코스트 +{dp}를 나눠 얻는다",
+     "sp": 26,
+     "init": 8,
+     "mode": "auto",
+     "dur": 8,
+     "dp": 14
+    },
+    {
+     "id": "h_none",
+     "name": "그녀는 아무것도 하지 않았다",
+     "desc": "{dur}초 동안 코스트 +{dp}을 나눠 얻고, 주위 8칸 아군의 HP를 매초 최대 HP의 {heal%}씩 회복한다",
+     "sp": 32,
+     "init": 16,
+     "mode": "manual",
+     "dur": 16,
+     "dp": 10,
+     "heal": 0.03,
+     "scale": {
+      "heal": "H"
+     }
+    }
+   ]
+  },
+  {
+   "path": "unit:miho.splash",
+   "old": 0.6,
+   "new": 0.3
+  },
+  {
+   "path": "unit:miho.skills",
+   "old": [
+    {
+     "id": "m_bless",
+     "name": "자연의 축복",
+     "desc": "사거리 내 모든 아군의 HP를 공격력의 {cure%}만큼 즉시 회복한다",
+     "sp": 16,
+     "init": 6,
+     "mode": "auto",
+     "dur": 0,
+     "cure": 1.5,
+     "scale": {
+      "cure": "E"
+     }
+    },
+    {
+     "id": "m_rain",
+     "name": "추억의 비",
+     "desc": "{dur}초 동안 사거리에 비를 내린다. 비 속의 아군은 매초 공격력의 {cure%}만큼 회복하고, 적은 공격력 -{weak%}. 지속 중 일반 치료를 하지 않는다",
+     "sp": 35,
+     "init": 15,
+     "mode": "manual",
+     "dur": 15,
+     "rain": true,
+     "cure": 0.35,
+     "weak": 0.25,
+     "scale": {
+      "cure": "E",
+      "weak": "P"
+     }
+    }
+   ],
+   "new": [
+    {
+     "id": "m_bless",
+     "name": "자연의 축복",
+     "desc": "사거리 내 모든 아군의 HP를 공격력의 {cure%}만큼 즉시 회복한다",
+     "sp": 20,
+     "init": 6,
+     "mode": "auto",
+     "dur": 0,
+     "cure": 0.6,
+     "scale": {
+      "cure": "E"
+     }
+    },
+    {
+     "id": "m_rain",
+     "name": "추억의 비",
+     "desc": "{dur}초 동안 사거리에 비를 내린다. 비 속의 아군은 매초 공격력의 {cure%}만큼 회복하고, 적은 공격력 -{weak%}. 지속 중 일반 치료를 하지 않는다",
+     "sp": 40,
+     "init": 15,
+     "mode": "manual",
+     "dur": 15,
+     "rain": true,
+     "cure": 0.15,
+     "weak": 0.25,
+     "scale": {
+      "cure": "E",
+      "weak": "P"
+     }
+    }
+   ]
+  },
+  {
+   "path": "unit:miho.talents",
+   "old": [
+    {
+     "elite": 0,
+     "name": "여우비",
+     "desc": "치료 시 대상 주위 8칸의 다른 아군도 치료량의 60%만큼 회복. 치료는 느린 여우불로 날아가 도착할 때 적용된다"
+    }
+   ],
+   "new": [
+    {
+     "elite": 0,
+     "name": "여우비",
+     "desc": "치료 시 대상 주위 8칸의 다른 아군도 치료량의 30%만큼 회복. 치료는 느린 여우불로 날아가 도착할 때 적용된다"
+    }
+   ]
+  },
+  {
+   "path": "unit:lulu.skills",
+   "old": [
+    {
+     "id": "l_strike",
+     "name": "강타",
+     "desc": "공격 {sp}회마다 자동 발동: 다음 공격이 공격력의 {mul%}(판금숙련 1단계마다 +10%) 일격이 되고, 자신의 HP를 공격력의 {cure%}만큼 회복",
+     "sp": 4,
+     "init": 0,
+     "mode": "auto",
+     "spType": "atk",
+     "dur": 0,
+     "mul": 2.2,
+     "cure": 1.2,
+     "scale": {
+      "mul": "A",
+      "cure": "E"
+     }
+    },
+    {
+     "id": "l_ban",
+     "name": "신념의 검",
+     "desc": "{dur}초 동안 공격력 +{atk+%}, 받는 피해 -{taken-%}",
+     "sp": 24,
+     "init": 8,
+     "mode": "manual",
+     "spType": "atk",
+     "dur": 20,
+     "atk": 1.4,
+     "taken": 0.6,
+     "scale": {
+      "atk": "B",
+      "taken": "R"
+     }
+    }
+   ],
+   "new": [
+    {
+     "id": "l_strike",
+     "name": "강타",
+     "desc": "공격 {sp}회마다 자동 발동: 다음 공격이 공격력의 {mul%}(판금숙련 1단계마다 +10%) 일격이 되고, 자신의 HP를 공격력의 {cure%}만큼 회복",
+     "sp": 6,
+     "init": 0,
+     "mode": "auto",
+     "spType": "atk",
+     "dur": 0,
+     "mul": 2,
+     "cure": 0.8,
+     "scale": {
+      "mul": "A",
+      "cure": "E"
+     }
+    },
+    {
+     "id": "l_ban",
+     "name": "신념의 검",
+     "desc": "{dur}초 동안 공격력 +{atk+%}, 받는 피해 -{taken-%}",
+     "sp": 40,
+     "init": 8,
+     "mode": "manual",
+     "spType": "atk",
+     "dur": 20,
+     "atk": 1.4,
+     "taken": 0.6,
+     "scale": {
+      "atk": "B",
+      "taken": "R"
+     }
+    }
+   ]
+  },
+  {
+   "path": "unit:skakea.skills",
+   "old": [
+    {
+     "id": "k_e4",
+     "name": "E4 오프닝",
+     "desc": "다음 공격이 공격력 {mul%} 물리 피해를 주고 대상을 앞으로 밀어낸다(힘 {force}). 무거운 적일수록 덜 밀린다",
+     "sp": 6,
+     "init": 2,
+     "mode": "auto",
+     "dur": 0,
+     "mul": 1.6,
+     "force": 2,
+     "scale": {
+      "mul": "A",
+      "force": "K"
+     }
+    },
+    {
+     "id": "k_mate",
+     "name": "시공간 체크메이트",
+     "desc": "앞 2칸 안의 지상 적 전원에게 공격력 {mul%} 물리 피해를 주고 앞으로 밀어낸다(힘 {force}). 무거운 적일수록 덜 밀린다",
+     "sp": 20,
+     "init": 8,
+     "mode": "manual",
+     "dur": 0,
+     "mul": 1.5,
+     "force": 3,
+     "scale": {
+      "mul": "A",
+      "force": "K"
+     }
+    }
+   ],
+   "new": [
+    {
+     "id": "k_e4",
+     "name": "E4 오프닝",
+     "desc": "다음 공격이 공격력 {mul%} 물리 피해를 주고 대상을 앞으로 밀어낸다(힘 {force}). 무거운 적일수록 덜 밀린다",
+     "sp": 6,
+     "init": 2,
+     "mode": "auto",
+     "dur": 0,
+     "mul": 1.3,
+     "force": 2,
+     "scale": {
+      "mul": "A",
+      "force": "K"
+     }
+    },
+    {
+     "id": "k_mate",
+     "name": "시공간 체크메이트",
+     "desc": "앞 2칸 안의 지상 적 전원에게 공격력 {mul%} 물리 피해를 주고 앞으로 밀어낸다(힘 {force}). 무거운 적일수록 덜 밀린다",
+     "sp": 20,
+     "init": 8,
+     "mode": "manual",
+     "dur": 0,
+     "mul": 1.5,
+     "force": 3,
+     "scale": {
+      "mul": "A",
+      "force": "K"
+     }
+    }
+   ]
+  },
+  {
+   "path": "unit:ker.skills",
+   "old": [
+    {
+     "id": "ke_view",
+     "name": "흐름의 관조",
+     "desc": "피격 시 SP 1 회복. 최대 체력의 {cure%}를 즉시 회복한다",
+     "sp": 10,
+     "init": 3,
+     "mode": "auto",
+     "spType": "hit",
+     "dur": 0,
+     "cure": 0.3,
+     "scale": {
+      "cure": "H"
+     }
+    },
+    {
+     "id": "ke_unity",
+     "name": "만물 동화",
+     "desc": "{dur}초 동안 방어력 +{def+%}, 「태고의 지혜」의 회복량 {regen}배",
+     "sp": 35,
+     "init": 15,
+     "mode": "manual",
+     "dur": 20,
+     "def": 1.5,
+     "regen": 3,
+     "scale": {
+      "def": "D",
+      "regen": "B"
+     }
+    }
+   ],
+   "new": [
+    {
+     "id": "ke_view",
+     "name": "흐름의 관조",
+     "desc": "피격 시 SP 1 회복. 최대 체력의 {cure%}를 즉시 회복한다",
+     "sp": 10,
+     "init": 3,
+     "mode": "auto",
+     "spType": "hit",
+     "dur": 0,
+     "cure": 0.2,
+     "scale": {
+      "cure": "H"
+     }
+    },
+    {
+     "id": "ke_unity",
+     "name": "만물 동화",
+     "desc": "{dur}초 동안 방어력 +{def+%}, 「태고의 지혜」의 회복량 {regen}배",
+     "sp": 35,
+     "init": 15,
+     "mode": "manual",
+     "dur": 20,
+     "def": 1.5,
+     "regen": 2,
+     "scale": {
+      "def": "D",
+      "regen": "B"
+     }
+    }
+   ]
+  },
+  {
+   "path": "unit:sunae.skills",
+   "old": [
+    {
+     "id": "sn_cheer",
+     "name": "응원하마",
+     "desc": "자신과 주위 8칸 아군의 방어력이 {time}초 동안 {def+%} 오른다",
+     "sp": 20,
+     "init": 5,
+     "mode": "auto",
+     "dur": 0,
+     "def": 1.3,
+     "time": 10,
+     "scale": {
+      "def": "D"
+     }
+    },
+    {
+     "id": "sn_smite",
+     "name": "순애의 적을 처단하겠다",
+     "desc": "{dur}초 동안 저지 +1, 공격력 +{atk+%}. 「순애 수호」로 대신 받는 피해가 40%로 늘어난다",
+     "sp": 30,
+     "init": 12,
+     "mode": "manual",
+     "dur": 15,
+     "atk": 1.6,
+     "scale": {
+      "atk": "B"
+     }
+    }
+   ],
+   "new": [
+    {
+     "id": "sn_cheer",
+     "name": "응원하마",
+     "desc": "자신과 주위 8칸 아군의 방어력이 {time}초 동안 {def+%} 오른다",
+     "sp": 28,
+     "init": 5,
+     "mode": "auto",
+     "dur": 0,
+     "def": 1.3,
+     "time": 10,
+     "scale": {
+      "def": "D"
+     }
+    },
+    {
+     "id": "sn_smite",
+     "name": "순애의 적을 처단하겠다",
+     "desc": "{dur}초 동안 저지 +1, 공격력 +{atk+%}. 「순애 수호」로 대신 받는 피해가 40%로 늘어난다",
+     "sp": 30,
+     "init": 12,
+     "mode": "manual",
+     "dur": 15,
+     "atk": 1.6,
+     "scale": {
+      "atk": "B"
+     }
+    }
+   ]
+  },
+  {
+   "path": "unit:eungyeol.cost",
+   "old": 20,
+   "new": 30
+  },
+  {
+   "path": "unit:teka.skills",
+   "old": [
+    {
+     "id": "tk_haste",
+     "name": "세 수 앞서서",
+     "desc": "{dur}초 동안 공격 속도 +{speed+%}",
+     "sp": 25,
+     "init": 8,
+     "mode": "auto",
+     "dur": 15,
+     "speed": 1.7,
+     "scale": {
+      "speed": "C"
+     }
+    },
+    {
+     "id": "tk_field",
+     "name": "데우스 엑스 마키나",
+     "desc": "{dur}초 동안 공격을 멈추고 사거리 전체에 중력장을 펼친다. 중력장 안의 적은 이동 속도 -{slow%}",
+     "sp": 30,
+     "init": 10,
+     "mode": "manual",
+     "dur": 15,
+     "slow": 0.65,
+     "scale": {
+      "slow": "F"
+     }
+    }
+   ],
+   "new": [
+    {
+     "id": "tk_haste",
+     "name": "세 수 앞서서",
+     "desc": "{dur}초 동안 공격 속도 +{speed+%}",
+     "sp": 30,
+     "init": 8,
+     "mode": "auto",
+     "dur": 15,
+     "speed": 1.4,
+     "scale": {
+      "speed": "C"
+     }
+    },
+    {
+     "id": "tk_field",
+     "name": "데우스 엑스 마키나",
+     "desc": "{dur}초 동안 공격을 멈추고 사거리 전체에 중력장을 펼친다. 중력장 안의 적은 이동 속도 -{slow%}",
+     "sp": 30,
+     "init": 10,
+     "mode": "manual",
+     "dur": 15,
+     "slow": 0.65,
+     "scale": {
+      "slow": "F"
+     }
+    }
+   ]
+  },
+  {
+   "path": "unit:capy.skills",
+   "old": [
+    {
+     "id": "cb_wave",
+     "name": "마이웨이 행운의 파도",
+     "desc": "다음 포격에 유자를 한 바구니째 장전해 공격력 {mul%}, 범위가 주위 1.6칸으로 넓어진다",
+     "sp": 7,
+     "init": 3,
+     "mode": "auto",
+     "dur": 0,
+     "mul": 1.8,
+     "scale": {
+      "mul": "A"
+     }
+    }
+   ],
+   "new": [
+    {
+     "id": "cb_wave",
+     "name": "마이웨이 행운의 파도",
+     "desc": "다음 포격에 유자를 한 바구니째 장전해 공격력 {mul%}, 범위가 주위 1.6칸으로 넓어진다",
+     "sp": 10,
+     "init": 3,
+     "mode": "auto",
+     "dur": 0,
+     "mul": 1.5,
+     "scale": {
+      "mul": "A"
+     }
+    }
+   ]
+  },
+  {
+   "path": "unit:hiro.cost",
+   "old": 13,
+   "new": 15
+  },
+  {
+   "path": "unit:hiro.skills",
+   "old": [
+    {
+     "id": "hr_brave",
+     "name": "순수 용기의 검",
+     "desc": "다음 공격이 공격력 {mul%} 물리 피해를 준다",
+     "sp": 5,
+     "init": 2,
+     "mode": "auto",
+     "dur": 0,
+     "mul": 2,
+     "scale": {
+      "mul": "A"
+     }
+    }
+   ],
+   "new": [
+    {
+     "id": "hr_brave",
+     "name": "순수 용기의 검",
+     "desc": "다음 공격이 공격력 {mul%} 물리 피해를 준다",
+     "sp": 6,
+     "init": 2,
+     "mode": "auto",
+     "dur": 0,
+     "mul": 1.6,
+     "scale": {
+      "mul": "A"
+     }
+    }
+   ]
+  },
+  {
+   "path": "unit:ayaki.skills",
+   "old": [
+    {
+     "id": "ay_eden",
+     "name": "결과",
+     "desc": "범위 안 모든 아군의 체력을 {cure%} 회복한다",
+     "sp": 20,
+     "init": 6,
+     "mode": "auto",
+     "dur": 0,
+     "cure": 0.2,
+     "scale": {
+      "cure": "H"
+     }
+    }
+   ],
+   "new": [
+    {
+     "id": "ay_eden",
+     "name": "결과",
+     "desc": "범위 안 모든 아군의 체력을 {cure%} 회복한다",
+     "sp": 25,
+     "init": 6,
+     "mode": "auto",
+     "dur": 0,
+     "cure": 0.12,
+     "scale": {
+      "cure": "H"
+     }
+    }
+   ]
+  },
+  {
+   "path": "unit:nana.pierce",
+   "old": 0.3,
+   "new": 0.2
+  },
+  {
+   "path": "unit:nana.skills",
+   "old": [
+    {
+     "id": "nn_focus",
+     "name": "야간 투시",
+     "desc": "{dur}초 동안 공격력 +{atk+%}",
+     "sp": 20,
+     "init": 6,
+     "mode": "auto",
+     "dur": 10,
+     "atk": 1.5,
+     "scale": {
+      "atk": "B"
+     }
+    }
+   ],
+   "new": [
+    {
+     "id": "nn_focus",
+     "name": "야간 투시",
+     "desc": "{dur}초 동안 공격력 +{atk+%}",
+     "sp": 25,
+     "init": 6,
+     "mode": "auto",
+     "dur": 10,
+     "atk": 1.3,
+     "scale": {
+      "atk": "B"
+     }
+    }
+   ]
+  },
+  {
+   "path": "unit:nana.talents",
+   "old": [
+    {
+     "elite": 0,
+     "name": "대물 저격탄",
+     "desc": "공격이 대상 방어력의 30%를 무시한다"
+    }
+   ],
+   "new": [
+    {
+     "elite": 0,
+     "name": "대물 저격탄",
+     "desc": "공격이 대상 방어력의 20%를 무시한다"
+    }
+   ]
+  },
+  {
+   "path": "unit:tao.skills",
+   "old": [
+    {
+     "id": "to_breath",
+     "name": "정신일도",
+     "desc": "즉시 배치 코스트 +10, {dur}초 동안 평타가 잽과 영기 장타의 2연타가 된다",
+     "sp": 24,
+     "init": 12,
+     "mode": "manual",
+     "dur": 8
+    }
+   ],
+   "new": [
+    {
+     "id": "to_breath",
+     "name": "정신일도",
+     "desc": "즉시 배치 코스트 +{dp}, {dur}초 동안 평타가 잽과 영기 장타의 2연타가 된다",
+     "sp": 28,
+     "init": 6,
+     "mode": "manual",
+     "dur": 8,
+     "dp": 8
+    }
+   ]
+  },
+  {
+   "path": "unit:rabi.dmg",
+   "old": "arts",
+   "new": "phys"
+  },
+  {
+   "path": "unit:rabi.holy",
+   "old": 0.3,
+   "new": 0.1
+  },
+  {
+   "path": "unit:rabi.skills",
+   "old": [
+    {
+     "id": "rb_star",
+     "name": "뭇별님 또 한 놈 갑니다~",
+     "desc": "다음 공격이 시간을 가속한 날아차기가 되어 공격력 {mul%} 마법 피해를 주고, 대상을 멀리 날려 보낸다(힘 {force}, 보스에게는 통하지 않음). 벽에 부딪힌 적은 {stun}초 {기절}(무거운 적은 최대 0.5초)",
+     "sp": 8,
+     "init": 1,
+     "mode": "auto",
+     "spType": "atk",
+     "dur": 0,
+     "mul": 2,
+     "force": 4,
+     "stun": 1,
+     "scale": {
+      "mul": "A",
+      "force": "K",
+      "stun": "G"
+     }
+    },
+    {
+     "id": "rb_self",
+     "name": "호오 이젠 정당방위랍니다~?",
+     "desc": "{dur}초 동안 저지 중인 적의 공격을 {neg%} 확률로 시공간을 비틀어 무효로 하고, 그때마다 드롭킥으로 받아쳐 공격력 {ctr%} 마법 피해와 공격력 {holy%}의 {신성 손상}을 준다",
+     "sp": 20,
+     "init": 4,
+     "mode": "manual",
+     "spType": "atk",
+     "dur": 15,
+     "neg": 0.35,
+     "ctr": 1.5,
+     "holy": 0.6,
+     "scale": {
+      "neg": "I",
+      "ctr": "A",
+      "holy": "A"
+     }
+    }
+   ],
+   "new": [
+    {
+     "id": "rb_star",
+     "name": "뭇별님 또 한 놈 갑니다~",
+     "desc": "다음 공격이 시간을 가속한 날아차기가 되어 공격력 {mul%} 물리 피해를 주고, 대상을 멀리 날려 보낸다(힘 {force}, 보스에게는 통하지 않음). 벽에 부딪힌 적은 {stun}초 {기절}(무거운 적은 최대 0.5초)",
+     "sp": 8,
+     "init": 1,
+     "mode": "auto",
+     "spType": "atk",
+     "dur": 0,
+     "mul": 1.4,
+     "force": 4,
+     "stun": 1,
+     "scale": {
+      "mul": "A",
+      "force": "K",
+      "stun": "G"
+     }
+    },
+    {
+     "id": "rb_self",
+     "name": "호오 이젠 정당방위랍니다~?",
+     "desc": "{dur}초 동안 저지 중인 적의 공격을 {neg%} 확률로 시공간을 비틀어 무효로 하고, 그때마다 드롭킥으로 받아쳐 공격력 {ctr%} 물리 피해와 공격력 {holy%}의 {신성 손상}을 준다",
+     "sp": 36,
+     "init": 4,
+     "mode": "manual",
+     "spType": "atk",
+     "dur": 15,
+     "neg": 0.35,
+     "ctr": 1.5,
+     "holy": 0.6,
+     "scale": {
+      "neg": "I",
+      "ctr": "A",
+      "holy": "A"
+     }
+    }
+   ]
+  },
+  {
+   "path": "unit:rabi.talents",
+   "old": [
+    {
+     "elite": 0,
+     "name": "뭇별의 축복",
+     "desc": "잽과 돌려차기의 2연타로 싸우며, 적중할 때마다 대상에게 공격력 30%의 {신성 손상}을 쌓는다"
+    }
+   ],
+   "new": [
+    {
+     "elite": 0,
+     "name": "뭇별의 축복",
+     "desc": "잽과 돌려차기의 2연타로 싸운다. 한 타격마다 공격력 50%의 물리 피해를 주고, 적중할 때마다 대상에게 공격력 10%의 {신성 손상}을 쌓는다"
+    }
+   ]
+  },
+  {
+   "path": "unit:rabi.dblMul",
+   "new": 0.5
+  },
+  {
+   "path": "unit:rabi6.dmg",
+   "old": "arts",
+   "new": "phys"
+  },
+  {
+   "path": "unit:rabi6.skills",
+   "old": [
+    {
+     "id": "r6_strike",
+     "name": "별빛 강타",
+     "desc": "다음 공격이 공격력 {mul%} 마법 피해",
+     "sp": 4,
+     "init": 1,
+     "mode": "auto",
+     "spType": "atk",
+     "dur": 0,
+     "mul": 1.6,
+     "scale": {
+      "mul": "A"
+     }
+    },
+    {
+     "id": "r6_twin",
+     "name": "또 한 놈 갑니다~",
+     "desc": "다음 공격이 2연타가 되고, 각 타격이 공격력 {mul%} 마법 피해",
+     "sp": 5,
+     "init": 1,
+     "mode": "auto",
+     "spType": "atk",
+     "dur": 0,
+     "mul": 1.3,
+     "scale": {
+      "mul": "A"
+     }
+    },
+    {
+     "id": "r6_star",
+     "name": "그대가 뭇별에 닿기를",
+     "desc": "{dur}초 동안 공격력 +{atk+%}, 방어력 +{def+%}. 공격이 3연타가 되는 대신 공격 간격 +50%",
+     "sp": 28,
+     "init": 10,
+     "mode": "manual",
+     "dur": 15,
+     "atk": 1.5,
+     "def": 1.5,
+     "scale": {
+      "atk": "B",
+      "def": "D"
+     }
+    }
+   ],
+   "new": [
+    {
+     "id": "r6_strike",
+     "name": "별빛 강타",
+     "desc": "다음 공격이 공격력 {mul%} 물리 피해",
+     "sp": 4,
+     "init": 1,
+     "mode": "auto",
+     "spType": "atk",
+     "dur": 0,
+     "mul": 1.6,
+     "scale": {
+      "mul": "A"
+     }
+    },
+    {
+     "id": "r6_twin",
+     "name": "또 한 놈 갑니다~",
+     "desc": "다음 공격이 2연타가 되고, 각 타격이 공격력 {mul%} 물리 피해",
+     "sp": 6,
+     "init": 1,
+     "mode": "auto",
+     "spType": "atk",
+     "dur": 0,
+     "mul": 1.3,
+     "scale": {
+      "mul": "A"
+     }
+    },
+    {
+     "id": "r6_star",
+     "name": "그대가 뭇별에 닿기를",
+     "desc": "{dur}초 동안 공격력 +{atk+%}, 방어력 +{def+%}. 공격이 3연타가 되는 대신 공격 간격 +{ivMul+%}",
+     "sp": 35,
+     "init": 10,
+     "mode": "manual",
+     "dur": 15,
+     "atk": 1.3,
+     "def": 1.5,
+     "ivMul": 1.7,
+     "scale": {
+      "atk": "B",
+      "def": "D"
+     }
+    }
+   ]
+  },
+  {
+   "path": "unit:angelina.skills",
+   "old": [
+    {
+     "id": "an_vine",
+     "name": "나무 덩굴 속박",
+     "desc": "범위 안의 지상 적 최대 {n}명을 덩굴로 {bind}초간 {속박}하고 공격력 {mul%}의 {마법 피해}를 준다",
+     "sp": 16,
+     "init": 8,
+     "mode": "auto",
+     "dur": 0,
+     "mul": 1.2,
+     "bind": 3,
+     "n": 2,
+     "scale": {
+      "mul": "A",
+      "bind": "G",
+      "n": "N"
+     }
+    },
+    {
+     "id": "an_grove",
+     "name": "세계수의 가호",
+     "desc": "{dur}초 동안 공격력 +{atk+%}, 치료 대상 +2명, 범위 안의 아군이 매초 최대 체력의 {regen%}를 회복한다",
+     "sp": 35,
+     "init": 15,
+     "mode": "auto",
+     "dur": 20,
+     "atk": 1.4,
+     "regen": 0.02,
+     "scale": {
+      "atk": "B",
+      "regen": "H"
+     }
+    },
+    {
+     "id": "an_save",
+     "name": "빛과 자연의 권능: 구원",
+     "desc": "{dur}초 동안 공격 범위 확대, 범위 안의 아군 전원을 매초 공격력 {cure%}만큼 계속 치료하고, 넘친 치료량은 모두 {보호막}이 된다 (최대 체력의 {ward%}까지). 발동 시와 5초마다 범위 안의 적을 밀쳐낸다(힘 {force})",
+     "sp": 50,
+     "init": 25,
+     "mode": "manual",
+     "dur": 20,
+     "cure": 0.35,
+     "ward": 0.4,
+     "force": 3,
+     "scale": {
+      "cure": "E",
+      "ward": "H",
+      "force": "K"
+     }
+    }
+   ],
+   "new": [
+    {
+     "id": "an_vine",
+     "name": "나무 덩굴 속박",
+     "desc": "범위 안의 지상 적 최대 {n}명을 덩굴로 {bind}초간 {속박}하고 공격력 {mul%}의 {마법 피해}를 준다",
+     "sp": 16,
+     "init": 8,
+     "mode": "auto",
+     "dur": 0,
+     "mul": 1.2,
+     "bind": 3,
+     "n": 2,
+     "scale": {
+      "mul": "A",
+      "bind": "G",
+      "n": "N"
+     }
+    },
+    {
+     "id": "an_grove",
+     "name": "세계수의 가호",
+     "desc": "{dur}초 동안 공격력 +{atk+%}, 치료 대상 +2명, 범위 안의 아군이 매초 최대 체력의 {regen%}를 회복한다",
+     "sp": 40,
+     "init": 15,
+     "mode": "auto",
+     "dur": 20,
+     "atk": 1.2,
+     "regen": 0.01,
+     "scale": {
+      "atk": "B",
+      "regen": "H"
+     }
+    },
+    {
+     "id": "an_save",
+     "name": "빛과 자연의 권능: 구원",
+     "desc": "{dur}초 동안 공격 범위 확대, 범위 안의 아군 전원을 매초 공격력 {cure%}만큼 계속 치료하고, 넘친 치료량은 모두 {보호막}이 된다 (최대 체력의 {ward%}까지). 발동 시와 5초마다 범위 안의 적을 밀쳐낸다(힘 {force})",
+     "sp": 60,
+     "init": 25,
+     "mode": "manual",
+     "dur": 20,
+     "cure": 0.35,
+     "ward": 0.4,
+     "force": 3,
+     "scale": {
+      "cure": "E",
+      "ward": "H",
+      "force": "K"
+     }
+    }
+   ]
+  },
+  {
+   "path": "unit:piania.skills",
+   "old": [
+    {
+     "id": "pn_root",
+     "name": "근원의 울림",
+     "desc": "다음 치료가 범위 안의 아군 전원에게 공격력의 {chord%}만큼 적용된다",
+     "sp": 8,
+     "init": 4,
+     "mode": "auto",
+     "dur": 0,
+     "chord": 1,
+     "scale": {
+      "chord": "E"
+     }
+    },
+    {
+     "id": "pn_eternal",
+     "name": "영원한 평화의 멜로디",
+     "desc": "{dur}초 동안 공격 속도 +{speed+%}, 대신 한 번의 치료량 -55%",
+     "sp": 35,
+     "init": 18,
+     "mode": "manual",
+     "dur": 20,
+     "speed": 3,
+     "scale": {
+      "speed": "C"
+     }
+    }
+   ],
+   "new": [
+    {
+     "id": "pn_root",
+     "name": "근원의 울림",
+     "desc": "다음 치료가 범위 안의 아군 전원에게 공격력의 {chord%}만큼 적용된다",
+     "sp": 8,
+     "init": 4,
+     "mode": "auto",
+     "dur": 0,
+     "chord": 1,
+     "scale": {
+      "chord": "E"
+     }
+    },
+    {
+     "id": "pn_eternal",
+     "name": "영원한 평화의 멜로디",
+     "desc": "{dur}초 동안 공격 속도 +{speed+%}, 대신 한 번의 치료량 -{healMul-%}",
+     "sp": 35,
+     "init": 18,
+     "mode": "manual",
+     "dur": 20,
+     "speed": 3,
+     "healMul": 0.55,
+     "scale": {
+      "speed": "C"
+     }
+    }
+   ]
+  },
+  {
+   "path": "unit:silphy.gateBind.cd",
+   "old": 3,
+   "new": 5
+  },
+  {
+   "path": "unit:silphy.skills",
+   "old": [
+    {
+     "id": "sl_nyala",
+     "name": "텐타클 - 나이알라",
+     "desc": "다음 공격이 대상 주위 1칸의 적 모두를 덩굴 촉수로 {bind}초 동안 묶고 공격력 {mul%} 마법 피해. 묶인 적이 피해를 받으면 최면액이 터져 3초 동안 공격력 -{weak%}",
+     "sp": 8,
+     "init": 3,
+     "mode": "auto",
+     "dur": 0,
+     "mul": 1.6,
+     "bind": 1,
+     "weak": 0.3,
+     "scale": {
+      "mul": "A",
+      "bind": "G",
+      "weak": "P"
+     }
+    },
+    {
+     "id": "sl_astra",
+     "name": "텐타클 - 아스트라",
+     "desc": "{dur}초 동안 공격 속도가 느려지는 대신 공격 범위가 넓어진다. 공격할 때마다 범위 안에서 수비 지점에 가장 가까운 적부터 가장 먼 적까지 이은 선을 따라 신성 촉수가 차례로 내리찍어, 닿은 적 모두에게 공격력 {mul%} 마법 피해를 주고 {stun}초 동안 기절시킨다",
+     "sp": 35,
+     "init": 15,
+     "mode": "manual",
+     "dur": 15,
+     "mul": 1.3,
+     "stun": 0.5,
+     "scale": {
+      "mul": "A",
+      "stun": "G"
+     }
+    }
+   ],
+   "new": [
+    {
+     "id": "sl_nyala",
+     "name": "텐타클 - 나이알라",
+     "desc": "다음 공격이 대상 주위 1칸의 적 모두를 덩굴 촉수로 {bind}초 동안 묶고 공격력 {mul%} 마법 피해. 묶인 적이 피해를 받으면 최면액이 터져 3초 동안 공격력 -{weak%}",
+     "sp": 12,
+     "init": 3,
+     "mode": "auto",
+     "dur": 0,
+     "mul": 1.6,
+     "bind": 0.6,
+     "weak": 0.3,
+     "scale": {
+      "mul": "A",
+      "bind": "G",
+      "weak": "P"
+     }
+    },
+    {
+     "id": "sl_astra",
+     "name": "텐타클 - 아스트라",
+     "desc": "{dur}초 동안 공격 속도가 느려지는 대신 공격 범위가 넓어진다. 공격할 때마다 범위 안에서 수비 지점에 가장 가까운 적부터 가장 먼 적까지 이은 선을 따라 신성 촉수가 차례로 내리찍어, 닿은 적 모두에게 공격력 {mul%} 마법 피해를 주고 {stun}초 동안 기절시킨다",
+     "sp": 35,
+     "init": 15,
+     "mode": "manual",
+     "dur": 15,
+     "mul": 1.3,
+     "stun": 0.5,
+     "scale": {
+      "mul": "A",
+      "stun": "G"
+     }
+    }
+   ]
+  },
+  {
+   "path": "unit:silphy.talents",
+   "old": [
+    {
+     "elite": 0,
+     "name": "시공간 게이트",
+     "desc": "공격하면 대상의 발밑에 게이트가 열려 촉수가 0.6초 동안 묶는다 (같은 적은 3초에 한 번)"
+    }
+   ],
+   "new": [
+    {
+     "elite": 0,
+     "name": "시공간 게이트",
+     "desc": "공격하면 대상의 발밑에 게이트가 열려 촉수가 0.6초 동안 묶는다 (같은 적은 5초에 한 번)"
+    }
+   ]
+  },
+  {
+   "path": "unit:smoqueen.talents",
+   "old": [
+    {
+     "name": "연기 마법",
+     "desc": "공격한 피해의 40%만큼 {침식 손상}을 쌓는다. 세 번째 공격마다 대상을 2초 동안 {졸음} 상태로 만든다",
+     "elite": 0
+    },
+    {
+     "name": "깊은 잠",
+     "desc": "{졸음} 상태의 적에게 쌓는 {침식 손상}이 2배가 된다",
+     "elite": 2
+    }
+   ],
+   "new": [
+    {
+     "name": "연기 마법",
+     "desc": "공격한 피해의 40%만큼 {침식 손상}을 쌓는다. 네 번째 공격마다 대상을 1.2초 동안 {졸음} 상태로 만든다",
+     "elite": 0
+    },
+    {
+     "name": "깊은 잠",
+     "desc": "{졸음} 상태의 적에게 쌓는 {침식 손상}이 2배가 된다",
+     "elite": 2
+    }
+   ]
+  },
+  {
+   "path": "unit:smoqueen.skills",
+   "old": [
+    {
+     "id": "sq_puff",
+     "name": "담배 타임",
+     "desc": "{dur}초 동안 공격 속도 +{speed+%}",
+     "sp": 30,
+     "init": 10,
+     "mode": "auto",
+     "dur": 25,
+     "speed": 1.7,
+     "scale": {
+      "speed": "C"
+     }
+    },
+    {
+     "id": "sq_screen",
+     "name": "연막",
+     "desc": "{dur}초 동안 공격하지 않는다. 공격 범위 안의 아군이 공격받으면 받은 피해의 {erode%}만큼 공격한 적에게 {침식 손상}을 쌓는다",
+     "sp": 25,
+     "init": 10,
+     "mode": "auto",
+     "dur": 15,
+     "erode": 1,
+     "scale": {
+      "erode": "A"
+     }
+    },
+    {
+     "id": "sq_star",
+     "name": "죽음의 성좌",
+     "desc": "{탄약} 12발. 공격 범위 확대, 공격 속도 +{speed+%}, 공격 대상 3명. 공격마다 대상 하나에 재 덩어리 4개를 연달아 떨어뜨리고, 하나하나가 공격력 {per%}의 {마법 피해}를 준다. 스킬이 끝날 때까지 공격 범위 안 적의 {졸음}이 풀리지 않는다(보스는 최대 3초). 스킬이 끝나면(다시 눌러 끝낼 수 있음) 잠든 적에게 공격력 {wake%}의 {마법 피해}를 주고 깨운다",
+     "sp": 40,
+     "init": 20,
+     "mode": "manual",
+     "dur": 12,
+     "ammo": true,
+     "cancel": true,
+     "speed": 1.6,
+     "per": 0.2,
+     "wake": 1.8,
+     "scale": {
+      "speed": "C",
+      "per": "A",
+      "wake": "A"
+     }
+    }
+   ],
+   "new": [
+    {
+     "id": "sq_puff",
+     "name": "담배 타임",
+     "desc": "{dur}초 동안 공격 속도 +{speed+%}",
+     "sp": 35,
+     "init": 10,
+     "mode": "auto",
+     "dur": 20,
+     "speed": 1.4,
+     "scale": {
+      "speed": "C"
+     }
+    },
+    {
+     "id": "sq_screen",
+     "name": "연막",
+     "desc": "{dur}초 동안 공격하지 않는다. 공격 범위 안의 아군이 공격받으면 받은 피해의 {erode%}만큼 공격한 적에게 {침식 손상}을 쌓는다",
+     "sp": 25,
+     "init": 10,
+     "mode": "auto",
+     "dur": 15,
+     "erode": 1,
+     "scale": {
+      "erode": "A"
+     }
+    },
+    {
+     "id": "sq_star",
+     "name": "죽음의 성좌",
+     "desc": "{탄약} 12발. 공격 범위 확대, 공격 속도 +{speed+%}, 공격 대상 3명. 공격마다 대상 하나에 재 덩어리 4개를 연달아 떨어뜨리고, 하나하나가 공격력 {per%}의 {마법 피해}를 준다. 스킬이 끝날 때까지 공격 범위 안 적의 {졸음}이 풀리지 않는다(보스는 최대 3초). 스킬이 끝나면(다시 눌러 끝낼 수 있음) 잠든 적에게 공격력 {wake%}의 {마법 피해}를 주고 깨운다",
+     "sp": 40,
+     "init": 20,
+     "mode": "manual",
+     "dur": 12,
+     "ammo": true,
+     "cancel": true,
+     "speed": 1.6,
+     "per": 0.2,
+     "wake": 1.8,
+     "scale": {
+      "speed": "C",
+      "per": "A",
+      "wake": "A"
+     }
+    }
+   ]
+  },
+  {
+   "path": "unit:smoqueen.sleepEvery",
+   "new": 4
+  },
+  {
+   "path": "unit:smoqueen.sleepDur",
+   "new": 1.2
+  },
+  {
+   "path": "unit:bongeun.ghost.per",
+   "old": 0.5,
+   "new": 0.25
+  },
+  {
+   "path": "unit:bongeun.ghost.max",
+   "old": 5,
+   "new": 2
+  },
+  {
+   "path": "unit:bongeun.ghost.cap",
+   "old": 15,
+   "new": 10
+  },
+  {
+   "path": "unit:bongeun.skills",
+   "old": [
+    {
+     "id": "bo_rush",
+     "name": "진짜 졸라짱짱쎈 콤보",
+     "desc": "공격 시 SP 1 회복. 자동 발동: 다음 3번의 공격이 콤보가 된다. 스타터 공격력 {m1%}, 두번째 {m2%}에 잔영 전원 일제 사격, 막타 {m3%}에 대상의 시간을 {stop}초 멈춘다(보스는 {stop*0.5}초)",
+     "sp": 8,
+     "init": 3,
+     "mode": "auto",
+     "spType": "atk",
+     "dur": 0,
+     "m1": 1.2,
+     "m2": 1.5,
+     "m3": 2.4,
+     "stop": 1,
+     "scale": {
+      "m1": "A",
+      "m2": "A",
+      "m3": "A",
+      "stop": "G"
+     }
+    },
+    {
+     "id": "bo_armory",
+     "name": "마검 '봉★평'",
+     "desc": "지금까지 나타난 잔영의 수만큼(최소 3, 최대 15) 등 뒤에 포탈이 열리고, 과거의 무구가 범위 안의 적에게 내리꽂혀 폭발한다. 하나마다 공격력 {mul%} 물리 피해, 주위 1칸에 공격력 {splash%}",
+     "sp": 30,
+     "init": 12,
+     "mode": "manual",
+     "dur": 0,
+     "mul": 1.5,
+     "splash": 0.6,
+     "scale": {
+      "mul": "A",
+      "splash": "A"
+     }
+    }
+   ],
+   "new": [
+    {
+     "id": "bo_rush",
+     "name": "진짜 졸라짱짱쎈 콤보",
+     "desc": "공격 시 SP 1 회복. 자동 발동: 다음 3번의 공격이 콤보가 된다. 스타터 공격력 {m1%}, 두번째 {m2%}에 잔영 전원 일제 사격, 막타 {m3%}에 대상의 시간을 {stop}초 멈춘다(보스는 {stop*0.5}초)",
+     "sp": 8,
+     "init": 3,
+     "mode": "auto",
+     "spType": "atk",
+     "dur": 0,
+     "m1": 1.2,
+     "m2": 1.5,
+     "m3": 2.4,
+     "stop": 1,
+     "scale": {
+      "m1": "A",
+      "m2": "A",
+      "m3": "A",
+      "stop": "G"
+     }
+    },
+    {
+     "id": "bo_armory",
+     "name": "마검 '봉★평'",
+     "desc": "지금까지 나타난 잔영의 수만큼(최소 3, 최대 10) 등 뒤에 포탈이 열리고, 과거의 무구가 범위 안의 적에게 내리꽂혀 폭발한다. 하나마다 공격력 {mul%} 물리 피해, 주위 1칸에 공격력 {splash%}",
+     "sp": 30,
+     "init": 12,
+     "mode": "manual",
+     "dur": 0,
+     "mul": 1,
+     "splash": 0.4,
+     "scale": {
+      "mul": "A",
+      "splash": "A"
+     }
+    }
+   ]
+  },
+  {
+   "path": "unit:bongeun.talents",
+   "old": [
+    {
+     "elite": 0,
+     "name": "과거의 잔영",
+     "desc": "공격할 때마다 과거의 자신이 잔영으로 나타나 공격력 50%의 추가 사격을 한다. 끊지 않고 3번 공격할 때마다 잔영이 1명 늘어난다(최대 5명)"
+    }
+   ],
+   "new": [
+    {
+     "elite": 0,
+     "name": "과거의 잔영",
+     "desc": "공격할 때마다 과거의 자신이 잔영으로 나타나 공격력 25%의 추가 사격을 한다. 끊지 않고 3번 공격할 때마다 잔영이 1명 늘어난다(최대 2명)"
+    }
+   ]
+  },
+  {
+   "path": "unit:alpha2.eliteCost",
+   "old": 0
+  },
+  {
+   "path": "unit:alpha2.skills",
+   "old": [
+    {
+     "id": "a2_all",
+     "name": "다 들어와!",
+     "desc": "배치 직후 자동 발동. {dur}초 동안 공격력 +{atk+%}, 공격 속도 +{speed+%}",
+     "sp": 40,
+     "init": 40,
+     "mode": "auto",
+     "dur": 15,
+     "onDeploy": true,
+     "atk": 1.4,
+     "speed": 1.4,
+     "scale": {
+      "atk": "B",
+      "speed": "C"
+     }
+    },
+    {
+     "id": "a2_chain",
+     "name": "비살상 제압",
+     "desc": "배치 후 주위 1칸에 적이 있으면 자동 발동. 그 적들을 사슬로 묶어 가장 가까운 벽 쪽으로 약하게 밀어내고(힘 {force}) 공격력 {mul%} 물리 피해. 벽에 부딪힌 적은 {stun}초 기절",
+     "sp": 40,
+     "init": 40,
+     "mode": "auto",
+     "dur": 0,
+     "onDeploy": true,
+     "mul": 1,
+     "force": 2,
+     "stun": 2,
+     "scale": {
+      "mul": "A",
+      "force": "K",
+      "stun": "G"
+     }
+    }
+   ],
+   "new": [
+    {
+     "id": "a2_all",
+     "name": "다 들어와!",
+     "desc": "배치 직후 자동 발동. {dur}초 동안 공격력 +{atk+%}, 공격 속도 +{speed+%}",
+     "sp": 40,
+     "init": 40,
+     "mode": "auto",
+     "dur": 10,
+     "onDeploy": true,
+     "atk": 1.4,
+     "speed": 1.2,
+     "scale": {
+      "atk": "B",
+      "speed": "C"
+     }
+    },
+    {
+     "id": "a2_chain",
+     "name": "비살상 제압",
+     "desc": "배치 후 주위 1칸에 적이 있으면 자동 발동. 그 적들을 사슬로 묶어 가장 가까운 벽 쪽으로 약하게 밀어내고(힘 {force}) 공격력 {mul%} 물리 피해. 벽에 부딪힌 적은 {stun}초 기절",
+     "sp": 40,
+     "init": 40,
+     "mode": "auto",
+     "dur": 0,
+     "onDeploy": true,
+     "mul": 1,
+     "force": 2,
+     "stun": 2,
+     "scale": {
+      "mul": "A",
+      "force": "K",
+      "stun": "G"
+     }
+    }
+   ]
+  },
+  {
+   "path": "unit:alpha2.talents",
+   "old": [
+    {
+     "elite": 0,
+     "name": "+PARRY",
+     "desc": "저지 중인 적의 공격을 20% 확률로 받아넘기고, 즉시 공격력 150% 물리 피해로 반격한다. 기본 공격은 마체테와 단검으로 2연타"
+    }
+   ],
+   "new": [
+    {
+     "elite": 0,
+     "name": "+PARRY",
+     "desc": "저지 중인 적의 공격을 20% 확률로 받아넘기고, 즉시 공격력 150% 물리 피해로 반격한다. 기본 공격은 마체테와 단검의 2연격(피해는 한 번)"
+    }
+   ]
+  },
+  {
+   "path": "unit:alpha2.dblFx",
+   "new": true
+  },
+  {
+   "path": "unit:skakea2.splashArts",
+   "old": 0.5,
+   "new": 0.3
+  },
+  {
+   "path": "unit:skakea2.skills",
+   "old": [
+    {
+     "id": "k2_place",
+     "name": "전략적 기물 배치",
+     "desc": "다음 공격이 대상 위로 룩을 떨어뜨려 공격력 {mul%} 마법 피해를 주고 {stun}초 동안 {기절}시킨다",
+     "sp": 7,
+     "init": 2,
+     "mode": "auto",
+     "dur": 0,
+     "mul": 2.2,
+     "stun": 1,
+     "scale": {
+      "mul": "A",
+      "stun": "G"
+     }
+    },
+    {
+     "id": "k2_fate",
+     "name": "운명의 수순",
+     "desc": "발동 순간 공격 범위 안의 적(보스 제외)을 체스 말처럼 재배치해 체력이 낮은 적일수록 앞자리에 세우고, 옮겨진 적에게 공격력 {mul%} 마법 피해와 {stun}초 {기절}. 이어서 {dur}초 동안 자신 앞 3칸(폭 3칸)의 바닥이 체스판이 되어 그 위의 적은 이동 속도 -{maze.slow%}, 매초 공격력 {maze.dot%} 마법 피해",
+     "sp": 35,
+     "init": 15,
+     "mode": "manual",
+     "dur": 15,
+     "maze": {
+      "slow": 0.45,
+      "dot": 0.6,
+      "hiki": 0
+     },
+     "mul": 1.2,
+     "stun": 0.6,
+     "scale": {
+      "mul": "A",
+      "stun": "G",
+      "maze.slow": "F",
+      "maze.dot": "A"
+     }
+    }
+   ],
+   "new": [
+    {
+     "id": "k2_place",
+     "name": "전략적 기물 배치",
+     "desc": "다음 공격이 대상 위로 룩을 떨어뜨려 공격력 {mul%} 마법 피해를 주고 {stun}초 동안 {기절}시킨다",
+     "sp": 9,
+     "init": 2,
+     "mode": "auto",
+     "dur": 0,
+     "mul": 2.2,
+     "stun": 0.6,
+     "scale": {
+      "mul": "A",
+      "stun": "G"
+     }
+    },
+    {
+     "id": "k2_fate",
+     "name": "운명의 수순",
+     "desc": "발동 순간 공격 범위 안의 적(보스 제외)을 체스 말처럼 재배치해 체력이 낮은 적일수록 앞자리에 세우고, 옮겨진 적에게 공격력 {mul%} 마법 피해와 {stun}초 {기절}. 이어서 {dur}초 동안 자신 앞 3칸(폭 3칸)의 바닥이 체스판이 되어 그 위의 적은 이동 속도 -{maze.slow%}, 매초 공격력 {maze.dot%} 마법 피해",
+     "sp": 35,
+     "init": 15,
+     "mode": "manual",
+     "dur": 15,
+     "maze": {
+      "slow": 0.45,
+      "dot": 0.6,
+      "hiki": 0
+     },
+     "mul": 1.2,
+     "stun": 0.6,
+     "scale": {
+      "mul": "A",
+      "stun": "G",
+      "maze.slow": "F",
+      "maze.dot": "A"
+     }
+    }
+   ]
+  },
+  {
+   "path": "unit:skakea2.talents",
+   "old": [
+    {
+     "elite": 0,
+     "name": "어머니의 별빛 유산",
+     "desc": "공격이 대상 주위 1칸의 적에게도 공격력 50%의 마법 피해를 준다"
+    }
+   ],
+   "new": [
+    {
+     "elite": 0,
+     "name": "어머니의 별빛 유산",
+     "desc": "공격이 대상 주위 1칸의 적에게도 공격력 30%의 마법 피해를 준다"
+    }
+   ]
+  },
+  {
+   "path": "unit:brick.skills",
+   "old": [
+    {
+     "id": "bk_just",
+     "name": "그냥 벽돌",
+     "desc": "{dur}초 동안 공격하지 않고 방어력 +{def+%}",
+     "sp": 30,
+     "init": 12,
+     "mode": "manual",
+     "dur": 12,
+     "def": 2.5,
+     "scale": {
+      "def": "D"
+     }
+    }
+   ],
+   "new": [
+    {
+     "id": "bk_just",
+     "name": "그냥 벽돌",
+     "desc": "{dur}초 동안 공격하지 않고 방어력 +{def+%}",
+     "sp": 35,
+     "init": 12,
+     "mode": "manual",
+     "dur": 12,
+     "def": 1.8,
+     "scale": {
+      "def": "D"
+     }
+    }
+   ]
+  }
+ ],
+ "newUnits": [],
+ "touchedUnits": [
+  "vanguard",
+  "guard",
+  "defender",
+  "sniper",
+  "medic",
+  "yui",
+  "atat",
+  "belina",
+  "hakuren",
+  "miho",
+  "lulu",
+  "skakea",
+  "ker",
+  "sunae",
+  "eungyeol",
+  "teka",
+  "capy",
+  "hiro",
+  "ayaki",
+  "nana",
+  "tao",
+  "rabi",
+  "rabi6",
+  "angelina",
+  "piania",
+  "silphy",
+  "smoqueen",
+  "bongeun",
+  "alpha2",
+  "skakea2",
+  "brick"
+ ],
+ "touchedEnemies": [],
+ "order": [
+  {
+   "key": "v1:IM-10__T6__full",
+   "stage": "IM-10",
+   "deck": "T6",
+   "crit": "full",
+   "lvl": "E0L1",
+   "touched": true,
+   "changedOps": [
+    "rabi",
+    "hakuren",
+    "bongeun",
+    "lulu",
+    "skakea2",
+    "guard",
+    "teka"
+   ],
+   "stageChanged": false,
+   "dBad": 2.878,
+   "dWin": -0.795,
+   "predOld": {
+    "bad": 0.7633442071255117,
+    "pw": 0.8006335897404355
+   },
+   "predNew": {
+    "bad": 3.6412071215906723,
+    "pw": 0.0060511847299543195
+   },
+   "priority": 19.539473043961763,
+   "truth": {
+    "lost": [
+     17,
+     18,
+     20,
+     20,
+     17
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-10__T6__lost1",
+   "stage": "IM-10",
+   "deck": "T6",
+   "crit": "lost1",
+   "lvl": "E0L1",
+   "touched": true,
+   "changedOps": [
+    "rabi",
+    "hakuren",
+    "bongeun",
+    "lulu",
+    "skakea2",
+    "guard",
+    "teka"
+   ],
+   "stageChanged": false,
+   "dBad": 2.878,
+   "dWin": -0.795,
+   "predOld": {
+    "bad": 0.7633442071255117,
+    "pw": 0.8006335897404355
+   },
+   "predNew": {
+    "bad": 3.6412071215906723,
+    "pw": 0.0060511847299543195
+   },
+   "priority": 19.539473043961763,
+   "truth": {
+    "lost": [
+     17,
+     18,
+     20,
+     20,
+     17
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-04__T5__full",
+   "stage": "IM-04",
+   "deck": "T5",
+   "crit": "full",
+   "lvl": "E0L20",
+   "touched": true,
+   "changedOps": [
+    "capy",
+    "teka",
+    "hiro",
+    "yui",
+    "hakuren",
+    "sunae"
+   ],
+   "stageChanged": false,
+   "dBad": 2.074,
+   "dWin": -0.84,
+   "predOld": {
+    "bad": 0.026473615126664737,
+    "pw": 0.8804667531303966
+   },
+   "predNew": {
+    "bad": 2.100357831237505,
+    "pw": 0.0405330493072805
+   },
+   "priority": 17.867569543691026,
+   "truth": {
+    "lost": [
+     6,
+     3,
+     3,
+     3,
+     3
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-04__T5__lost1",
+   "stage": "IM-04",
+   "deck": "T5",
+   "crit": "lost1",
+   "lvl": "E0L20",
+   "touched": true,
+   "changedOps": [
+    "capy",
+    "teka",
+    "hiro",
+    "yui",
+    "hakuren",
+    "sunae"
+   ],
+   "stageChanged": false,
+   "dBad": 2.074,
+   "dWin": -0.84,
+   "predOld": {
+    "bad": 0.026473615126664737,
+    "pw": 0.8804667531303966
+   },
+   "predNew": {
+    "bad": 2.100357831237505,
+    "pw": 0.0405330493072805
+   },
+   "priority": 17.867569543691026,
+   "truth": {
+    "lost": [
+     6,
+     3,
+     3,
+     3,
+     3
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-04__starter__lost1",
+   "stage": "IM-04",
+   "deck": "starter",
+   "crit": "lost1",
+   "lvl": "E0L20",
+   "touched": true,
+   "changedOps": [
+    "capy",
+    "teka",
+    "hiro",
+    "yui",
+    "hakuren",
+    "sunae"
+   ],
+   "stageChanged": false,
+   "dBad": 2.074,
+   "dWin": -0.84,
+   "predOld": {
+    "bad": 0.026473615126664737,
+    "pw": 0.8804667531303966
+   },
+   "predNew": {
+    "bad": 2.100357831237505,
+    "pw": 0.0405330493072805
+   },
+   "priority": 17.867569543691026,
+   "truth": {
+    "lost": [
+     6,
+     3,
+     3,
+     3,
+     3
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-08__T5__full",
+   "stage": "IM-08",
+   "deck": "T5",
+   "crit": "full",
+   "lvl": "E0L20",
+   "touched": true,
+   "changedOps": [
+    "guard",
+    "lulu",
+    "capy",
+    "rabi",
+    "defender",
+    "sniper",
+    "bongeun"
+   ],
+   "stageChanged": false,
+   "dBad": 2.115,
+   "dWin": -0.427,
+   "predOld": {
+    "bad": 0.7204715700984272,
+    "pw": 0.6604835979788888
+   },
+   "predNew": {
+    "bad": 2.8356585534133334,
+    "pw": 0.23377563539711396
+   },
+   "priority": 16.910497854375137,
+   "truth": {
+    "lost": [
+     7,
+     7,
+     7,
+     7,
+     7
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-08__T6__full",
+   "stage": "IM-08",
+   "deck": "T6",
+   "crit": "full",
+   "lvl": "E0L20",
+   "touched": true,
+   "changedOps": [
+    "guard",
+    "lulu",
+    "capy",
+    "rabi",
+    "defender",
+    "sniper",
+    "bongeun"
+   ],
+   "stageChanged": false,
+   "dBad": 2.115,
+   "dWin": -0.427,
+   "predOld": {
+    "bad": 0.7204715700984272,
+    "pw": 0.6604835979788888
+   },
+   "predNew": {
+    "bad": 2.8356585534133334,
+    "pw": 0.23377563539711396
+   },
+   "priority": 16.910497854375137,
+   "truth": {
+    "lost": [
+     7,
+     7,
+     7,
+     7,
+     7
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-07__T5__full",
+   "stage": "IM-07",
+   "deck": "T5",
+   "crit": "full",
+   "lvl": "E0L20",
+   "touched": true,
+   "changedOps": [
+    "sunae",
+    "hiro",
+    "capy",
+    "teka",
+    "yui"
+   ],
+   "stageChanged": false,
+   "dBad": 1.96,
+   "dWin": -0.372,
+   "predOld": {
+    "bad": 0.8473585167730688,
+    "pw": 0.3976282362326138
+   },
+   "predNew": {
+    "bad": 2.807383324702105,
+    "pw": 0.02575312133718152
+   },
+   "priority": 16.03567496054437,
+   "truth": {
+    "lost": [
+     8,
+     8,
+     8,
+     8,
+     8
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-07__T5__lost1",
+   "stage": "IM-07",
+   "deck": "T5",
+   "crit": "lost1",
+   "lvl": "E0L20",
+   "touched": true,
+   "changedOps": [
+    "sunae",
+    "hiro",
+    "capy",
+    "teka",
+    "yui"
+   ],
+   "stageChanged": false,
+   "dBad": 1.96,
+   "dWin": -0.372,
+   "predOld": {
+    "bad": 0.8473585167730688,
+    "pw": 0.3976282362326138
+   },
+   "predNew": {
+    "bad": 2.807383324702105,
+    "pw": 0.02575312133718152
+   },
+   "priority": 16.03567496054437,
+   "truth": {
+    "lost": [
+     8,
+     8,
+     8,
+     8,
+     8
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-07__T6__full",
+   "stage": "IM-07",
+   "deck": "T6",
+   "crit": "full",
+   "lvl": "E0L20",
+   "touched": true,
+   "changedOps": [
+    "sunae",
+    "hiro",
+    "capy",
+    "teka",
+    "yui"
+   ],
+   "stageChanged": false,
+   "dBad": 1.96,
+   "dWin": -0.372,
+   "predOld": {
+    "bad": 0.8473585167730688,
+    "pw": 0.3976282362326138
+   },
+   "predNew": {
+    "bad": 2.807383324702105,
+    "pw": 0.02575312133718152
+   },
+   "priority": 16.03567496054437,
+   "truth": {
+    "lost": [
+     8,
+     8,
+     8,
+     8,
+     8
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-07__T6__lost1",
+   "stage": "IM-07",
+   "deck": "T6",
+   "crit": "lost1",
+   "lvl": "E0L20",
+   "touched": true,
+   "changedOps": [
+    "sunae",
+    "hiro",
+    "capy",
+    "teka",
+    "yui"
+   ],
+   "stageChanged": false,
+   "dBad": 1.96,
+   "dWin": -0.372,
+   "predOld": {
+    "bad": 0.8473585167730688,
+    "pw": 0.3976282362326138
+   },
+   "predNew": {
+    "bad": 2.807383324702105,
+    "pw": 0.02575312133718152
+   },
+   "priority": 16.03567496054437,
+   "truth": {
+    "lost": [
+     8,
+     8,
+     8,
+     8,
+     8
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-10__starter__full",
+   "stage": "IM-10",
+   "deck": "starter",
+   "crit": "full",
+   "lvl": "E0L40",
+   "touched": true,
+   "changedOps": [
+    "tao",
+    "hakuren",
+    "hiro",
+    "yui",
+    "ayaki",
+    "teka",
+    "capy"
+   ],
+   "stageChanged": false,
+   "dBad": 1.301,
+   "dWin": -0.416,
+   "predOld": {
+    "bad": 1.4785804584718782,
+    "pw": 0.6896289622199205
+   },
+   "predNew": {
+    "bad": 2.7797501110312033,
+    "pw": 0.2732592603531082
+   },
+   "priority": 15.251448410719089,
+   "truth": {
+    "lost": [
+     5,
+     8,
+     7,
+     8,
+     4
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-10__starter__lost1",
+   "stage": "IM-10",
+   "deck": "starter",
+   "crit": "lost1",
+   "lvl": "E0L40",
+   "touched": true,
+   "changedOps": [
+    "tao",
+    "hakuren",
+    "hiro",
+    "yui",
+    "ayaki",
+    "teka",
+    "capy"
+   ],
+   "stageChanged": false,
+   "dBad": 1.301,
+   "dWin": -0.416,
+   "predOld": {
+    "bad": 1.4785804584718782,
+    "pw": 0.6896289622199205
+   },
+   "predNew": {
+    "bad": 2.7797501110312033,
+    "pw": 0.2732592603531082
+   },
+   "priority": 15.251448410719089,
+   "truth": {
+    "lost": [
+     5,
+     8,
+     7,
+     8,
+     4
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-06__starter__full",
+   "stage": "IM-06",
+   "deck": "starter",
+   "crit": "full",
+   "lvl": "E0L20",
+   "touched": true,
+   "changedOps": [
+    "sunae",
+    "ayaki",
+    "hiro",
+    "hakuren",
+    "teka",
+    "yui",
+    "capy",
+    "atat"
+   ],
+   "stageChanged": false,
+   "dBad": 0.621,
+   "dWin": -0.617,
+   "predOld": {
+    "bad": 0.2054567182115623,
+    "pw": 0.7344107476860833
+   },
+   "predNew": {
+    "bad": 0.8265017263174698,
+    "pw": 0.11710782083671097
+   },
+   "priority": 14.693998796759931,
+   "truth": {
+    "lost": [
+     6,
+     6,
+     6,
+     5,
+     6
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-06__starter__lost1",
+   "stage": "IM-06",
+   "deck": "starter",
+   "crit": "lost1",
+   "lvl": "E0L20",
+   "touched": true,
+   "changedOps": [
+    "sunae",
+    "ayaki",
+    "hiro",
+    "hakuren",
+    "teka",
+    "yui",
+    "capy",
+    "atat"
+   ],
+   "stageChanged": false,
+   "dBad": 0.621,
+   "dWin": -0.617,
+   "predOld": {
+    "bad": 0.2054567182115623,
+    "pw": 0.7344107476860833
+   },
+   "predNew": {
+    "bad": 0.8265017263174698,
+    "pw": 0.11710782083671097
+   },
+   "priority": 14.693998796759931,
+   "truth": {
+    "lost": [
+     6,
+     6,
+     6,
+     5,
+     6
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:WL-02__T4__lost1",
+   "stage": "WL-02",
+   "deck": "T4",
+   "crit": "lost1",
+   "lvl": "E0L40",
+   "touched": true,
+   "changedOps": [
+    "vanguard",
+    "atat",
+    "lulu",
+    "tao",
+    "defender"
+   ],
+   "stageChanged": false,
+   "dBad": 0.882,
+   "dWin": -0.59,
+   "predOld": {
+    "bad": 1.6332279126657425,
+    "pw": 0.6021852112222948
+   },
+   "predNew": {
+    "bad": 2.515343783840088,
+    "pw": 0.01194232888604205
+   },
+   "priority": 14.53496038935745,
+   "truth": {
+    "lost": [
+     4,
+     4,
+     4,
+     4,
+     4
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-07__starter__full",
+   "stage": "IM-07",
+   "deck": "starter",
+   "crit": "full",
+   "lvl": "E0L20",
+   "touched": true,
+   "changedOps": [
+    "tao",
+    "sunae",
+    "hiro",
+    "capy",
+    "teka",
+    "yui"
+   ],
+   "stageChanged": false,
+   "dBad": 1.131,
+   "dWin": -0.331,
+   "predOld": {
+    "bad": 0.8832197867222338,
+    "pw": 0.5581524305794453
+   },
+   "predNew": {
+    "bad": 2.0137936242549697,
+    "pw": 0.2272005449055311
+   },
+   "priority": 14.454003332087215,
+   "truth": {
+    "lost": [
+     8,
+     8,
+     8,
+     8,
+     8
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-07__starter__lost1",
+   "stage": "IM-07",
+   "deck": "starter",
+   "crit": "lost1",
+   "lvl": "E0L20",
+   "touched": true,
+   "changedOps": [
+    "tao",
+    "sunae",
+    "hiro",
+    "capy",
+    "teka",
+    "yui"
+   ],
+   "stageChanged": false,
+   "dBad": 1.131,
+   "dWin": -0.331,
+   "predOld": {
+    "bad": 0.8832197867222338,
+    "pw": 0.5581524305794453
+   },
+   "predNew": {
+    "bad": 2.0137936242549697,
+    "pw": 0.2272005449055311
+   },
+   "priority": 14.454003332087215,
+   "truth": {
+    "lost": [
+     8,
+     8,
+     8,
+     8,
+     8
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-05__starter__full",
+   "stage": "IM-05",
+   "deck": "starter",
+   "crit": "full",
+   "lvl": "E1L1",
+   "touched": true,
+   "changedOps": [
+    "sunae",
+    "tao",
+    "hiro",
+    "ayaki",
+    "hakuren",
+    "yui"
+   ],
+   "stageChanged": false,
+   "dBad": 0.575,
+   "dWin": -0.636,
+   "predOld": {
+    "bad": 2.2240622426236016,
+    "pw": 0.6496330314936719
+   },
+   "predNew": {
+    "bad": 2.7986159006074645,
+    "pw": 0.014061432094465628
+   },
+   "priority": 14.255822114165344,
+   "truth": {
+    "lost": [
+     3,
+     3,
+     3,
+     3,
+     3
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-05__starter__lost1",
+   "stage": "IM-05",
+   "deck": "starter",
+   "crit": "lost1",
+   "lvl": "E1L1",
+   "touched": true,
+   "changedOps": [
+    "sunae",
+    "tao",
+    "hiro",
+    "ayaki",
+    "hakuren",
+    "yui"
+   ],
+   "stageChanged": false,
+   "dBad": 0.575,
+   "dWin": -0.636,
+   "predOld": {
+    "bad": 2.2240622426236016,
+    "pw": 0.6496330314936719
+   },
+   "predNew": {
+    "bad": 2.7986159006074645,
+    "pw": 0.014061432094465628
+   },
+   "priority": 14.255822114165344,
+   "truth": {
+    "lost": [
+     3,
+     3,
+     3,
+     3,
+     3
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-08__T4__full",
+   "stage": "IM-08",
+   "deck": "T4",
+   "crit": "full",
+   "lvl": "E1L15",
+   "touched": true,
+   "changedOps": [
+    "guard",
+    "lulu",
+    "defender",
+    "capy",
+    "sniper",
+    "nana",
+    "atat"
+   ],
+   "stageChanged": false,
+   "dBad": 1.123,
+   "dWin": -0.111,
+   "predOld": {
+    "bad": 0.12925786938231004,
+    "pw": 0.9208781595630429
+   },
+   "predNew": {
+    "bad": 1.252666645784517,
+    "pw": 0.8102764472996493
+   },
+   "priority": 13.978622689594594,
+   "truth": {
+    "lost": [
+     4,
+     4,
+     4,
+     4,
+     4
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-08__T4__lost1",
+   "stage": "IM-08",
+   "deck": "T4",
+   "crit": "lost1",
+   "lvl": "E1L15",
+   "touched": true,
+   "changedOps": [
+    "guard",
+    "lulu",
+    "defender",
+    "capy",
+    "sniper",
+    "nana",
+    "atat"
+   ],
+   "stageChanged": false,
+   "dBad": 1.123,
+   "dWin": -0.111,
+   "predOld": {
+    "bad": 0.12925786938231004,
+    "pw": 0.9208781595630429
+   },
+   "predNew": {
+    "bad": 1.252666645784517,
+    "pw": 0.8102764472996493
+   },
+   "priority": 13.978622689594594,
+   "truth": {
+    "lost": [
+     4,
+     4,
+     4,
+     4,
+     4
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-07__T4__full",
+   "stage": "IM-07",
+   "deck": "T4",
+   "crit": "full",
+   "lvl": "E0L40",
+   "touched": true,
+   "changedOps": [
+    "vanguard",
+    "capy",
+    "brick"
+   ],
+   "stageChanged": false,
+   "dBad": 1.485,
+   "dWin": -0.098,
+   "predOld": {
+    "bad": 0.545258456848494,
+    "pw": 0.6927365424857647
+   },
+   "predNew": {
+    "bad": 2.030284024431405,
+    "pw": 0.5946988307242164
+   },
+   "priority": 13.864164270450466,
+   "truth": {
+    "lost": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "holds": true
+   }
+  },
+  {
+   "key": "v1:IM-07__T4__lost1",
+   "stage": "IM-07",
+   "deck": "T4",
+   "crit": "lost1",
+   "lvl": "E0L40",
+   "touched": true,
+   "changedOps": [
+    "vanguard",
+    "capy",
+    "brick"
+   ],
+   "stageChanged": false,
+   "dBad": 1.485,
+   "dWin": -0.098,
+   "predOld": {
+    "bad": 0.545258456848494,
+    "pw": 0.6927365424857647
+   },
+   "predNew": {
+    "bad": 2.030284024431405,
+    "pw": 0.5946988307242164
+   },
+   "priority": 13.864164270450466,
+   "truth": {
+    "lost": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "holds": true
+   }
+  },
+  {
+   "key": "v1:IM-10__T5__full",
+   "stage": "IM-10",
+   "deck": "T5",
+   "crit": "full",
+   "lvl": "E0L20",
+   "touched": true,
+   "changedOps": [
+    "hiro",
+    "vanguard",
+    "brick",
+    "nana",
+    "lulu",
+    "guard",
+    "teka"
+   ],
+   "stageChanged": false,
+   "dBad": 0.594,
+   "dWin": -0.405,
+   "predOld": {
+    "bad": 0.3091022861163957,
+    "pw": 0.8040158287310403
+   },
+   "predNew": {
+    "bad": 0.9032684811819256,
+    "pw": 0.39874312160279
+   },
+   "priority": 13.80415051151581,
+   "truth": {
+    "lost": [
+     12,
+     9,
+     7,
+     7,
+     11
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-10__T5__lost1",
+   "stage": "IM-10",
+   "deck": "T5",
+   "crit": "lost1",
+   "lvl": "E0L20",
+   "touched": true,
+   "changedOps": [
+    "hiro",
+    "vanguard",
+    "brick",
+    "nana",
+    "lulu",
+    "guard",
+    "teka"
+   ],
+   "stageChanged": false,
+   "dBad": 0.594,
+   "dWin": -0.405,
+   "predOld": {
+    "bad": 0.3091022861163957,
+    "pw": 0.8040158287310403
+   },
+   "predNew": {
+    "bad": 0.9032684811819256,
+    "pw": 0.39874312160279
+   },
+   "priority": 13.80415051151581,
+   "truth": {
+    "lost": [
+     12,
+     9,
+     7,
+     7,
+     11
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-09__T4__full",
+   "stage": "IM-09",
+   "deck": "T4",
+   "crit": "full",
+   "lvl": "E0L20",
+   "touched": true,
+   "changedOps": [
+    "atat",
+    "ker",
+    "skakea",
+    "capy",
+    "teka",
+    "hakuren"
+   ],
+   "stageChanged": false,
+   "dBad": 0.865,
+   "dWin": -0.246,
+   "predOld": {
+    "bad": 0.1648296517227266,
+    "pw": 0.9170800503131936
+   },
+   "predNew": {
+    "bad": 1.0299879601564643,
+    "pw": 0.6705827614976113
+   },
+   "priority": 13.669808483314224,
+   "truth": {
+    "lost": [
+     2,
+     2,
+     2,
+     3,
+     3
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-09__T6__full",
+   "stage": "IM-09",
+   "deck": "T6",
+   "crit": "full",
+   "lvl": "E0L1",
+   "touched": true,
+   "changedOps": [
+    "atat",
+    "ker",
+    "bongeun",
+    "capy",
+    "silphy",
+    "rabi",
+    "hakuren",
+    "alpha2"
+   ],
+   "stageChanged": false,
+   "dBad": 0.864,
+   "dWin": -0.098,
+   "predOld": {
+    "bad": 0.6588459331173362,
+    "pw": 0.7742033687678014
+   },
+   "predNew": {
+    "bad": 1.5227434681345176,
+    "pw": 0.6764356604310477
+   },
+   "priority": 13.621098195044624,
+   "truth": {
+    "lost": [
+     14,
+     14,
+     9,
+     10,
+     14
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-09__T6__lost1",
+   "stage": "IM-09",
+   "deck": "T6",
+   "crit": "lost1",
+   "lvl": "E0L1",
+   "touched": true,
+   "changedOps": [
+    "atat",
+    "ker",
+    "bongeun",
+    "capy",
+    "silphy",
+    "rabi",
+    "hakuren",
+    "alpha2"
+   ],
+   "stageChanged": false,
+   "dBad": 0.864,
+   "dWin": -0.098,
+   "predOld": {
+    "bad": 0.6588459331173362,
+    "pw": 0.7742033687678014
+   },
+   "predNew": {
+    "bad": 1.5227434681345176,
+    "pw": 0.6764356604310477
+   },
+   "priority": 13.621098195044624,
+   "truth": {
+    "lost": [
+     14,
+     14,
+     9,
+     10,
+     14
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-04__T4__full",
+   "stage": "IM-04",
+   "deck": "T4",
+   "crit": "full",
+   "lvl": "E0L40",
+   "touched": true,
+   "changedOps": [
+    "sniper",
+    "hiro",
+    "ker",
+    "tao",
+    "lulu"
+   ],
+   "stageChanged": false,
+   "dBad": 1.161,
+   "dWin": -0.097,
+   "predOld": {
+    "bad": 0.014124371698366764,
+    "pw": 0.9903594860781454
+   },
+   "predNew": {
+    "bad": 1.1748220680447454,
+    "pw": 0.8931237458092313
+   },
+   "priority": 13.6131026134995,
+   "truth": {
+    "lost": [
+     1,
+     1,
+     1,
+     1,
+     1
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-04__T4__lost1",
+   "stage": "IM-04",
+   "deck": "T4",
+   "crit": "lost1",
+   "lvl": "E0L40",
+   "touched": true,
+   "changedOps": [
+    "sniper",
+    "hiro",
+    "ker",
+    "tao",
+    "lulu"
+   ],
+   "stageChanged": false,
+   "dBad": 1.161,
+   "dWin": -0.097,
+   "predOld": {
+    "bad": 0.014124371698366764,
+    "pw": 0.9903594860781454
+   },
+   "predNew": {
+    "bad": 1.1748220680447454,
+    "pw": 0.8931237458092313
+   },
+   "priority": 13.6131026134995,
+   "truth": {
+    "lost": [
+     1,
+     1,
+     1,
+     1,
+     1
+    ],
+    "holds": true
+   }
+  },
+  {
+   "key": "v1:IM-10__T4__full",
+   "stage": "IM-10",
+   "deck": "T4",
+   "crit": "full",
+   "lvl": "E0L20",
+   "touched": true,
+   "changedOps": [
+    "hiro",
+    "vanguard",
+    "brick",
+    "nana",
+    "lulu",
+    "guard",
+    "teka"
+   ],
+   "stageChanged": false,
+   "dBad": 0.575,
+   "dWin": -0.329,
+   "predOld": {
+    "bad": 0.3287200262492356,
+    "pw": 0.8162977460007361
+   },
+   "predNew": {
+    "bad": 0.9032684811819256,
+    "pw": 0.4870392536228494
+   },
+   "priority": 13.53687238699904,
+   "truth": {
+    "lost": [
+     12,
+     9,
+     10,
+     13,
+     15
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-10__T4__lost1",
+   "stage": "IM-10",
+   "deck": "T4",
+   "crit": "lost1",
+   "lvl": "E0L20",
+   "touched": true,
+   "changedOps": [
+    "hiro",
+    "vanguard",
+    "brick",
+    "nana",
+    "lulu",
+    "guard",
+    "teka"
+   ],
+   "stageChanged": false,
+   "dBad": 0.575,
+   "dWin": -0.329,
+   "predOld": {
+    "bad": 0.3287200262492356,
+    "pw": 0.8162977460007361
+   },
+   "predNew": {
+    "bad": 0.9032684811819256,
+    "pw": 0.4870392536228494
+   },
+   "priority": 13.53687238699904,
+   "truth": {
+    "lost": [
+     12,
+     9,
+     10,
+     13,
+     15
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-09__T5__full",
+   "stage": "IM-09",
+   "deck": "T5",
+   "crit": "full",
+   "lvl": "E0L1",
+   "touched": true,
+   "changedOps": [
+    "atat",
+    "ker",
+    "bongeun",
+    "capy",
+    "silphy",
+    "rabi",
+    "hakuren",
+    "alpha2"
+   ],
+   "stageChanged": false,
+   "dBad": 0.64,
+   "dWin": -0.056,
+   "predOld": {
+    "bad": 0.3644596680346902,
+    "pw": 0.8778446239533049
+   },
+   "predNew": {
+    "bad": 1.0047475854343522,
+    "pw": 0.8215878276495472
+   },
+   "priority": 13.049346223710597,
+   "truth": {
+    "lost": [
+     15,
+     14,
+     7,
+     7,
+     14
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-09__T5__lost1",
+   "stage": "IM-09",
+   "deck": "T5",
+   "crit": "lost1",
+   "lvl": "E0L1",
+   "touched": true,
+   "changedOps": [
+    "atat",
+    "ker",
+    "bongeun",
+    "capy",
+    "silphy",
+    "rabi",
+    "hakuren",
+    "alpha2"
+   ],
+   "stageChanged": false,
+   "dBad": 0.64,
+   "dWin": -0.056,
+   "predOld": {
+    "bad": 0.3644596680346902,
+    "pw": 0.8778446239533049
+   },
+   "predNew": {
+    "bad": 1.0047475854343522,
+    "pw": 0.8215878276495472
+   },
+   "priority": 13.049346223710597,
+   "truth": {
+    "lost": [
+     15,
+     14,
+     7,
+     7,
+     14
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-05__T5__full",
+   "stage": "IM-05",
+   "deck": "T5",
+   "crit": "full",
+   "lvl": "E0L20",
+   "touched": true,
+   "changedOps": [
+    "defender",
+    "capy",
+    "ker",
+    "sniper",
+    "lulu",
+    "nana"
+   ],
+   "stageChanged": false,
+   "dBad": 0.567,
+   "dWin": -0.231,
+   "predOld": {
+    "bad": 0.6622360366254316,
+    "pw": 0.4483605300590571
+   },
+   "predNew": {
+    "bad": 1.2290093870306984,
+    "pw": 0.2173965777535116
+   },
+   "priority": 13.026438557727172,
+   "truth": {
+    "lost": [
+     21,
+     21,
+     21,
+     21,
+     21
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-05__T5__lost1",
+   "stage": "IM-05",
+   "deck": "T5",
+   "crit": "lost1",
+   "lvl": "E0L20",
+   "touched": true,
+   "changedOps": [
+    "defender",
+    "capy",
+    "ker",
+    "sniper",
+    "lulu",
+    "nana"
+   ],
+   "stageChanged": false,
+   "dBad": 0.567,
+   "dWin": -0.231,
+   "predOld": {
+    "bad": 0.6622360366254316,
+    "pw": 0.4483605300590571
+   },
+   "predNew": {
+    "bad": 1.2290093870306984,
+    "pw": 0.2173965777535116
+   },
+   "priority": 13.026438557727172,
+   "truth": {
+    "lost": [
+     21,
+     21,
+     21,
+     21,
+     21
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-06__T4__full",
+   "stage": "IM-06",
+   "deck": "T4",
+   "crit": "full",
+   "lvl": "E0L20",
+   "touched": true,
+   "changedOps": [
+    "hakuren",
+    "ker",
+    "teka",
+    "skakea",
+    "defender",
+    "capy",
+    "atat"
+   ],
+   "stageChanged": false,
+   "dBad": 0.243,
+   "dWin": -0.371,
+   "predOld": {
+    "bad": 0.4203169608254499,
+    "pw": 0.738906590056562
+   },
+   "predNew": {
+    "bad": 0.663399573700224,
+    "pw": 0.3676417083239208
+   },
+   "priority": 12.999959870947473,
+   "truth": {
+    "lost": [
+     1,
+     0,
+     1,
+     0,
+     0
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-06__T4__lost1",
+   "stage": "IM-06",
+   "deck": "T4",
+   "crit": "lost1",
+   "lvl": "E0L20",
+   "touched": true,
+   "changedOps": [
+    "hakuren",
+    "ker",
+    "teka",
+    "skakea",
+    "defender",
+    "capy",
+    "atat"
+   ],
+   "stageChanged": false,
+   "dBad": 0.243,
+   "dWin": -0.371,
+   "predOld": {
+    "bad": 0.4203169608254499,
+    "pw": 0.738906590056562
+   },
+   "predNew": {
+    "bad": 0.663399573700224,
+    "pw": 0.3676417083239208
+   },
+   "priority": 12.999959870947473,
+   "truth": {
+    "lost": [
+     1,
+     0,
+     1,
+     0,
+     0
+    ],
+    "holds": true
+   }
+  },
+  {
+   "key": "v1:WL-01__T6__full",
+   "stage": "WL-01",
+   "deck": "T6",
+   "crit": "full",
+   "lvl": "E0L20",
+   "touched": true,
+   "changedOps": [
+    "lulu",
+    "vanguard",
+    "hiro",
+    "ayaki",
+    "smoqueen",
+    "sunae",
+    "guard",
+    "sniper"
+   ],
+   "stageChanged": false,
+   "dBad": 0.527,
+   "dWin": -0.113,
+   "predOld": {
+    "bad": 1.2491037546943162,
+    "pw": 0.92477315907989
+   },
+   "predNew": {
+    "bad": 1.7759462588727173,
+    "pw": 0.8120203215048368
+   },
+   "priority": 12.99194352108196,
+   "truth": {
+    "lost": [
+     5,
+     5,
+     5,
+     5,
+     5
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-05__T4__full",
+   "stage": "IM-05",
+   "deck": "T4",
+   "crit": "full",
+   "lvl": "E0L20",
+   "touched": true,
+   "changedOps": [
+    "defender",
+    "capy",
+    "ker",
+    "sniper",
+    "lulu",
+    "teka"
+   ],
+   "stageChanged": false,
+   "dBad": 0.339,
+   "dWin": -0.344,
+   "predOld": {
+    "bad": 0.4860704429346577,
+    "pw": 0.596569028652162
+   },
+   "predNew": {
+    "bad": 0.8247660567903208,
+    "pw": 0.2529154352358977
+   },
+   "priority": 12.908352007960119,
+   "truth": {
+    "lost": [
+     18,
+     18,
+     18,
+     18,
+     18
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-05__T4__lost1",
+   "stage": "IM-05",
+   "deck": "T4",
+   "crit": "lost1",
+   "lvl": "E0L20",
+   "touched": true,
+   "changedOps": [
+    "defender",
+    "capy",
+    "ker",
+    "sniper",
+    "lulu",
+    "teka"
+   ],
+   "stageChanged": false,
+   "dBad": 0.339,
+   "dWin": -0.344,
+   "predOld": {
+    "bad": 0.4860704429346577,
+    "pw": 0.596569028652162
+   },
+   "predNew": {
+    "bad": 0.8247660567903208,
+    "pw": 0.2529154352358977
+   },
+   "priority": 12.908352007960119,
+   "truth": {
+    "lost": [
+     18,
+     18,
+     18,
+     18,
+     18
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:WL-01__T4__full",
+   "stage": "WL-01",
+   "deck": "T4",
+   "crit": "full",
+   "lvl": "E0L20",
+   "touched": true,
+   "changedOps": [
+    "lulu",
+    "vanguard",
+    "hiro",
+    "miho",
+    "teka",
+    "sunae",
+    "guard",
+    "sniper"
+   ],
+   "stageChanged": false,
+   "dBad": 0.374,
+   "dWin": -0.175,
+   "predOld": {
+    "bad": 1.6311943452004984,
+    "pw": 0.6393440382933016
+   },
+   "predNew": {
+    "bad": 2.0056355943016415,
+    "pw": 0.46475497939033494
+   },
+   "priority": 12.872649674911186,
+   "truth": {
+    "lost": [
+     6,
+     6,
+     6,
+     6,
+     6
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:WL-01__T4__lost1",
+   "stage": "WL-01",
+   "deck": "T4",
+   "crit": "lost1",
+   "lvl": "E0L20",
+   "touched": true,
+   "changedOps": [
+    "lulu",
+    "vanguard",
+    "hiro",
+    "miho",
+    "teka",
+    "sunae",
+    "guard",
+    "sniper"
+   ],
+   "stageChanged": false,
+   "dBad": 0.374,
+   "dWin": -0.175,
+   "predOld": {
+    "bad": 1.6311943452004984,
+    "pw": 0.6393440382933016
+   },
+   "predNew": {
+    "bad": 2.0056355943016415,
+    "pw": 0.46475497939033494
+   },
+   "priority": 12.872649674911186,
+   "truth": {
+    "lost": [
+     6,
+     6,
+     6,
+     6,
+     6
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-08__T5__lost1",
+   "stage": "IM-08",
+   "deck": "T5",
+   "crit": "lost1",
+   "lvl": "E0L1",
+   "touched": true,
+   "changedOps": [
+    "guard",
+    "lulu",
+    "capy",
+    "defender",
+    "skakea2",
+    "rabi",
+    "bongeun",
+    "belina"
+   ],
+   "stageChanged": false,
+   "dBad": 0.238,
+   "dWin": -0.22,
+   "predOld": {
+    "bad": 2.413410379593969,
+    "pw": 0.5375382301965035
+   },
+   "predNew": {
+    "bad": 2.6518655850621435,
+    "pw": 0.31740287223601443
+   },
+   "priority": 12.737316484817816,
+   "truth": {
+    "lost": [
+     10,
+     10,
+     10,
+     10,
+     10
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:WL-01__T5__full",
+   "stage": "WL-01",
+   "deck": "T5",
+   "crit": "full",
+   "lvl": "E0L20",
+   "touched": true,
+   "changedOps": [
+    "lulu",
+    "vanguard",
+    "hiro",
+    "ayaki",
+    "teka",
+    "sunae",
+    "guard",
+    "sniper"
+   ],
+   "stageChanged": false,
+   "dBad": 0.485,
+   "dWin": 0.02,
+   "predOld": {
+    "bad": 1.320259302613891,
+    "pw": 0.8340538272487193
+   },
+   "predNew": {
+    "bad": 1.8050737420150555,
+    "pw": 0.8544551029468908
+   },
+   "priority": 12.569628878802328,
+   "truth": {
+    "lost": [
+     6,
+     5,
+     6,
+     6,
+     6
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-09__starter__full",
+   "stage": "IM-09",
+   "deck": "starter",
+   "crit": "full",
+   "lvl": "E0L40",
+   "touched": true,
+   "changedOps": [
+    "tao",
+    "yui",
+    "ayaki",
+    "teka",
+    "sunae",
+    "hiro",
+    "atat",
+    "capy"
+   ],
+   "stageChanged": false,
+   "dBad": 0.084,
+   "dWin": -0.222,
+   "predOld": {
+    "bad": 2.837097245299133,
+    "pw": 0.5558420896365306
+   },
+   "predNew": {
+    "bad": 2.921203466826096,
+    "pw": 0.3341779178715159
+   },
+   "priority": 12.43320495834897,
+   "truth": {
+    "lost": [
+     1,
+     1,
+     1,
+     1,
+     1
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:WL-01__T5__lost1",
+   "stage": "WL-01",
+   "deck": "T5",
+   "crit": "lost1",
+   "lvl": "E0L1",
+   "touched": true,
+   "changedOps": [
+    "lulu",
+    "hakuren",
+    "hiro",
+    "miho",
+    "teka",
+    "sunae",
+    "rabi",
+    "sniper"
+   ],
+   "stageChanged": false,
+   "dBad": 0.272,
+   "dWin": -0.088,
+   "predOld": {
+    "bad": 2.0303143251276583,
+    "pw": 0.2533989342568169
+   },
+   "predNew": {
+    "bad": 2.302319247691883,
+    "pw": 0.1652515095859864
+   },
+   "priority": 12.408452119140941,
+   "truth": {
+    "lost": [
+     12,
+     11,
+     12,
+     13,
+     12
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:WL-01__T6__lost1",
+   "stage": "WL-01",
+   "deck": "T6",
+   "crit": "lost1",
+   "lvl": "E0L1",
+   "touched": true,
+   "changedOps": [
+    "lulu",
+    "hakuren",
+    "hiro",
+    "miho",
+    "teka",
+    "sunae",
+    "rabi",
+    "sniper"
+   ],
+   "stageChanged": false,
+   "dBad": 0.272,
+   "dWin": -0.088,
+   "predOld": {
+    "bad": 2.0303143251276583,
+    "pw": 0.2533989342568169
+   },
+   "predNew": {
+    "bad": 2.302319247691883,
+    "pw": 0.1652515095859864
+   },
+   "priority": 12.408452119140941,
+   "truth": {
+    "lost": [
+     12,
+     11,
+     12,
+     13,
+     12
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-08__T6__lost1",
+   "stage": "IM-08",
+   "deck": "T6",
+   "crit": "lost1",
+   "lvl": "E0L1",
+   "touched": true,
+   "changedOps": [
+    "guard",
+    "lulu",
+    "capy",
+    "defender",
+    "skakea2",
+    "rabi",
+    "bongeun"
+   ],
+   "stageChanged": false,
+   "dBad": 0.155,
+   "dWin": -0.203,
+   "predOld": {
+    "bad": 2.6409087238460325,
+    "pw": 0.32493995789364916
+   },
+   "predNew": {
+    "bad": 2.7956299776287907,
+    "pw": 0.12189159014257898
+   },
+   "priority": 12.318587610818728,
+   "truth": {
+    "lost": [
+     17,
+     17,
+     17,
+     17,
+     17
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-03__starter__full",
+   "stage": "IM-03",
+   "deck": "starter",
+   "crit": "full",
+   "lvl": "E0L1",
+   "touched": true,
+   "changedOps": [
+    "tao",
+    "capy",
+    "ayaki",
+    "yui",
+    "atat",
+    "hiro",
+    "sunae"
+   ],
+   "stageChanged": false,
+   "dBad": 0.412,
+   "dWin": 0,
+   "predOld": {
+    "bad": 0.26741015091735804,
+    "pw": 0.9577673443402476
+   },
+   "predNew": {
+    "bad": 0.6797138849356834,
+    "pw": 0.9577673443402476
+   },
+   "priority": 12.224607468036652,
+   "truth": {
+    "lost": [
+     6,
+     6,
+     6,
+     6,
+     6
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-03__starter__lost1",
+   "stage": "IM-03",
+   "deck": "starter",
+   "crit": "lost1",
+   "lvl": "E0L1",
+   "touched": true,
+   "changedOps": [
+    "tao",
+    "capy",
+    "ayaki",
+    "yui",
+    "atat",
+    "hiro",
+    "sunae"
+   ],
+   "stageChanged": false,
+   "dBad": 0.412,
+   "dWin": 0,
+   "predOld": {
+    "bad": 0.26741015091735804,
+    "pw": 0.9577673443402476
+   },
+   "predNew": {
+    "bad": 0.6797138849356834,
+    "pw": 0.9577673443402476
+   },
+   "priority": 12.224607468036652,
+   "truth": {
+    "lost": [
+     6,
+     6,
+     6,
+     6,
+     6
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-06__T5__full",
+   "stage": "IM-06",
+   "deck": "T5",
+   "crit": "full",
+   "lvl": "E0L1",
+   "touched": true,
+   "changedOps": [
+    "hakuren",
+    "ker",
+    "teka",
+    "skakea",
+    "defender",
+    "capy",
+    "atat"
+   ],
+   "stageChanged": false,
+   "dBad": 0.008,
+   "dWin": -0.27,
+   "predOld": {
+    "bad": 1.0342143732369489,
+    "pw": 0.524909069135868
+   },
+   "predNew": {
+    "bad": 1.0420736341844243,
+    "pw": 0.25528136034971216
+   },
+   "priority": 12.224601648253417,
+   "truth": {
+    "lost": [
+     20,
+     20,
+     20,
+     20,
+     20
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-06__T5__lost1",
+   "stage": "IM-06",
+   "deck": "T5",
+   "crit": "lost1",
+   "lvl": "E0L1",
+   "touched": true,
+   "changedOps": [
+    "hakuren",
+    "ker",
+    "teka",
+    "skakea",
+    "defender",
+    "capy",
+    "atat"
+   ],
+   "stageChanged": false,
+   "dBad": 0.008,
+   "dWin": -0.27,
+   "predOld": {
+    "bad": 1.0342143732369489,
+    "pw": 0.524909069135868
+   },
+   "predNew": {
+    "bad": 1.0420736341844243,
+    "pw": 0.25528136034971216
+   },
+   "priority": 12.224601648253417,
+   "truth": {
+    "lost": [
+     20,
+     20,
+     20,
+     20,
+     20
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-06__T6__full",
+   "stage": "IM-06",
+   "deck": "T6",
+   "crit": "full",
+   "lvl": "E0L1",
+   "touched": true,
+   "changedOps": [
+    "hakuren",
+    "ker",
+    "teka",
+    "skakea",
+    "defender",
+    "capy",
+    "atat"
+   ],
+   "stageChanged": false,
+   "dBad": 0.008,
+   "dWin": -0.27,
+   "predOld": {
+    "bad": 1.0342143732369489,
+    "pw": 0.524909069135868
+   },
+   "predNew": {
+    "bad": 1.0420736341844243,
+    "pw": 0.25528136034971216
+   },
+   "priority": 12.224601648253417,
+   "truth": {
+    "lost": [
+     20,
+     20,
+     20,
+     20,
+     20
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-06__T6__lost1",
+   "stage": "IM-06",
+   "deck": "T6",
+   "crit": "lost1",
+   "lvl": "E0L1",
+   "touched": true,
+   "changedOps": [
+    "hakuren",
+    "ker",
+    "teka",
+    "skakea",
+    "defender",
+    "capy",
+    "atat"
+   ],
+   "stageChanged": false,
+   "dBad": 0.008,
+   "dWin": -0.27,
+   "predOld": {
+    "bad": 1.0342143732369489,
+    "pw": 0.524909069135868
+   },
+   "predNew": {
+    "bad": 1.0420736341844243,
+    "pw": 0.25528136034971216
+   },
+   "priority": 12.224601648253417,
+   "truth": {
+    "lost": [
+     20,
+     20,
+     20,
+     20,
+     20
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:WL-02__starter__lost1",
+   "stage": "WL-02",
+   "deck": "starter",
+   "crit": "lost1",
+   "lvl": "E0L40",
+   "touched": true,
+   "changedOps": [
+    "tao",
+    "yui",
+    "sunae",
+    "hiro",
+    "capy",
+    "teka",
+    "atat"
+   ],
+   "stageChanged": false,
+   "dBad": 0.333,
+   "dWin": -0.014,
+   "predOld": {
+    "bad": 1.6609655454027936,
+    "pw": 0.5554927843946535
+   },
+   "predNew": {
+    "bad": 1.9943047125334727,
+    "pw": 0.5414968791402408
+   },
+   "priority": 12.108666050024597,
+   "truth": {
+    "lost": [
+     4,
+     5,
+     6,
+     5,
+     5
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-03__T6__full",
+   "stage": "IM-03",
+   "deck": "T6",
+   "crit": "full",
+   "lvl": "E0L1",
+   "touched": true,
+   "changedOps": [
+    "hiro",
+    "miho",
+    "sunae",
+    "guard",
+    "lulu",
+    "ker",
+    "capy",
+    "atat",
+    "teka"
+   ],
+   "stageChanged": false,
+   "dBad": 0.109,
+   "dWin": 0,
+   "predOld": {
+    "bad": 0.6157141374969612,
+    "pw": 0.914189786600415
+   },
+   "predNew": {
+    "bad": 0.7242581853154775,
+    "pw": 0.914189786600415
+   },
+   "priority": 12.017088095637034,
+   "truth": {
+    "lost": [
+     1,
+     1,
+     1,
+     1,
+     1
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-03__T6__lost1",
+   "stage": "IM-03",
+   "deck": "T6",
+   "crit": "lost1",
+   "lvl": "E0L1",
+   "touched": true,
+   "changedOps": [
+    "hiro",
+    "miho",
+    "sunae",
+    "guard",
+    "lulu",
+    "ker",
+    "capy",
+    "atat",
+    "teka"
+   ],
+   "stageChanged": false,
+   "dBad": 0.109,
+   "dWin": 0,
+   "predOld": {
+    "bad": 0.6157141374969612,
+    "pw": 0.914189786600415
+   },
+   "predNew": {
+    "bad": 0.7242581853154775,
+    "pw": 0.914189786600415
+   },
+   "priority": 12.017088095637034,
+   "truth": {
+    "lost": [
+     1,
+     1,
+     1,
+     1,
+     1
+    ],
+    "holds": true
+   }
+  },
+  {
+   "key": "v1:IM-09__T4__lost1",
+   "stage": "IM-09",
+   "deck": "T4",
+   "crit": "lost1",
+   "lvl": "E0L1",
+   "touched": true,
+   "changedOps": [
+    "atat",
+    "ker",
+    "skakea",
+    "teka",
+    "capy",
+    "hakuren",
+    "guard",
+    "brick"
+   ],
+   "stageChanged": false,
+   "dBad": -0.037,
+   "dWin": -0.136,
+   "predOld": {
+    "bad": 2.4106869672560576,
+    "pw": 0.2813154902645617
+   },
+   "predNew": {
+    "bad": 2.3741083391081927,
+    "pw": 0.14567085675887187
+   },
+   "priority": 12.006933900517069,
+   "truth": {
+    "lost": [
+     9,
+     12,
+     12,
+     9,
+     10
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-02__T6__full",
+   "stage": "IM-02",
+   "deck": "T6",
+   "crit": "full",
+   "lvl": "E0L1",
+   "touched": true,
+   "changedOps": [
+    "tao",
+    "bongeun",
+    "yui",
+    "capy",
+    "sunae",
+    "hakuren",
+    "hiro",
+    "skakea",
+    "ayaki",
+    "atat"
+   ],
+   "stageChanged": false,
+   "dBad": null,
+   "dWin": null,
+   "predOld": {
+    "bad": null,
+    "pw": null
+   },
+   "predNew": {
+    "bad": null,
+    "pw": null
+   },
+   "priority": 12,
+   "truth": {
+    "lost": [
+     6,
+     6,
+     6,
+     6,
+     6
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-02__T6__lost1",
+   "stage": "IM-02",
+   "deck": "T6",
+   "crit": "lost1",
+   "lvl": "E0L1",
+   "touched": true,
+   "changedOps": [
+    "tao",
+    "bongeun",
+    "yui",
+    "capy",
+    "sunae",
+    "hakuren",
+    "hiro",
+    "skakea",
+    "ayaki",
+    "atat"
+   ],
+   "stageChanged": false,
+   "dBad": null,
+   "dWin": null,
+   "predOld": {
+    "bad": null,
+    "pw": null
+   },
+   "predNew": {
+    "bad": null,
+    "pw": null
+   },
+   "priority": 12,
+   "truth": {
+    "lost": [
+     6,
+     6,
+     6,
+     6,
+     6
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:WL-02__T5__lost1",
+   "stage": "WL-02",
+   "deck": "T5",
+   "crit": "lost1",
+   "lvl": "E0L20",
+   "touched": true,
+   "changedOps": [
+    "tao",
+    "brick",
+    "sunae",
+    "lulu",
+    "ker",
+    "teka",
+    "bongeun",
+    "atat"
+   ],
+   "stageChanged": false,
+   "dBad": -0.149,
+   "dWin": -0.056,
+   "predOld": {
+    "bad": 1.3005038234093813,
+    "pw": 0.6734437593202054
+   },
+   "predNew": {
+    "bad": 1.1519120112657866,
+    "pw": 0.6174008697263935
+   },
+   "priority": 11.768128668781435,
+   "truth": {
+    "lost": [
+     5,
+     5,
+     5,
+     5,
+     5
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:WL-02__T4__full",
+   "stage": "WL-02",
+   "deck": "T4",
+   "crit": "full",
+   "lvl": "E1L1",
+   "touched": true,
+   "changedOps": [
+    "vanguard",
+    "atat",
+    "hiro",
+    "lulu",
+    "defender"
+   ],
+   "stageChanged": false,
+   "dBad": 0.11,
+   "dWin": -0.165,
+   "predOld": {
+    "bad": 1.7724974951282462,
+    "pw": 0.5584292464395558
+   },
+   "predNew": {
+    "bad": 1.8828759558412653,
+    "pw": 0.39298546069166845
+   },
+   "priority": 11.7170882786697,
+   "truth": {
+    "lost": [
+     6,
+     6,
+     6,
+     6,
+     6
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-03__T4__full",
+   "stage": "IM-03",
+   "deck": "T4",
+   "crit": "full",
+   "lvl": "E0L1",
+   "touched": true,
+   "changedOps": [
+    "hiro",
+    "tao",
+    "miho",
+    "sunae",
+    "lulu",
+    "ker",
+    "capy",
+    "teka"
+   ],
+   "stageChanged": false,
+   "dBad": 0.04,
+   "dWin": 0,
+   "predOld": {
+    "bad": 1.1381216361173268,
+    "pw": 0.37835181254328576
+   },
+   "predNew": {
+    "bad": 1.178366021790163,
+    "pw": 0.37835181254328576
+   },
+   "priority": 11.680488771345672,
+   "truth": {
+    "lost": [
+     2,
+     2,
+     2,
+     2,
+     2
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-03__T4__lost1",
+   "stage": "IM-03",
+   "deck": "T4",
+   "crit": "lost1",
+   "lvl": "E0L1",
+   "touched": true,
+   "changedOps": [
+    "hiro",
+    "tao",
+    "miho",
+    "sunae",
+    "lulu",
+    "ker",
+    "capy",
+    "teka"
+   ],
+   "stageChanged": false,
+   "dBad": 0.04,
+   "dWin": 0,
+   "predOld": {
+    "bad": 1.1381216361173268,
+    "pw": 0.37835181254328576
+   },
+   "predNew": {
+    "bad": 1.178366021790163,
+    "pw": 0.37835181254328576
+   },
+   "priority": 11.680488771345672,
+   "truth": {
+    "lost": [
+     2,
+     2,
+     2,
+     2,
+     2
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-02__T5__full",
+   "stage": "IM-02",
+   "deck": "T5",
+   "crit": "full",
+   "lvl": "E0L1",
+   "touched": true,
+   "changedOps": [
+    "tao",
+    "yui",
+    "capy",
+    "sunae",
+    "hakuren",
+    "hiro",
+    "ayaki",
+    "atat"
+   ],
+   "stageChanged": false,
+   "dBad": null,
+   "dWin": null,
+   "predOld": {
+    "bad": null,
+    "pw": null
+   },
+   "predNew": {
+    "bad": null,
+    "pw": null
+   },
+   "priority": 11.6,
+   "truth": {
+    "lost": [
+     12,
+     12,
+     12,
+     12,
+     12
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-02__T5__lost1",
+   "stage": "IM-02",
+   "deck": "T5",
+   "crit": "lost1",
+   "lvl": "E0L1",
+   "touched": true,
+   "changedOps": [
+    "tao",
+    "yui",
+    "capy",
+    "sunae",
+    "hakuren",
+    "hiro",
+    "ayaki",
+    "atat"
+   ],
+   "stageChanged": false,
+   "dBad": null,
+   "dWin": null,
+   "predOld": {
+    "bad": null,
+    "pw": null
+   },
+   "predNew": {
+    "bad": null,
+    "pw": null
+   },
+   "priority": 11.6,
+   "truth": {
+    "lost": [
+     12,
+     12,
+     12,
+     12,
+     12
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-02__starter__full",
+   "stage": "IM-02",
+   "deck": "starter",
+   "crit": "full",
+   "lvl": "E0L1",
+   "touched": true,
+   "changedOps": [
+    "tao",
+    "yui",
+    "capy",
+    "sunae",
+    "hakuren",
+    "hiro",
+    "ayaki",
+    "atat"
+   ],
+   "stageChanged": false,
+   "dBad": null,
+   "dWin": null,
+   "predOld": {
+    "bad": null,
+    "pw": null
+   },
+   "predNew": {
+    "bad": null,
+    "pw": null
+   },
+   "priority": 11.6,
+   "truth": {
+    "lost": [
+     12,
+     12,
+     12,
+     12,
+     12
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-02__starter__lost1",
+   "stage": "IM-02",
+   "deck": "starter",
+   "crit": "lost1",
+   "lvl": "E0L1",
+   "touched": true,
+   "changedOps": [
+    "tao",
+    "yui",
+    "capy",
+    "sunae",
+    "hakuren",
+    "hiro",
+    "ayaki",
+    "atat"
+   ],
+   "stageChanged": false,
+   "dBad": null,
+   "dWin": null,
+   "predOld": {
+    "bad": null,
+    "pw": null
+   },
+   "predNew": {
+    "bad": null,
+    "pw": null
+   },
+   "priority": 11.6,
+   "truth": {
+    "lost": [
+     12,
+     12,
+     12,
+     12,
+     12
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:WL-05__starter__full",
+   "stage": "WL-05",
+   "deck": "starter",
+   "crit": "full",
+   "lvl": "E0L40",
+   "touched": true,
+   "changedOps": [
+    "yui",
+    "sunae",
+    "tao",
+    "hakuren",
+    "ayaki",
+    "atat",
+    "capy",
+    "hiro"
+   ],
+   "stageChanged": false,
+   "dBad": null,
+   "dWin": null,
+   "predOld": {
+    "bad": null,
+    "pw": null
+   },
+   "predNew": {
+    "bad": null,
+    "pw": null
+   },
+   "priority": 11.6,
+   "truth": {
+    "lost": [
+     2,
+     2,
+     2,
+     2,
+     2
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:WL-05__starter__lost1",
+   "stage": "WL-05",
+   "deck": "starter",
+   "crit": "lost1",
+   "lvl": "E0L40",
+   "touched": true,
+   "changedOps": [
+    "yui",
+    "sunae",
+    "tao",
+    "hakuren",
+    "ayaki",
+    "atat",
+    "capy",
+    "hiro"
+   ],
+   "stageChanged": false,
+   "dBad": null,
+   "dWin": null,
+   "predOld": {
+    "bad": null,
+    "pw": null
+   },
+   "predNew": {
+    "bad": null,
+    "pw": null
+   },
+   "priority": 11.6,
+   "truth": {
+    "lost": [
+     2,
+     2,
+     2,
+     2,
+     2
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:WL-07__starter__lost1",
+   "stage": "WL-07",
+   "deck": "starter",
+   "crit": "lost1",
+   "lvl": "E0L40",
+   "touched": true,
+   "changedOps": [
+    "yui",
+    "tao",
+    "hakuren",
+    "atat",
+    "hiro",
+    "sunae",
+    "ayaki",
+    "teka"
+   ],
+   "stageChanged": false,
+   "dBad": null,
+   "dWin": null,
+   "predOld": {
+    "bad": null,
+    "pw": null
+   },
+   "predNew": {
+    "bad": null,
+    "pw": null
+   },
+   "priority": 11.6,
+   "truth": {
+    "lost": [
+     1,
+     1,
+     1,
+     1,
+     1
+    ],
+    "holds": true
+   }
+  },
+  {
+   "key": "v1:WL-02__starter__full",
+   "stage": "WL-02",
+   "deck": "starter",
+   "crit": "full",
+   "lvl": "E1L1",
+   "touched": true,
+   "changedOps": [
+    "yui",
+    "tao",
+    "sunae",
+    "hiro",
+    "teka",
+    "capy",
+    "atat"
+   ],
+   "stageChanged": false,
+   "dBad": 0.063,
+   "dWin": -0.013,
+   "predOld": {
+    "bad": 2.0331465374892224,
+    "pw": 0.5825596468117318
+   },
+   "predNew": {
+    "bad": 2.096575415916327,
+    "pw": 0.5698232825348268
+   },
+   "priority": 11.565066849684923,
+   "truth": {
+    "lost": [
+     3,
+     3,
+     3,
+     3,
+     3
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-04__T6__full",
+   "stage": "IM-04",
+   "deck": "T6",
+   "crit": "full",
+   "lvl": "E0L1",
+   "touched": true,
+   "changedOps": [
+    "nana",
+    "bongeun",
+    "capy",
+    "alpha2",
+    "guard",
+    "vanguard",
+    "hiro"
+   ],
+   "stageChanged": false,
+   "dBad": 0.024,
+   "dWin": -0.032,
+   "predOld": {
+    "bad": 0.7176367292121871,
+    "pw": 0.909194360045052
+   },
+   "predNew": {
+    "bad": 0.7415814517195937,
+    "pw": 0.8776182897696874
+   },
+   "priority": 11.542617655840909,
+   "truth": {
+    "lost": [
+     13,
+     13,
+     13,
+     13,
+     13
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-04__T6__lost1",
+   "stage": "IM-04",
+   "deck": "T6",
+   "crit": "lost1",
+   "lvl": "E0L1",
+   "touched": true,
+   "changedOps": [
+    "nana",
+    "bongeun",
+    "capy",
+    "alpha2",
+    "guard",
+    "vanguard",
+    "hiro"
+   ],
+   "stageChanged": false,
+   "dBad": 0.024,
+   "dWin": -0.032,
+   "predOld": {
+    "bad": 0.7176367292121871,
+    "pw": 0.909194360045052
+   },
+   "predNew": {
+    "bad": 0.7415814517195937,
+    "pw": 0.8776182897696874
+   },
+   "priority": 11.542617655840909,
+   "truth": {
+    "lost": [
+     13,
+     13,
+     13,
+     13,
+     13
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-03__T5__full",
+   "stage": "IM-03",
+   "deck": "T5",
+   "crit": "full",
+   "lvl": "E0L1",
+   "touched": true,
+   "changedOps": [
+    "hiro",
+    "miho",
+    "sunae",
+    "lulu",
+    "ker",
+    "capy",
+    "teka"
+   ],
+   "stageChanged": false,
+   "dBad": -0.023,
+   "dWin": -0.046,
+   "predOld": {
+    "bad": 0.7233297073880196,
+    "pw": 0.9023641619724979
+   },
+   "predNew": {
+    "bad": 0.7004452483716636,
+    "pw": 0.856462417835618
+   },
+   "priority": 11.537705232410639,
+   "truth": {
+    "lost": [
+     2,
+     2,
+     2,
+     2,
+     2
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-03__T5__lost1",
+   "stage": "IM-03",
+   "deck": "T5",
+   "crit": "lost1",
+   "lvl": "E0L1",
+   "touched": true,
+   "changedOps": [
+    "hiro",
+    "miho",
+    "sunae",
+    "lulu",
+    "ker",
+    "capy",
+    "teka"
+   ],
+   "stageChanged": false,
+   "dBad": -0.023,
+   "dWin": -0.046,
+   "predOld": {
+    "bad": 0.7233297073880196,
+    "pw": 0.9023641619724979
+   },
+   "predNew": {
+    "bad": 0.7004452483716636,
+    "pw": 0.856462417835618
+   },
+   "priority": 11.537705232410639,
+   "truth": {
+    "lost": [
+     2,
+     2,
+     2,
+     2,
+     2
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-09__starter__lost1",
+   "stage": "IM-09",
+   "deck": "starter",
+   "crit": "lost1",
+   "lvl": "E0L20",
+   "touched": true,
+   "changedOps": [
+    "tao",
+    "yui",
+    "sunae",
+    "hiro",
+    "atat",
+    "teka"
+   ],
+   "stageChanged": false,
+   "dBad": 0.135,
+   "dWin": 0,
+   "predOld": {
+    "bad": 3.059109436658954,
+    "pw": 0.008789104661100377
+   },
+   "predNew": {
+    "bad": 3.1940418046314853,
+    "pw": 0.008960301152382659
+   },
+   "priority": 11.469864735945063,
+   "truth": {
+    "lost": [
+     3,
+     3,
+     3,
+     3,
+     3
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:WL-02__T5__full",
+   "stage": "WL-02",
+   "deck": "T5",
+   "crit": "full",
+   "lvl": "E0L40",
+   "touched": true,
+   "changedOps": [
+    "yui",
+    "tao",
+    "sunae",
+    "hiro",
+    "teka",
+    "capy",
+    "atat"
+   ],
+   "stageChanged": false,
+   "dBad": -0.017,
+   "dWin": -0.011,
+   "predOld": {
+    "bad": 2.037349914017858,
+    "pw": 0.5268065512454221
+   },
+   "predNew": {
+    "bad": 2.020263879150652,
+    "pw": 0.5154798845130303
+   },
+   "priority": 11.433980000197176,
+   "truth": {
+    "lost": [
+     1,
+     1,
+     3,
+     1,
+     1
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-02__T4__full",
+   "stage": "IM-02",
+   "deck": "T4",
+   "crit": "full",
+   "lvl": "E0L1",
+   "touched": true,
+   "changedOps": [
+    "vanguard",
+    "defender",
+    "capy",
+    "ker",
+    "sunae",
+    "skakea",
+    "tao"
+   ],
+   "stageChanged": false,
+   "dBad": null,
+   "dWin": null,
+   "predOld": {
+    "bad": null,
+    "pw": null
+   },
+   "predNew": {
+    "bad": null,
+    "pw": null
+   },
+   "priority": 11.4,
+   "truth": {
+    "lost": [
+     32,
+     32,
+     32,
+     32,
+     32
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-02__T4__lost1",
+   "stage": "IM-02",
+   "deck": "T4",
+   "crit": "lost1",
+   "lvl": "E0L1",
+   "touched": true,
+   "changedOps": [
+    "vanguard",
+    "defender",
+    "capy",
+    "ker",
+    "sunae",
+    "skakea",
+    "tao"
+   ],
+   "stageChanged": false,
+   "dBad": null,
+   "dWin": null,
+   "predOld": {
+    "bad": null,
+    "pw": null
+   },
+   "predNew": {
+    "bad": null,
+    "pw": null
+   },
+   "priority": 11.4,
+   "truth": {
+    "lost": [
+     32,
+     32,
+     32,
+     32,
+     32
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:WL-03__starter__full",
+   "stage": "WL-03",
+   "deck": "starter",
+   "crit": "full",
+   "lvl": "E0L20",
+   "touched": true,
+   "changedOps": [
+    "yui",
+    "hakuren",
+    "capy",
+    "hiro",
+    "atat",
+    "teka",
+    "ayaki"
+   ],
+   "stageChanged": false,
+   "dBad": null,
+   "dWin": null,
+   "predOld": {
+    "bad": null,
+    "pw": null
+   },
+   "predNew": {
+    "bad": null,
+    "pw": null
+   },
+   "priority": 11.4,
+   "truth": {
+    "lost": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "holds": true
+   }
+  },
+  {
+   "key": "v1:WL-03__starter__lost1",
+   "stage": "WL-03",
+   "deck": "starter",
+   "crit": "lost1",
+   "lvl": "E0L20",
+   "touched": true,
+   "changedOps": [
+    "yui",
+    "hakuren",
+    "capy",
+    "hiro",
+    "atat",
+    "teka",
+    "ayaki"
+   ],
+   "stageChanged": false,
+   "dBad": null,
+   "dWin": null,
+   "predOld": {
+    "bad": null,
+    "pw": null
+   },
+   "predNew": {
+    "bad": null,
+    "pw": null
+   },
+   "priority": 11.4,
+   "truth": {
+    "lost": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "holds": true
+   }
+  },
+  {
+   "key": "v1:WL-04__starter__full",
+   "stage": "WL-04",
+   "deck": "starter",
+   "crit": "full",
+   "lvl": "E1L45",
+   "touched": true,
+   "changedOps": [
+    "teka",
+    "tao",
+    "atat",
+    "capy",
+    "hiro",
+    "yui",
+    "sunae"
+   ],
+   "stageChanged": false,
+   "dBad": null,
+   "dWin": null,
+   "predOld": {
+    "bad": null,
+    "pw": null
+   },
+   "predNew": {
+    "bad": null,
+    "pw": null
+   },
+   "priority": 11.4,
+   "truth": {
+    "lost": [
+     2,
+     1,
+     1,
+     1,
+     1
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:WL-04__starter__lost1",
+   "stage": "WL-04",
+   "deck": "starter",
+   "crit": "lost1",
+   "lvl": "E1L15",
+   "touched": true,
+   "changedOps": [
+    "teka",
+    "tao",
+    "atat",
+    "capy",
+    "yui",
+    "hiro",
+    "hakuren"
+   ],
+   "stageChanged": false,
+   "dBad": null,
+   "dWin": null,
+   "predOld": {
+    "bad": null,
+    "pw": null
+   },
+   "predNew": {
+    "bad": null,
+    "pw": null
+   },
+   "priority": 11.4,
+   "truth": {
+    "lost": [
+     5,
+     5,
+     5,
+     6,
+     6
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:WL-06__starter__full",
+   "stage": "WL-06",
+   "deck": "starter",
+   "crit": "full",
+   "lvl": "E0L40",
+   "touched": true,
+   "changedOps": [
+    "capy",
+    "tao",
+    "teka",
+    "yui",
+    "hakuren",
+    "sunae",
+    "atat"
+   ],
+   "stageChanged": false,
+   "dBad": null,
+   "dWin": null,
+   "predOld": {
+    "bad": null,
+    "pw": null
+   },
+   "predNew": {
+    "bad": null,
+    "pw": null
+   },
+   "priority": 11.4,
+   "truth": {
+    "lost": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "holds": true
+   }
+  },
+  {
+   "key": "v1:WL-06__starter__lost1",
+   "stage": "WL-06",
+   "deck": "starter",
+   "crit": "lost1",
+   "lvl": "E0L40",
+   "touched": true,
+   "changedOps": [
+    "capy",
+    "tao",
+    "teka",
+    "yui",
+    "hakuren",
+    "sunae",
+    "atat"
+   ],
+   "stageChanged": false,
+   "dBad": null,
+   "dWin": null,
+   "predOld": {
+    "bad": null,
+    "pw": null
+   },
+   "predNew": {
+    "bad": null,
+    "pw": null
+   },
+   "priority": 11.4,
+   "truth": {
+    "lost": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "holds": true
+   }
+  },
+  {
+   "key": "v1:IM-05__T6__full",
+   "stage": "IM-05",
+   "deck": "T6",
+   "crit": "full",
+   "lvl": "E0L20",
+   "touched": true,
+   "changedOps": [
+    "defender",
+    "capy",
+    "ker",
+    "lulu",
+    "nana"
+   ],
+   "stageChanged": false,
+   "dBad": 0.129,
+   "dWin": -0.032,
+   "predOld": {
+    "bad": 1.5364051330140127,
+    "pw": 0.0880460103086851
+   },
+   "predNew": {
+    "bad": 1.6658873327327408,
+    "pw": 0.056470363442805
+   },
+   "priority": 11.353691340035097,
+   "truth": {
+    "lost": [
+     17,
+     17,
+     17,
+     17,
+     17
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-05__T6__lost1",
+   "stage": "IM-05",
+   "deck": "T6",
+   "crit": "lost1",
+   "lvl": "E0L20",
+   "touched": true,
+   "changedOps": [
+    "defender",
+    "capy",
+    "ker",
+    "lulu",
+    "nana"
+   ],
+   "stageChanged": false,
+   "dBad": 0.129,
+   "dWin": -0.032,
+   "predOld": {
+    "bad": 1.5364051330140127,
+    "pw": 0.0880460103086851
+   },
+   "predNew": {
+    "bad": 1.6658873327327408,
+    "pw": 0.056470363442805
+   },
+   "priority": 11.353691340035097,
+   "truth": {
+    "lost": [
+     17,
+     17,
+     17,
+     17,
+     17
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:WL-01__starter__full",
+   "stage": "WL-01",
+   "deck": "starter",
+   "crit": "full",
+   "lvl": "E0L40",
+   "touched": true,
+   "changedOps": [
+    "sunae",
+    "yui",
+    "tao",
+    "capy",
+    "hiro",
+    "teka"
+   ],
+   "stageChanged": false,
+   "dBad": -0.206,
+   "dWin": -0.006,
+   "predOld": {
+    "bad": 3.438661506824453,
+    "pw": 0.04547385040031191
+   },
+   "predNew": {
+    "bad": 3.2329525036770983,
+    "pw": 0.039941226728085456
+   },
+   "priority": 11.216597871016681,
+   "truth": {
+    "lost": [
+     2,
+     2,
+     2,
+     2,
+     2
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:WL-01__starter__lost1",
+   "stage": "WL-01",
+   "deck": "starter",
+   "crit": "lost1",
+   "lvl": "E0L40",
+   "touched": true,
+   "changedOps": [
+    "sunae",
+    "yui",
+    "tao",
+    "capy",
+    "hiro",
+    "teka"
+   ],
+   "stageChanged": false,
+   "dBad": -0.206,
+   "dWin": -0.006,
+   "predOld": {
+    "bad": 3.438661506824453,
+    "pw": 0.04547385040031191
+   },
+   "predNew": {
+    "bad": 3.2329525036770983,
+    "pw": 0.039941226728085456
+   },
+   "priority": 11.216597871016681,
+   "truth": {
+    "lost": [
+     2,
+     2,
+     2,
+     2,
+     2
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-08__starter__full",
+   "stage": "IM-08",
+   "deck": "starter",
+   "crit": "full",
+   "lvl": "E0L40",
+   "touched": true,
+   "changedOps": [
+    "tao",
+    "sunae",
+    "capy",
+    "teka",
+    "yui",
+    "hiro"
+   ],
+   "stageChanged": false,
+   "dBad": -0.011,
+   "dWin": -0.001,
+   "predOld": {
+    "bad": 2.9963083186681008,
+    "pw": 0.0034665897284173906
+   },
+   "predNew": {
+    "bad": 2.9856013604672236,
+    "pw": 0.0022170176144734213
+   },
+   "priority": 11.203748716341831,
+   "truth": {
+    "lost": [
+     3,
+     4,
+     4,
+     3,
+     3
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-08__starter__lost1",
+   "stage": "IM-08",
+   "deck": "starter",
+   "crit": "lost1",
+   "lvl": "E0L40",
+   "touched": true,
+   "changedOps": [
+    "tao",
+    "sunae",
+    "capy",
+    "teka",
+    "yui",
+    "hiro"
+   ],
+   "stageChanged": false,
+   "dBad": -0.011,
+   "dWin": -0.001,
+   "predOld": {
+    "bad": 2.9963083186681008,
+    "pw": 0.0034665897284173906
+   },
+   "predNew": {
+    "bad": 2.9856013604672236,
+    "pw": 0.0022170176144734213
+   },
+   "priority": 11.203748716341831,
+   "truth": {
+    "lost": [
+     3,
+     4,
+     4,
+     3,
+     3
+    ],
+    "holds": false
+   }
+  },
+  {
+   "key": "v1:IM-04__starter__full",
+   "stage": "IM-04",
+   "deck": "starter",
+   "crit": "full",
+   "lvl": "E0L40",
+   "touched": true,
+   "changedOps": [
+    "capy",
+    "sunae",
+    "yui"
+   ],
+   "stageChanged": false,
+   "dBad": -0.185,
+   "dWin": 0,
+   "predOld": {
+    "bad": 4.1823113684865065,
+    "pw": 0.0017723270333306806
+   },
+   "predNew": {
+    "bad": 3.9975696060228394,
+    "pw": 0.0012826087552728598
+   },
+   "priority": 10.601469154834174,
+   "truth": {
+    "lost": [
+     0,
+     0,
+     0,
+     0,
+     0
+    ],
+    "holds": true
+   }
+  }
+ ],
+ "newOperatorFills": {},
+ "check": {
+  "solutions": 95,
+  "broken": 84,
+  "curve": [
+   {
+    "share": "11%",
+    "brokenFound": 10,
+    "of": 84
+   },
+   {
+    "share": "25%",
+    "brokenFound": 22,
+    "of": 84
+   },
+   {
+    "share": "51%",
+    "brokenFound": 44,
+    "of": 84
+   }
+  ],
+  "touchedBroken": 84,
+  "untouchedBroken": 0,
+  "spearmanDeltaVsNewLost": 0.099
+ }
+}
