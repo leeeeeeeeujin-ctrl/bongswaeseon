@@ -3794,6 +3794,10 @@ window.BGM = (() => {
     // strikes one until it is judged: let through, it walks to the door; judged for killing, it is a normal foe that fights back
     masked: { name: "가면 쓴 사람", info: ["가면을 쓴 무도회 손님. 겉모습으로는 손님인지 자객인지 알 수 없다.", "가사인격은 스스로 공격하지 않는다. 막아 세운 뒤 눌러서 통과시키거나 처치하자. 맨얼굴은 거울 속에서만 보인다."],
       hp: 1500, atk: 0, def: 60, res: 20, speed: 0.7, interval: 1.6, weight: 1, mass: 1, life: 1, masked: true },
+    // the lab (L4): the collector, drawn as the informer in grey-green. He is about only while the relay's paper is out of the vault: lying, he picks it up (2 s) and carries
+    // it back; held, he strikes the one who holds it (and nobody else)
+    collector: { name: "회수인", info: ["원문을 되찾으러 온 회수인. 원문이 금고 밖에 있을 때만 나타난다.", "떨어진 원문은 2초 만에 주워 금고로 가져간다. 원문을 든 가사인격만 친다. 들고 가다 쓰러지면 그 자리에 떨어뜨린다."],
+      hp: 2400, atk: 380, def: 60, res: 20, speed: 0.9, interval: 1.6, weight: 1, mass: 1, life: 1, collector: true },
     // The lamp-breaker is the snuffer with an iron hook. He breaks the lamps beside him even when one of ours stands by them, and a broken lamp needs a keeper for a while.
     lampbreaker: { name: "등 깨는 자", info: ["쇠갈고리를 든 야경꾼. 지키는 이가 있어도 등을 깨뜨린다.", "깨진 등은 지키던 이가 다시 켤 수 없다. 꺼진 뒤 옆 칸에 새로 배치된 가사인격이 6초 서 있어야 켜진다."],
       hp: 2600, atk: 160, def: 90, res: 10, speed: 0.75, interval: 2.2, weight: 1, mass: 2, life: 1, snuff: "force", lantern: true },
@@ -4454,6 +4458,13 @@ window.BGM = (() => {
       costRate: (site === "CN" && k >= 2) || (FARM[site].tiers.length === 2 && k === 1) ? 1.3 : undefined }, t, { map, mapKey: t.map || FARM[site].map, mul: { hp: t.mul.hp * FARM_HARD, atk: t.mul.atk * FARM_HARD, def: t.mul.def }, waves: W1(t.waves.map((w) => w[0] > 0 ? [w[0] + FARM_LEAD, ...w.slice(1)] : w)) }));
   });
 
+  // ---- lab L5: the stored record of the last attempt at an echo stage. In the browser it is localStorage under the stage's key; headless (no localStorage) a plain object on the
+  // global. A storage that throws reads as no record (the stage falls back to its seed) and a failed write is dropped, without an error
+  const ECHO_MEM = root.__labEcho || (root.__labEcho = {});
+  const echoLS = () => { try { return typeof root.localStorage !== "undefined" ? root.localStorage : null; } catch (e) { return undefined; } };
+  function echoGet(key) { const ls = echoLS(); if (ls === undefined) return null; try { const v = ls ? ls.getItem(key) : ECHO_MEM[key]; return v ? JSON.parse(v) : null; } catch (e) { return null; } }
+  function echoSet(key, rec) { const ls = echoLS(); if (ls === undefined) return false; try { const v = JSON.stringify(rec); if (ls) ls.setItem(key, v); else ECHO_MEM[key] = v; return true; } catch (e) { return false; } }
+  function echoClear(key) { const ls = echoLS(); if (ls === undefined) return false; try { if (ls) ls.removeItem(key); else delete ECHO_MEM[key]; return true; } catch (e) { return false; } }
   // ---- the lab (실험실): rough prototype stages for trying new systems. They sit at the very end of STAGES, are marked lab, and appear only in the lab menu ----
   const LAB_STAGES = [
     // LAB-00 「버티기」: the farm board (WL-06's), turned into a hold-out. Yui stands in the farm lane and walks three squares east at 40 s; the lane's soldiers and the lancer make
@@ -4548,6 +4559,38 @@ window.BGM = (() => {
         return T.map((t, n) => [t, "masked", 1, K[n]]); })(),
       boss: ["", ""], desc: "가면 쓴 사람들이 무도장으로 갑니다. 손님은 들여보내고 자객은 막아야 합니다. 맨얼굴은 거울 속에서만 보입니다. 막아 세운 뒤 눌러서 통과시키거나 처치하세요. 들어간 손님 한 명마다 코스트 3을 받습니다.",
       lose: "거울 속 같은 자리를 보세요. 붉은 쪽이 자객입니다. 12초 안에 정하지 않으면 그냥 지나갑니다." },
+    // LAB-05 「손에서 손으로」 (chapter 7 prototype): operators cannot walk; the paper goes hand to hand, each holder passing it to the one on the square it faces, from the
+    // vault (1,1) to the exit (12,1), with at most five of ours down at once. The spec's map alternated '.' with walk-only ',' (no chain was possible); every ',' is '.' here.
+    // B at (0,1) behind the vault only keeps the engine's point lookup alive: no road reaches it, and every foe here aims at something or holds a post.
+    // Gates after setMap: 0 (13,3), 1 (0,4) (the spec's G0 is (0,4)). Every time below is the spec's plus 15 s
+    { code: "LAB-05", name: "손에서 손으로", lab: true, bg: null, hz: 0.5, startCost: 30, deployLimit: 5, mul: { hp: 0.8, atk: 0.9, def: 0.85 },
+      map: ["##############",
+            "BV....#h....E#",
+            "#.....#......#",
+            "#h..#....#h..S",
+            "S...#h...#...#",
+            "#.......h....#",
+            "##############"],
+      relay: { item: "계약 원문", from: [1, 1], exit: [12, 1], pass: 2, limit: 5 },
+      meters: { back: { v: 0, min: 0, max: 3, label: "되돌아감" }, out: { v: 0, min: 0, max: 1, label: "전달" } },
+      goal: { win: [{ k: "count", id: "out", op: ">=", v: 1 }], lose: [{ k: "count", id: "back", op: ">=", v: 3 }, { k: "time", t: 255 }],
+        text: { win: "계약 원문을 출구까지 옮긴다. 가사인격은 걷지 못하니, 옆 칸의 가사인격에게 건네서.", lose: "원문이 금고로 세 번 되돌아가거나, 255초가 지난다." }, hud: [{ meter: "back" }, { time: 255 }] },
+      waves: (() => { const G0 = 1, G1 = 0, U = { aim: "unit" }, POST = (x, y) => ({ at: [x, y], until: 1e9 });
+        return W1([[0.5, "grenadier", G1, 1, 0, POST(5, 3)], [0.5, "soldier", G1, 1, 0, POST(7, 3)], [0.5, "soldier", G1, 1, 0, POST(10, 2)],
+          [35, "dog", G0, 2, 1.5, U], [50, "collector", G1, 1, 0], [65, "soldier", G1, 3, 1.6, U], [85, "collector", G0, 1, 0], [100, "lancer", G0, 2, 2, U], [115, "collector", G1, 1, 0],
+          [130, "grenadier", G1, 1, 0, U], [145, "collector", G0, 1, 0], [165, "soldier", G0, 4, 1.4, U], [185, "collector", G1, 1, 0], [205, "dog", G1, 4, 1.2, U]]); })(),
+      boss: ["", ""], desc: "금고의 원문을 출구까지. 원문은 든 가사인격이 바라보는 칸의 가사인격에게 건네집니다(2초). 다섯 명까지만 설 수 있으니, 뒤를 물려 앞에 다시 세우세요.",
+      lose: "원문을 든 가사인격이 쓰러지면 원문이 그 자리에 떨어집니다. 회수인이 주워 가기 전에 옆 칸에 누군가 세우세요. 길 위의 보초는 먼저 치워야 사슬을 이을 수 있습니다." },
+    // LAB-06 「어제의 판」 (chapter 9 prototype): the last attempt comes back. Every deployment of an attempt is recorded; the next attempt starts with those as ghosts at half
+    // strength, at the same times on the same squares (the seed when there is no record: four placements round the crest). The ridge as it stands (no guns, no crest rule,
+    // no Emperor). Waves: WL-08's table without the Emperor, every count +1 (a gap of 0 becomes 1.5 s, so the extra one does not stand inside the first), every time +15 s
+    { code: "LAB-06", name: "어제의 판", lab: true, map: MAP_C3.ridge, bg: null, hz: 0.5, startCost: 24, mul: { hp: 1.1, atk: 1.225, def: 0.85 }, rmul: { hp: 1, atk: 0.75 },   // WL-08's hp/atk x1.25: plan A with no ghosts loses at t158
+      echo: { pct: 0.5, key: "lab_echo_LAB-06", seed: [[25, "defender", 5, 3, 0, null], [40, "guard", 5, 4, 0, null], [55, "sniper", 3, 5, 3, null], [75, "caster", 7, 5, 3, null]] },   // the seed: two blockers and two ranged round the crest, as the basic operators (so a squad of one's own seldom cancels them)
+      goal: { win: [{ k: "clear" }], lose: [{ k: "life" }], text: { win: "모든 적을 막는다. 혼자서는 모자라게 만들어진 판이다.", lose: "목숨이 다한다. 진 판의 배치는 다음 도전에 유령으로 돌아온다." }, hud: [{ life: true }] },
+      waves: (() => { const N1 = { via: [[12, 1], [2, 1], [1, 3]] }, N2 = { via: [[12, 2], [7, 2], [2, 2], [1, 3]] }, C3 = { via: [[11, 3], [7, 3], [2, 3]] }, C4 = { via: [[11, 4], [7, 4], [2, 4]] }, S5 = { via: [[12, 6], [2, 6], [2, 4]] }, S6 = { via: [[12, 6], [2, 6], [2, 4]] };
+        return W1([[20, "soldier", 0, 3, 2, N2], [33, "soldier", 2, 3, 2, S6], [45, "soldier", 1, 3, 2, C4], [55, "chasseur", 0, 2, 1.5, N1], [61, "lancer", 1, 2, 1.5, C3], [75, "soldier", 1, 4, 1.5, C4], [81, "lancer", 0, 3, 2, N1], [87, "grenadier", 1, 2, 1.5, C3], [95, "soldier", 2, 4, 1.5, S6], [97, "drummer", 2, 2, 1.5, S5], [105, "chasseur", 1, 2, 1.5, C4], [111, "lancer", 2, 2, 1.5, S5], [117, "soldier", 0, 4, 1.4, N2], [139, "soldier", 0, 4, 1.4, N1], [143, "soldier", 2, 3, 1.5, S6], [153, "drummer", 2, 2, 1.5, S6], [171, "chasseur", 2, 2, 1.5, S6], [181, "soldier", 1, 4, 1.4, C4], [187, "grenadier", 0, 2, 1.5, N2], [191, "soldier", 2, 4, 1.4, S5], [199, "lancer", 1, 3, 2, C4], [205, "soldier", 0, 4, 1.3, N1]]); })(),
+      boss: ["", ""], desc: "이 판은 직전 도전에서 내가 둔 배치가 같은 시각, 같은 자리에 유령으로 재현된 채 시작합니다(능력치 절반). 유령과 같은 칸에 세우거나 같은 가사인격을 세우면 그 유령은 사라집니다.",
+      lose: "어제 선 자리를 비켜서 세우면 둘이 함께 싸웁니다. 어제 뚫린 길을 오늘 메우세요." },
   ];
 
   const STAGES = [
@@ -4916,7 +4959,7 @@ window.BGM = (() => {
 
   let W = MAP0[0].length, H = MAP0.length;   // the board size: each map brings its own
   const tileAt = (x, y) => (x < 0 || y < 0 || x >= W || y >= H) ? "#" : MAP[y][x];
-  const walkable = (c) => c === "." || c === "," || c === "S" || c === "B" || c === "*" || c === "~" || c === "=" || c === "-" || c === "^" || c === "R";   // "^": a smoke bridge (the lab's chimneys): anyone walks it, nobody stands on it   // "R": a rest (the lab's beat): walked, never stood on; a foe landing there waits for the downbeat   // "=": thin ice (stand on it and the armour suffers), "-": an ice sheet nobody can stand on   // "~": mud (the rasputitsa): ground anyone may stand on, where the foe wades slowly   // "*": open ground anyone can stand on, near or far   // ",": ground the foe walks but nobody can stand on
+  const walkable = (c) => c === "." || c === "," || c === "S" || c === "B" || c === "*" || c === "~" || c === "=" || c === "-" || c === "^" || c === "R" || c === "E";   // "^": a smoke bridge (the lab's chimneys): anyone walks it, nobody stands on it   // "R": a rest (the lab's beat): walked, never stood on; a foe landing there waits for the downbeat   // "E": the relay's exit (lab): walked, never stood on   // "=": thin ice (stand on it and the armour suffers), "-": an ice sheet nobody can stand on   // "~": mud (the rasputitsa): ground anyone may stand on, where the foe wades slowly   // "*": open ground anyone can stand on, near or far   // ",": ground the foe walks but nobody can stand on
 
   function findAll(ch) { const r = []; for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) if (MAP[y][x] === ch) r.push([x, y]); return r; }
   const SPAWNS = [], BASE = [0, 0], BASES = [];   // BASE: the first defence point (and the one most boards have); BASES: all of them
@@ -5085,6 +5128,13 @@ window.BGM = (() => {
       // lab L3: the mirror. Column mirror.x is glass ("|"); every square of it has hp. Operators go down only left of it; each one sets a mirrored image right of it
       const MI = this.stage.mirror; this.mirror = MI ? { x: MI.x, pct: MI.pct || 0.6, display: !!MI.display, sq: [] } : null;
       if (MI) for (let y = 0; y < H; y++) if (tileAt(MI.x, y) === "|") this.mirror.sq.push({ x: MI.x, y, hp: MI.hp || 3000, max: MI.hp || 3000, broken: false });
+      // lab L4: the relay. The paper is in exactly one place: the vault, on the ground (x, y), in an operator's hands (holder), carried by a collector (carrier), or out.
+      // job: the hand-over in progress ({ kind: "take" | "pass" | "deliver", by, to, t }); an operator does not hand it back to the one it came from (unit.relayFrom)
+      const RL = this.stage.relay; this.relay = RL ? { name: RL.item, from: RL.from.slice(), exit: RL.exit.slice(), pass: RL.pass || 2, state: "vault", x: RL.from[0], y: RL.from[1], holder: null, carrier: null, job: null } : null;
+      // lab L5: the echo. rec: this attempt's deployments as they happen ({ t, id, mult, elite, skillIdx, slv, x, y, dir, until }); q: yesterday's, still to come as ghosts
+      const EC = this.stage.echo; this.echo = null;
+      if (EC) { const stored = echoGet(EC.key), src = Array.isArray(stored) && stored.length ? stored : (EC.seed || []).map(([t, id, x, y, dir, until]) => ({ t, id, x, y, dir, until: until === undefined ? null : until, seed: true }));
+        this.echo = { key: EC.key, pct: EC.pct || 0.5, rec: [], saved: false, fromSeed: src !== stored, q: src.map((r) => Object.assign({}, r)).sort((a, b) => a.t - b.t) }; }
       this.chimneys = (this.stage.chimneys || []).map((c, i) => ({ i, at: c.at.slice(), bridge: c.bridge.map((q) => q.slice()), close: c.close || 4, open: c.open || 6, stopT: 0, freeT: 0, kept: false, shut: false, brokenUntil: -1 }));
     }
     // ---- lab (L0): gauges, the walking ally, enemies with an aim, squares that change, waves without end, and the goal tests ----
@@ -5127,6 +5177,8 @@ window.BGM = (() => {
       const V = this.vip && !this.vip.dead ? this.vip : null, near1 = (ax, ay, bx, by) => Math.abs(ax - bx) + Math.abs(ay - by) <= 1;
       const toVip = () => V ? this.bfsTo(T, (x, y) => near1(x, y, Math.round(V.x), Math.round(V.y))) : null;
       if (Array.isArray(e.aim)) return walkable(tileAt(e.aim[0], e.aim[1])) ? bfsPath(T, e.aim) : null;
+      if (e.aim === "item" && this.relay) { const R = this.relay; if (e.carrying) return this.bfsTo(T, (x, y) => near1(x, y, R.from[0], R.from[1]) && !(x === R.from[0] && y === R.from[1]));   // lab L4: carrying it home: to the vault
+        if (R.state === "ground") return this.bfsTo(T, (x, y) => near1(x, y, R.x, R.y)); if (R.state === "held") return this.bfsTo(T, (x, y) => near1(x, y, R.holder.x, R.holder.y)); return null; }
       if (e.aim === "mirror" && this.mirror) { const st = this.mirror.sq.filter((q) => !q.broken); return st.length ? this.bfsTo(T, (x, y) => st.some((q) => near1(x, y, q.x, q.y))) : null; }   // lab L3: the nearest standing square of glass
       if (e.aim === "metro" && this.beat) { const ms = this.beat.zones.filter((z) => z.x1 >= T[0]).map((z) => z.metronome); const p = ms.length ? this.bfsTo(T, (x, y) => ms.some((m) => near1(x, y, m[0], m[1]))) : null; return p; }   // the baton: the nearest metronome ahead
       if (e.aim === "chimney") { const kept = this.chimneys.filter((c) => c.kept); const p = kept.length ? this.bfsTo(T, (x, y) => kept.some((c) => near1(x, y, c.at[0], c.at[1]))) : null; return p || toVip(); }   // the sweep: the nearest stopped chimney, else the ally
@@ -5150,6 +5202,7 @@ window.BGM = (() => {
     // what an aimed foe that nobody holds strikes: the ally or one of ours, beside it (above, below, left or right) or on its own square
     aimStrike(e) {
       const ex = Math.round(e.x), ey = Math.round(e.y), V = this.vip && !this.vip.dead ? this.vip : null, near1 = (x, y) => Math.abs(x - ex) + Math.abs(y - ey) <= 1;
+      if (e.aim === "item" && this.relay) { const H = this.relay.state === "held" ? this.relay.holder : null; return H && near1(H.x, H.y) ? H : null; }   // lab L4: the collector strikes only the one who holds it
       if (e.aim === "mirror" && this.mirror) return this.mirror.sq.find((q) => !q.broken && near1(q.x, q.y)) ? { isMirror: true, sq: this.mirror.sq.find((q) => !q.broken && near1(q.x, q.y)) } : null;
       if (e.aim === "unit" && this.units.length) { let best = null; for (const u of this.units) if (near1(u.x, u.y) && (!best || u.hp < best.hp)) best = u; return best; }
       if ((e.aim === "vip" || e.aim === "unit") && V && near1(Math.round(V.x), Math.round(V.y))) return V;
@@ -5263,6 +5316,66 @@ window.BGM = (() => {
       const hp = Math.round(u.maxHp * M.pct);
       const im = Object.assign({}, u, { id: this.uid++, x, y, dir: u.dir === 0 ? 2 : u.dir === 2 ? 0 : u.dir, hp, maxHp: hp, blocked: [], buff: {}, image: true, clone: true, expire: Infinity, owner: u, imgPct: M.pct, atkT: u.def.interval * 0.4, skillT: 0 });
       this.units.push(im); this.fx.push({ k: "imageup", x, y, t: 0, life: 0.6 }); return im;
+    }
+    // ---- lab L5: the echo ----
+    get echoQ() { return this.echo ? this.echo.q : []; }
+    // yesterday's deployment comes back as a ghost: pct of the recorded stats, free, outside the deploy limit (a clone), never ours to retreat or heal; it leaves at its
+    // recorded time. If one of ours stands on its square, or the same operator is on the board, it does not come ("어제의 나는 사라졌다")
+    echoStep() {
+      const E = this.echo;
+      while (E.q.length && E.q[0].t <= this.t) { const r = E.q.shift();
+        if (this.unitAt(r.x, r.y) || this.units.some((u) => !u.ghost && !u.image && u.def.id === r.id)) { this.fx.push({ k: "echogone", x: r.x, y: r.y, id: r.id, t: 0, life: 1.6 }); continue; }
+        if (r.until !== null && r.until !== undefined && r.until <= this.t) continue;
+        this.makeGhost(r); }
+      for (const u of this.units) if (u.ghost && u.skill.mode === "manual" && u.sp >= u.skill.sp && !(u.skillT > 0)) this.useSkill(u);   // a ghost presses its skill the moment it is ready
+    }
+    makeGhost(r) {
+      const d = UNITS.find((q) => q.id === r.id); if (!d) return null;
+      const ML = { 3: [40, 55], 4: [45, 60, 70], 5: [50, 70, 80], 6: [50, 80, 90] }, mult = r.mult || growth(d, 1, 40, (ML[d.rarity] || [40, 55])[1]), pct = this.echo.pct;   // the seed: as at elite 1, level 40
+      const sk = skillAt(d.skills[r.skillIdx || 0] || d.skills[0], r.slv || 1), mh = Math.max(1, Math.round(d.hp * mOf(mult, "hp") * pct));
+      const u = { id: this.uid++, card: undefined, def: d, skill: sk, x: r.x, y: r.y, dir: r.dir, hp: mh, maxHp: mh, mult, hpMul: 1, potAtk: 1, potDef: 1, potRes: 0, paid: 0, sp: sk.init, skillT: 0, stored: 0,
+        atkT: d.interval * 0.4, blocked: [], buff: {}, flash: 0, swing: 0, born: this.t, seq: (this.deploySeq = (this.deploySeq || 0) + 1), ghost: true, clone: true, imgPct: pct, expire: r.until === null || r.until === undefined ? Infinity : r.until };
+      this.units.push(u); this.fx.push({ k: "echoup", x: r.x, y: r.y, t: 0, life: 0.8 }); return u;
+    }
+    // the attempt is over (won, lost, or given up after at least one deployment): its record replaces the stored one. Once per attempt
+    echoSave() { const E = this.echo; if (!E || E.saved || !E.rec.length) return false; E.saved = true; return echoSet(E.key, E.rec.map((r) => { const o = Object.assign({}, r); delete o.uid; return o; })); }
+    // ---- lab L4: the relay ----
+    // where the paper is, as a square (the holder's or the carrier's when it is held or carried)
+    relayAt() { const R = this.relay; return R.state === "held" ? [R.holder.x, R.holder.y] : R.state === "carried" ? [Math.round(R.carrier.x), Math.round(R.carrier.y)] : [R.x, R.y]; }
+    // the shortest chain from the paper to the exit over squares an operator of the ground can stand on ('.', '*'): from the paper's square (or a square beside it) to a square
+    // beside the exit. The page draws it dotted; the bot lays its chain along it
+    relayWay() {
+      const R = this.relay, [ix, iy] = this.relayAt(), ok = (x, y) => { const c = tileAt(x, y); return c === "." || c === "*"; }, key = (x, y) => y * W + x, N = [[1, 0], [0, 1], [-1, 0], [0, -1]];
+      const starts = (ok(ix, iy) && R.state === "held" ? [[ix, iy]] : []).concat(N.map(([dx, dy]) => [ix + dx, iy + dy]).filter(([x, y]) => ok(x, y)));
+      const prev = new Map(starts.map((q) => [key(q[0], q[1]), null])), q = starts.slice(); let end = null;
+      while (q.length) { const [x, y] = q.shift(); if (Math.abs(x - R.exit[0]) + Math.abs(y - R.exit[1]) === 1) { end = [x, y]; break; }
+        for (const [dx, dy] of N) { const nx = x + dx, ny = y + dy; if (!ok(nx, ny) || prev.has(key(nx, ny))) continue; prev.set(key(nx, ny), [x, y]); q.push([nx, ny]); } }
+      if (!end) return null; const p = []; for (let c = end; c; c = prev.get(key(c[0], c[1]))) p.push(c); return p.reverse();
+    }
+    relayPutBack() { const R = this.relay; R.state = "vault"; R.x = R.from[0]; R.y = R.from[1]; R.holder = null; R.carrier = null; R.job = null; this.meter("back", 1); this.fx.push({ k: "relayback", x: R.x, y: R.y, t: 0, life: 1.4 });
+      for (const e of this.enemies) if (e.def.collector && !e.dead) { e.dead = true; e.vanished = true; }   // the collectors are about only while the paper is out
+      for (const u of this.units) u.relayFrom = null; }
+    relayDrop(x, y) { const R = this.relay; R.state = "ground"; R.x = x; R.y = y; R.holder = null; R.carrier = null; R.job = null; this.fx.push({ k: "relaydrop", x, y, t: 0, life: 1.0 }); }
+    // each tick: take, pass or deliver (each pass seconds; an interrupted hand-over starts again), the collectors' pick-up and carry back
+    relayStep(dt) {
+      const R = this.relay; if (R.state === "out") return;
+      const near1 = (ax, ay, bx, by) => Math.abs(ax - bx) + Math.abs(ay - by) <= 1, job = (kind, by, to) => { if (!R.job || R.job.kind !== kind || R.job.by !== by || R.job.to !== to) R.job = { kind, by, to, t: 0 }; R.job.t += dt; return R.job.t >= R.pass; };
+      if (R.state === "vault" || R.state === "ground") {
+        const u = this.units.find((q) => !q.image && (R.state === "ground" ? near1(q.x, q.y, R.x, R.y) : Math.abs(q.x - R.x) + Math.abs(q.y - R.y) === 1));
+        if (u) { if (job("take", u, null)) { R.state = "held"; R.holder = u; R.job = null; u.relayFrom = null; this.fx.push({ k: "relaytake", x: u.x, y: u.y, t: 0, life: 0.8 }); } }
+        else R.job = null;
+        if (R.state === "ground") for (const e of this.enemies) { if (!e.def.collector || e.dead || e.carrying) continue;   // a collector beside it (or on it) picks it up in 2 s
+          if (near1(Math.round(e.x), Math.round(e.y), R.x, R.y) && e.remain <= 0.05) { e.pickT = (e.pickT || 0) + dt; if (e.pickT >= 2) { R.state = "carried"; R.carrier = e; R.job = null; e.carrying = true; e.pickT = 0; this.replan(e); this.fx.push({ k: "relaygrab", x: e.x, y: e.y, t: 0, life: 0.8 }); break; } } else e.pickT = 0; }
+      } else if (R.state === "held") {
+        const h = R.holder;
+        if (Math.abs(h.x - R.exit[0]) + Math.abs(h.y - R.exit[1]) === 1) { if (job("deliver", h, null)) { R.state = "out"; R.holder = null; R.job = null; this.meter("out", 1); this.fx.push({ k: "relayout", x: R.exit[0], y: R.exit[1], t: 0, life: 2 }); } return; }
+        const [fx, fy] = rotate([1, 0], h.dir), to = this.unitAt(h.x + fx, h.y + fy);
+        if (to && !to.image && to !== h.relayFrom) { if (job("pass", h, to)) { R.holder = to; to.relayFrom = h; R.job = null; this.fx.push({ k: "relaypass", x0: h.x, y0: h.y, x1: to.x, y1: to.y, t: 0, life: 0.6 }); } }
+        else R.job = null;
+      } else if (R.state === "carried") {
+        const e = R.carrier, [vx, vy] = R.from;
+        if (Math.abs(Math.round(e.x) - vx) + Math.abs(Math.round(e.y) - vy) === 1 && e.remain <= 0.05) this.relayPutBack();
+      }
     }
     // ---- lab L3 (LAB-04): the masks ----
     // judge a masked figure: "pass" lets it through (nobody blocks it any more and it walks to the door), "kill" makes it a normal foe (it fights back)
@@ -5617,6 +5730,7 @@ window.BGM = (() => {
     inRange(u, e, tiles = this.rangeTiles(u)) {
       if (e.isEnemy && e.downUntil > this.t) return false;   // lying where it fell: there is nothing to strike yet
       if (e.mask && !e.judged) return false;   // lab L3 (LAB-04): a masked figure not judged for killing is never struck
+      if (e.ghost && !u.isEnemy) return false;   // lab L5: a ghost is not ours to heal or help
       if (!u.isEnemy && this.smoke.size && this.smokeAt(u.x, u.y) && Math.max(Math.abs(e.x - u.x), Math.abs(e.y - u.y)) > 1.5) return false;   // in the smoke: no further than the next square
       if (e.stealth && e.blockedBy !== u) return false;   // 은신: only the one holding it back can find it
       if (e.dim && !u.isEnemy && (u.def.tile !== "g" || Math.max(Math.abs(e.x - u.x), Math.abs(e.y - u.y)) > 1.5)) return false;   // held or met in the dark: only those on the ground right beside it can make it out; nobody up on a rise sees into the dark
@@ -5953,7 +6067,7 @@ window.BGM = (() => {
     // a new road to the base from where the foe stands now
     repath(e) {
       const T = [Math.round(e.x), Math.round(e.y)];
-      const p = walkable(tileAt(T[0], T[1])) ? bfsPath(T, BASE) : [];
+      const p = (walkable(tileAt(T[0], T[1])) ? bfsPath(T, BASE) : null) || [];   // no way to the point at all (a lab board): the same as standing off the road
       e.path = p.length > 1 && p[0][0] === T[0] && p[0][1] === T[1] ? [[e.x, e.y]].concat(p.slice(1)) : [[e.x, e.y], T, BASE.slice()].filter((v, i, a) => i === 0 || v[0] !== a[i - 1][0] || v[1] !== a[i - 1][1]);
       e.seg = 0; e.segT = 0; this.advance(e, 0);
     }
@@ -6007,7 +6121,8 @@ window.BGM = (() => {
     }
     // can a foot soldier's way from its gate be built now? (a gate that is still shut has none). Flyers, posts, landings and drops do not ask
     routeReady(type, s, o) { const d = ENEMIES[type]; if (!d || d.flying || (o && (o.at || o.land || o.drops))) return true;
-      if (o && o.aim !== undefined && this.stage.leap) return true;   // lab L1: an aimed foe on a board where foes leap comes in even with no road to the point (it finds its own way)
+      if (o && o.aim !== undefined && this.stage.leap) return true;
+      if (this.relay) return d.collector ? this.relay.state === "ground" || this.relay.state === "held" : true;   // lab L4: no road to a point here; a collector comes only while the paper is out   // lab L1: an aimed foe on a board where foes leap comes in even with no road to the point (it finds its own way)
       const p = o && o.via ? viaPath(s, o.via) : this.stage.vias && this.stage.vias[s] ? viaPath(s, this.stage.vias[s]) : PATHS[s]; return !!(p && p.length); }
     spawn(type, s, o) {
       const d = ENEMIES[type];
@@ -6052,6 +6167,7 @@ window.BGM = (() => {
       if (o && o.leak) e.leakTo = o.leak;   // lab: reaching a point adds to a gauge instead of costing life
       if (o && o.aim !== undefined && !d.flying) { e.aim = d.sweeper && this.chimneys.length ? "chimney" : o.aim; this.replan(e); }
       if (d.baton && this.beat && !d.flying) { e.aim = "metro"; this.replan(e); }   // lab L2: the baton makes for a metronome
+      if (d.collector && this.relay) { e.aim = "item"; this.replan(e); }   // lab L4: the collector makes for the paper
       if (d.masked && this.stage.masks) { e.mask = (o && o.mask) || "guest"; e.leakTo = { meter: e.mask === "assassin" ? "knife" : "in", by: 1 }; }   // lab L3 (LAB-04): through the door, a guest counts in, an assassin counts a knife
       if (this.mirror) { e.room = SPAWNS[s] && SPAWNS[s][0] > this.mirror.x ? "R" : "L"; if (e.room === "R" && e.aim === undefined && this.mirror.sq.some((q) => q.broken)) this.toRealPoint(e); }   // lab L3   // lab: it makes for the walking ally, for one of ours, or for a square   // BL-07's lighthouse: the three nearest him, not the three furthest along
       if (o && o.atk) e.atkMul = (e.atkMul || 1) * o.atk;
@@ -6642,6 +6758,8 @@ window.BGM = (() => {
       if (this.vip) this.vipStep(dt);   // lab: the ally who walks
       if (this.chimneys.length) this.chimneyStep(dt);   // lab L1: the chimneys and their bridges
       if (this.beat) this.beatStep(dt);   // lab L2: the zones' beat clocks
+      if (this.relay) this.relayStep(dt);   // lab L4: the hand-overs, the collectors' pick-up and carry back
+      if (this.echo) this.echoStep();   // lab L5: yesterday's deployments, as ghosts
       // enemies move / attack
       const gates = this.units.filter((u) => u.skill.id === "eg_gate" && u.skillT > 0 && this.units.includes(u));   // 수문장: nobody small leaves his yard
       // the drum and the cross: a drummer (or the eagle) keeps everyone round him in step — faster, bolder, deaf to the blizzard; a priest mends the men round him
@@ -6854,6 +6972,7 @@ window.BGM = (() => {
           if (!target && e.def.reachHigh) { const R = e.def.reachHigh, ex = Math.round(e.x), ey = Math.round(e.y);   // a long arm: nobody holding him, he cuts at whoever stands within reach — up on a rise too — the weakest first
             for (const u of this.units) if (Math.max(Math.abs(u.x - ex), Math.abs(u.y - ey)) <= R && (!target || u.hp < target.hp)) target = u; if (target) e.reachHit = true; }
           if (!target && e.aim !== undefined) target = this.aimStrike(e);   // lab: what it was sent for, beside it
+          if (target && e.def.collector && this.relay && (this.relay.state !== "held" || target !== this.relay.holder || e.carrying)) target = null;   // lab L4: the collector strikes nobody but the holder
           if (target && target.isMirror) { e.atkT = e.def.interval / (e.frenzyM || 1); this.hitMirror(e, target.sq, e.def.atk * (e.enraged ? RAGE.atk : 1) * (e.atkMul || 1)); }   // lab L3: a blow on the glass
           else if (target && target.isVip) { e.atkT = e.def.interval / (e.frenzyM || 1); this.hitVip(e, e.def.atk * (e.enraged ? RAGE.atk : 1) * (e.atkMul || 1)); }
           else if (target && e.def.sweep && (e.swings = (e.swings || 0) + 1) % e.def.sweep.every === 0) { e.windT = e.def.sweep.wind; e.windK = "sweep"; e.atkT = e.def.interval; this.fx.push({ k: "sweepwarn", e, x: e.x, y: e.y, r: e.def.sweep.r, t: 0, life: e.def.sweep.wind }); target = null; }
@@ -7162,6 +7281,7 @@ window.BGM = (() => {
         if (e.def.call && e.def.call.rapid && !e.ally) for (const v of this.volleys) if (v.rapidUntil > this.t) { v.rapidUntil = this.t;   // "every gun" dies with the one who gave it: the guns go back to their own time
           if (v.shotT !== undefined && v.next < v.shotT + v.every) { v.next = v.shotT + v.every; v.st = 0; } }
         if (e.lastHitBy && e.lastHitBy.def && e.lastHitBy.def.killCost && this.units.includes(e.lastHitBy)) { this.cost = Math.min(CFG.maxCost, this.cost + e.lastHitBy.def.killCost); this.fx.push({ k: "killcost", x: e.lastHitBy.x, y: e.lastHitBy.y, n: e.lastHitBy.def.killCost, t: 0, life: 1.0 }); }   /* 돌격: every kill pays a point back */ this.fx.push({ k: "die", x: e.x, y: e.y, boss: !!e.def.boss, e, t: 0, life: 0.5 }); }
+      if (this.relay && this.relay.state === "carried" && (this.relay.carrier.dead || this.relay.carrier.hp <= 0)) { const e = this.relay.carrier; e.carrying = false; this.relayDrop(Math.round(e.x), Math.round(e.y)); }   // lab L4: the carrier falls: it lies where he fell
       if (this.stage.masks) this.maskStep();   // lab L3 (LAB-04): reflections (where the figures stand after this tick's moves) and the 12 s rule
       if (this.stage.masks) for (const e of this.enemies) if (e.dead && e.mask === "guest" && !e._counted) { e._counted = true;   // lab L3 (LAB-04): a guest who went in brings 3 cost; one killed is blood
         if (e.leaked) { this.cost = Math.min(CFG.maxCost, this.cost + 3); this.fx.push({ k: "killcost", x: e.x, y: e.y, n: 3, t: 0, life: 1.0 }); } else this.meter("blood", 1); }
@@ -7172,6 +7292,7 @@ window.BGM = (() => {
       if (this.goal) this.goalStep();   // lab: the stage's own win and lose conditions in place of the two below
       else if (this.life <= 0 || (this.escort && this.escort.hp <= 0)) { this.life = Math.max(0, this.life); this.over = "lose"; this.escortLost = !!(this.escort && this.escort.hp <= 0); }
       else if (this.waveIdx >= this.waves.length && !(this.extra && this.extra.length) && !(this.waitSpawn && this.waitSpawn.length) && this.enemies.every((e) => e.ally) && !this.hold && !(this.march && !this.march.part.final)) this.over = "win";
+      if (this.echo && this.over) this.echoSave();   // lab L5: the attempt is over: its record is kept
     }
   }
 
@@ -7191,7 +7312,14 @@ window.BGM = (() => {
       if (this.beat && r !== false && this.units.some((u) => u.x === x && u.y === y && u.card === cardIdx) && this.onBeat(this.beatZone(x))) { this.cards[cardIdx].beatRd = true; this.fx.push({ k: "onbeat", x, y, deploy: true, t: 0, life: 1.0 }); }
       return r; };
     Game.prototype.deploy = (function (deployB) { return function (cardIdx, x, y, dir) { const r = deployB.call(this, cardIdx, x, y, dir); if (this.mirror && r && !r.summoned) this.mirrorImage(r); return r; }; })(Game.prototype.deploy);   // lab L3
+    Game.prototype.deploy = (function (deployC) { return function (cardIdx, x, y, dir) { const r = deployC.call(this, cardIdx, x, y, dir);   // lab L5: every deployment of ours goes into the record
+      if (this.echo && r && !r.summoned) { const c = this.cards[cardIdx]; this.echo.rec.push({ t: +this.t.toFixed(4), id: r.def.id, mult: c.mult, elite: c.elite, skillIdx: c.skillIdx, slv: c.slv, x, y, dir, until: null, uid: r.id }); }
+      return r; }; })(Game.prototype.deploy);
     Game.prototype.retreat = function (u, refund = true) {
+      if (this.relay && this.relay.state === "held" && this.relay.holder === u) this.relayDrop(u.x, u.y);   // lab L4: the holder goes: the paper lies on its square
+      if (this.echo && !u.ghost && this.units.includes(u)) { const r = this.echo.rec.find((q) => q.uid === u.id && q.until === null); if (r) r.until = +this.t.toFixed(4); }   // lab L5: the time it left the board
+      if (this.relay) for (const q of this.units) if (q.relayFrom === u) q.relayFrom = null;
+      if (this.relay && this.relay.job && (this.relay.job.by === u || this.relay.job.to === u)) this.relay.job = null;
       const c = this.beat && !u.summoned && this.cards[u.card]; const r = retreat0.call(this, u, refund);
       if (c && c.beatRd && c.cooldown > 0) { c.cooldown *= 0.5; c.beatRd = false; }
       return r; }; }
@@ -7240,7 +7368,7 @@ window.BGM = (() => {
   for (const d of UNITS) { if (d.talents) d.talent = d.talents[0]; else if (d.talent) d.talents = [Object.assign({ elite: 0 }, d.talent)]; }   // 제1·제2 재능: every operator has a list; the second opens at the second promotion
   const HOLY = { max: 1000, dur: 10, dps: 100, onHit: 0.1 };
   const ERODE = { max: 1000, burst: 1500, dur: 8, resDown: 25 };
-  root.TD = { BASES, MAP0, get W() { return W; }, get H() { return H; }, get MAP() { return MAP; }, bfsPath, viaPath, atPath, STATUS, HOLY, ERODE, rangeKeyOf, eliteCost, potOf, potList, growth, AKSTAT, SANDBOX, TUTORIAL, MAP_TUT, setMap, nameOf, revealAt, skillAt, SKILL_LV, near, Game, UNITS, SUMMONS, ENEMIES, WAVES, STAGES, CFG, RANGE, PATHS, AIR_PATHS, SPAWNS, BASE, tileAt, rotate };
+  root.TD = { echoGet, echoSet, echoClear, BASES, MAP0, get W() { return W; }, get H() { return H; }, get MAP() { return MAP; }, bfsPath, viaPath, atPath, STATUS, HOLY, ERODE, rangeKeyOf, eliteCost, potOf, potList, growth, AKSTAT, SANDBOX, TUTORIAL, MAP_TUT, setMap, nameOf, revealAt, skillAt, SKILL_LV, near, Game, UNITS, SUMMONS, ENEMIES, WAVES, STAGES, CFG, RANGE, PATHS, AIR_PATHS, SPAWNS, BASE, tileAt, rotate };
 })(typeof window !== "undefined" ? window : globalThis);
 
 </script>
@@ -7248,7 +7376,7 @@ window.BGM = (() => {
 (function () {
   "use strict";
   const { Game, UNITS, CFG, STAGES, PATHS, AIR_PATHS, SPAWNS, tileAt, rotate, RANGE } = window.TD;
-  const solid = (c) => c === "#" || c === "W" || c === "F" || c === "D" || c === "_" || c === "C" || c === "M" || c === "|";   // the lab's night air (_), chimneys (C), metronomes (M) and glass (|) too   // squares nothing stands on or reaches into: sunken floor (#), a raised wall (W), a lamp (F) and a shut gate (D)
+  const solid = (c) => c === "#" || c === "W" || c === "F" || c === "D" || c === "_" || c === "C" || c === "M" || c === "|" || c === "V";   // the lab's night air (_), chimneys (C), metronomes (M) and glass (|) too   // squares nothing stands on or reaches into: sunken floor (#), a raised wall (W), a lamp (F) and a shut gate (D)
   let W = window.TD.W, H = window.TD.H;   // refreshed whenever a battle sets up its board
   const VWB = 1280, VH = 720;
   let VW = VWB, OX = 0;   // a wide phone screen gets a wider stage: the field stays centred, OX to the right
@@ -8699,6 +8827,11 @@ window.BGM = (() => {
   // ---- lab floor marks (L0/L1): the walking ally's route and her squares, the chimneys' links, clocks and smoke, foes about to leap or in the air ----
   const CHIM_COL = ["#ffa45a", "#7fd3ff", "#c69bff", "#9be15d"], ZONE_COL = ["#ffcf6a", "#7fd3ff"];
   let vipTop = null;   // where the walking ally stands on screen this frame
+  // lab L4: the paper, a small sheet with lines on it, glowing when it is on its own
+  function drawPaper(x, y, k, glow) {
+    if (glow) { const gl = ctx.createRadialGradient(x, y, 0, x, y, 22); gl.addColorStop(0, `rgba(255,240,170,${0.55 + 0.25 * Math.sin(clock * 4)})`); gl.addColorStop(1, "rgba(255,240,170,0)"); ctx.fillStyle = gl; ctx.fillRect(x - 24, y - 24, 48, 48); }
+    ctx.save(); ctx.translate(x, y); ctx.rotate(-0.12); ctx.fillStyle = "#f6efd9"; ctx.strokeStyle = "#7a6440"; ctx.lineWidth = 1.2; ctx.fillRect(-8, -10, 16, 20); ctx.strokeRect(-8, -10, 16, 20);
+    ctx.strokeStyle = "rgba(90,70,40,.7)"; for (let n = 0; n < 4; n++) { ctx.beginPath(); ctx.moveTo(-5, -6 + n * 4); ctx.lineTo(5, -6 + n * 4); ctx.stroke(); } ctx.fillStyle = "#b8322a"; ctx.beginPath(); ctx.arc(3, 7, 2.2, 0, Math.PI * 2); ctx.fill(); ctx.restore(); }
   let maskSel = null, maskBtns = [];   // lab L3 (LAB-04): the mask picked for judging, and this frame's two buttons over it (world space)
   // the masks over the figures: a white half-mask on each face, the 12 s clock on a held one, a word once judged, and the two buttons over the picked one
   function drawMasksTop() {
@@ -8744,6 +8877,20 @@ window.BGM = (() => {
       const M = game.mirror; poly(ctx, [P(M.x + 0.5, 0.5, 0.01), P(W - 0.5, 0.5, 0.01), P(W - 0.5, H - 1.5, 0.01), P(M.x + 0.5, H - 1.5, 0.01)]); ctx.fillStyle = "rgba(70,130,230,.16)"; ctx.fill();
       for (const q of M.sq) { if (q.broken || q.hp >= q.max) continue; const c0 = P(q.x, q.y, HZ * 2.2), w = c0[2] * 0.5; ctx.fillStyle = "rgba(0,0,0,.7)"; ctx.fillRect(c0[0] - w / 2 - 1, c0[1] - 8, w + 2, 7); ctx.fillStyle = "#cfe3ff"; ctx.fillRect(c0[0] - w / 2, c0[1] - 7, w * q.hp / q.max, 5); }
       for (const f of game.fx) if (f.k === "glassbreak") { const c0 = P(f.x, f.y, HZ), u = f.t / f.life; for (let n = 0; n < 7; n++) { const a = n * 0.9 + 0.3; ctx.fillStyle = `rgba(220,235,255,${1 - u})`; ctx.fillRect(c0[0] + Math.cos(a) * c0[2] * u * 0.8, c0[1] + Math.sin(a) * c0[2] * u * 0.5 + u * u * 30, 4, 4); } }
+    }
+    if (game.echo) for (const r of game.echoQ) { const dt = r.t - game.t; if (dt > 10) break; const z = zOf(r.x, r.y);   // lab L5: a ghost due here within 10 s: a faint outline and the seconds left
+      poly(ctx, quad(r.x, r.y, z + 0.012)); ctx.save(); ctx.setLineDash([4, 4]); ctx.strokeStyle = "rgba(200,180,255,.85)"; ctx.lineWidth = 2; ctx.stroke(); ctx.restore();
+      const c0 = P(r.x, r.y, z + 0.02); text(`${Math.max(0, Math.ceil(dt))}`, c0[0], c0[1] + 6, 16, "#e2d6ff", { align: "center", font: FONT_NUM, weight: 800, shadow: true }); }
+    if (game.relay && game.relay.state !== "out") {   // lab L4: the shortest chain from the paper to the exit (dotted), the holder's faced square, the hand-over, the paper itself
+      const R = game.relay, way = game.relayWay(), at = game.relayAt();
+      if (way) { ctx.save(); ctx.setLineDash([3, 6]); ctx.strokeStyle = "rgba(255,226,150,.6)"; ctx.lineWidth = 2; ctx.beginPath(); [at, ...way, R.exit].forEach((q, j) => { const c0 = P(q[0], q[1], 0.03); j ? ctx.lineTo(c0[0], c0[1]) : ctx.moveTo(c0[0], c0[1]); }); ctx.stroke(); ctx.restore(); }
+      if (R.state === "held") { const h = R.holder, d = [[1, 0], [0, 1], [-1, 0], [0, -1]][h.dir], c0 = P(h.x + d[0] * 0.78, h.y + d[1] * 0.78, zOf(h.x, h.y) + 0.03), c1 = P(h.x + d[0] * 1.02, h.y + d[1] * 1.02, zOf(h.x, h.y) + 0.03);
+        ctx.fillStyle = "#ffe066"; ctx.strokeStyle = "rgba(0,0,0,.6)"; ctx.lineWidth = 1.5; const ang = Math.atan2(c1[1] - c0[1], c1[0] - c0[0]); ctx.beginPath(); ctx.moveTo(c1[0], c1[1]); ctx.lineTo(c0[0] + Math.cos(ang + 2.5) * 9, c0[1] + Math.sin(ang + 2.5) * 9); ctx.lineTo(c0[0] + Math.cos(ang - 2.5) * 9, c0[1] + Math.sin(ang - 2.5) * 9); ctx.closePath(); ctx.fill(); ctx.stroke(); }
+      if (R.job) { const J = R.job, fr = Math.min(1, J.t / R.pass), a = J.kind === "take" ? at : [J.by.x, J.by.y], b = J.kind === "take" ? [J.by.x, J.by.y] : J.kind === "deliver" ? R.exit : [J.to.x, J.to.y];
+        const p0 = P(a[0], a[1], zOf(a[0], a[1]) + 0.6), p1 = P(b[0], b[1], zOf(b[0], b[1]) + 0.6), mx = (p0[0] + p1[0]) / 2, my = Math.min(p0[1], p1[1]) - 26;
+        ctx.strokeStyle = "rgba(255,255,255,.25)"; ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(p0[0], p0[1]); ctx.quadraticCurveTo(mx, my, p1[0], p1[1]); ctx.stroke();
+        ctx.strokeStyle = "#ffe066"; ctx.beginPath(); ctx.moveTo(p0[0], p0[1]); for (let n = 1; n <= 20 * fr; n++) { const u = n / 20, x = (1 - u) * (1 - u) * p0[0] + 2 * u * (1 - u) * mx + u * u * p1[0], y = (1 - u) * (1 - u) * p0[1] + 2 * u * (1 - u) * my + u * u * p1[1]; ctx.lineTo(x, y); } ctx.stroke(); }
+      if (R.state === "vault" || R.state === "ground") drawPaper(...(R.state === "vault" ? P(R.x, R.y, HZ * 0.7) : P(R.x, R.y, 0.15)), true);
     }
     if (game.stage.masks) for (const e of game.enemies) {   // lab L3 (LAB-04): in the glass each mask walks bare-faced: a guest warm, an assassin red with a drawn knife
       if (!e.mask || e.reflX === undefined) continue; const rp = e._rp || (e._rp = {}); Object.assign(rp, e, { type: e.mask === "assassin" ? "maskAssassin" : "maskGuest", x: e.reflX, y: e.reflY, face: -(e.face || 1), id: e.id + 100000, flash: 0, hp: e.hp, _lx: rp._lx, _ly: rp._ly, _ph: rp._ph, _amp: rp._amp });
@@ -10158,7 +10305,7 @@ window.BGM = (() => {
       // outside-in so faces nearer the middle draw last
       const xs = [...Array(W).keys()].sort((a, b) => Math.abs(b - cx) - Math.abs(a - cx));
       for (const x of xs) {
-        const ch = T(x, y);
+        const ch = T(x, y) === "B" && game && game.relay ? "#" : T(x, y);   // lab L4: the relay board's B behind the vault is only for the engine: drawn as wall
         if (ch === "h") continue;
         if (ch === "_") {   // lab L1: night air between the roofs: deep blue-black, a few stars
           poly(g, quad(x, y, -0.08)); g.fillStyle = "#05070f"; g.fill();
@@ -10184,7 +10331,8 @@ window.BGM = (() => {
         else if (ch === "=") { gr.addColorStop(0, "#7d97a6"); gr.addColorStop(1, "#93adbb"); }   // thin ice: pale, cracked below
         else if (ch === "-") { gr.addColorStop(0, "#4f6a7c"); gr.addColorStop(1, "#5e7d90"); }   // an ice sheet: deep and glossy, for walking only
         else if (ch === "^") { gr.addColorStop(0, "#3c3352"); gr.addColorStop(1, "#4a4066"); }
-        else if (ch === "R") { gr.addColorStop(0, "#3a3532"); gr.addColorStop(1, "#45403b"); }   // lab L2: a rest: walked, not stood on (its sign is laid on below)   // lab L1: a smoke bridge, for walking only (its puffs are laid on below)
+        else if (ch === "R") { gr.addColorStop(0, "#3a3532"); gr.addColorStop(1, "#45403b"); }
+        else if (ch === "E") { gr.addColorStop(0, "#7a5a22"); gr.addColorStop(1, "#a07a30"); }   // lab L4: the relay's exit, a lit doorway (its light is laid on below)   // lab L2: a rest: walked, not stood on (its sign is laid on below)   // lab L1: a smoke bridge, for walking only (its puffs are laid on below)
         else { gr.addColorStop(0, "#4a4e56"); gr.addColorStop(1, "#565b64"); }
         g.fillStyle = gr; g.fill(); if (dimT(x, y)) { g.fillStyle = "rgba(6,7,9,.62)"; g.fill(); }
         g.strokeStyle = "rgba(0,0,0,.55)"; g.lineWidth = 1.5; g.stroke();
@@ -10200,6 +10348,11 @@ window.BGM = (() => {
             for (let i = 0; i < 3; i++) { const a0 = P(x - 0.3 + ((sd + i * 5) % 5) * 0.12, y - 0.3 + i * 0.25, 0), a1 = P(x + 0.05 + ((sd + i * 3) % 4) * 0.08, y - 0.1 + i * 0.2, 0), a2 = P(x + 0.3, y + 0.05 + i * 0.12, 0);
               g.beginPath(); g.moveTo(a0[0], a0[1]); g.lineTo(a1[0], a1[1]); g.lineTo(a2[0], a2[1]); g.stroke(); } }
           g.restore();
+        }
+        if (ch === "E") {   // the exit: warm light spilling from a doorway at the back of the square
+          const c0 = P(x, y, 0), k0 = c0[2], gl = g.createRadialGradient(c0[0], c0[1], 0, c0[0], c0[1], k0 * 0.7); gl.addColorStop(0, "rgba(255,220,140,.75)"); gl.addColorStop(1, "rgba(255,200,100,0)");
+          g.fillStyle = gl; g.fillRect(c0[0] - k0, c0[1] - k0, k0 * 2, k0 * 2); const d0 = P(x - 0.25, y - 0.45, 0), d1 = P(x + 0.25, y - 0.45, HZ * 1.5);
+          g.fillStyle = "#ffe2a0"; g.fillRect(d0[0], d1[1], d1[0] - d0[0], d0[1] - d1[1]); g.strokeStyle = "#5a3a1a"; g.lineWidth = 3; g.strokeRect(d0[0], d1[1], d1[0] - d0[0], d0[1] - d1[1]);
         }
         if (ch === "R") {   // the rest: a quarter-rest sign painted on the floor
           const c0 = P(x, y, 0), k0 = c0[2]; g.strokeStyle = "rgba(240,230,200,.8)"; g.lineWidth = Math.max(2, k0 * 0.05); g.lineJoin = "round"; g.beginPath();
@@ -10279,6 +10432,16 @@ window.BGM = (() => {
         side(1, 2, "#6b3424"); side(3, 0, "#6b3424"); side(2, 3, "#86432e");
         poly(g, top); g.fillStyle = "#93503a"; g.fill(); g.strokeStyle = "rgba(0,0,0,.6)"; g.stroke();
         const m0 = P(x, y, CZ); g.fillStyle = "#120806"; g.beginPath(); g.ellipse(m0[0], m0[1], m0[2] * 0.2, m0[2] * 0.08, 0, 0, Math.PI * 2); g.fill();
+      }
+      // lab L4: the vault of this row: an iron safe with its door standing open
+      for (const x of xs) {
+        if (T(x, y) !== "V") continue;
+        const SZ = HZ * 1.3, sh = (p, z) => { const c0 = P(x, y, z); return [c0[0] + (p[0] - c0[0]) * 0.8, c0[1] + (p[1] - c0[1]) * 0.8]; }, top = quad(x, y, SZ).map((p) => sh(p, SZ)), bot = quad(x, y, 0).map((p) => sh(p, 0));
+        for (const [i, j, col] of [[3, 0, "#3a3f47"], [1, 2, "#3a3f47"], [2, 3, "#4d535c"]]) { poly(g, [top[i], top[j], bot[j], bot[i]]); g.fillStyle = col; g.fill(); g.strokeStyle = "rgba(0,0,0,.7)"; g.lineWidth = 1.5; g.stroke(); }
+        poly(g, top); g.fillStyle = "#5c636d"; g.fill(); g.stroke();
+        const f0 = [bot[3][0] + (bot[2][0] - bot[3][0]) * 0.18, bot[3][1]], f1 = [bot[3][0] + (bot[2][0] - bot[3][0]) * 0.82, top[3][1] + (top[2][1] - top[3][1]) * 0.5 + 6];
+        g.fillStyle = "#14161a"; g.fillRect(f0[0], f1[1], f1[0] - f0[0], f0[1] - f1[1] - 4);   // the open door's dark mouth
+        g.fillStyle = "#2c3036"; g.fillRect(f1[0] + 2, f1[1] - 4, (f1[0] - f0[0]) * 0.35, f0[1] - f1[1]); g.strokeStyle = "#8a9099"; g.strokeRect(f1[0] + 2, f1[1] - 4, (f1[0] - f0[0]) * 0.35, f0[1] - f1[1]);
       }
       // lab L3: glass of this row: a tall thin pane of silvered glass along the column
       for (const x of xs) {
@@ -10630,7 +10793,7 @@ window.BGM = (() => {
   const EN_TINT = { chxelite: "saturate(1.25) hue-rotate(-20deg) brightness(.82) contrast(1.15)", frosthound: "hue-rotate(185deg) saturate(.7) brightness(1.25)", frostmage: "hue-rotate(160deg) saturate(1.3) brightness(1.1)", icestalker: "grayscale(.85) brightness(1.55)", berserk: "sepia(.6) hue-rotate(-30deg) saturate(2.2) brightness(.95)",
     chasseur: "hue-rotate(70deg) saturate(1.1) brightness(.9)", colonel: "hue-rotate(190deg) saturate(.9) brightness(.9)", armour: "grayscale(1) brightness(.75) contrast(1.3)", kingarmour: "sepia(1) saturate(1.6) brightness(.9) contrast(1.2)", emperor: "hue-rotate(95deg) saturate(.7) brightness(1.15)", snuffer: "hue-rotate(200deg) saturate(.8) brightness(.7)", mouchard: "grayscale(.9) brightness(.85)",
     grenadier: "hue-rotate(200deg) saturate(.75) brightness(.8) contrast(1.15)", drummer: "hue-rotate(-35deg) saturate(1.5) brightness(1.15)", vicar: "grayscale(.85) brightness(.55) contrast(1.3)", lancer: "hue-rotate(95deg) saturate(1.25) brightness(.95)",
-    lampbreaker: "sepia(.8) hue-rotate(-25deg) saturate(1.6) brightness(.7)", sweep: "grayscale(1) brightness(.5) contrast(1.25)", masked: "grayscale(.7) brightness(1.3)", maskGuest: "sepia(.85) saturate(1.8) brightness(1.2)", maskAssassin: "sepia(1) hue-rotate(-45deg) saturate(5) brightness(.8)", baton: "sepia(.7) saturate(1.4) brightness(1.35)", cuirassier: "grayscale(.4) sepia(.3) hue-rotate(170deg) saturate(1.4) brightness(.9)" };   // chapter 2's roster has its own drawings now   // the lamp-breaker in red-brown, the cuirassier in steel blue
+    lampbreaker: "sepia(.8) hue-rotate(-25deg) saturate(1.6) brightness(.7)", sweep: "grayscale(1) brightness(.5) contrast(1.25)", masked: "grayscale(.7) brightness(1.3)", collector: "grayscale(.5) sepia(.4) hue-rotate(60deg) saturate(1.3) brightness(.85)", maskGuest: "sepia(.85) saturate(1.8) brightness(1.2)", maskAssassin: "sepia(1) hue-rotate(-45deg) saturate(5) brightness(.8)", baton: "sepia(.7) saturate(1.4) brightness(1.35)", cuirassier: "grayscale(.4) sepia(.3) hue-rotate(170deg) saturate(1.4) brightness(.9)" };   // chapter 2's roster has its own drawings now   // the lamp-breaker in red-brown, the cuirassier in steel blue
   const RIGS = {};   // enemy walk rigs, cut from their sprites on first draw
   function enemyHeight(type) { return BODY * enemyHeight0(type); }
   // how high a flier rides over its shadow (tiles): the airship sails well above the drones
@@ -10958,6 +11121,7 @@ window.BGM = (() => {
   // borrowed figures for the second half of chapter 2, until their own are drawn: the Old Guard grenadier (the grenadier, darker), the old drummer (the line soldier, red), the refractory priest (the Chouan, in black)
   EN_POSED.grenadier = Object.assign({}, EN_POSED.heavy, { h: 1.56 }); EN_POSED.drummer = Object.assign({}, EN_POSED.soldier, { h: 1.08 }); EN_POSED.vicar = Object.assign({}, EN_POSED.chouan, { h: 1.24 }); EN_POSED.lancer = Object.assign({}, EN_POSED.hexer, { h: 1.36, aim: undefined, scope: undefined, lunge: 1.2 });   // the pikeman: on foot, the skirmisher's figure a size up, in green   // the old hand: the huntsman, a size bigger and darker
   EN_POSED.baton = EN_POSED.drummer;   // lab L2: the baton wears the drummer, in pale gold
+  EN_POSED.collector = EN_POSED.mouchard;   // lab L4: the collector wears the informer, grey-green
   EN_POSED.masked = EN_POSED.maskGuest = EN_POSED.maskAssassin = EN_POSED.mouchard;   // lab L3 (LAB-04): the masked figure wears the informer, pale (its half-mask is drawn over it: drawMasksTop)
   function drawPosedEnemy(g, e, sx, sy, k, t, D) {
     const f = e.face || 1;
@@ -11177,6 +11341,7 @@ window.BGM = (() => {
   function pushRoute(w, life = 1) {
     const [, ty, sp, o] = w, d = TD.ENEMIES[ty];
     if (o && o.perch) return;   // a sniper on his perch walks nowhere
+    if ((o && o.aim !== undefined) || d.baton || d.collector || d.sweeper || game.relay) return;   // lab: a foe that makes for something of its own (or any foe on the relay board) has no road to the point to preview
     if (o && o.drops) {   // an airship's crossing, and the way each stop's men will walk from where they are let down
       routes.push({ path: [SPAWNS[sp], ...o.drops.map((q) => q[0]), TD.BASE], air: true, t: 0, life: 4.5 * life });
       for (const q of o.drops) { const g2 = TD.bfsPath(q[0], TD.BASE); if (g2) routes.push({ path: g2, t: 0, life: 5 * life }); }
@@ -11352,7 +11517,7 @@ window.BGM = (() => {
     // operators are tall sprites, so let a tap on the body count, not just the floor tile
     let hitU = null, best = 1e9;
     for (const u of game.units) {
-      if (u.image) continue;   // lab L3: an image in the glass is not picked; its operator is
+      if (u.image || u.ghost) continue;   // lab L3: an image in the glass is not picked; its operator is (lab L5: nor yesterday's ghost)
       const [sx, sy, k] = unitScreen(u);
       if (vx > sx - k * 0.32 && vx < sx + k * 0.32 && vy > sy - k * 0.95 && vy < sy + k * 0.12) { const d = Math.abs(vy - (sy - k * 0.45)); if (d < best) { best = d; hitU = u; } }
     }
@@ -11363,7 +11528,7 @@ window.BGM = (() => {
       if (t && game.canDeployAt(c, t.x, t.y)) { aim = { card: pending, x: t.x, y: t.y, dir: 0 }; pending = -1; return; }
       pending = -1;
     }
-    const u0 = t && game.unitAt(t.x, t.y), u = u0 && u0.image ? null : u0;
+    const u0 = t && game.unitAt(t.x, t.y), u = u0 && (u0.image || u0.ghost) ? null : u0;
     selected = u || null;
     if (!u && UZ.z > 1.01) { const [rx, ry] = toV(ev); panDrag = { sx: rx, sy: ry, x0: UZ.x, y0: UZ.y, moved: false }; }   // zoomed in: drag the empty field to look around
     if (!u && t && phase === "play" && !game.over) { const si = SPAWNS.findIndex((q) => q[0] === t.x && q[1] === t.y); if (si >= 0) replayRoutes(si); }
@@ -13604,7 +13769,7 @@ window.BGM = (() => {
   // the entry and defence points, the way the original marks them: a box of light standing on the square
   function drawPoints() {
     if (!game || game.stage.holo) return;
-    const t = clock, list = SPAWNS.map((p) => [p, "S"]).concat((TD.BASES.length ? TD.BASES : [TD.BASE]).map((b) => [b, "B"]));
+    const t = clock, list = SPAWNS.map((p) => [p, "S"]).concat(game.relay ? [] : (TD.BASES.length ? TD.BASES : [TD.BASE]).map((b) => [b, "B"]));   // lab L4: the relay board's B is not a point
     ctx.save();
     for (const [[x, y], kind] of list) {
       const red = kind === "S", col = red ? [255, 60, 64] : [70, 160, 255], rgba = (a) => `rgba(${col[0]},${col[1]},${col[2]},${a})`;
@@ -14318,8 +14483,10 @@ window.BGM = (() => {
           else if (u.def.id === "smoqueen") u._sqFace = face;
         }
         if (u.image) { ctx.save(); ctx.globalAlpha = 0.62; if ("filter" in ctx) ctx.filter = "grayscale(.6) sepia(.3) hue-rotate(170deg) saturate(2.2) brightness(1.15)"; }   // lab L3: an image in the glass, cool blue and see-through
+        else if (u.ghost) { ctx.save(); ctx.globalAlpha = 0.55; if ("filter" in ctx) ctx.filter = "grayscale(.85) sepia(.4) hue-rotate(220deg) saturate(1.6) brightness(1.1)"; }   // lab L5: yesterday's ghost, grey-violet and see-through
         drawOperator(ctx, u.def.id, sx, sy, k * 0.8 * BODY, Object.assign({ face, t: clock, swing: u.swing, flash: u.flash > 0, seed: u.id, unit: u, out: (u._draw = u._draw || {}), clip: u.def.id === "yui" && u._an ? u._an.want : null }, poseOf(u)));
-        if (u.image) { ctx.filter = "none"; ctx.restore(); }
+        if (u.image || u.ghost) { ctx.filter = "none"; ctx.restore(); }
+        if (u.ghost) { const cx0 = sx + k * 0.24, cy0 = sy - k * 1.0; ctx.strokeStyle = "#d8c8ff"; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(cx0, cy0, 6, 0, Math.PI * 2); ctx.moveTo(cx0, cy0); ctx.lineTo(cx0, cy0 - 4); ctx.moveTo(cx0, cy0); ctx.lineTo(cx0 + 3, cy0); ctx.stroke(); }   // its small clock
         if (u.ward > 0 && u.def.id !== "eungyeol") {   // a ward from 방호학파 / 구원: a thin bubble of pale-blue light round them, a hexagon pattern turning slowly
           const kk = k * 0.8, wf = Math.min(1, u.ward / ((u.hpTop || u.maxHp) * 0.2)), cy = sy - kk * 0.55, rx = kk * 0.5, ry = kk * 0.68;
           ctx.save(); ctx.globalCompositeOperation = "lighter"; ctx.globalAlpha = 0.05 + 0.08 * wf;
@@ -14409,6 +14576,11 @@ window.BGM = (() => {
 
     if (game.vip && vipTop) drawVipTop(); vipTop = null;   // lab: the walking ally's ring, name tag and bar, over every figure
     if (game.stage.masks) drawMasksTop();   // lab L3 (LAB-04): half-masks, clocks, judgments and the two buttons
+    for (const f of game.fx) if (f.k === "echogone") { const c0 = P(f.x, f.y, zOf(f.x, f.y)), u = f.t / f.life;   // lab L5: a ghost that did not come: a grey puff and the words
+      for (let n = 0; n < 6; n++) { const a = n * 1.05; ctx.fillStyle = `rgba(190,185,200,${0.6 * (1 - u)})`; ctx.beginPath(); ctx.arc(c0[0] + Math.cos(a) * c0[2] * 0.25 * (0.5 + u), c0[1] - c0[2] * 0.4 + Math.sin(a) * c0[2] * 0.15 * (0.5 + u), c0[2] * 0.12, 0, Math.PI * 2); ctx.fill(); }
+      text("어제의 나는 사라졌다", c0[0], c0[1] - c0[2] * (1.1 + u * 0.3), 15, `rgba(230,225,240,${1 - u * 0.6})`, { align: "center", weight: 800, shadow: true }); }
+    if (game.relay && (game.relay.state === "held" || game.relay.state === "carried")) { const R = game.relay, o = R.state === "held" ? R.holder : R.carrier, [sx, sy, k] = P(o.x, o.y, R.state === "held" ? zOf(o.x, o.y) : 0);   // lab L4: the paper over whoever has it
+      drawPaper(sx, sy - k * (R.state === "held" ? 1.32 : enemyHeight(o.type) + 0.35), k, false); if (R.state === "carried") text("회수 중", sx, sy - k * (enemyHeight(o.type) + 0.62), 13, "#ff9f8a", { align: "center", weight: 800, shadow: true }); }
     for (const f of game.fx) if (f.k === "onbeat") { const c0 = P(f.x, f.y, zOf(f.x, f.y)), u = f.t / f.life; text(f.deploy ? "맞음! 재배치 절반" : "맞음!", c0[0], c0[1] - c0[2] * (1.35 + u * 0.4), 18, `rgba(255,228,120,${1 - u * 0.7})`, { align: "center", weight: 900, shadow: true }); }   // lab L2: on the beat
     drawRain(); drawFoxfire();
     // effects
@@ -14826,6 +14998,7 @@ window.BGM = (() => {
     return { win, stars: win ? (game.life === CFG.life ? 3 : game.life >= 7 ? 2 : 1) : 0, stageIdx: game.stageIdx, code: game.stage.code, killed: game.killed, total: game.total, life: game.life, t: game.t };
   }
   function finHand(shot, extra) {
+    if (game && game.echoSave) game.echoSave();   // lab L5: the attempt's record is kept however it ended (won, lost, given up)
     if (endSent || !onEnd) return;
     endSent = true; lastResult = Object.assign(finResult(), extra || {});
     if (shot) { try { lastResult.shot = shot.toDataURL("image/jpeg", 0.82); } catch (e) { /* a tainted canvas: the results go without the backdrop */ } }
@@ -15331,6 +15504,18 @@ window.BGM = (() => {
       { wait: 0.8 },
       { say: "이 판은 유이가 90초 동안 버티면 이깁니다. 유이가 쓰러지거나 동요가 6이 되면 집니다.", tap: true },
       { say: "농장 안길 서쪽을 막고, 고지에서 북쪽 들판의 사냥개를 쏘십시오.", tap: true },
+    ],
+    // LAB-06 「어제의 판」
+    "LAB-06": [
+      { wait: 0.8 },
+      { say: "직전 도전의 배치가 같은 시각, 같은 자리에 유령으로 섭니다. 능력치는 절반입니다.", tap: true },
+      { say: "어제 선 자리를 비켜서 세우십시오. 같은 칸이나 같은 가사인격이면 유령은 사라집니다.", tap: true },
+    ],
+    // LAB-05 「손에서 손으로」
+    "LAB-05": [
+      { wait: 0.8 },
+      { say: "원문은 든 가사인격이 바라보는 칸의 가사인격에게 건네집니다. 출구 옆 칸에서 2초면 전달입니다.", tap: true },
+      { say: "다음 사람을 바라보게 세우고, 지나간 자리는 거두십시오. 다섯 명까지만 설 수 있습니다.", tap: true },
     ],
     // LAB-04 「가면무도회」
     "LAB-04": [
@@ -16007,7 +16192,7 @@ window.BGM = (() => {
       stageIdx = stage; squadOverride = squad; onEnd = cb; endSent = false; startOpt = opt || {};
       newGame(); resize(); phase = "play"; paused = false; if (!tut && !(game && game.stage.sandbox)) banner("작전 개시", "OPERATION START", "op");
     },
-    abandon() { if (onEnd && game) { game.over = "lose"; game.life = 0; } },
+    abandon() { if (onEnd && game) { game.over = "lose"; game.life = 0; if (game.echoSave) game.echoSave(); } },   // lab L5: a given-up attempt keeps its record too
     idle() { phase = "idle"; },
     get phase() { return phase; },
     // where a board square lands on a stage's painted backdrop (canvas units, 1280x720): for the menus' map preview
@@ -18953,6 +19138,9 @@ window.BSL_ECON = (() => {
   .lab-r { position:relative; display:flex; align-items:center; gap:22px; background:rgba(255,255,255,.88); border-left:6px solid #2b2c2f; padding:14px 160px 14px 20px; margin-bottom:12px; box-shadow:0 3px 8px rgba(0,0,0,.12); }
   .lab-r .c { font-size:30px; font-weight:700; color:#2b2c2f; min-width:120px; } .lab-r .n { font-size:24px; font-weight:900; } .lab-r .d { font-size:16px; color:#555a63; margin:4px 0 6px; }
   .lab-r .g { font-size:15px; font-weight:600; margin-top:2px; } .lab-r .g b { display:inline-block; width:78px; } .lab-r .g b.w { color:#2f8f3a; } .lab-r .g b.l { color:#c0392b; }
+  .lab-echo { margin-top:8px; } .lab-echo .eh { font-size:14px; font-weight:800; color:#5a3fa8; margin-bottom:4px; } .lab-echo .eb { display:flex; gap:12px; align-items:flex-start; }
+  .lab-echo .lab-el { display:flex; flex-wrap:wrap; gap:4px 12px; font-size:13px; max-width:300px; } .lab-echo .lab-el b { color:#7a5cc8; }
+  .lab-clr { display:inline-block; margin-top:6px; padding:4px 12px; background:#e8e2f8; color:#5a3fa8; font-size:14px; font-weight:800; }
   .lab-go { position:absolute; right:20px; top:50%; transform:translateY(-50%); width:120px; height:54px; background:#2b2c2f; color:#fff; font-size:22px; font-weight:900; display:grid; place-items:center; }
   .lb-date { position:absolute; right:26px; top:6px; font-size:16px; color:#c8ccd4; letter-spacing:.08em; text-shadow:0 1px 3px #000; }
   .lb-ui > .res { top:26px; }
@@ -20182,7 +20370,17 @@ window.BSL_ECON = (() => {
         const gt = s.goal && s.goal.text, parts = (s.desc || "").split(/(?<=[.!?])\s/), one = parts[0].length < 12 && parts[1] ? parts[0] + " " + parts[1] : parts[0];   // a very short first sentence takes the next one with it
         const row = h("div", "lab-r", `<div class="c en">${esc(s.code)}</div><div class="tx"><div class="n">${esc(s.name)}</div><div class="d">${esc(one)}</div>
           ${gt ? `<div class="g"><b class="w">이기는 법</b>${esc(gt.win || "")}</div><div class="g"><b class="l">지는 법</b>${esc(gt.lose || "")}</div>` : ""}</div>`);
-        const go1 = h("div", "btn lab-go", "시작"); go1.onclick = () => go("prep", i); row.appendChild(go1); box.appendChild(row); });
+        const go1 = h("div", "btn lab-go", "시작"); go1.onclick = () => go("prep", i); row.appendChild(go1);
+        if (s.echo) {   // lab L5: yesterday's placements on a small board, with their times, and a button that forgets them (back to the seed)
+          const stored = TD.echoGet(s.echo.key), recs = stored && stored.length ? stored : s.echo.seed.map(([t, id, x, y]) => ({ t, id, x, y })), Wd = s.map[0].length, Hd = s.map.length, cs = 16;
+          const name = (id) => { const d = TD.UNITS.find((u) => u.id === id); return d ? TD.nameOf(d, 1).main : id; };
+          const svg = `<svg width="${Wd * cs}" height="${Hd * cs}" viewBox="0 0 ${Wd * cs} ${Hd * cs}">${s.map.map((r, y) => [...r].map((c, x) => `<rect x="${x * cs}" y="${y * cs}" width="${cs - 1}" height="${cs - 1}" fill="${c === "#" || c === "W" ? "#3a3c42" : c === "h" ? "#9aa0aa" : c === "S" ? "#c0454f" : c === "B" ? "#3f8fe0" : c === "," ? "#6a625a" : "#c8ccd4"}"/>`).join("")).join("")}
+            ${recs.map((r, n) => `<circle cx="${r.x * cs + cs / 2}" cy="${r.y * cs + cs / 2}" r="6" fill="#7a5cc8" stroke="#fff" stroke-width="1.5"/><text x="${r.x * cs + cs / 2}" y="${r.y * cs + cs / 2 + 3}" font-size="8" text-anchor="middle" fill="#fff">${n + 1}</text>`).join("")}</svg>`;
+          const eb = h("div", "lab-echo", `<div class="eh">${stored && stored.length ? "어제의 배치" : "어제의 배치 (기본 기록)"}</div><div class="eb">${svg}<div class="lab-el">${recs.map((r, n) => `<span><b>${n + 1}</b> ${Math.floor(r.t)}초 ${esc(name(r.id))}</span>`).join("")}</div></div>`);
+          const clr = h("div", "btn lab-clr", "기록 지우기"); clr.onclick = () => { TD.echoClear(s.echo.key); toast("기록을 지웠습니다. 기본 기록으로 돌아갑니다."); render(); }; eb.appendChild(clr);
+          row.querySelector(".tx").appendChild(eb);
+        }
+        box.appendChild(row); });
     },
 
     // squads, after the original: a light room, twelve cards in two rows, arrows to page through the squads, their tabs along the bottom
@@ -22942,6 +23140,273 @@ window.BSL_ECON = (() => {
   render();
   bootLoad(() => { booted = true; if (!S.started) firstStart(); else playMain(); });
 })();
+
+</script>
+<script>
+// generated by pack.js: the bot's replay records for the dev build's 봇 해답 보기 (td/replay.js)
+window.__BSL_REPLAYS = {"IM-02":{"c":"IM-02","n":"생울타리","s":1,"lv":"E0L1","v":"none (squad as listed; im_sim VARIANT/ALLV not used)","q":[["yui",0,1,1,0,1,{"hp":0.41510791366906474,"atk":0.41317365269461076,"def":0.41739130434782606}],["hiro",0,1,1,0,1,{"hp":0.6081808396124866,"atk":0.5316455696202531,"def":0.5142857142857142}],["lilith",0,1,1,0,1,{"hp":0.5381818181818182,"atk":0.5297872340425532,"def":0.4222222222222222}],["tao",0,1,1,0,1,{"hp":0.56,"atk":0.4838709677419355,"def":0.5}],["capy",0,1,1,0,1,{"hp":0.64,"atk":0.5514834205933682,"def":0.6}],["ayaki",0,1,1,0,1,{"hp":0.5585903083700441,"atk":0.42950819672131146,"def":0.5504587155963303}],["hakuren",0,1,1,0,1,{"hp":0.4204472843450479,"atk":1,"def":0.46}],["sunae",0,1,1,0,1,{"hp":0.3932367149758454,"atk":0.528169014084507,"def":0.36086956521739133}],["alpha",0,1,1,0,1,{"hp":0.4575757575757576,"atk":0.3431578947368421,"def":0.35064935064935066}],["atat",0,1,1,0,1,{"hp":0.44952380952380955,"atk":0.4488517745302714,"def":0.424}],["teka",0,1,1,0,1,{"hp":0.45399828030954426,"atk":0.4227053140096618,"def":0.4479166666666667}]],"x":["win",7,143,52,55],"L":[[0,"d","tao",11,2,2],[3.0333,"d","alpha",9,2,1],[12,"s","tao",null,null,1],[13.0333,"d","yui",10,2,0],[28.6,"d","sunae",11,5,2],[44.0333,"s","tao",null,null,1],[44.0667,"d","capy",7,1,1],[46.0333,"d","hakuren",10,3,2],[58.3333,"d","lilith",11,3,1],[61.2,"d","atat",11,1,1],[76.0667,"s","tao",null,null,1],[108.1,"s","tao",null,null,1],[110.9667,"d","ayaki",7,4,1],[129.5667,"d","hiro",12,2,1],[140.1333,"s","tao",null,null,1]]},"IM-03":{"c":"IM-03","n":"지옥 종대","s":1,"lv":"E0L1","v":"none (squad as listed; im_sim VARIANT/ALLV not used)","q":[["yui",0,1,1,0,1,{"hp":0.41510791366906474,"atk":0.41317365269461076,"def":0.41739130434782606}],["hiro",0,1,1,0,1,{"hp":0.6081808396124866,"atk":0.5316455696202531,"def":0.5142857142857142}],["lilith",0,1,1,0,1,{"hp":0.5381818181818182,"atk":0.5297872340425532,"def":0.4222222222222222}],["tao",0,1,1,0,1,{"hp":0.56,"atk":0.4838709677419355,"def":0.5}],["capy",0,1,1,0,1,{"hp":0.64,"atk":0.5514834205933682,"def":0.6}],["ayaki",0,1,1,0,1,{"hp":0.5585903083700441,"atk":0.42950819672131146,"def":0.5504587155963303}],["hakuren",0,1,1,0,1,{"hp":0.4204472843450479,"atk":1,"def":0.46}],["sunae",0,1,1,0,1,{"hp":0.3932367149758454,"atk":0.528169014084507,"def":0.36086956521739133}],["alpha",0,1,1,0,1,{"hp":0.4575757575757576,"atk":0.3431578947368421,"def":0.35064935064935066}],["atat",0,1,1,0,1,{"hp":0.44952380952380955,"atk":0.4488517745302714,"def":0.424}],["teka",0,1,1,0,1,{"hp":0.45399828030954426,"atk":0.4227053140096618,"def":0.4479166666666667}]],"x":["win",9,242,49,50],"L":[[0,"d","tao",6,3,1],[8.0333,"d","ayaki",7,1,1],[12,"s","tao",null,null,1],[19.0333,"d","capy",10,4,2],[32.0333,"d","hiro",7,2,3],[49.0333,"d","yui",5,2,2],[56.6333,"s","tao",null,null,1],[56.6667,"d","teka",9,1,2],[69.5667,"d","lilith",8,1,2],[84.0333,"d","sunae",1,1,0],[104.5333,"s","tao",null,null,1],[135.2333,"d","teka",9,1,2],[149.0667,"s","tao",null,null,1],[197.5333,"s","tao",null,null,1],[197.5667,"d","capy",10,4,2],[239.0667,"s","tao",null,null,1]]},"IM-04":{"c":"IM-04","n":"밤의 연병장","s":1,"lv":"E0L1","v":"none (squad as listed; im_sim VARIANT/ALLV not used)","q":[["yui",0,1,1,0,1,{"hp":0.41510791366906474,"atk":0.41317365269461076,"def":0.41739130434782606}],["hiro",0,1,1,0,1,{"hp":0.6081808396124866,"atk":0.5316455696202531,"def":0.5142857142857142}],["lilith",0,1,1,0,1,{"hp":0.5381818181818182,"atk":0.5297872340425532,"def":0.4222222222222222}],["tao",0,1,1,0,1,{"hp":0.56,"atk":0.4838709677419355,"def":0.5}],["capy",0,1,1,0,1,{"hp":0.64,"atk":0.5514834205933682,"def":0.6}],["ayaki",0,1,1,0,1,{"hp":0.5585903083700441,"atk":0.42950819672131146,"def":0.5504587155963303}],["hakuren",0,1,1,0,1,{"hp":0.4204472843450479,"atk":1,"def":0.46}],["sunae",0,1,1,0,1,{"hp":0.3932367149758454,"atk":0.528169014084507,"def":0.36086956521739133}],["alpha",0,1,1,0,1,{"hp":0.4575757575757576,"atk":0.3431578947368421,"def":0.35064935064935066}],["atat",0,1,1,0,1,{"hp":0.44952380952380955,"atk":0.4488517745302714,"def":0.424}],["teka",0,1,1,0,1,{"hp":0.45399828030954426,"atk":0.4227053140096618,"def":0.4479166666666667}]],"x":["win",5,196,47,52],"L":[[1.0333,"d","capy",9,5,0],[17.0333,"d","lilith",3,5,3],[25.0333,"d","atat",4,1,2],[28.0333,"d","scribble",7,3,3,1],[36.0667,"d","scribble",7,3,3,1],[44.1,"d","scribble",7,3,3,1],[51.0333,"d","yui",1,2,1],[59.0333,"d","scribble",7,3,3,1],[67.0333,"d","hiro",1,4,3],[70.0333,"d","scribble",7,3,3,1],[78.0667,"d","scribble",7,3,3,1],[82.0333,"d","tao",12,5,3],[93,"d","scribble",7,3,3,1],[94.0333,"s","tao",null,null,37],[101.0333,"d","scribble",7,3,3,1],[109.0667,"d","scribble",7,3,3,1],[121.6,"d","scribble",7,3,3,1],[126.0667,"s","tao",null,null,37],[126.6,"d","yui",1,2,1],[142.6,"d","hiro",1,4,3],[158.1,"s","tao",null,null,37],[190.1333,"s","tao",null,null,37]]},"IM-05":{"c":"IM-05","n":"목 없는 장군","s":1,"lv":"E0L1","v":"none (squad as listed; im_sim VARIANT/ALLV not used)","q":[["yui",0,1,1,0,1,{"hp":0.41510791366906474,"atk":0.41317365269461076,"def":0.41739130434782606}],["hiro",0,1,1,0,1,{"hp":0.6081808396124866,"atk":0.5316455696202531,"def":0.5142857142857142}],["lilith",0,1,1,0,1,{"hp":0.5381818181818182,"atk":0.5297872340425532,"def":0.4222222222222222}],["tao",0,1,1,0,1,{"hp":0.56,"atk":0.4838709677419355,"def":0.5}],["capy",0,1,1,0,1,{"hp":0.64,"atk":0.5514834205933682,"def":0.6}],["ayaki",0,1,1,0,1,{"hp":0.5585903083700441,"atk":0.42950819672131146,"def":0.5504587155963303}],["hakuren",0,1,1,0,1,{"hp":0.4204472843450479,"atk":1,"def":0.46}],["sunae",0,1,1,0,1,{"hp":0.3932367149758454,"atk":0.528169014084507,"def":0.36086956521739133}],["alpha",0,1,1,0,1,{"hp":0.4575757575757576,"atk":0.3431578947368421,"def":0.35064935064935066}],["atat",0,1,1,0,1,{"hp":0.44952380952380955,"atk":0.4488517745302714,"def":0.424}],["teka",0,1,1,0,1,{"hp":0.45399828030954426,"atk":0.4227053140096618,"def":0.4479166666666667}]],"x":["win",6,204,55,57],"L":[[0,"d","tao",12,5,2],[1.0333,"d","hiro",12,2,3],[12,"s","tao",null,null,1],[12.0333,"d","lilith",10,4,3],[15.0333,"d","atat",5,2,2],[30.0333,"d","ayaki",10,3,2],[44.0333,"s","tao",null,null,1],[44.0667,"d","sunae",12,1,3],[47.0333,"d","alpha",11,7,2],[64.0333,"d","yui",12,6,3],[76.0333,"d","teka",5,5,2],[76.0667,"s","tao",null,null,1],[88.1,"d","atat",5,2,2],[108.1,"s","tao",null,null,1],[149.1,"d","teka",5,5,2],[161.1667,"d","atat",5,2,2],[175.8667,"d","lilith",10,4,3]]},"IM-06":{"c":"IM-06","n":"생니카즈 거리","s":1,"lv":"E0L1","v":"none (squad as listed; im_sim VARIANT/ALLV not used)","q":[["yui",0,1,1,0,1,{"hp":0.41510791366906474,"atk":0.41317365269461076,"def":0.41739130434782606}],["hiro",0,1,1,0,1,{"hp":0.6081808396124866,"atk":0.5316455696202531,"def":0.5142857142857142}],["lilith",0,1,1,0,1,{"hp":0.5381818181818182,"atk":0.5297872340425532,"def":0.4222222222222222}],["tao",0,1,1,0,1,{"hp":0.56,"atk":0.4838709677419355,"def":0.5}],["capy",0,1,1,0,1,{"hp":0.64,"atk":0.5514834205933682,"def":0.6}],["ayaki",0,1,1,0,1,{"hp":0.5585903083700441,"atk":0.42950819672131146,"def":0.5504587155963303}],["hakuren",0,1,1,0,1,{"hp":0.4204472843450479,"atk":1,"def":0.46}],["sunae",0,1,1,0,1,{"hp":0.3932367149758454,"atk":0.528169014084507,"def":0.36086956521739133}],["alpha",0,1,1,0,1,{"hp":0.4575757575757576,"atk":0.3431578947368421,"def":0.35064935064935066}],["atat",0,1,1,0,1,{"hp":0.44952380952380955,"atk":0.4488517745302714,"def":0.424}],["teka",0,1,1,0,1,{"hp":0.45399828030954426,"atk":0.4227053140096618,"def":0.4479166666666667}]],"x":["win",4,208,46,52],"L":[[0,"d","tao",2,3,0],[6.0333,"d","hiro",9,3,0],[12,"s","tao",null,null,1],[13.0333,"d","yui",5,3,3],[29.0333,"d","lilith",8,4,2],[41.0333,"d","teka",4,1,1],[44.0333,"s","tao",null,null,1],[44.0667,"d","atat",12,1,3],[44.1,"d","scribble",3,4,2,1],[57.0333,"d","ayaki",2,4,0],[76.0667,"s","tao",null,null,1],[76.1,"d","capy",4,4,0],[108.1,"s","tao",null,null,1],[140.1333,"s","tao",null,null,1],[146.0333,"d","atat",12,1,3],[146.0667,"d","scribble",3,4,2,1],[146.4,"d","hiro",9,3,0],[171.1,"d","scribble",3,4,2,1],[182.4333,"d","lilith",8,4,2]]},"IM-07":{"c":"IM-07","n":"반란의 그늘","s":1,"lv":"E0L1","v":"none (squad as listed; im_sim VARIANT/ALLV not used)","q":[["yui",0,1,1,0,1,{"hp":0.41510791366906474,"atk":0.41317365269461076,"def":0.41739130434782606}],["hiro",0,1,1,0,1,{"hp":0.6081808396124866,"atk":0.5316455696202531,"def":0.5142857142857142}],["lilith",0,1,1,0,1,{"hp":0.5381818181818182,"atk":0.5297872340425532,"def":0.4222222222222222}],["tao",0,1,1,0,1,{"hp":0.56,"atk":0.4838709677419355,"def":0.5}],["capy",0,1,1,0,1,{"hp":0.64,"atk":0.5514834205933682,"def":0.6}],["ayaki",0,1,1,0,1,{"hp":0.5585903083700441,"atk":0.42950819672131146,"def":0.5504587155963303}],["hakuren",0,1,1,0,1,{"hp":0.4204472843450479,"atk":1,"def":0.46}],["sunae",0,1,1,0,1,{"hp":0.3932367149758454,"atk":0.528169014084507,"def":0.36086956521739133}],["alpha",0,1,1,0,1,{"hp":0.4575757575757576,"atk":0.3431578947368421,"def":0.35064935064935066}],["atat",0,1,1,0,1,{"hp":0.44952380952380955,"atk":0.4488517745302714,"def":0.424}],["teka",0,1,1,0,1,{"hp":0.45399828030954426,"atk":0.4227053140096618,"def":0.4479166666666667}]],"x":["win",5,196,71,75],"L":[[0,"d","tao",11,1,2],[10.0333,"d","sunae",11,5,2],[12,"s","tao",null,null,1],[12.0333,"d","alpha",8,3,3],[26.0333,"d","lilith",9,2,0],[34.0333,"d","atat",11,3,1],[44.0333,"s","tao",null,null,1],[44.0667,"d","hiro",7,2,3],[58.0333,"d","capy",6,2,2],[75.0333,"d","yui",8,0,2],[76.0667,"s","tao",null,null,1],[108.1,"s","tao",null,null,1],[140.1333,"s","tao",null,null,1],[172.1667,"s","tao",null,null,1],[189.5667,"d","capy",6,2,2]]},"IM-08":{"c":"IM-08","n":"황제가 죽었다","s":1,"lv":"E0L20","v":"none (squad as listed; im_sim VARIANT/ALLV not used)","q":[["yui",0,20,1,0,1,{"hp":0.47173689619732784,"atk":0.48205629557212104,"def":0.4935936113575865}],["hiro",0,20,1,0,1,{"hp":0.6918246805222047,"atk":0.633398247322298,"def":0.6236525379382523}],["lilith",0,20,1,0,1,{"hp":0.6511188811188812,"atk":0.6417348608837972,"def":0.5683760683760684}],["tao",0,20,1,0,1,{"hp":0.676923076923077,"atk":0.5991177281499862,"def":0.6068047337278106}],["capy",0,20,1,0,1,{"hp":0.717948717948718,"atk":0.6671141540251488,"def":0.6917043740573152}],["ayaki",0,20,1,0,1,{"hp":0.6757709251101321,"atk":0.5652795292139554,"def":0.644318983768525}],["hakuren",0,20,1,0,1,{"hp":0.4877722916061574,"atk":1,"def":0.5391666666666667}],["sunae",0,20,1,0,1,{"hp":0.4499780412823891,"atk":0.5930431071276141,"def":0.43784584980237157}],["alpha",0,20,1,0,1,{"hp":0.5426308539944903,"atk":0.44224880382775117,"def":0.4543978748524203}],["atat",0,20,1,0,1,{"hp":0.5177922077922078,"atk":0.5326912127538432,"def":0.5069090909090909}],["teka",0,20,1,0,1,{"hp":0.5267724536856093,"atk":0.5092775581906017,"def":0.5333806818181818}]],"x":["win",2,195,57,64],"L":[[0,"d","tao",4,1,3],[8.0333,"d","lilith",3,2,0],[12,"s","tao",null,null,1],[15.0333,"d","sunae",4,5,0],[25.0333,"d","alpha",2,4,0],[40.0333,"d","ayaki",1,1,0],[44.0333,"s","tao",null,null,1],[47.0333,"d","yui",2,5,0],[60.0333,"d","hiro",2,1,0],[76.0667,"s","tao",null,null,1],[111.1,"s","tao",null,null,1],[146.1333,"s","tao",null,null,1],[184.1667,"s","tao",null,null,1],[189.8667,"d","sunae",4,5,0]]},"IM-09":{"c":"IM-09","n":"세관 성벽","s":1,"lv":"E0L1","v":"none (squad as listed; im_sim VARIANT/ALLV not used)","q":[["yui",0,1,1,0,1,{"hp":0.41510791366906474,"atk":0.41317365269461076,"def":0.41739130434782606}],["hiro",0,1,1,0,1,{"hp":0.6081808396124866,"atk":0.5316455696202531,"def":0.5142857142857142}],["lilith",0,1,1,0,1,{"hp":0.5381818181818182,"atk":0.5297872340425532,"def":0.4222222222222222}],["tao",0,1,1,0,1,{"hp":0.56,"atk":0.4838709677419355,"def":0.5}],["capy",0,1,1,0,1,{"hp":0.64,"atk":0.5514834205933682,"def":0.6}],["ayaki",0,1,1,0,1,{"hp":0.5585903083700441,"atk":0.42950819672131146,"def":0.5504587155963303}],["hakuren",0,1,1,0,1,{"hp":0.4204472843450479,"atk":1,"def":0.46}],["sunae",0,1,1,0,1,{"hp":0.3932367149758454,"atk":0.528169014084507,"def":0.36086956521739133}],["alpha",0,1,1,0,1,{"hp":0.4575757575757576,"atk":0.3431578947368421,"def":0.35064935064935066}],["atat",0,1,1,0,1,{"hp":0.44952380952380955,"atk":0.4488517745302714,"def":0.424}],["teka",0,1,1,0,1,{"hp":0.45399828030954426,"atk":0.4227053140096618,"def":0.4479166666666667}]],"x":["win",7,197,66,68],"L":[[0,"d","tao",9,5,2],[5.0333,"d","yui",12,4,3],[12,"s","tao",null,null,1],[12.0333,"d","ayaki",10,6,3],[20.0333,"d","alpha",11,4,3],[36.0333,"d","lilith",7,6,3],[44.0333,"s","tao",null,null,1],[44.0667,"d","sunae",6,4,3],[56.0333,"d","hiro",3,5,2],[76.0667,"s","tao",null,null,1],[76.1,"d","capy",5,6,3],[108.1,"s","tao",null,null,1],[110.9,"d","alpha",11,4,3],[139.5667,"d","sunae",6,4,3],[140.1333,"s","tao",null,null,1],[172.1667,"s","tao",null,null,1]]},"IM-10":{"c":"IM-10","n":"지옥 기계","s":1,"lv":"E0L1","v":"none (squad as listed; im_sim VARIANT/ALLV not used)","q":[["yui",0,1,1,0,1,{"hp":0.41510791366906474,"atk":0.41317365269461076,"def":0.41739130434782606}],["hiro",0,1,1,0,1,{"hp":0.6081808396124866,"atk":0.5316455696202531,"def":0.5142857142857142}],["lilith",0,1,1,0,1,{"hp":0.5381818181818182,"atk":0.5297872340425532,"def":0.4222222222222222}],["tao",0,1,1,0,1,{"hp":0.56,"atk":0.4838709677419355,"def":0.5}],["capy",0,1,1,0,1,{"hp":0.64,"atk":0.5514834205933682,"def":0.6}],["ayaki",0,1,1,0,1,{"hp":0.5585903083700441,"atk":0.42950819672131146,"def":0.5504587155963303}],["hakuren",0,1,1,0,1,{"hp":0.4204472843450479,"atk":1,"def":0.46}],["sunae",0,1,1,0,1,{"hp":0.3932367149758454,"atk":0.528169014084507,"def":0.36086956521739133}],["alpha",0,1,1,0,1,{"hp":0.4575757575757576,"atk":0.3431578947368421,"def":0.35064935064935066}],["atat",0,1,1,0,1,{"hp":0.44952380952380955,"atk":0.4488517745302714,"def":0.424}],["teka",0,1,1,0,1,{"hp":0.45399828030954426,"atk":0.4227053140096618,"def":0.4479166666666667}]],"x":["win",3,317,61,66],"L":[[0,"d","tao",2,4,0],[0.0333,"d","hakuren",7,4,0],[10.0333,"d","ayaki",5,3,2],[12,"s","tao",null,null,1],[12.9,"d","sunae",4,2,0],[20.0333,"d","yui",4,4,0],[32.0333,"d","teka",1,1,1],[42.0333,"d","lilith",3,3,2],[44.0333,"s","tao",null,null,1],[46.0333,"d","capy",8,5,2],[76.0667,"s","tao",null,null,1],[82.6,"d","alpha",11,1,1],[108.1,"s","tao",null,null,1],[140.1333,"s","tao",null,null,1],[154,"d","atat",11,5,3],[157.5667,"d","hakuren",7,4,0],[160.7,"d","hiro",2,2,0],[172.1667,"s","tao",null,null,1],[204.2,"s","tao",null,null,1],[224.0333,"d","alpha",11,1,1],[236.2333,"s","tao",null,null,1],[268.2667,"s","tao",null,null,1],[300.3,"s","tao",null,null,1]]}};
+
+</script>
+<script>
+// DEV ONLY: the bot-solution replay viewer (봇 해답 보기). Loaded only by the test build (deploy_dev.sh injects it after the game's scripts); never part of the official page.
+// It watches the operation panel and adds a button to each stage that has a replay in window.__BSL_REPLAYS (replay_data.js, made by the solver tooling's pack.js).
+// Pressing it starts that stage through the battle screen's own entry (TDB.start) with the replay's squad, bypassing the lobby's launch: no stamina, no stars, no rewards,
+// no save writes. During the battle the replay drives the game: every action of the winning sim run (deploy / skill / retreat / lab actions) is applied when game time reaches
+// its t, through the same Game methods the node sim (test/im_sim.js run()) uses; the player cannot touch the board.
+// Determinism: the sim steps the game in fixed 1/30 s frames and seeds Math.random (im_sim's seed(n), a mulberry32). Here the battle's update is wrapped so a replay game also
+// advances only in whole 1/30 s frames, and the seeded generator stands in for Math.random only while the engine runs (the page's own effects keep the real one).
+// The core (normalize / squad / driver) also runs under node, so the tooling can check a replay headlessly against the engine.
+(function (root) {
+  "use strict";
+  const MAXLV = { 3: [40, 55], 4: [45, 60, 70], 5: [50, 70, 80], 6: [50, 80, 90] };   // the same table as meta.js / im_sim.js
+  const FPS = 30, STEP = 1 / FPS, EPS = 1e-4, MAXWAIT = 12;   // an action the game cannot take at its time is retried each frame for up to MAXWAIT s of game time
+  // im_sim's seed(n), as a generator of its own (the same numbers in the same order)
+  function seedRng(n) { let a = n * 7919; return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+
+  // ---- the replay record ----
+  // Packed (replay_data.js): { c: code, n: stage name, s: seed|null, lv: "E1L1", v: variant, q: [[id, elite, lvl, pot, skillIdx, slv|0, mult|0], ...],
+  //   x: [over, life, t, kills, total], k: stage hp/atk multiple (im_sim's K; absent = 1), L: [[t, op, ...], ...] } with op "d" deploy [t,"d",id,x,y,dir,summon?],
+//   "s" skill [t,"s",id,x,y,uid], "r" retreat [t,"r",id,x,y,uid] (uid: the unit's id in the sim run, when the record has it),
+  //   "j" judge [t,"j",enemyId,how], "c" any other Game method [t,"c",method,args] (args: plain values, or {u:[id,x,y]} for one of ours / {e:enemyId} for a foe).
+  // Long form (the solver's <STAGE>.json, or this file's samples) is accepted as well; see normalize.
+  function normalize(r) {
+    if (!r) return null;
+    if (r.L && r.q) {   // packed
+      return { code: r.c, name: r.n || "", seed: r.s === undefined ? null : r.s, level: r.lv || "", variant: r.v || "base", src: r.src || "", K: r.k || 1,
+        squad: r.q.map((q) => ({ id: q[0], elite: q[1], lvl: q[2], pot: q[3] || 1, skillIdx: q[4] || 0, slv: q[5] || undefined, mult: q[6] || undefined })),
+        expect: { over: r.x[0], life: r.x[1], t: r.x[2], kills: r.x[3], total: r.x[4] },
+        log: r.L.map((q) => { const t = q[0], op = q[1];
+          if (op === "d") return { t, a: "deploy", id: q[2], x: q[3], y: q[4], d: q[5], sum: !!q[6] };
+          if (op === "s") return { t, a: "skill", id: q[2], x: q[3], y: q[4], uid: q[5] };
+          if (op === "r") return { t, a: "retreat", id: q[2], x: q[3], y: q[4], uid: q[5] };
+          if (op === "j") return { t, a: "judge", eid: q[2], how: q[3] };
+          return { t, a: "call", m: q[2], args: q[3] || [] }; }) };
+    }
+    // long form: tolerant of the spellings a solver might use
+    const ex = r.expect || r.expected || r.result || {};
+    const lv = r.level || r.lvl || (r.E !== undefined ? `E${r.E}L${r.L}` : "");
+    const squad = (r.squad || []).map((s) => typeof s === "string" ? { id: s } : s).map((s) => ({ id: s.id, elite: s.elite !== undefined ? s.elite : s.e, lvl: s.lvl !== undefined ? s.lvl : s.lv !== undefined ? s.lv : s.l,
+      pot: s.pot || 1, skillIdx: s.skillIdx !== undefined ? s.skillIdx : s.sk || 0, slv: s.slv || undefined, mult: s.mult || undefined }));
+    const log = (r.log || r.actions || []).map((q) => { const a = q.a || q.type || q.kind || q.act, t = +q.t;
+      if (a === "deploy") return { t, a, id: q.id, x: q.x, y: q.y, d: q.d !== undefined ? q.d : q.dir, sum: !!(q.sum || q.summon) };
+      if (a === "skill" || a === "retreat") return { t, a, id: q.id, x: q.x, y: q.y, uid: q.uid };
+      if (a === "judge") return { t, a, eid: q.eid !== undefined ? q.eid : q.e, how: q.how || q.v };
+      return { t, a: "call", m: q.m || q.method || a, args: q.args || [] }; }).sort((p, q) => p.t - q.t);
+    const et = ex.t !== undefined ? ex.t : ex.winTime !== undefined ? ex.winTime : ex.time;
+    return { code: r.code || r.stage, name: r.name || "", seed: r.seed === undefined ? null : r.seed, level: lv, variant: r.variant || "base", src: r.src || r.source || "", K: r.K || r.k || 1,
+      squad, expect: { over: ex.over || (ex.win === false ? "lose" : "win"), life: ex.life, t: et === undefined ? undefined : Math.round(et), kills: ex.kills, total: ex.total }, log };
+  }
+  // pack a normalized record (for pack.js)
+  function pack(n) {
+    const r3 = (v) => Math.round(v * 1e4) / 1e4;
+    return { c: n.code, n: n.name, s: n.seed, lv: n.level, v: n.variant, src: n.src || undefined, k: n.K && n.K !== 1 ? n.K : undefined,
+      q: n.squad.map((s) => { const a = [s.id, s.elite, s.lvl, s.pot || 1, s.skillIdx || 0, s.slv || 0, s.mult || 0]; while (a.length > 3 && !a[a.length - 1]) a.pop(); return a; }),
+      x: [n.expect.over, n.expect.life, n.expect.t, n.expect.kills, n.expect.total],
+      L: n.log.map((q) => q.a === "deploy" ? [r3(q.t), "d", q.id, q.x, q.y, q.d].concat(q.sum ? [1] : []) : q.a === "skill" || q.a === "retreat" ? [r3(q.t), q.a[0], q.id, q.x === undefined ? null : q.x, q.y === undefined ? null : q.y].concat(q.uid !== undefined ? [q.uid] : [])
+        : q.a === "judge" ? [r3(q.t), "j", q.eid, q.how] : [r3(q.t), "c", q.m, q.args]) };
+  }
+  // the squad as the sim builds it: { id, elite, mult: growth at that level, pot, skillIdx } (slv only when the record names one)
+  function buildSquad(TD, rep) {
+    return rep.squad.map((s) => { const d = TD.UNITS.find((u) => u.id === s.id); if (!d) return null; const ml = MAXLV[d.rarity] || MAXLV[3], el = Math.max(0, Math.min(s.elite || 0, ml.length - 1)), lv = Math.max(1, Math.min(s.lvl || 1, ml[el]));
+      const o = { id: s.id, elite: el, mult: s.mult || TD.growth(d, el, lv, ml[el]), pot: s.pot || 1, skillIdx: s.skillIdx || 0 }; if (s.slv) o.slv = s.slv; return o; }).filter(Boolean);
+  }
+  // the level line for the HUD: the record's own, else the squad's highest
+  function levelOf(rep) { const m = /^E(\d)L(\d+)$/.exec(rep.level || ""); if (m) return [+m[1], +m[2]]; let e = 0, l = 1; for (const s of rep.squad) { if ((s.elite || 0) > e || ((s.elite || 0) === e && (s.lvl || 1) > l)) { e = s.elite || 0; l = s.lvl || 1; } } return [e, l]; }
+
+  // ---- the driver: called before every 1/30 s frame of the game, with Math.random already the replay's ----
+  function Driver(rep) {
+    this.rep = rep; this.i = 0; this.wait = []; this.done = 0; this.late = []; this.missed = []; this.fails = 0;
+  }
+  const unitOf = (g, id, x, y, uid) => { const c = g.units.filter((u) => u.def.id === id); return (uid !== undefined && c.find((u) => u.id === uid)) || c.find((u) => u.x === x && u.y === y) || c.find((u) => !u.clone && !u.summoned) || c[0] || null; };
+  const cardOf = (g, id, sum) => g.cards.findIndex((c) => c.def.id === id && (sum ? c.summonOf !== undefined && c.active : c.summonOf === undefined));
+  const argOf = (g, v) => v && typeof v === "object" && !Array.isArray(v) ? (v.u ? unitOf(g, v.u[0], v.u[1], v.u[2]) : v.e !== undefined ? g.enemies.find((e) => e.id === v.e) || null : v) : v;
+  Driver.prototype.apply = function (g, a) {
+    if (a.a === "deploy") { const ci = cardOf(g, a.id, a.sum); if (ci < 0 || g.unitAt(a.x, a.y)) return false; return !!g.deploy(ci, a.x, a.y, a.d); }
+    if (a.a === "skill") { const u = unitOf(g, a.id, a.x, a.y, a.uid); return !!u && g.useSkill(u) !== false; }
+    if (a.a === "retreat") { const u = unitOf(g, a.id, a.x, a.y, a.uid); if (!u) return false; g.retreat(u); return true; }
+    if (a.a === "judge") { const e = g.enemies.find((q) => q.id === a.eid); return !!e && g.judge(e, a.how) !== false; }
+    if (typeof g[a.m] !== "function") return false;
+    return g[a.m].apply(g, (a.args || []).map((v) => argOf(g, v))) !== false;
+  };
+  Driver.prototype.before = function (g) {
+    const t = g.t, log = this.rep.log;
+    while (this.i < log.length && log[this.i].t <= t + EPS) this.wait.push(log[this.i++]);
+    let deployBlocked = false;   // the sim sets operators down in plan order: a deploy that has to wait holds back the ones after it
+    for (let k = 0; k < this.wait.length; k++) {
+      const a = this.wait[k];
+      if (a.a === "deploy" && deployBlocked) continue;
+      if (this.apply(g, a)) { this.wait.splice(k--, 1); this.done++; if (t - a.t > EPS) this.late.push({ a: a.a, id: a.id, t: a.t, dt: t - a.t }); continue; }
+      if (t - a.t > MAXWAIT) { this.wait.splice(k--, 1); this.missed.push({ a: a.a, id: a.id, t: a.t }); continue; }
+      if (a.a === "deploy") deployBlocked = true;
+    }
+  };
+  Driver.prototype.next = function () { return this.wait[0] || this.rep.log[this.i] || null; };
+  Driver.prototype.drift = function () { return { late: this.late.length, maxLate: this.late.reduce((m, q) => Math.max(m, q.dt), 0), missed: this.missed.length, done: this.done, total: this.rep.log.length }; };
+  // im_sim's K (a record made at a multiple of the stage's hp/atk): set for the replay, and the returned function puts the stage's own back
+  function withK(st, K) { if (!K || K === 1 || !st.mul) return () => {}; const m0 = st.mul; st.mul = Object.assign({}, m0, { hp: m0.hp * K, atk: m0.atk * K }); return () => { st.mul = m0; }; }
+  // headless: play a record against an engine (TD) in node, the way the sim did; returns the outcome and the drift
+  function playHeadless(TD, rep, opt = {}) {
+    const i = TD.STAGES.findIndex((s) => s.code === rep.code); TD.setMap(TD.STAGES[i].map);
+    const R = Math.random; if (rep.seed !== null && rep.seed !== undefined) Math.random = seedRng(rep.seed);
+    const undo = withK(TD.STAGES[i], rep.K);
+    try {
+      const g = new TD.Game(i, buildSquad(TD, rep)), D = new Driver(rep);
+      for (let k = 0; k < (opt.maxT || 420) * FPS && !g.over; k++) { D.before(g); g.update(STEP); }
+      return { over: g.over || "-", life: g.life, t: Math.round(g.t), kills: g.killed, total: g.total, drift: D.drift() };
+    } finally { Math.random = R; undo(); }
+  }
+  const CORE = { MAXLV, FPS, seedRng, withK, normalize, pack, buildSquad, levelOf, Driver, playHeadless };
+  if (typeof module !== "undefined" && module.exports) { module.exports = CORE; return; }
+  root.BSLReplay = CORE;
+
+  // ======================================================== the page ========================================================
+  const TD = root.TD, TDB = root.TDB;
+  if (!TD || !TDB || !TD.Game) return;
+  const data = () => root.__BSL_REPLAYS || {};
+  // the battle's update, wrapped: a replay game moves in whole sim frames with the replay's dice, and the driver acts before each frame
+  const P = TD.Game.prototype, UPD = P.update;
+  P.update = function (dt) {
+    const R = this.__rp; if (!R) return UPD.call(this, dt);
+    R.acc += dt;
+    while (R.acc >= STEP - 1e-9 && !this.over) {
+      R.acc -= STEP; const real = Math.random; if (R.rng) Math.random = R.rng;
+      try { R.drv.before(this); UPD.call(this, STEP); } finally { Math.random = real; }
+      R.frames++;
+    }
+    if (this.over && !R.endAt) { R.endAt = { over: this.over, life: this.life, t: this.t, kills: this.killed, total: this.total }; hud && hud.paint(); }
+  };
+
+  // ---- styles ----
+  const css = document.createElement("style");
+  css.textContent = `
+  .rp-btn { position:absolute; right:436px; bottom:28px; width:184px; height:76px; display:flex; flex-direction:column; justify-content:center; align-items:flex-end; padding:0 14px; box-sizing:border-box; cursor:pointer;
+    background:linear-gradient(115deg, transparent 62%, rgba(255,207,90,.14) 62% 66%, transparent 66%), linear-gradient(180deg,#2b2d33,#16171a); color:#fff; outline:1px dashed rgba(255,207,90,.8); outline-offset:-1px;
+    filter:drop-shadow(0 4px 8px rgba(0,0,0,.5)); font-family:inherit; user-select:none; }
+  .rp-btn:active { transform:translateY(1px); }
+  .rp-btn .tg { position:absolute; left:0; top:0; font:700 11px Oswald, sans-serif; letter-spacing:.1em; color:#1a1b1f; background:#ffcf5a; padding:1px 6px; }
+  .rp-btn .a { font-size:22px; font-weight:900; letter-spacing:.02em; }
+  .rp-btn .b { font-size:13px; font-weight:700; color:#c8ccd4; }
+  .lab-r .rp-btn { position:relative; right:auto; bottom:auto; width:auto; height:40px; margin-left:8px; padding:0 12px 0 40px; }
+  .lab-r .rp-btn .a { font-size:16px; } .lab-r .rp-btn .b { display:none; }
+  .rp-block { position:absolute; inset:0; z-index:50; background:transparent; touch-action:none; }
+  .rp-hud { position:absolute; left:8px; top:52px; z-index:51; max-width:min(46%, 420px); background:rgba(10,11,13,.8); border-left:3px solid #ffcf5a; color:#e8eaee;
+    font:500 12px/1.45 "Noto Sans KR", sans-serif; padding:6px 10px 8px; pointer-events:auto; }
+  .rp-hud .t1 { font-weight:900; font-size:13px; color:#fff; } .rp-hud .t1 b { color:#ffcf5a; font-weight:900; }
+  .rp-hud .nx { color:#c8ccd4; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; } .rp-hud .nx i { font-style:normal; color:#8fd3ff; }
+  .rp-hud .fin { margin-top:3px; font-weight:700; } .rp-hud .fin.ok { color:#7fe08a; } .rp-hud .fin.off { color:#ffb060; } .rp-hud .fin.bad { color:#ff7f6e; }
+  .rp-hud .row { display:flex; gap:4px; margin-top:5px; flex-wrap:wrap; }
+  .rp-hud .row span { min-width:34px; padding:3px 7px; text-align:center; background:#2a2c31; border:1px solid rgba(255,255,255,.18); font:700 12px Oswald, sans-serif; cursor:pointer; user-select:none; }
+  .rp-hud .row span.on { background:#ffcf5a; color:#1a1b1f; border-color:#ffcf5a; } .rp-hud .row span.x { margin-left:auto; background:#8c1a1f; border-color:#8c1a1f; font-family:"Noto Sans KR", sans-serif; }
+  @media (max-height: 500px) { .rp-hud { top:28px; font-size:11px; padding:4px 8px 6px; } .rp-hud .t1 { font-size:12px; } .rp-hud .row span { padding:2px 6px; font-size:11px; min-width:28px; } }`;
+  document.head.appendChild(css);
+
+  const nm = (id) => { const d = TD.UNITS.find((u) => u.id === id) || (TD.SUMMONS || {})[id]; return d ? (d.name || id).split(/[ ·(]/)[0] : id; };
+  const lvTxt = (rep) => { const [e, l] = levelOf(rep); return `E${e} Lv${l}`; };
+  const actTxt = (a) => { if (!a) return "남은 행동 없음";
+    const t = `<i>${a.t.toFixed(1)}s</i> `;
+    if (a.a === "deploy") return t + `배치 ${nm(a.id)} (${a.x},${a.y}) ${"→↓←↑"[a.d] || ""}`;
+    if (a.a === "skill") return t + `스킬 ${nm(a.id)}`;
+    if (a.a === "retreat") return t + `퇴각 ${nm(a.id)}`;
+    if (a.a === "judge") return t + `판정 ${a.how === "kill" ? "처단" : "통과"}`;
+    return t + a.m; };
+
+  // ---- one replay at a time ----
+  let cur = null, hud = null;
+  function lsSnap() { const o = {}; try { for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); o[k] = localStorage.getItem(k); } } catch (e) { /* storage off */ } return o; }
+  function lsRestore(snap) {   // put every key back as it was when the replay began (only what differs is written)
+    try { const now = lsSnap(); for (const k in now) if (!(k in snap)) localStorage.removeItem(k); for (const k in snap) if (now[k] !== snap[k]) localStorage.setItem(k, snap[k]); } catch (e) { /* storage off */ }
+  }
+  const backRoute = (i) => { const s = TD.STAGES[i]; return s.lab ? ["lab"] : s.supply ? ["supplymap", i] : ["terminal", i]; };
+  function start(code) {
+    if (cur) return;
+    const rep = normalize(data()[code]); const idx = TD.STAGES.findIndex((s) => s.code === code);
+    if (!rep || idx < 0) return;
+    const host = document.getElementById("meta"), wrap = document.getElementById("stagewrap") || document.body;
+    const squad = buildSquad(TD, rep);
+    cur = { code, idx, rep, host, wrap, snap: lsSnap(), scale0: root.__tdScale, hadScale: "__tdScale" in root, speed: 1, paused: false, ended: false, result: null };
+    // the battle: the lobby's own launch is skipped, so nothing is spent, recorded or given; the stage's opening script and the first-sight foe notes stay off
+    const seen = new Proxy({}, { get: (o, k) => typeof k === "string" ? 1 : undefined, has: () => true });
+    host.hidden = true;
+    cur.undoK = withK(TD.STAGES[idx], rep.K);
+    TDB.start(idx, squad, (r) => { if (!cur) return; cur.ended = true; cur.result = r; if (r && r.quit) return exit(); hud && hud.paint(); },
+      { seen, mark: () => {}, practice: false, cost: 0, me: "봇", replay: true });
+    const g = root.__tdGame && root.__tdGame();
+    cur.g = g; g.__rp = { rep, drv: new Driver(rep), rng: rep.seed !== null && rep.seed !== undefined ? seedRng(rep.seed) : null, acc: 0, frames: 0, endAt: null };
+    root.__tdScale = 1;
+    // the board takes no input while the bot plays
+    const block = document.createElement("div"); block.className = "rp-block";
+    for (const ev of ["pointerdown", "pointerup", "pointermove", "click", "wheel", "touchstart", "touchmove", "mousedown", "contextmenu"]) block.addEventListener(ev, (e) => { e.stopPropagation(); if (ev !== "touchstart" && ev !== "touchmove") e.preventDefault(); }, { passive: false });
+    wrap.appendChild(block); cur.block = block;
+    cur.key = (e) => { if (!cur) return; e.stopImmediatePropagation(); if (e.key === "Escape") exit(); };
+    root.addEventListener("keydown", cur.key, true);
+    hud = makeHud(); wrap.appendChild(hud.el); hud.paint();
+    cur.tick = setInterval(() => hud && hud.paint(), 250);
+    root.__bslReplayState = state;
+  }
+  function state() {   // for tests: where the replay stands
+    if (!cur) return null; const R = cur.g && cur.g.__rp, g = cur.g;
+    return { code: cur.code, t: g ? g.t : 0, frames: R ? R.frames : 0, life: g ? g.life : null, over: g ? g.over : null, ended: cur.ended, end: R && R.endAt, expect: cur.rep.expect, drift: R ? R.drv.drift() : null, seed: cur.rep.seed };
+  }
+  function setSpeed(s) { if (!cur) return; cur.speed = s; cur.paused = false; root.__tdScale = s; hud.paint(); }
+  function exit() {
+    if (!cur) return; const c = cur; cur = null;
+    clearInterval(c.tick); root.removeEventListener("keydown", c.key, true);
+    if (c.g) c.g.__rp = null;
+    if (c.undoK) c.undoK();
+    try { if (TDB.phase !== "idle") TDB.idle(); } catch (e) { /* already idle */ }
+    if (c.hadScale) root.__tdScale = c.scale0; else delete root.__tdScale;
+    c.block.remove(); if (hud) hud.el.remove(); hud = null;
+    lsRestore(c.snap);
+    c.host.hidden = false;
+    const [r, a] = backRoute(c.idx); if (root.__bslGo) root.__bslGo(r, a);
+  }
+  function makeHud() {
+    const el = document.createElement("div"); el.className = "rp-hud";
+    el.innerHTML = `<div class="t1"></div><div class="nx"></div><div class="fin" hidden></div><div class="row"><span data-s="1">×1</span><span data-s="2">×2</span><span data-s="4">×4</span><span data-p="1">❚❚</span><span class="x">나가기</span></div>`;
+    el.addEventListener("pointerdown", (e) => e.stopPropagation());
+    el.querySelectorAll("[data-s]").forEach((b) => b.onclick = () => setSpeed(+b.dataset.s));
+    el.querySelector("[data-p]").onclick = () => { if (!cur) return; cur.paused = !cur.paused; root.__tdScale = cur.paused ? 0 : cur.speed; paint(); };
+    el.querySelector(".x").onclick = () => exit();
+    const t1 = el.querySelector(".t1"), nx = el.querySelector(".nx"), fin = el.querySelector(".fin");
+    function paint() {
+      if (!cur) return; const rep = cur.rep, ex = rep.expect, R = cur.g && cur.g.__rp, g = cur.g;
+      t1.innerHTML = `봇 해답 · ${lvTxt(rep)} · 예상 목숨 <b>${ex.life !== undefined ? ex.life : "?"}</b>${/^(tank|fire|low)$/.test(rep.variant || "") ? ` · ${rep.variant}` : ""}${rep.K !== 1 ? ` · K${rep.K}` : ""}`;
+      if (R) { const d = R.drv.drift(), a = R.drv.next(); nx.innerHTML = `다음: ${actTxt(a)} <span style="color:#8a8f99">· ${d.done}/${d.total}${d.missed ? ` · 놓침 ${d.missed}` : ""}</span>`; }
+      const E = R && R.endAt;
+      if (E) {
+        const win = E.over === "win", same = E.over === ex.over && E.life === ex.life, near = E.over === ex.over && Math.abs(E.life - ex.life) <= 1;
+        fin.hidden = false; fin.className = "fin " + (same ? "ok" : near ? "off" : "bad");
+        fin.textContent = `결과 ${win ? "승리" : "패배"} · 목숨 ${E.life} (예상 ${ex.life}) · ${Math.round(E.t)}초 (예상 ${ex.t}초) · ${same ? "일치" : "차이 " + (E.life - ex.life)}`;
+      } else fin.hidden = true;
+      el.querySelectorAll("[data-s]").forEach((b) => b.classList.toggle("on", !cur.paused && +b.dataset.s === cur.speed));
+      el.querySelector("[data-p]").classList.toggle("on", cur.paused);
+      el.querySelector(".x").textContent = cur.ended ? "돌아가기" : "나가기";
+    }
+    return { el, paint };
+  }
+
+  // ---- the button, on the operation panel (and on the lab list) of a stage that has a replay ----
+  function decorate(rootEl) {
+    const D = data(); if (!Object.keys(D).length) return;
+    rootEl.querySelectorAll(".detail").forEach((d) => {
+      if (d.querySelector(".rp-btn") || !d.querySelector(".tm-bts")) return;
+      const c = d.querySelector(".hd .op .c"), code = c && c.textContent.trim(); if (!code || !D[code]) return;
+      const rep = normalize(D[code]);
+      const b = document.createElement("div"); b.className = "btn rp-btn";
+      b.innerHTML = `<span class="tg">DEV</span><span class="a">봇 해답 보기</span><span class="b">${lvTxt(rep)} · 목숨 ${rep.expect.life}</span>`;
+      b.onclick = (e) => { e.stopPropagation(); start(code); };
+      d.appendChild(b);
+    });
+    rootEl.querySelectorAll(".lab-r").forEach((r) => {
+      if (r.querySelector(".rp-btn")) return; const c = r.querySelector(".c"), code = c && c.textContent.trim(); if (!code || !D[code]) return;
+      const b = document.createElement("div"); b.className = "btn rp-btn"; b.innerHTML = `<span class="tg">DEV</span><span class="a">봇 해답</span>`;
+      b.onclick = (e) => { e.stopPropagation(); start(code); }; const go = r.querySelector(".lab-go"); if (go) r.insertBefore(b, go); else r.appendChild(b);
+    });
+  }
+  const host = document.getElementById("meta");
+  if (host) { new MutationObserver(() => decorate(host)).observe(host, { childList: true, subtree: true }); decorate(host); }
+  root.__bslReplay = { start, exit, state, setSpeed, list: () => Object.keys(data()) };
+})(typeof window !== "undefined" ? window : globalThis);
 
 </script>
 
