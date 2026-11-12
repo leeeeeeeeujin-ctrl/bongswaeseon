@@ -1,0 +1,19 @@
+game 58138ed385fb; cell = robust value [replicate minima; spread]
+WL-01  | starter: E1L30 [E1L30,E1L45,E1L45; s1] / E1L30 [E1L30,E1L45,E1L45; s1] (lost1-0lost E1L45) | T4: E1L30 [E1L30,E1L30,E1L30; s0] / E1L30 [E1L30,E1L30,E1L30; s0] (lost1-0lost E1L30) | T5: E1L1 [E1L1,E1L1,E1L15; s1] / E1L1 [E1L1,E1L30,E1L60; s4] (lost1-0lost E1L15) | T6: E1L1* [E1L15,E1L15,E1L45; s2] / E1L1* [E1L30,E1L45,E1L45; s1] (lost1-0lost E1L45)
+WL-02  | starter: E1L15 [E1L15,E1L30,E1L45; s2] / E1L45 [E1L45,E1L45,E2L20; s3] (lost1-0lost E1L45) | T4: E0L40 [E0L40,E0L40,E1L15; s2] / E0L40 [E1L15,E1L30,E1L30; s1] (lost1-0lost E0L40) | T5: E0L40 [E0L40,E0L40,E0L40; s0] / E0L40 [E0L40,E0L40,E1L30; s3] | T6: E0L40 [E0L40,E1L1,E1L15; s2] / E0L40 [E0L40,E1L1,E1L15; s2] (lost1-0lost E1L15)
+WL-03  | starter: E1L45 [E1L45,E1L45,E1L60; s1] / E1L45 [E1L45,E1L60,none; s1] | T4: E1L15 [E1L15,E1L15,E1L45; s2] / E1L30 [E1L30,E1L30,E1L45; s1] (lost1-0lost E1L45) | T5: E1L15 [E1L15,E1L30,E1L30; s1] / E1L15 [E1L15,E1L30,E1L45; s2] | T6: E1L1 [E1L1,E1L15,E1L15; s1] / E1L15 [E1L15,E1L30,E1L45; s2] (lost1-0lost E1L15)
+WL-05  | starter: E1L15 [E1L15,E1L15,E1L15; s0] / E1L15 [E1L15,E1L15,E1L30; s1] (lost1-0lost E1L15) | T4: E0L40 [E0L40,E0L40,E0L40; s0] / E0L40 [E1L1,E1L30,E1L30; s2] (lost1-0lost E0L40) | T5: E0L40* [E1L1,E1L1,E1L1; s0] / E0L40* [E1L1,E1L15,E1L45; s3] | T6: E0L40* [E1L15,E1L15,E1L15; s0] / E0L40* [E1L15,E1L15,E1L30; s1] (lost1-0lost E1L15)
+WL-08  | starter: E0L40 [E0L40,E1L1,E1L15; s2] / E1L15 [E1L15,E1L15,E1L30; s1] | T4: E0L40 [E0L40,E0L40,E0L40; s0] / E0L40 [E0L40,E0L40,E1L15; s2] (lost1-0lost E0L40) | T5: E0L40 [E0L40,E0L40,E0L40; s0] / E0L40 [E0L40,E1L15,E1L15; s2] (lost1-0lost E0L40) | T6: E0L40 [E0L40,E0L40,E0L40; s0] / E0L40 [E0L40,E0L40,E1L15; s2] (lost1-0lost E0L40)
+WL-09  | starter: E1L45 [E1L45,E1L60,E1L60; s1] / E2L20 [E2L20,E2L40,E2L40; s1] | T4: E0L40 [E0L40,E1L30,E1L30; s3] / E1L45 [E1L45,E1L45,E1L60; s1] | T5: E0L40* [E1L1,E1L15,E1L30; s2] / E1L15 [E1L15,E1L60,E2L1; s4] | T6: E0L40* [E1L15,E1L30,E1L30; s1] / E1L15* [E1L45,E1L60,E2L1; s2]
+(* = lowered by a cross-deck bound)
+bounds:
+  WL-01 lost1 T6 E1L15 > T5 E1L1: replayed: clears, worst lost 1
+  WL-01 full T6 E1L30 > T5 E1L1: replayed: clears, worst lost 0
+  WL-05 lost1 T5 E1L1 > T4 E0L40: replayed: clears, worst lost 0
+  WL-05 lost1 T6 E1L15 > T5 E0L40: replayed: clears, worst lost 0
+  WL-05 full T5 E1L1 > T4 E0L40: replayed: clears, worst lost 0
+  WL-05 full T6 E1L15 > T5 E0L40: replayed: clears, worst lost 0
+  WL-09 lost1 T5 E1L1 > T4 E0L40: replayed: clears, worst lost 1
+  WL-09 lost1 T6 E1L15 > T5 E0L40: replayed: clears, worst lost 1
+  WL-09 full T6 E1L45 > T5 E1L15: replayed: clears, worst lost 0
+noise: 48 cells with >= 2 replicates; spread histogram (rungs: cells) 0:10 1:17 2:15 3:4 4:2; mean 1.40; max 4; by deck starter 1.25, T4 1.17, T5 1.83, T6 1.33; cells with a 'none' replicate: 1
