@@ -50,38 +50,51 @@
     0
    ],
    "units": 9,
-   "spent": 136,
+   "spent": 180,
    "plan": {
     "entries": [
      {
-      "id": "hiro",
+      "id": "guard",
       "x": 2,
       "y": 1,
-      "d": 0
+      "d": 2
      },
      {
       "id": "lulu",
-      "x": 6,
+      "x": 4,
       "y": 5,
       "d": 0
      },
      {
-      "id": "irins",
+      "id": "atat",
       "x": 2,
       "y": 4,
       "d": 2
      },
      {
-      "id": "capy",
+      "id": "brick",
+      "x": 2,
+      "y": 5,
+      "d": 0,
+      "from": 65
+     },
+     {
+      "id": "ker",
+      "x": 2,
+      "y": 5,
+      "d": 2
+     },
+     {
+      "id": "irins",
       "x": 3,
       "y": 2,
       "d": 0
      },
      {
-      "id": "brick",
-      "x": 2,
-      "y": 5,
-      "d": 3
+      "id": "defender",
+      "x": 4,
+      "y": 1,
+      "d": 0
      },
      {
       "id": "nana",
@@ -90,20 +103,14 @@
       "d": 3
      },
      {
-      "id": "lilith",
+      "id": "sniper",
       "x": 1,
       "y": 1,
       "d": 1
      },
      {
-      "id": "falchion",
-      "x": 12,
-      "y": 2,
-      "d": 1
-     },
-     {
-      "id": "atat",
-      "x": 11,
+      "id": "sniper",
+      "x": 1,
       "y": 1,
       "d": 1
      }
@@ -115,167 +122,200 @@
      "fire": 1,
      "melt": 1,
      "lamp": 1
-    }
+    },
+    "_par": "[[[\"guard\",2,1,2,null,null,null],[\"lulu\",4,5,0,null,null,null],[\"atat\",2,4,2,null,null,null],[\"brick\",2,5,0,65,null,null],[\"irins\",3,2,0,null,null,null],[\"defender\",4,1,0,null,null,null],[\"nana\",11,5,3,null,null,null],[\"sniper\",1,1,1,null,null,null],[\"sniper\",1,1,1,119,null,null]],{},{},[],{\"fire\":1,\"melt\":1,\"lamp\":1}]"
    },
-   "winTime": 208.6666666666574,
+   "winTime": 276.40000000000424,
    "recLost": 0,
    "actions": [
     {
-     "t": 0,
-     "k": 0,
+     "t": 3.0333333333333323,
+     "k": 91,
      "a": "deploy",
-     "ci": 4,
-     "id": "hiro",
+     "ci": 0,
+     "id": "guard",
      "x": 2,
      "y": 1,
-     "dir": 0,
-     "uid": 1,
-     "cost": 15
+     "dir": 2,
+     "uid": 3,
+     "cost": 13
     },
     {
-     "t": 15.03333333333329,
-     "k": 451,
+     "t": 20.033333333333488,
+     "k": 601,
      "a": "deploy",
-     "ci": 1,
+     "ci": 4,
      "id": "lulu",
-     "x": 6,
+     "x": 4,
      "y": 5,
      "dir": 0,
      "uid": 9,
      "cost": 17
     },
     {
-     "t": 32.03333333333408,
-     "k": 961,
+     "t": 28.033333333333886,
+     "k": 841,
      "a": "deploy",
-     "ci": 2,
-     "id": "irins",
+     "ci": 3,
+     "id": "atat",
      "x": 2,
      "y": 4,
      "dir": 2,
-     "uid": 14,
+     "uid": 11,
+     "cost": 8
+    },
+    {
+     "t": 45.03333333333334,
+     "k": 1351,
+     "a": "deploy",
+     "ci": 6,
+     "id": "ker",
+     "x": 2,
+     "y": 5,
+     "dir": 2,
+     "uid": 18,
      "cost": 17
     },
     {
-     "t": 53.033333333332884,
-     "k": 1591,
+     "t": 62.03333333333237,
+     "k": 1861,
      "a": "deploy",
-     "ci": 3,
-     "id": "capy",
+     "ci": 5,
+     "id": "irins",
      "x": 3,
      "y": 2,
      "dir": 0,
-     "uid": 19,
-     "cost": 21
+     "uid": 21,
+     "cost": 17
     },
     {
-     "t": 69.03333333333198,
-     "k": 2071,
+     "t": 78.03333333333147,
+     "k": 2341,
      "a": "deploy",
-     "ci": 8,
-     "id": "brick",
-     "x": 2,
-     "y": 5,
-     "dir": 3,
-     "uid": 24,
+     "ci": 1,
+     "id": "defender",
+     "x": 4,
+     "y": 1,
+     "dir": 0,
+     "uid": 30,
      "cost": 16
     },
     {
-     "t": 86.03333333333102,
-     "k": 2581,
+     "t": 92.03333333333067,
+     "k": 2761,
+     "a": "skill",
+     "ci": 1,
+     "id": "defender",
+     "uid": 30
+    },
+    {
+     "t": 95.0333333333305,
+     "k": 2851,
      "a": "deploy",
-     "ci": 6,
+     "ci": 7,
      "id": "nana",
      "x": 11,
      "y": 5,
      "dir": 3,
-     "uid": 33,
+     "uid": 38,
      "cost": 17
     },
     {
-     "t": 86.03333333333102,
-     "k": 2581,
-     "a": "skill",
-     "ci": 8,
-     "id": "brick",
-     "uid": 24
-    },
-    {
-     "t": 102.0333333333301,
-     "k": 3061,
+     "t": 104.03333333332999,
+     "k": 3121,
      "a": "deploy",
-     "ci": 5,
-     "id": "lilith",
+     "ci": 2,
+     "id": "sniper",
      "x": 1,
      "y": 1,
      "dir": 1,
-     "uid": 43,
-     "cost": 16
-    },
-    {
-     "t": 111.0333333333296,
-     "k": 3331,
-     "a": "deploy",
-     "ci": 7,
-     "id": "falchion",
-     "x": 12,
-     "y": 2,
-     "dir": 1,
-     "uid": 45,
+     "uid": 44,
      "cost": 9
     },
     {
-     "t": 131.46666666666178,
-     "k": 3944,
+     "t": 132.26666666666173,
+     "k": 3968,
      "a": "skill",
-     "ci": 8,
-     "id": "brick",
-     "uid": 24
+     "ci": 1,
+     "id": "defender",
+     "uid": 30
     },
     {
-     "t": 161.99999999999338,
-     "k": 4860,
+     "t": 236.09999999998917,
+     "k": 7083,
      "a": "deploy",
-     "ci": 0,
-     "id": "atat",
+     "ci": 7,
+     "id": "nana",
      "x": 11,
-     "y": 1,
-     "dir": 1,
-     "uid": 65,
-     "cost": 8
+     "y": 5,
+     "dir": 3,
+     "uid": 72,
+     "cost": 26
     },
     {
-     "t": 176.89999999999253,
-     "k": 5307,
+     "t": 243.59999999998874,
+     "k": 7308,
+     "a": "deploy",
+     "ci": 8,
+     "id": "brick",
+     "x": 2,
+     "y": 5,
+     "dir": 0,
+     "uid": 73,
+     "cost": 16
+    },
+    {
+     "t": 245.23333333332198,
+     "k": 7357,
+     "a": "deploy",
+     "ci": 1,
+     "id": "defender",
+     "x": 4,
+     "y": 1,
+     "dir": 0,
+     "uid": 74,
+     "cost": 24
+    },
+    {
+     "t": 259.2333333333239,
+     "k": 7777,
+     "a": "skill",
+     "ci": 1,
+     "id": "defender",
+     "uid": 74
+    },
+    {
+     "t": 260.59999999999167,
+     "k": 7818,
      "a": "skill",
      "ci": 8,
      "id": "brick",
-     "uid": 24
+     "uid": 73
     }
    ],
    "family": {
     "id": "IM-08:qfprai",
-    "d": 0.13,
+    "d": 0.41,
     "tags": [
      "deep block",
      "no medic"
     ]
    },
    "start": {
-    "fills": 12,
+    "fills": 10,
     "bestFill": {
-     "fam": "IM-08:qfprai",
-     "lost": 0,
-     "cdLost": 0
+     "fam": "IM-08:1nfxysu",
+     "lost": 1,
+     "cdLost": 1
     },
-    "fams": 6,
+    "fams": 5,
     "pruned": []
    },
-   "evals": 621,
-   "secs": 45,
-   "tFill": 16,
+   "evals": 2453,
+   "secs": 158,
+   "tFill": 12,
    "truncated": false,
-   "gameHash": "af57ca578387"
+   "gameHash": "7ea818b4af8d"
   },
   "E1L15": {
    "stage": "IM-08",
