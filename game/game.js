@@ -1305,19 +1305,19 @@
         [76, "yshield", 1, 1, 1], [82, "soldier", 0, 3, 2.5], [88, "chouan", 1, 2, 1], [94, "strag", 0, 5, 0.8], [98, "soldier", 1, 3, 2.5], [104, "chouan", 0, 2, 1]]),
       boss: ["", ""], desc: "밤사이 얼어붙은 라스푸티차. 두 길이 진창 둑길에서 만났다가 다시 갈라집니다. 남쪽에서 주기적으로 눈보라가 불어와, 한 칸씩 북쪽으로 번지며 칸을 눈으로 덮습니다(배치 불가). 앞을 막아선 가사인격은 얼어붙지만 그 뒤는 지켜집니다. 고지는 막아 주지 못하고, 올라온 벽만 막습니다. 진창은 눈보라가 불면 막든 말든 얼어붙습니다.",
       lose: "눈보라가 부는 동안 진창 둑길은 지킬 수 없습니다. 둑길 출구와 방어 지점 앞을 지키고, 맨 아래 오른쪽 빈칸에 바람막이를 세우세요. 올라온 벽 위쪽 고지는 처음부터 안전합니다." },
-    { code: "IM-02", name: "생울타리", map: MAP_C2.bocage, bg: null, hz: 0.5, ep: 2, startCost: 16, mul: { hp: 0.378, atk: 0.468, def: 0.8 }, rmul: { hp: 0.8, atk: 0.55 },
-      wind: { dir: 3, first: 22, every: 32, dur: 10 },   // from the south, up from the bottom road
+    { code: "IM-02", name: "생울타리", map: MAP_C2.bocage, bg: null, hz: 0.5, ep: 2, startCost: 16, mul: { hp: 0.336, atk: 0.416, def: 0.8 }, rmul: { hp: 0.81, atk: 0.45 },
+      wind: { dir: 3, first: 22, every: 32, dur: 14 },   // from the south, up from the bottom road
       // gates: 0 the top, 1 the left (both into the plaza), 2 the bottom road. POST: the white snipers already on the bottom road, holding it until late
-      // three surges with lulls between: the packs learn the plaza (6-30), all three gates at once at 70, and at 80 the snipers get up off the bottom road and walk it; the last push 95-116
-      waves: (() => { const POST = (x, y, i) => ({ at: [x, y], until: 80 + (4 - i) * 6 }), posts = [[3, 6], [5, 6], [7, 6], [8, 5], [10, 5]];   // five along the bottom road, each a match for a vanguard; from 80 on they get up one by one, the nearest the point first
+      // three surges with lulls between: the packs learn the plaza (6-30), all three gates at once at 70, the last push 95-116; the ten snipers hold the bottom road until 120 (after the last wave)
+      waves: (() => { const POST = (x, y, i) => ({ at: [x, y], until: 120 }), posts = [[2, 6], [3, 6], [4, 6], [5, 6], [6, 6], [7, 6], [7, 5], [8, 5], [9, 5], [10, 5]];   // the designer's ten: every bottom-road square but two, held until after the last wave
         return W1([...posts.map(([x, y], i) => [0.5, "snowsniper", 2, 1, 0, POST(x, y, i)]),
         [6, "yfang", 1, 4, 1.2], [14, "chouang", 0, 1], [24, "yfang", 0, 4, 1.1],
-        [40, "chouang", 1, 2, 2.5], [42, "yfang", 2, 2, 1.5], [52, "yrazor", 0, 1], [53, "yfang", 2, 4, 1.1],
-        [70, "yfang", 0, 4, 1], [70, "yfang", 1, 4, 1], [71, "yfang", 2, 3, 1], [73, "chouang", 2, 2, 2],
-        [95, "chouang", 1, 3, 1.8], [96, "yrazor", 2, 1], [102, "yfang", 0, 5, 1], [108, "yrazor", 1, 2, 2], [109, "chouang", 0, 2, 2], [114, "yfang", 2, 5, 0.9], [116, "yrazor", 0, 1]]); })(),
-      boss: ["", ""], desc: "생울타리 사이의 길. 아래쪽 길에는 처음부터 설원 저격수 다섯이 자리를 잡고 있다가, 80초부터는 남은 저격수가 방어 지점에 가까운 쪽부터 하나씩 일어나 아래쪽 길을 걸어옵니다. 눈보라는 남쪽, 아래쪽 길에서 불어옵니다. 빠른 적이 길을 돌파해 옵니다. 저격수는 마법에 강하고 멀리서 쏘며, 얼어붙은 가사인격에게 훨씬 큰 피해를 줍니다. 눈보라가 부는 동안에는 모습을 감춥니다. 아래쪽 길로도 적이 오니, 저격수를 일찍 쓰러뜨려야 화망을 세울 수 있습니다. 생울타리는 올라온 벽이라 눈보라를 막습니다.",
+        [40, "chouang", 1, 1], [42, "yfang", 2, 2, 1.5], [52, "yrazor", 0, 1], [53, "yfang", 2, 4, 1.1],
+        [70, "yfang", 0, 4, 1], [70, "yfang", 1, 4, 1], [71, "yfang", 2, 3, 1],
+        [95, "chouang", 1, 1], [96, "yrazor", 2, 1], [102, "yfang", 0, 5, 1], [108, "yrazor", 1, 2, 2], [114, "yfang", 2, 5, 0.9], [116, "yrazor", 0, 1]]); })(),
+      boss: ["", ""], desc: "생울타리 사이의 길. 아래쪽 길에는 처음부터 설원 저격수들이 빼곡히 자리를 잡고 오래 버팁니다. 눈보라는 남쪽, 아래쪽 길에서 불어옵니다. 빠른 적이 길을 돌파해 옵니다. 저격수는 마법에 강하고 멀리서 쏘며, 얼어붙은 가사인격에게 훨씬 큰 피해를 줍니다. 눈보라가 부는 동안에는 모습을 감춥니다. 아래쪽 길로도 적이 오니, 저격수를 일찍 쓰러뜨려야 화망을 세울 수 있습니다. 생울타리는 올라온 벽이라 눈보라를 막습니다.",
       lose: "저격수는 눈보라가 그친 사이에 물리 화력으로 하나씩 잡으세요. 저격수가 남아 있는 동안 고지대에 세운 가사인격은 계속 노려집니다." },
-    { code: "IM-03", name: "지옥 종대", map: MAP_C2.village, bg: null, hz: 0.5, ep: 2, startCost: 16, mul: { hp: 0.16, atk: 0.215, def: 0.7 }, rmul: { hp: 0.7, atk: 0.55 },
+    { code: "IM-03", name: "지옥 종대", map: MAP_C2.village, bg: null, hz: 0.5, ep: 2, startCost: 16, mul: { hp: 0.17, atk: 0.23, def: 0.7 }, rmul: { hp: 0.47, atk: 0.25 },
       wind: { dir: 3, first: 22, every: 32, dur: 14 },   // from the south, up the hounds' road: whoever holds a square shelters the rise behind it
       // gates: 0 the east (round over the north road: the firebottles), 1 the west (the ice-clad guards wait beside it), 2 the south (hounds and frost gunners)
       // the frost gunner first, the firebottles four to six seconds behind him (and now two or three together, with infantry in front of them); two lulls (34-44, 78-90);
@@ -1336,13 +1336,13 @@
       // marksmen still sitting get up and walk for the points (100-134)
       waves: (() => { const CA = { via: [[11, 2], [11, 4], [2, 4], [2, 2], [0, 2]] }, CB = { via: [[2, 2], [2, 4], [11, 4], [11, 2], [13, 6]] }, LB = { via: [[2, 4], [2, 2], [11, 2], [11, 4], [13, 6]] }, RA = { via: [[11, 2], [2, 2], [2, 4], [11, 4], [0, 2]] },
         POST = (x, y) => ({ at: [x, y], until: 120 });   // late on they give up the square and walk for the point
-        return W1([...[[1, 1], [1, 3], [12, 4], [12, 6], [8, 2]].map(([x, y]) => [0.5, "chxelite", 0, 1, 0, POST(x, y)]),   // the squares before both points, and the middle of the ice
+        return W1([...[[1, 1], [1, 3], [1, 5], [12, 4], [12, 6], [7, 4], [8, 3]].map(([x, y]) => [0.5, "chxelite", 0, 1, 0, POST(x, y)]),   // the designer's seven: the squares before both points and the gates, and the middle of the ice
         [16, "yfang", 3, 2, 1.4, LB], [24, "yfang", 3, 3, 1.3, LB], [32, "chouang", 2, 2, 1.5, RA],
         [48, "icestalker", 0, 2, 2.5, CA], [54, "bomber", 2, 1, 0, { air: [[11, 2], [2, 2], [2, 4], [0, 2]] }], [58, "icestalker", 1, 2, 2.5, CB], [64, "yshield", 0, 1, 0, CA], [70, "yfang", 3, 3, 1.1, LB],
         [76, "chouang", 2, 2, 1.2, RA], [78, "bomber", 3, 1, 0, { air: [[2, 4], [11, 4], [11, 2], [13, 6]] }], [82, "icestalker", 1, 3, 2, CB],
         [100, "yshield", 1, 1, 0, CB], [101, "soldier", 2, 2, 2, RA], [106, "icestalker", 0, 2, 2, CA], [108, "yfang", 3, 3, 1, LB], [112, "bomber", 0, 2, 3, { air: [[11, 2], [11, 4], [2, 4], [2, 2], [0, 2]] }],
         [118, "chouang", 2, 3, 1, RA], [119, "yshield", 0, 1, 0, CA], [126, "icestalker", 1, 3, 2, CB], [128, "yfang", 3, 4, 0.9, LB], [132, "soldier", 2, 3, 1.5, RA], [134, "yshield", 1, 1, 0, CB]]); })(),
-      boss: ["", ""], desc: "밤의 마르스 연병장. 적은 얼음판 한가운데와 동쪽, 남서쪽에서 나와 얼음판을 한 바퀴 돈 뒤 방어 지점으로 갑니다. 방어 지점은 북서쪽과 남동쪽, 둘입니다. 방어 지점 앞과 얼음판 한가운데에는 단단한 엽총수 다섯이 처음부터 앉아 있다가, 120초가 지나면 남은 엽총수가 모두 일어나 방어 지점으로 걸어옵니다. 흰 망토의 설원 척후병은 빙판 위에서는 보이지 않습니다. 얼음폭탄 드론은 얼음판을 한 바퀴 돈 뒤 반대편 방어 지점으로 날아가고, 폭탄을 한 번 떨어뜨리면 바로 빠져나갑니다.",
+      boss: ["", ""], desc: "밤의 마르스 연병장. 적은 얼음판 한가운데와 동쪽, 남서쪽에서 나와 얼음판을 한 바퀴 돈 뒤 방어 지점으로 갑니다. 방어 지점은 북서쪽과 남동쪽, 둘입니다. 방어 지점과 출입구 앞, 그리고 얼음판 한가운데에는 단단한 엽총수 일곱이 처음부터 앉아 있다가, 120초가 지나면 남은 엽총수가 모두 일어나 방어 지점으로 걸어옵니다. 흰 망토의 설원 척후병은 빙판 위에서는 보이지 않습니다. 얼음폭탄 드론은 얼음판을 한 바퀴 돈 뒤 반대편 방어 지점으로 날아가고, 폭탄을 한 번 떨어뜨리면 바로 빠져나갑니다.",
       lose: "앉아 있는 엽총수는 선봉과 근위를 바로 옆 칸에 붙여 쓰러뜨리세요. 그 칸을 되찾아야 방어 지점 앞이 막힙니다." },
     { code: "IM-05", name: "목 없는 장군", map: MAP_C2.camp, bg: null, hz: 0.5, ep: 2, startCost: 12, mul: { hp: 0.47, atk: 0.45, def: 0.72 }, rmul: { hp: 0.9, atk: 0.85 },
       // gates: 0 the sunken road (top side), 1 the camp's own gate under the guillotine, 2 the ravine (bottom side). Three surges: the scouts (6-34), the general and his column (48-100),
@@ -1486,7 +1486,7 @@
       lose: "꺼진 등 옆 칸에 가사인격을 배치하고 4초를 버티면 등이 켜집니다. 동쪽 등이 켜지면 묶인 셋이 풀려 남쪽 문 앞을 막습니다. 북서쪽 고지의 엽병은 등으로 비출 수 없으니 근거리 가사인격을 곁에 붙이세요." },
     // act 2, the Emperor's order: grapeshot. A gun fires down its line on a timetable, warned first. It takes a third of whatever of ours stands in the line, armour or no,
     // and far less of theirs. Stand on the square before the muzzle and it is silent; hold that square eight seconds and the gun is ours, firing only at them
-    { code: "WL-04", name: "성당 계단", map: MAP_C3.steps, bg: null, hz: 0.5, ep: 3, startCost: 14, mul: { hp: 1.25, atk: 1.24, def: 0.85 }, rmul: { hp: 1, atk: 0.75 },
+    { code: "WL-04", name: "성당 계단", map: MAP_C3.steps, bg: null, hz: 0.5, ep: 3, startCost: 14, mul: { hp: 1.06, atk: 1.166, def: 0.85 }, rmul: { hp: 1, atk: 0.75 },
       // every third shot of each gun goes down the outer row of its street; a gun of ours fires every 13 s down both rows and takes 30% of each foe's strength
       volleys: [{ first: 30, every: 26, warn: 4, dmg: 700, pct: 0.35, foe: 0.3, mine: 1.7, mineEvery: 13, minePct: 0.3, capture: 8, linger: 20, muzzle: [11, 2], gun: [13, 2], tiles: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((x) => [x, 2]),
                   alt: { every: 3, tiles: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((x) => [x, 1]) } },

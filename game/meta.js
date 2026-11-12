@@ -25,30 +25,30 @@
       fixed: [["sunae", 0, 30], ["lilith", 0, 30], ["teka", 0, 30], ["ayaki", 0, 30]] },
     // chapter 2 「지옥 기계」: opens once BL-07 is cleared (in TD.STAGES it sits after the lessons, so it names what it follows)
     { ep: 2, after: "BL-07", cost: 12, first: { orb: 2400 }, coin: 2100, exp: 150, rec: "정예화 0 · Lv.45" },
-    { ep: 2, cost: 12, first: { orb: 2400 }, coin: 2200, exp: 155, rec: "정예화 1 · Lv.1" },
-    { ep: 2, cost: 12, first: { orb: 2400 }, coin: 2300, exp: 160, rec: "정예화 1 · Lv.5" },
-    { ep: 2, cost: 15, first: { orb: 2400 }, coin: 2400, exp: 170, rec: "정예화 1 · Lv.10" },   // IM-04: Smoke turns up only after it, in the story
-    { ep: 2, cost: 15, first: { orb: 3000 }, coin: 2800, exp: 190, rec: "정예화 1 · Lv.15" },
-    { ep: 2, cost: 15, first: { orb: 2400 }, coin: 2600, exp: 180, rec: "정예화 1 · Lv.20" },
-    { ep: 2, cost: 15, first: { orb: 2400 }, coin: 2700, exp: 185, rec: "정예화 1 · Lv.20" },
+    { ep: 2, cost: 12, first: { orb: 2400 }, coin: 2200, exp: 155, rec: "정예화 1 · Lv.15" },
+    { ep: 2, cost: 12, first: { orb: 2400 }, coin: 2300, exp: 160, rec: "정예화 1 · Lv.20" },
+    { ep: 2, cost: 15, first: { orb: 2400 }, coin: 2400, exp: 170, rec: "정예화 1 · Lv.25" },   // IM-04: Smoke turns up only after it, in the story
+    { ep: 2, cost: 15, first: { orb: 3000 }, coin: 2800, exp: 190, rec: "정예화 1 · Lv.30" },
+    { ep: 2, cost: 15, first: { orb: 2400 }, coin: 2600, exp: 180, rec: "정예화 1 · Lv.35" },
+    { ep: 2, cost: 15, first: { orb: 2400 }, coin: 2700, exp: 185, rec: "정예화 1 · Lv.35" },
     { ep: 2, story: "IM-ST1:story", cost: 0, first: { orb: 0 }, coin: 0, exp: 0, rec: "" },   // IM-ST1: a story-only entry after the crossroads; reading it counts as clearing it, and it costs nothing
-    { ep: 2, cost: 18, first: { orb: 2400 }, coin: 2800, exp: 195, rec: "정예화 1 · Lv.25" },
-    { ep: 2, cost: 18, first: { orb: 2400 }, coin: 2900, exp: 200, rec: "정예화 1 · Lv.30" },
-    { ep: 2, cost: 18, first: { orb: 3600 }, coin: 3400, exp: 230, rec: "정예화 1 · Lv.30" },
+    { ep: 2, cost: 18, first: { orb: 2400 }, coin: 2800, exp: 195, rec: "정예화 1 · Lv.40" },
+    { ep: 2, cost: 18, first: { orb: 2400 }, coin: 2900, exp: 200, rec: "정예화 1 · Lv.45" },
+    { ep: 2, cost: 18, first: { orb: 3600 }, coin: 3400, exp: 230, rec: "정예화 1 · Lv.45" },
     { ep: 2, cost: 3, first: { orb: 600 }, coin: 600, exp: 40, rec: "고정 편성", branch: "IM-01", open: "BL-07",   // TR-03: the blizzard lesson, under IM-01, open with chapter 2
       fixed: [["tao", 0, 30], ["sunae", 0, 30], ["alpha", 0, 30], ["lilith", 0, 30], ["ayaki", 0, 30]] },
     // chapter 3 (working title 「쏘지 않은 탄환」): opens once IM-10 is cleared (in TD.STAGES it sits after TR-03, so it names what it follows)
-    { ep: 3, after: "IM-10", cost: 18, first: { orb: 2400 }, coin: 3000, exp: 210, rec: "정예화 1 · Lv.35" },
-    { ep: 3, cost: 18, first: { orb: 2400 }, coin: 3100, exp: 215, rec: "정예화 1 · Lv.40" },
-    { ep: 3, cost: 18, first: { orb: 2400 }, coin: 3200, exp: 220, rec: "정예화 1 · Lv.45" },
-    { ep: 3, cost: 18, first: { orb: 2400 }, coin: 3300, exp: 225, rec: "정예화 1 · Lv.50" },
-    { ep: 3, cost: 21, first: { orb: 3000 }, coin: 3600, exp: 240, rec: "정예화 1 · Lv.55" },
+    { ep: 3, after: "IM-10", cost: 18, first: { orb: 2400 }, coin: 3000, exp: 210, rec: "정예화 1 · Lv.50" },
+    { ep: 3, cost: 18, first: { orb: 2400 }, coin: 3100, exp: 215, rec: "정예화 1 · Lv.55" },
+    { ep: 3, cost: 18, first: { orb: 2400 }, coin: 3200, exp: 220, rec: "정예화 1 · Lv.60" },
+    { ep: 3, cost: 18, first: { orb: 2400 }, coin: 3300, exp: 225, rec: "정예화 1 · Lv.65" },
+    { ep: 3, cost: 21, first: { orb: 3000 }, coin: 3600, exp: 240, rec: "정예화 1 · Lv.70" },
     { ep: 3, story: "WL-ST:story", cost: 0, first: { orb: 0 }, coin: 0, exp: 0, rec: "" },   // WL-ST: the confessional, a story-only entry
-    { ep: 3, cost: 21, first: { orb: 2400 }, coin: 3500, exp: 235, rec: "정예화 1 · Lv.55" },
+    { ep: 3, cost: 21, first: { orb: 2400 }, coin: 3500, exp: 235, rec: "정예화 1 · Lv.70" },
     { ep: 3, story: "WL-ST2:story", cost: 0, first: { orb: 0 }, coin: 0, exp: 0, rec: "" },   // WL-ST2: the empty saddle, a story-only entry
-    { ep: 3, cost: 21, first: { orb: 2400 }, coin: 3600, exp: 240, rec: "정예화 1 · Lv.60" },
-    { ep: 3, cost: 24, first: { orb: 3600 }, coin: 4000, exp: 260, rec: "정예화 1 · Lv.60" },
-    { ep: 3, cost: 24, first: { orb: 3600 }, coin: 4200, exp: 270, rec: "정예화 1 · Lv.60" },
+    { ep: 3, cost: 21, first: { orb: 2400 }, coin: 3600, exp: 240, rec: "정예화 2 · Lv.1" },
+    { ep: 3, cost: 24, first: { orb: 3600 }, coin: 4000, exp: 260, rec: "정예화 2 · Lv.1" },
+    { ep: 3, cost: 24, first: { orb: 3600 }, coin: 4200, exp: 270, rec: "정예화 2 · Lv.1" },
     // the supply operations (자원 수집): open on their days, once the story is far enough along
     // (the same order as the supply operations in TD.STAGES)
     ...Object.keys(window.BSL_ECON.SUPPLY).flatMap((site) => Array.from({ length: window.BSL_ECON.SUPPLY[site].tiers }, (_, k) => k + 1).map((tier) => { const sm = window.BSL_ECON.SUPPLY_META(site, tier);
