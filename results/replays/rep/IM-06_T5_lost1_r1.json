@@ -7,8 +7,8 @@
  "K": 1,
  "variant": "none",
  "stageMul": {
-  "hp": 0.7,
-  "atk": 0.83,
+  "hp": 0.83,
+  "atk": 0.88,
   "def": 0.74
  },
  "deck": "T5",
@@ -21,10 +21,29 @@
   0
  ],
  "family": "IM-06:138kt20",
- "gameHash": "656ff27f0786",
+ "gameHash": "5b7205f38c7f",
  "rng": "Math.random replaced before `new TD.Game` by im_sim's seed(n): a = n*7919, mulberry32-style step; nothing else draws from it between seeding and the game",
  "stepping": "fixed g.update(1/30) per frame, max 420*30 frames; actions run at the start of a frame, before that frame's update, in log order",
  "squad": [
+  {
+   "id": "sniper",
+   "elite": 0,
+   "lvl": 40,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 4,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.779245283018868,
+    "atk": 0.688,
+    "def": 0.6984126984126984
+   }
+  },
   {
    "id": "yui",
    "elite": 0,
@@ -45,7 +64,7 @@
    }
   },
   {
-   "id": "atat",
+   "id": "lulu",
    "elite": 0,
    "lvl": 40,
    "pot": 1,
@@ -58,9 +77,9 @@
     0
    ],
    "mult": {
-    "hp": 0.5896536796536797,
-    "atk": 0.6209432529891821,
-    "def": 0.5941818181818183
+    "hp": 0.5669376959247648,
+    "atk": 0.5710796489485014,
+    "def": 0.6060139860139859
    }
   },
   {
@@ -102,7 +121,7 @@
    }
   },
   {
-   "id": "lilith",
+   "id": "nana",
    "elite": 0,
    "lvl": 40,
    "pot": 1,
@@ -115,13 +134,13 @@
     0
    ],
    "mult": {
-    "hp": 0.77,
-    "atk": 0.7595744680851064,
-    "def": 0.7222222222222222
+    "hp": 0.799373040752351,
+    "atk": 0.7580398162327718,
+    "def": 0.8
    }
   },
   {
-   "id": "geomseon",
+   "id": "skakea2",
    "elite": 0,
    "lvl": 40,
    "pot": 1,
@@ -134,28 +153,9 @@
     0
    ],
    "mult": {
-    "hp": 0.563265306122449,
-    "atk": 0.5798897661254283,
-    "def": 0.6157114900754822
-   }
-  },
-  {
-   "id": "bongeun",
-   "elite": 0,
-   "lvl": 40,
-   "pot": 1,
-   "skillIdx": 0,
-   "skill": "S1",
-   "slv": 4,
-   "sm": [
-    0,
-    0,
-    0
-   ],
-   "mult": {
-    "hp": 0.599610633727175,
-    "atk": 0.5180573495220873,
-    "def": 0.536525974025974
+    "hp": 0.6115830115830115,
+    "atk": 0.5992396958783514,
+    "def": 0.6137628605161073
    }
   },
   {
@@ -185,8 +185,8 @@
   "over": "win",
   "life": 10,
   "lost": 0,
-  "winTime": 186.99999999999196,
-  "frames": 5610,
+  "winTime": 191.36666666665838,
+  "frames": 5741,
   "kills": 53,
   "total": 53
  },
@@ -195,7 +195,7 @@
    "t": 7.033333333333318,
    "k": 211,
    "a": "deploy",
-   "ci": 0,
+   "ci": 1,
    "id": "yui",
    "x": 2,
    "y": 3,
@@ -204,80 +204,80 @@
    "cost": 17
   },
   {
-   "t": 24.033333333333687,
-   "k": 721,
+   "t": 28.033333333333886,
+   "k": 841,
    "a": "deploy",
-   "ci": 2,
-   "id": "irins",
+   "ci": 4,
+   "id": "capy",
    "x": 4,
    "y": 1,
    "dir": 1,
-   "uid": 9,
-   "cost": 17
+   "uid": 11,
+   "cost": 21
   },
   {
-   "t": 35.03333333333391,
-   "k": 1051,
+   "t": 45.03333333333334,
+   "k": 1351,
    "a": "deploy",
-   "ci": 6,
-   "id": "bongeun",
+   "ci": 3,
+   "id": "irins",
    "x": 3,
    "y": 1,
    "dir": 1,
-   "uid": 13,
-   "cost": 11
-  },
-  {
-   "t": 52.03333333333294,
-   "k": 1561,
-   "a": "deploy",
-   "ci": 5,
-   "id": "geomseon",
-   "x": 5,
-   "y": 3,
-   "dir": 2,
-   "uid": 16,
+   "uid": 14,
    "cost": 17
   },
   {
-   "t": 60.033333333332486,
-   "k": 1801,
+   "t": 62.03333333333237,
+   "k": 1861,
    "a": "deploy",
-   "ci": 1,
-   "id": "atat",
+   "ci": 2,
+   "id": "lulu",
+   "x": 6,
+   "y": 4,
+   "dir": 3,
+   "uid": 20,
+   "cost": 17
+  },
+  {
+   "t": 80.03333333333136,
+   "k": 2401,
+   "a": "deploy",
+   "ci": 6,
+   "id": "skakea2",
    "x": 2,
    "y": 4,
    "dir": 0,
-   "uid": 20,
-   "cost": 8
-  },
-  {
-   "t": 81.0333333333313,
-   "k": 2431,
-   "a": "deploy",
-   "ci": 3,
-   "id": "capy",
-   "x": 11,
-   "y": 4,
-   "dir": 3,
-   "uid": 25,
-   "cost": 21
+   "uid": 23,
+   "cost": 18
   },
   {
    "t": 97.03333333333039,
    "k": 2911,
    "a": "deploy",
-   "ci": 4,
-   "id": "lilith",
+   "ci": 5,
+   "id": "nana",
+   "x": 11,
+   "y": 4,
+   "dir": 3,
+   "uid": 32,
+   "cost": 17
+  },
+  {
+   "t": 106.03333333332988,
+   "k": 3181,
+   "a": "deploy",
+   "ci": 0,
+   "id": "sniper",
    "x": 12,
    "y": 1,
    "dir": 2,
-   "uid": 33,
-   "cost": 16
+   "uid": 36,
+   "cost": 9
   },
   {
-   "t": 107.03333333332982,
-   "k": 3211,
+   "t": 116.03333333332931,
+   "k": 3481,
    "a": "deploy",
    "ci": 7,
    "id": "jayeon",
@@ -286,18 +286,6 @@
    "dir": 1,
    "uid": 37,
    "cost": 10
-  },
-  {
-   "t": 157.53333333332696,
-   "k": 4726,
-   "a": "deploy",
-   "ci": 5,
-   "id": "geomseon",
-   "x": 5,
-   "y": 3,
-   "dir": 2,
-   "uid": 53,
-   "cost": 26
   }
  ],
  "plan": {
@@ -309,37 +297,37 @@
     "d": 0
    },
    {
-    "id": "irins",
+    "id": "capy",
     "x": 4,
     "y": 1,
     "d": 1
    },
    {
-    "id": "bongeun",
+    "id": "irins",
     "x": 3,
     "y": 1,
     "d": 1
    },
    {
-    "id": "geomseon",
-    "x": 5,
-    "y": 3,
-    "d": 2
+    "id": "lulu",
+    "x": 6,
+    "y": 4,
+    "d": 3
    },
    {
-    "id": "atat",
+    "id": "skakea2",
     "x": 2,
     "y": 4,
     "d": 0
    },
    {
-    "id": "capy",
+    "id": "nana",
     "x": 11,
     "y": 4,
     "d": 3
    },
    {
-    "id": "lilith",
+    "id": "sniper",
     "x": 12,
     "y": 1,
     "d": 2
@@ -358,7 +346,6 @@
    "fire": 1,
    "melt": 1,
    "lamp": 1
-  },
-  "_par": "[[[\"yui\",2,3,0,null,null,null],[\"irins\",4,1,1,null,null,null],[\"bongeun\",3,1,1,null,null,null],[\"geomseon\",5,3,2,null,null,null],[\"nana\",2,4,0,null,null,null],[\"capy\",11,4,3,null,null,null],[\"lilith\",12,1,2,null,null,null],[\"jayeon\",1,1,1,null,null,null]],{},{},[],{\"fire\":1,\"melt\":1,\"lamp\":1}]"
+  }
  }
 }

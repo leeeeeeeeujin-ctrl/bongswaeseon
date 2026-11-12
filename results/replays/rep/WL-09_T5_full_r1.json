@@ -1,0 +1,538 @@
+{
+ "stage": "WL-09",
+ "name": "튈르리",
+ "level": "E1L30",
+ "lost": 0,
+ "seed": 1,
+ "K": 1,
+ "variant": "none",
+ "stageMul": {
+  "hp": 0.97,
+  "atk": 1.03,
+  "def": 0.85
+ },
+ "deck": "T5",
+ "criterion": "lost<=0 (full block)",
+ "fiveSeedLost": [
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "family": "new:WL-09:95ttc6",
+ "gameHash": "5b7205f38c7f",
+ "rng": "Math.random replaced before `new TD.Game` by im_sim's seed(n): a = n*7919, mulberry32-style step; nothing else draws from it between seeding and the game",
+ "stepping": "fixed g.update(1/30) per frame, max 420*30 frames; actions run at the start of a frame, before that frame's update, in log order",
+ "squad": [
+  {
+   "id": "hakuren",
+   "elite": 1,
+   "lvl": 30,
+   "pot": 1,
+   "skillIdx": 1,
+   "skill": "S2",
+   "slv": 6,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.6517355282395625,
+    "atk": 1,
+    "def": 0.7449152542372881
+   }
+  },
+  {
+   "id": "ker",
+   "elite": 1,
+   "lvl": 30,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 6,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.6107535686017631,
+    "atk": 0.7643853250375456,
+    "def": 0.6324490297224269
+   }
+  },
+  {
+   "id": "hiro",
+   "elite": 1,
+   "lvl": 30,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 6,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.8980883466889926,
+    "atk": 0.8798640412564462,
+    "def": 0.8790627362055934
+   }
+  },
+  {
+   "id": "lilith",
+   "elite": 1,
+   "lvl": 30,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 6,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.8935185185185186,
+    "atk": 0.8886918833727344,
+    "def": 0.8713991769547325
+   }
+  },
+  {
+   "id": "tao",
+   "elite": 1,
+   "lvl": 30,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 6,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.9074074074074073,
+    "atk": 0.8705694942254082,
+    "def": 0.870014245014245
+   }
+  },
+  {
+   "id": "rabi",
+   "elite": 1,
+   "lvl": 30,
+   "pot": 1,
+   "skillIdx": 1,
+   "skill": "S2",
+   "slv": 6,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.7152414046388113,
+    "atk": 0.6906123063035956,
+    "def": 0.712463768115942
+   }
+  },
+  {
+   "id": "silphy",
+   "elite": 1,
+   "lvl": 30,
+   "pot": 1,
+   "skillIdx": 1,
+   "skill": "S2",
+   "slv": 6,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.6617602657004831,
+    "atk": 0.7218670076726342,
+    "def": 0.754727398205659
+   }
+  },
+  {
+   "id": "brick",
+   "elite": 1,
+   "lvl": 30,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 6,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.8842023842023842,
+    "atk": 0.9071382428940568,
+    "def": 0.8790627362055934
+   }
+  },
+  {
+   "id": "jayeon",
+   "elite": 1,
+   "lvl": 30,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 6,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.9024559318676966,
+    "atk": 0.8835313300722105,
+    "def": 0.8940205265506471
+   }
+  }
+ ],
+ "squadNote": "card order = squad order (card index ci in actions); Game(stageIdx, squad) receives {id, elite, mult, pot, skillIdx, slv, sm}; skill level and mastery by rung (sim.js skillRank, slv-r1); sm[k] = mastery of skill k",
+ "expected": {
+  "win": true,
+  "rwin": true,
+  "over": "win",
+  "life": 10,
+  "lost": 0,
+  "winTime": 219.1666666666568,
+  "frames": 6575,
+  "kills": 45,
+  "total": 45
+ },
+ "actions": [
+  {
+   "t": 0,
+   "k": 0,
+   "a": "deploy",
+   "ci": 4,
+   "id": "tao",
+   "x": 8,
+   "y": 1,
+   "dir": 0,
+   "uid": 1,
+   "cost": 11
+  },
+  {
+   "t": 9.033333333333312,
+   "k": 271,
+   "a": "deploy",
+   "ci": 5,
+   "id": "rabi",
+   "x": 2,
+   "y": 3,
+   "dir": 3,
+   "uid": 3,
+   "cost": 10
+  },
+  {
+   "t": 17.066666666666674,
+   "k": 512,
+   "a": "skill",
+   "ci": 4,
+   "id": "tao",
+   "uid": 1
+  },
+  {
+   "t": 17.10000000000001,
+   "k": 513,
+   "a": "deploy",
+   "ci": 8,
+   "id": "jayeon",
+   "x": 5,
+   "y": 4,
+   "dir": 3,
+   "uid": 7,
+   "cost": 12
+  },
+  {
+   "t": 32.03333333333408,
+   "k": 961,
+   "a": "deploy",
+   "ci": 1,
+   "id": "ker",
+   "x": 9,
+   "y": 5,
+   "dir": 3,
+   "uid": 10,
+   "cost": 19
+  },
+  {
+   "t": 39.866666666666966,
+   "k": 1196,
+   "a": "skill",
+   "ci": 5,
+   "id": "rabi",
+   "uid": 3
+  },
+  {
+   "t": 42.03333333333351,
+   "k": 1261,
+   "a": "deploy",
+   "ci": 0,
+   "id": "hakuren",
+   "x": 3,
+   "y": 2,
+   "dir": 3,
+   "uid": 13,
+   "cost": 10
+  },
+  {
+   "t": 48.03333333333317,
+   "k": 1441,
+   "a": "skill",
+   "ci": 0,
+   "id": "hakuren",
+   "uid": 13
+  },
+  {
+   "t": 50.69999999999968,
+   "k": 1521,
+   "a": "skill",
+   "ci": 4,
+   "id": "tao",
+   "uid": 1
+  },
+  {
+   "t": 50.733333333333015,
+   "k": 1522,
+   "a": "deploy",
+   "ci": 2,
+   "id": "hiro",
+   "x": 2,
+   "y": 1,
+   "dir": 3,
+   "uid": 14,
+   "cost": 17
+  },
+  {
+   "t": 62.03333333333237,
+   "k": 1861,
+   "a": "deploy",
+   "ci": 3,
+   "id": "lilith",
+   "x": 5,
+   "y": 2,
+   "dir": 2,
+   "uid": 18,
+   "cost": 18
+  },
+  {
+   "t": 71.03333333333187,
+   "k": 2131,
+   "a": "retreat",
+   "ci": 4,
+   "id": "tao",
+   "uid": 1,
+   "x": 8,
+   "y": 1,
+   "why": "plan"
+  },
+  {
+   "t": 72.03333333333181,
+   "k": 2161,
+   "a": "deploy",
+   "ci": 7,
+   "id": "brick",
+   "x": 5,
+   "y": 1,
+   "dir": 0,
+   "uid": 22,
+   "cost": 18
+  },
+  {
+   "t": 84.03333333333113,
+   "k": 2521,
+   "a": "deploy",
+   "ci": 6,
+   "id": "silphy",
+   "x": 8,
+   "y": 4,
+   "dir": 2,
+   "uid": 25,
+   "cost": 12
+  },
+  {
+   "t": 94.03333333333056,
+   "k": 2821,
+   "a": "skill",
+   "ci": 6,
+   "id": "silphy",
+   "uid": 25
+  },
+  {
+   "t": 94.23333333333055,
+   "k": 2827,
+   "a": "skill",
+   "ci": 0,
+   "id": "hakuren",
+   "uid": 13
+  },
+  {
+   "t": 140.43333333332794,
+   "k": 4213,
+   "a": "skill",
+   "ci": 0,
+   "id": "hakuren",
+   "uid": 13
+  },
+  {
+   "t": 142.03333333332785,
+   "k": 4261,
+   "a": "skill",
+   "ci": 6,
+   "id": "silphy",
+   "uid": 25
+  },
+  {
+   "t": 170.03333333332625,
+   "k": 5101,
+   "a": "skill",
+   "ci": 7,
+   "id": "brick",
+   "uid": 22
+  },
+  {
+   "t": 185.83333333332536,
+   "k": 5575,
+   "a": "deploy",
+   "ci": 4,
+   "id": "tao",
+   "x": 3,
+   "y": 3,
+   "dir": 1,
+   "uid": 61,
+   "cost": 17
+  },
+  {
+   "t": 186.6333333333253,
+   "k": 5599,
+   "a": "skill",
+   "ci": 0,
+   "id": "hakuren",
+   "uid": 13
+  },
+  {
+   "t": 190.03333333332512,
+   "k": 5701,
+   "a": "skill",
+   "ci": 6,
+   "id": "silphy",
+   "uid": 25
+  }
+ ],
+ "plan": {
+  "entries": [
+   {
+    "id": "tao",
+    "x": 8,
+    "y": 1,
+    "d": 0,
+    "until": 90
+   },
+   {
+    "id": "rabi",
+    "x": 2,
+    "y": 3,
+    "d": 3,
+    "from": 6
+   },
+   {
+    "id": "tao",
+    "x": 3,
+    "y": 3,
+    "d": 1,
+    "from": 90
+   },
+   {
+    "id": "jayeon",
+    "x": 5,
+    "y": 4,
+    "d": 3
+   },
+   {
+    "id": "ker",
+    "x": 9,
+    "y": 5,
+    "d": 3
+   },
+   {
+    "id": "hakuren",
+    "x": 3,
+    "y": 2,
+    "d": 3
+   },
+   {
+    "id": "hiro",
+    "x": 2,
+    "y": 1,
+    "d": 3
+   },
+   {
+    "id": "lilith",
+    "x": 5,
+    "y": 2,
+    "d": 2
+   },
+   {
+    "id": "brick",
+    "x": 5,
+    "y": 1,
+    "d": 0
+   },
+   {
+    "id": "silphy",
+    "x": 8,
+    "y": 4,
+    "d": 2,
+    "from": 44
+   },
+   {
+    "id": "silphy",
+    "x": 8,
+    "y": 4,
+    "d": 2,
+    "from": 35
+   }
+  ],
+  "skill": {
+   "tao": {
+    "m": 2
+   },
+   "ker": {
+    "m": 2
+   },
+   "brick": {
+    "m": 1,
+    "t": 170
+   }
+  },
+  "skillIdx": {
+   "ker": 0,
+   "hakuren": 1,
+   "silphy": 1,
+   "rabi": 1
+  },
+  "retreats": [
+   {
+    "id": "tao",
+    "t": 71
+   }
+  ],
+  "pol": {
+   "fire": 1,
+   "melt": 1,
+   "lamp": 0
+  },
+  "_par": "[[[\"tao\",8,1,0,null,90,null],[\"rabi\",2,3,3,6,null,null],[\"tao\",2,3,1,90,null,null],[\"jayeon\",5,4,3,null,null,null],[\"ker\",9,5,3,null,null,null],[\"hakuren\",3,2,3,null,null,null],[\"hiro\",2,1,3,null,null,null],[\"lilith\",5,2,2,null,null,null],[\"brick\",5,1,0,null,null,null],[\"silphy\",8,4,2,44,null,null],[\"silphy\",8,4,2,35,null,null]],{\"tao\":{\"m\":2},\"ker\":{\"m\":2},\"brick\":{\"m\":1,\"t\":170}},{\"ker\":0,\"hakuren\":1,\"silphy\":1,\"rabi\":1},[[\"silphy\",42],[\"tao\",71]],{\"fire\":1,\"melt\":1,\"lamp\":0}]"
+ }
+}

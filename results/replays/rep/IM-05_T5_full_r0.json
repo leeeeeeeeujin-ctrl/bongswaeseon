@@ -7,8 +7,8 @@
  "K": 1,
  "variant": "none",
  "stageMul": {
-  "hp": 0.4,
-  "atk": 0.42,
+  "hp": 0.47,
+  "atk": 0.45,
   "def": 0.72
  },
  "deck": "T5",
@@ -20,13 +20,13 @@
   0,
   0
  ],
- "family": "IM-05:581vqi",
- "gameHash": "656ff27f0786",
+ "family": "IM-05:dretal",
+ "gameHash": "5b7205f38c7f",
  "rng": "Math.random replaced before `new TD.Game` by im_sim's seed(n): a = n*7919, mulberry32-style step; nothing else draws from it between seeding and the game",
  "stepping": "fixed g.update(1/30) per frame, max 420*30 frames; actions run at the start of a frame, before that frame's update, in log order",
  "squad": [
   {
-   "id": "hakuren",
+   "id": "vanguard",
    "elite": 0,
    "lvl": 40,
    "pot": 1,
@@ -39,9 +39,28 @@
     0
    ],
    "mult": {
-    "hp": 0.5586407203020621,
-    "atk": 1,
-    "def": 0.6225
+    "hp": 0.8,
+    "atk": 0.7225806451612903,
+    "def": 0.7192307692307692
+   }
+  },
+  {
+   "id": "defender",
+   "elite": 0,
+   "lvl": 40,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 4,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.7498771498771499,
+    "atk": 0.8,
+    "def": 0.7387755102040816
    }
   },
   {
@@ -64,25 +83,6 @@
    }
   },
   {
-   "id": "alpha",
-   "elite": 0,
-   "lvl": 40,
-   "pot": 1,
-   "skillIdx": 0,
-   "skill": "S1",
-   "slv": 4,
-   "sm": [
-    0,
-    0,
-    0
-   ],
-   "mult": {
-    "hp": 0.6321625344352617,
-    "atk": 0.546555023923445,
-    "def": 0.5636068476977568
-   }
-  },
-  {
    "id": "ker",
    "elite": 0,
    "lvl": 40,
@@ -98,25 +98,6 @@
    "mult": {
     "hp": 0.509705753184014,
     "atk": 0.6637514384349827,
-    "def": 0.5188735177865612
-   }
-  },
-  {
-   "id": "sunae",
-   "elite": 0,
-   "lvl": 40,
-   "pot": 1,
-   "skillIdx": 0,
-   "skill": "S1",
-   "slv": 4,
-   "sm": [
-    0,
-    0,
-    0
-   ],
-   "mult": {
-    "hp": 0.509705753184014,
-    "atk": 0.6613316261203586,
     "def": 0.5188735177865612
    }
   },
@@ -140,7 +121,7 @@
    }
   },
   {
-   "id": "falchion",
+   "id": "rabi",
    "elite": 0,
    "lvl": 40,
    "pot": 1,
@@ -153,13 +134,13 @@
     0
    ],
    "mult": {
-    "hp": 0.5278886425227889,
-    "atk": 0.6146059571827489,
-    "def": 0.5997150997150997
+    "hp": 0.605402394876079,
+    "atk": 0.5659911023232822,
+    "def": 0.5815160349854227
    }
   },
   {
-   "id": "geomseon",
+   "id": "alpha2",
    "elite": 0,
    "lvl": 40,
    "pot": 1,
@@ -172,28 +153,9 @@
     0
    ],
    "mult": {
-    "hp": 0.563265306122449,
-    "atk": 0.5798897661254283,
-    "def": 0.6157114900754822
-   }
-  },
-  {
-   "id": "skakea2",
-   "elite": 0,
-   "lvl": 40,
-   "pot": 1,
-   "skillIdx": 0,
-   "skill": "S1",
-   "slv": 4,
-   "sm": [
-    0,
-    0,
-    0
-   ],
-   "mult": {
-    "hp": 0.6115830115830115,
-    "atk": 0.5992396958783514,
-    "def": 0.6137628605161073
+    "hp": 0.5913892467285917,
+    "atk": 0.5310217732577981,
+    "def": 0.6025138532234086
    }
   },
   {
@@ -223,8 +185,8 @@
   "over": "win",
   "life": 10,
   "lost": 0,
-  "winTime": 230.66666666665614,
-  "frames": 6920,
+  "winTime": 285.10000000001116,
+  "frames": 8553,
   "kills": 61,
   "total": 61
  },
@@ -233,285 +195,270 @@
    "t": 4.033333333333329,
    "k": 121,
    "a": "deploy",
-   "ci": 9,
-   "id": "brick",
+   "ci": 1,
+   "id": "defender",
    "x": 12,
    "y": 5,
-   "dir": 1,
+   "dir": 2,
    "uid": 9,
    "cost": 16
   },
   {
-   "t": 21.033333333333537,
-   "k": 631,
+   "t": 20.033333333333488,
+   "k": 601,
    "a": "deploy",
    "ci": 7,
-   "id": "geomseon",
+   "id": "brick",
    "x": 12,
    "y": 1,
    "dir": 1,
    "uid": 14,
-   "cost": 17
-  },
-  {
-   "t": 30.033333333333985,
-   "k": 901,
-   "a": "deploy",
-   "ci": 6,
-   "id": "falchion",
-   "x": 12,
-   "y": 6,
-   "dir": 3,
-   "uid": 19,
-   "cost": 9
+   "cost": 16
   },
   {
    "t": 32.000000000000746,
    "k": 960,
    "a": "skill",
-   "ci": 9,
-   "id": "brick",
+   "ci": 1,
+   "id": "defender",
    "uid": 9
   },
   {
-   "t": 42.03333333333351,
-   "k": 1261,
+   "t": 37.03333333333379,
+   "k": 1111,
    "a": "deploy",
-   "ci": 5,
-   "id": "hiro",
+   "ci": 2,
+   "id": "lulu",
    "x": 12,
    "y": 2,
    "dir": 3,
-   "uid": 21,
-   "cost": 15
+   "uid": 20,
+   "cost": 17
   },
   {
-   "t": 46.03333333333328,
-   "k": 1381,
-   "a": "retreat",
+   "t": 37.03333333333379,
+   "k": 1111,
+   "a": "skill",
    "ci": 7,
-   "id": "geomseon",
-   "uid": 14,
-   "x": 12,
-   "y": 1,
-   "why": "plan"
-  },
-  {
-   "t": 46.03333333333328,
-   "k": 1381,
-   "a": "deploy",
-   "ci": 2,
-   "id": "alpha",
-   "x": 11,
-   "y": 0,
-   "dir": 1,
-   "uid": 22,
-   "cost": 10
+   "id": "brick",
+   "uid": 14
   },
   {
    "t": 52.03333333333294,
    "k": 1561,
    "a": "deploy",
-   "ci": 0,
-   "id": "hakuren",
-   "x": 1,
-   "y": 5,
-   "dir": 1,
-   "uid": 26,
-   "cost": 8
-  },
-  {
-   "t": 66.96666666666543,
-   "k": 2009,
-   "a": "deploy",
-   "ci": 3,
-   "id": "ker",
-   "x": 1,
-   "y": 2,
-   "dir": 2,
-   "uid": 32,
-   "cost": 17
-  },
-  {
-   "t": 72.7666666666651,
-   "k": 2183,
-   "a": "deploy",
-   "ci": 1,
-   "id": "lulu",
-   "x": 11,
-   "y": 4,
-   "dir": 2,
-   "uid": 34,
-   "cost": 17
-  },
-  {
-   "t": 77.4333333333315,
-   "k": 2323,
-   "a": "skill",
-   "ci": 9,
-   "id": "brick",
-   "uid": 9
-  },
-  {
-   "t": 88.0333333333309,
-   "k": 2641,
-   "a": "deploy",
-   "ci": 8,
-   "id": "skakea2",
-   "x": 10,
-   "y": 3,
-   "dir": 3,
-   "uid": 40,
-   "cost": 18
-  },
-  {
-   "t": 116.06666666666264,
-   "k": 3482,
-   "a": "deploy",
-   "ci": 7,
-   "id": "geomseon",
+   "ci": 4,
+   "id": "hiro",
    "x": 12,
-   "y": 1,
-   "dir": 1,
-   "uid": 46,
-   "cost": 26
-  },
-  {
-   "t": 122.86666666666225,
-   "k": 3686,
-   "a": "skill",
-   "ci": 9,
-   "id": "brick",
-   "uid": 9
-  },
-  {
-   "t": 168.29999999999302,
-   "k": 5049,
-   "a": "skill",
-   "ci": 9,
-   "id": "brick",
-   "uid": 9
-  },
-  {
-   "t": 169.63333333332628,
-   "k": 5089,
-   "a": "deploy",
-   "ci": 2,
-   "id": "alpha",
-   "x": 3,
-   "y": 4,
+   "y": 6,
    "dir": 3,
-   "uid": 68,
+   "uid": 24,
    "cost": 15
   },
   {
-   "t": 213.73333333332377,
-   "k": 6412,
+   "t": 69.03333333333198,
+   "k": 2071,
+   "a": "deploy",
+   "ci": 3,
+   "id": "ker",
+   "x": 2,
+   "y": 3,
+   "dir": 3,
+   "uid": 30,
+   "cost": 17
+  },
+  {
+   "t": 72.2333333333318,
+   "k": 2167,
    "a": "skill",
-   "ci": 9,
+   "ci": 1,
+   "id": "defender",
+   "uid": 9
+  },
+  {
+   "t": 77.03333333333153,
+   "k": 2311,
+   "a": "deploy",
+   "ci": 5,
+   "id": "rabi",
+   "x": 11,
+   "y": 4,
+   "dir": 2,
+   "uid": 33,
+   "cost": 8
+  },
+  {
+   "t": 82.46666666666455,
+   "k": 2474,
+   "a": "skill",
+   "ci": 7,
    "id": "brick",
+   "uid": 14
+  },
+  {
+   "t": 112.46666666666285,
+   "k": 3374,
+   "a": "skill",
+   "ci": 1,
+   "id": "defender",
+   "uid": 9
+  },
+  {
+   "t": 127.8999999999953,
+   "k": 3837,
+   "a": "skill",
+   "ci": 7,
+   "id": "brick",
+   "uid": 14
+  },
+  {
+   "t": 152.6999999999939,
+   "k": 4581,
+   "a": "skill",
+   "ci": 1,
+   "id": "defender",
+   "uid": 9
+  },
+  {
+   "t": 173.33333333332607,
+   "k": 5200,
+   "a": "skill",
+   "ci": 7,
+   "id": "brick",
+   "uid": 14
+  },
+  {
+   "t": 192.93333333332495,
+   "k": 5788,
+   "a": "skill",
+   "ci": 1,
+   "id": "defender",
+   "uid": 9
+  },
+  {
+   "t": 218.76666666665682,
+   "k": 6563,
+   "a": "skill",
+   "ci": 7,
+   "id": "brick",
+   "uid": 14
+  },
+  {
+   "t": 233.166666666656,
+   "k": 6995,
+   "a": "skill",
+   "ci": 1,
+   "id": "defender",
+   "uid": 9
+  },
+  {
+   "t": 238.16666666665571,
+   "k": 7145,
+   "a": "deploy",
+   "ci": 6,
+   "id": "alpha2",
+   "x": 12,
+   "y": 6,
+   "dir": 0,
+   "uid": 66,
+   "cost": 7
+  },
+  {
+   "t": 264.19999999999453,
+   "k": 7926,
+   "a": "skill",
+   "ci": 7,
+   "id": "brick",
+   "uid": 14
+  },
+  {
+   "t": 273.40000000000185,
+   "k": 8202,
+   "a": "skill",
+   "ci": 1,
+   "id": "defender",
    "uid": 9
   }
  ],
  "plan": {
   "entries": [
    {
-    "id": "brick",
+    "id": "defender",
     "x": 12,
     "y": 5,
-    "d": 1
+    "d": 2
    },
    {
-    "id": "geomseon",
+    "id": "brick",
     "x": 12,
     "y": 1,
     "d": 1,
     "from": 4
    },
    {
-    "id": "falchion",
+    "id": "lulu",
     "x": 12,
-    "y": 6,
+    "y": 2,
     "d": 3
    },
    {
     "id": "hiro",
     "x": 12,
-    "y": 2,
+    "y": 6,
     "d": 3,
     "from": 33
    },
    {
-    "id": "alpha",
-    "x": 11,
-    "y": 0,
-    "d": 1,
-    "until": 167
-   },
-   {
-    "id": "hakuren",
-    "x": 1,
-    "y": 5,
-    "d": 1
-   },
-   {
-    "id": "alpha",
-    "x": 3,
-    "y": 4,
-    "d": 3,
-    "from": 167
-   },
-   {
     "id": "ker",
-    "x": 1,
-    "y": 2,
-    "d": 2,
-    "from": 2
+    "x": 2,
+    "y": 3,
+    "d": 3
    },
    {
-    "id": "lulu",
+    "id": "vanguard",
+    "x": 12,
+    "y": 1,
+    "d": 0
+   },
+   {
+    "id": "rabi",
     "x": 11,
     "y": 4,
     "d": 2
    },
    {
-    "id": "skakea2",
-    "x": 10,
+    "id": "alpha2",
+    "x": 2,
     "y": 3,
-    "d": 3
+    "d": 1,
+    "until": 24
    },
    {
-    "id": "sunae",
+    "id": "alpha2",
     "x": 12,
-    "y": 2,
-    "d": 1
+    "y": 6,
+    "d": 0,
+    "from": 24
    }
   ],
   "skill": {
-   "brick": {
+   "defender": {
     "m": 1,
     "t": 32
-   },
-   "ker": {
-    "m": 1,
-    "t": 14
-   },
-   "hakuren": {
-    "m": 2
    }
   },
   "skillIdx": {},
   "retreats": [
    {
-    "id": "geomseon",
-    "t": 46
+    "id": "vanguard",
+    "t": 49
    }
   ],
   "pol": {
-   "fire": 1,
+   "fire": 0,
    "melt": 0,
    "lamp": 1
   },
-  "_par": "[[[\"brick\",12,5,1,null,null,null],[\"geomseon\",12,1,1,4,null,null],[\"falchion\",12,6,3,null,null,null],[\"hiro\",12,2,3,33,null,null],[\"alpha\",11,0,1,null,167,null],[\"belina\",1,5,1,null,null,null],[\"alpha\",3,4,3,167,null,null],[\"ker\",1,2,2,2,null,null],[\"lulu\",11,4,2,null,null,null],[\"skakea2\",10,3,3,null,null,null],[\"sunae\",12,2,1,null,null,null]],{\"brick\":{\"m\":1,\"t\":32},\"belina\":{\"m\":2},\"ker\":{\"m\":1,\"t\":14}},{},[[\"geomseon\",46]],{\"fire\":1,\"melt\":0,\"lamp\":1}]"
+  "_par": "[[[\"defender\",12,5,2,null,null,null],[\"brick\",12,1,1,4,null,null],[\"lulu\",12,2,3,null,null,null],[\"hiro\",12,6,3,33,null,null],[\"ker\",2,3,3,null,null,null],[\"vanguard\",12,1,0,null,null,null],[\"rabi\",11,4,2,null,null,null],[\"alpha2\",2,3,1,null,24,null],[\"alpha2\",1,5,1,24,null,null]],{\"defender\":{\"m\":1,\"t\":32}},{},[[\"vanguard\",49]],{\"fire\":0,\"melt\":0,\"lamp\":1}]"
  }
 }
