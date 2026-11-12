@@ -2,6 +2,9 @@
 // speed of this machine for the solver: W worker processes each play the same full run (im_sim's IM-05 plan at E1L15, 30 fps, no pruning) N times
 //   node bench2.js [--workers W] [--n 6]  -> evals/s for the whole machine, ms per eval per worker
 "use strict";
+// a run listed on ci/skip_runs.txt (one that cannot be cancelled with this token) does nothing: its queued jobs end at once and upload nothing
+{ const rid = process.env.GITHUB_RUN_ID; let skip = []; try { skip = require("fs").readFileSync(require("path").join(__dirname, "ci", "skip_runs.txt"), "utf8").split(/\s+/).filter(Boolean); } catch (e) { /* none */ }
+  if (rid && skip.includes(rid)) { console.log("{}"); process.exit(0); } }
 const os = require("os");
 const G = require("./ga.js");
 const argv = process.argv.slice(2); const opt = (k, d) => { const i = argv.indexOf("--" + k); return i >= 0 ? +argv[i + 1] : d; };

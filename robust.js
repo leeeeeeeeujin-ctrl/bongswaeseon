@@ -11,6 +11,9 @@
 //        replicate with a `robust` record (rank.js and sheet3.js read those)
 //   node robust.js table [--stages ..] [--file results/robust/latest.json]      print the table again
 "use strict";
+// a run listed on ci/skip_runs.txt (one that cannot be cancelled with this token) does nothing: its queued jobs end at once and upload nothing
+{ const rid = process.env.GITHUB_RUN_ID; let skip = []; try { skip = require("fs").readFileSync(require("path").join(__dirname, "ci", "skip_runs.txt"), "utf8").split(/\s+/).filter(Boolean); } catch (e) { /* none */ }
+  if (rid && skip.includes(rid)) { require("child_process").execSync("git checkout -- results && git clean -fdq results", { stdio: "inherit" }); console.log("run " + rid + " is on ci/skip_runs.txt: results/ restored to the branch head, nothing collected"); process.exit(0); } }
 const fs = require("fs");
 const path = require("path");
 const R = require("./roles.js");

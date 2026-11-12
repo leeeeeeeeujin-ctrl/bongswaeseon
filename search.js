@@ -9,6 +9,9 @@
 //              results/jobs/rep/<STAGE>__<deck>__<crit>__rK.json and results/replays/rep/; robust.js collect takes the minimum over replicates (and the spread).
 // State: results/jobs/<STAGE>__<deck>__<crit>.json (answer), .partial.json (probes so far), results/replays/<STAGE>_<deck>_<crit>.json, results/memo, results/families.
 "use strict";
+// a run listed on ci/skip_runs.txt (one that cannot be cancelled with this token) does nothing: its queued jobs end at once and upload nothing
+{ const rid = process.env.GITHUB_RUN_ID; let skip = []; try { skip = require("fs").readFileSync(require("path").join(__dirname, "ci", "skip_runs.txt"), "utf8").split(/\s+/).filter(Boolean); } catch (e) { /* none */ }
+  if (rid && skip.includes(rid)) { console.log("run " + rid + " is on ci/skip_runs.txt: nothing to do"); process.exit(0); } }
 const fs = require("fs");
 const path = require("path");
 const E = require("./engine.js");
