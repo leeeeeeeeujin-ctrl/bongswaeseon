@@ -46,6 +46,7 @@ jobs:
       extra: ${{ steps.m.outputs.extra }}
       split: ${{ steps.m.outputs.split }}
       reps: ${{ steps.m.outputs.reps }}
+      gamedir: ${{ steps.m.outputs.gamedir }}
     steps:
       - uses: actions/checkout@v4
         with: { ref: solver, fetch-depth: 1 }
@@ -78,13 +79,17 @@ jobs:
           STAGE: ${{ matrix.stage }}
           DECK: ${{ matrix.deck }}
           REP: ${{ matrix.rep }}
+          GAMEDIR: ${{ needs.plan.outputs.gamedir }}
           CRIT: ${{ needs.plan.outputs.crit }}
           SQUAD: ${{ needs.plan.outputs.squad }}
           QNAME: ${{ needs.plan.outputs.name }}
           HOURS: ${{ needs.plan.outputs.hours }}
           EXTRA: ${{ needs.plan.outputs.extra }}
         run: |
-          W=$(nproc); set -x
+          W=$(nproc)
+          if [ -n "$GAMEDIR" ]; then export SOLVER_GAME_DIR="$PWD/$GAMEDIR" SOLVER_RESULTS="$PWD/results/var/$(basename "$GAMEDIR")"; mkdir -p "$SOLVER_RESULTS/surrogate"
+            [ -d "$SOLVER_RESULTS/families" ] || cp -a results/families "$SOLVER_RESULTS/"; cp results/surrogate/model.json "$SOLVER_RESULTS/surrogate/"; fi
+          set -x
           case "$MODE" in
             search)  node search.js run --stages "$STAGE" --decks "$DECK" --crit "$CRIT" --hours "$HOURS" --workers "$W" ${REP:+--rep "$REP"} $EXTRA ;;
             recheck) node search.js recheck --stages "$STAGE" --decks "$DECK" --crit "$CRIT" --hours "$HOURS" --workers "$W" $EXTRA ;;
@@ -98,7 +103,7 @@ jobs:
         run: |
           mkdir -p out
           git add -A results 2>/dev/null || true
-          git diff --cached --name-only -- results | grep -v -E '^results/(cache|memo|surrogate)/' > changed.txt || true
+          git diff --cached --name-only -- results | grep -v -E '^results/(.*/)?(cache|memo|surrogate)/' > changed.txt || true
           echo "$(wc -l < changed.txt) changed files"
           rsync -a --files-from=changed.txt ./ out/ || true
       - uses: actions/upload-artifact@v4
@@ -125,18 +130,20 @@ jobs:
         if: needs.plan.outputs.mode == 'recover'
         with: { path: incoming, pattern: "results-${{ needs.plan.outputs.extra }}-*", merge-multiple: true, run-id: "${{ needs.plan.outputs.extra }}", github-token: "${{ github.token }}" }
       - name: merge, robust aggregate, rank, sheet (no memo, no surrogate retraining)
-        env: { MODE: "${{ needs.plan.outputs.mode }}", STAGES: "${{ needs.plan.outputs.stages }}", DECKS: "${{ needs.plan.outputs.decks }}", CRIT: "${{ needs.plan.outputs.crit }}", SPLIT: "${{ needs.plan.outputs.split }}" }
+        env: { MODE: "${{ needs.plan.outputs.mode }}", STAGES: "${{ needs.plan.outputs.stages }}", DECKS: "${{ needs.plan.outputs.decks }}", CRIT: "${{ needs.plan.outputs.crit }}", SPLIT: "${{ needs.plan.outputs.split }}", GAMEDIR: "${{ needs.plan.outputs.gamedir }}" }
         run: |
-          if [ -d incoming ]; then rm -rf incoming/results/memo incoming/results/cache incoming/results/surrogate; cp -a incoming/. ./; else echo "no artifacts"; fi
+          if [ -d incoming ]; then rm -rf incoming/results/memo incoming/results/cache incoming/results/surrogate; find incoming -type d \( -name memo -o -name cache -o -name surrogate \) -prune -exec rm -rf {} + || true; cp -a incoming/. ./; else echo "no artifacts"; fi
           du -sh incoming 2>/dev/null || true
+          if [ -n "$GAMEDIR" ]; then export SOLVER_GAME_DIR="$PWD/$GAMEDIR" SOLVER_RESULTS="$PWD/results/var/$(basename "$GAMEDIR")"; fi
           if [ "$SPLIT" = "stage-deck-rep" ] || [ "$MODE" = "recover" ]; then node robust.js collect --stages "$STAGES" --enforce --hours 1 --workers "$(nproc)" --tag "run_${{ github.run_id }}" || echo "robust.js failed"; fi
-          node sheet3.js
+          if [ -z "$GAMEDIR" ]; then node sheet3.js; fi
           node -e "const fs=require('fs');const b=fs.readdirSync('results/logs').filter(f=>f.startsWith('bench_${{ github.run_id }}_')).map(f=>JSON.parse(fs.readFileSync('results/logs/'+f)));fs.mkdirSync('results/runs',{recursive:true});fs.writeFileSync('results/runs/${{ github.run_id }}.json',JSON.stringify({run:'${{ github.run_id }}',mode:process.env.MODE,stages:process.env.STAGES,decks:process.env.DECKS,crit:process.env.CRIT,finished:new Date().toISOString(),bench:b},null,1));" || true
       - name: commit results
         env: { MSG: "results: ${{ needs.plan.outputs.mode }} ${{ needs.plan.outputs.stages }} ${{ needs.plan.outputs.decks }} ${{ needs.plan.outputs.crit }} ${{ needs.plan.outputs.name }} (run ${{ github.run_id }})" }
         run: |
           git config user.name "solver-bot"; git config user.email "solver-bot@users.noreply.github.com"
           git rm -r -q --cached --ignore-unmatch results/memo results/cache >/dev/null
+          git ls-files -z results | grep -z -E '^results/(.*/)?(memo|cache)/' | xargs -0 -r git rm -q --cached || true
           git add -A results
           # never stage a file over 50 MB (GitHub refuses pushes with a file over 100 MB)
           git diff --cached --name-only --diff-filter=AM -z | while IFS= read -r -d '' f; do [ -f "$f" ] && [ "$(stat -c%s "$f")" -gt 52428800 ] && { echo "unstaging big file $f ($(stat -c%s "$f") bytes)"; git rm -q --cached "$f"; }; true; done || true

@@ -1,8 +1,11 @@
+# per-job evaluation caches: never committed (memo files grew past GitHub's 100 MB limit); local only. Also under results/var/<variant>/.
 results/cache/
-# per-job evaluation cache: never committed (files grew past GitHub's 100 MB limit); local only
 results/memo/
+results/**/cache/
+results/**/memo/
 # surrogate training logs (per process); not committed
 results/surrogate/groups_*.jsonl
+results/**/surrogate/groups_*.jsonl
 node_modules/
 *.tmp*
 .dispatch_err

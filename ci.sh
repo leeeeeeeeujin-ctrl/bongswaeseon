@@ -5,6 +5,7 @@
 #                                   copy the solver code, game_v1/, data/ into the clone, commit, push ONLY the branch solver (results/ only with --with-results)
 #   ci.sh run mode=search stages=IM-02 decks=starter crit=lost1 [squad=.. name=.. hours=5.4 split=stage|stage-deck|stage-deck-rep reps=3 extra=..]   start a run; prints the run id
 #                                   (mode=recover extra=<run id>: re-collect an earlier run's artifacts on GitHub and commit them, memo excluded)
+#                                   (gamedir=variants/<name>: search a game variant pushed from S/solver2/variants/<name>; results in results/var/<name>)
 #                                   (REST workflow_dispatch first; if that is refused, a commit of ci/request.json to the branch triggers the same workflow)
 #   ci.sh status [RUN]              recent runs, or one run's jobs (with durations)
 #   ci.sh wait RUN [SECS]           poll until the run completes (default every 60 s)
@@ -30,6 +31,8 @@ case "$cmd" in
     mkdir -p "$S2/game/test"; for f in game.js econ.js meta.js; do cp "$TD/$f" "$S2/game/$f"; done; cp "$TD/test/im_sim.js" "$S2/game/test/im_sim.js"
     ( cd "$S2/game" && { echo "{"; echo " \"taken\": \"$(date -u +%FT%TZ)\", \"from\": \"$TD\","; echo " \"md5\": {"; md5sum game.js econ.js meta.js test/im_sim.js | awk '{printf "  \"%s\": \"%s\"%s\n", $2, $1, (NR<4?",":"")}'; echo " }"; echo "}"; } > SNAPSHOT.json )
     for d in game game_v1 data; do mkdir -p "$CL/$d"; cp -a "$S2/$d/." "$CL/$d/"; done
+    # game variants (S/solver2/variants/<name>/{game.js,econ.js,meta.js,test/im_sim.js}): run with gamedir=variants/<name>
+    if [ -d "$S2/variants" ]; then mkdir -p "$CL/variants"; cp -a "$S2/variants/." "$CL/variants/"; fi
     mkdir -p "$CL/.github/workflows"; cp "$S2/.github/workflows/solver.yml" "$CL/.github/workflows/solver.yml"
     cp "$S2"/*.js "$S2/ci.sh" "$S2/USAGE.txt" "$S2/.gitignore" "$CL/"; [ -f "$S2/viewer_sm.patch" ] && cp "$S2/viewer_sm.patch" "$CL/"
     if [ "${1:-}" = "--with-results" ]; then mkdir -p "$CL/results"; tar -C "$S2/results" --exclude=./cache --exclude=./memo --exclude='./surrogate/groups_*' -cf - . | tar -C "$CL/results" -xf -; fi
@@ -39,7 +42,7 @@ case "$cmd" in
     if git diff --cached --quiet; then echo "nothing new to push"; else git commit -q -m "solver v2: code + game snapshot $(cut -c1-12 <<< "$(md5sum "$S2/game/game.js")")" "${TR[@]}"; fi
     git push origin "HEAD:refs/heads/$BR" 2>&1 | tail -3 ;;
   run)
-    declare -A IN=([mode]=search [stages]=IM-02..WL-09 [decks]=starter,T4,T5,T6 [crit]=lost1,full [squad]= [name]= [hours]=5.4 [split]=stage [extra]= [reps]=)
+    declare -A IN=([mode]=search [stages]=IM-02..WL-09 [decks]=starter,T4,T5,T6 [crit]=lost1,full [squad]= [name]= [hours]=5.4 [split]=stage [extra]= [reps]= [gamedir]=)
     for kv in "$@"; do IN[${kv%%=*}]="${kv#*=}"; done
     args=(-f ref="$BR"); for k in "${!IN[@]}"; do args+=(-f "inputs[$k]=${IN[$k]}"); done
     t0=$(date -u +%FT%TZ)

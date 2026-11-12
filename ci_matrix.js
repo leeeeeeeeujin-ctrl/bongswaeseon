@@ -8,7 +8,7 @@
 "use strict";
 const STAGES = ["IM-02", "IM-03", "IM-04", "IM-05", "IM-06", "IM-07", "IM-08", "IM-09", "IM-10", "WL-01", "WL-02", "WL-03", "WL-04", "WL-05", "WL-06", "WL-07", "WL-08", "WL-09"];
 const range = (s) => { const out = []; for (const part of (s || "IM-02..WL-09").split(",")) { const m = /^(.+)\.\.(.+)$/.exec(part.trim()); if (m) { for (let i = STAGES.indexOf(m[1]); i >= 0 && i <= STAGES.indexOf(m[2]); i++) out.push(STAGES[i]); } else if (part.trim()) out.push(part.trim()); } return [...new Set(out)]; };
-const DEF = { mode: "search", stages: "IM-02..WL-09", decks: "starter,T4,T5,T6", crit: "lost1,full", squad: "", name: "", hours: "5.4", split: "stage", extra: "", reps: "" };
+const DEF = { mode: "search", stages: "IM-02..WL-09", decks: "starter,T4,T5,T6", crit: "lost1,full", squad: "", name: "", hours: "5.4", split: "stage", extra: "", reps: "", gamedir: "" };   // gamedir (request.json only): a game copy in the branch (variants/<name>); its results go to results/var/<name>
 const repList = (s) => { s = String(s || "3").trim(); let m; if ((m = /^(\d+)-(\d+)$/.exec(s))) { const o = []; for (let k = +m[1]; k <= +m[2]; k++) o.push(k); return o; } if (s.includes(",")) return s.split(",").map((x) => +x); return [...Array(Math.max(1, +s || 3)).keys()]; };
 let [mode, stages, decks, split, reps] = process.argv.slice(2); let IN = null;
 if (mode === "--github") {
