@@ -1,0 +1,249 @@
+{
+ "stage": "IM-01",
+ "name": "얼어붙은 진창",
+ "level": "E0L1",
+ "lost": 0,
+ "seed": 1,
+ "K": 1,
+ "variant": "none",
+ "stageMul": {
+  "hp": 0.435,
+  "atk": 0.525,
+  "def": 0.65
+ },
+ "deck": "T4",
+ "criterion": "lost<=0 (full block)",
+ "fiveSeedLost": [
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "family": "IM-01:1206jhi",
+ "gameHash": "fca95f6aaf8d",
+ "rng": "Math.random replaced before `new TD.Game` by im_sim's seed(n): a = n*7919, mulberry32-style step; nothing else draws from it between seeding and the game",
+ "stepping": "fixed g.update(1/30) per frame, max 420*30 frames; actions run at the start of a frame, before that frame's update, in log order",
+ "squad": [
+  {
+   "id": "guard",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.5317604355716878,
+    "atk": 0.505938242280285,
+    "def": 0.574468085106383
+   }
+  },
+  {
+   "id": "defender",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.5621621621621622,
+    "atk": 0.6237288135593221,
+    "def": 0.49387755102040815
+   }
+  },
+  {
+   "id": "ker",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.3932367149758454,
+    "atk": 0.529113924050633,
+    "def": 0.36086956521739133
+   }
+  },
+  {
+   "id": "lilith",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.5381818181818182,
+    "atk": 0.5297872340425532,
+    "def": 0.4222222222222222
+   }
+  },
+  {
+   "id": "jayeon",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.5914438502673797,
+    "atk": 0.5094339622641509,
+    "def": 0.5301204819277109
+   }
+  }
+ ],
+ "squadNote": "card order = squad order (card index ci in actions); Game(stageIdx, squad) receives {id, elite, mult, pot, skillIdx, slv, sm}; skill level and mastery by rung (sim.js skillRank, slv-r1); sm[k] = mastery of skill k",
+ "expected": {
+  "win": true,
+  "rwin": true,
+  "over": "win",
+  "life": 10,
+  "lost": 0,
+  "winTime": 133.499999999995,
+  "frames": 4005,
+  "kills": 45,
+  "total": 45
+ },
+ "actions": [
+  {
+   "t": 0,
+   "k": 0,
+   "a": "deploy",
+   "ci": 0,
+   "id": "guard",
+   "x": 7,
+   "y": 2,
+   "dir": 1,
+   "uid": 1,
+   "cost": 13
+  },
+  {
+   "t": 16.03333333333329,
+   "k": 481,
+   "a": "deploy",
+   "ci": 2,
+   "id": "ker",
+   "x": 7,
+   "y": 3,
+   "dir": 2,
+   "uid": 8,
+   "cost": 17
+  },
+  {
+   "t": 28.40000000000057,
+   "k": 852,
+   "a": "deploy",
+   "ci": 4,
+   "id": "jayeon",
+   "x": 7,
+   "y": 1,
+   "dir": 1,
+   "uid": 13,
+   "cost": 10
+  },
+  {
+   "t": 42.03333333333351,
+   "k": 1261,
+   "a": "deploy",
+   "ci": 3,
+   "id": "lilith",
+   "x": 8,
+   "y": 1,
+   "dir": 1,
+   "uid": 18,
+   "cost": 16
+  },
+  {
+   "t": 71.56666666666517,
+   "k": 2147,
+   "a": "deploy",
+   "ci": 1,
+   "id": "defender",
+   "x": 8,
+   "y": 2,
+   "dir": 2,
+   "uid": 31,
+   "cost": 16
+  },
+  {
+   "t": 105.59999999999657,
+   "k": 3168,
+   "a": "skill",
+   "ci": 1,
+   "id": "defender",
+   "uid": 31
+  }
+ ],
+ "plan": {
+  "entries": [
+   {
+    "id": "guard",
+    "x": 7,
+    "y": 2,
+    "d": 1
+   },
+   {
+    "id": "ker",
+    "x": 7,
+    "y": 3,
+    "d": 2
+   },
+   {
+    "id": "lilith",
+    "x": 8,
+    "y": 1,
+    "d": 1
+   },
+   {
+    "id": "defender",
+    "x": 8,
+    "y": 2,
+    "d": 2
+   },
+   {
+    "id": "jayeon",
+    "x": 7,
+    "y": 1,
+    "d": 1
+   }
+  ],
+  "skill": {},
+  "skillIdx": {},
+  "retreats": [],
+  "pol": {
+   "fire": 1,
+   "melt": 1,
+   "lamp": 1
+  },
+  "_par": "[[[\"hiro\",7,2,1,null,null,null],[\"ker\",7,3,2,null,null,null],[\"lilith\",8,1,1,null,null,null],[\"defender\",8,2,2,null,null,null],[\"jayeon\",7,1,1,null,null,null]],{},{},[],{\"fire\":1,\"melt\":1,\"lamp\":1}]"
+ }
+}

@@ -1,0 +1,294 @@
+{
+ "stage": "IM-01",
+ "name": "얼어붙은 진창",
+ "level": "E0L1",
+ "lost": 0,
+ "seed": 1,
+ "K": 1,
+ "variant": "none",
+ "stageMul": {
+  "hp": 0.435,
+  "atk": 0.525,
+  "def": 0.65
+ },
+ "deck": "T4",
+ "criterion": "lost<=0 (full block)",
+ "fiveSeedLost": [
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "family": "IM-01:1mmx4mb",
+ "gameHash": "fca95f6aaf8d",
+ "rng": "Math.random replaced before `new TD.Game` by im_sim's seed(n): a = n*7919, mulberry32-style step; nothing else draws from it between seeding and the game",
+ "stepping": "fixed g.update(1/30) per frame, max 420*30 frames; actions run at the start of a frame, before that frame's update, in log order",
+ "squad": [
+  {
+   "id": "guard",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.5317604355716878,
+    "atk": 0.505938242280285,
+    "def": 0.574468085106383
+   }
+  },
+  {
+   "id": "ker",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.3932367149758454,
+    "atk": 0.529113924050633,
+    "def": 0.36086956521739133
+   }
+  },
+  {
+   "id": "teka",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.45399828030954426,
+    "atk": 0.4227053140096618,
+    "def": 0.4479166666666667
+   }
+  },
+  {
+   "id": "lilith",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.5381818181818182,
+    "atk": 0.5297872340425532,
+    "def": 0.4222222222222222
+   }
+  },
+  {
+   "id": "tao",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.56,
+    "atk": 0.4838709677419355,
+    "def": 0.5
+   }
+  },
+  {
+   "id": "brick",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.5621621621621622,
+    "atk": 0.625,
+    "def": 0.49387755102040815
+   }
+  }
+ ],
+ "squadNote": "card order = squad order (card index ci in actions); Game(stageIdx, squad) receives {id, elite, mult, pot, skillIdx, slv, sm}; skill level and mastery by rung (sim.js skillRank, slv-r1); sm[k] = mastery of skill k",
+ "expected": {
+  "win": true,
+  "rwin": true,
+  "over": "win",
+  "life": 10,
+  "lost": 0,
+  "winTime": 126.86666666666203,
+  "frames": 3806,
+  "kills": 45,
+  "total": 45
+ },
+ "actions": [
+  {
+   "t": 0,
+   "k": 0,
+   "a": "deploy",
+   "ci": 4,
+   "id": "tao",
+   "x": 5,
+   "y": 2,
+   "dir": 0,
+   "uid": 1,
+   "cost": 9
+  },
+  {
+   "t": 12.033333333333301,
+   "k": 361,
+   "a": "deploy",
+   "ci": 1,
+   "id": "ker",
+   "x": 6,
+   "y": 3,
+   "dir": 3,
+   "uid": 6,
+   "cost": 17
+  },
+  {
+   "t": 22.000000000000252,
+   "k": 660,
+   "a": "skill",
+   "ci": 4,
+   "id": "tao",
+   "uid": 1
+  },
+  {
+   "t": 22.033333333333587,
+   "k": 661,
+   "a": "deploy",
+   "ci": 3,
+   "id": "lilith",
+   "x": 6,
+   "y": 0,
+   "dir": 1,
+   "uid": 12,
+   "cost": 16
+  },
+  {
+   "t": 32.03333333333408,
+   "k": 961,
+   "a": "deploy",
+   "ci": 2,
+   "id": "teka",
+   "x": 4,
+   "y": 1,
+   "dir": 3,
+   "uid": 15,
+   "cost": 12
+  },
+  {
+   "t": 45.03333333333334,
+   "k": 1351,
+   "a": "deploy",
+   "ci": 0,
+   "id": "guard",
+   "x": 3,
+   "y": 3,
+   "dir": 3,
+   "uid": 19,
+   "cost": 13
+  },
+  {
+   "t": 71.56666666666517,
+   "k": 2147,
+   "a": "deploy",
+   "ci": 5,
+   "id": "brick",
+   "x": 6,
+   "y": 2,
+   "dir": 1,
+   "uid": 32,
+   "cost": 16
+  },
+  {
+   "t": 108.5999999999964,
+   "k": 3258,
+   "a": "skill",
+   "ci": 5,
+   "id": "brick",
+   "uid": 32
+  }
+ ],
+ "plan": {
+  "entries": [
+   {
+    "id": "tao",
+    "x": 5,
+    "y": 2,
+    "d": 0
+   },
+   {
+    "id": "ker",
+    "x": 6,
+    "y": 3,
+    "d": 3
+   },
+   {
+    "id": "lilith",
+    "x": 6,
+    "y": 0,
+    "d": 1
+   },
+   {
+    "id": "guard",
+    "x": 3,
+    "y": 3,
+    "d": 3
+   },
+   {
+    "id": "teka",
+    "x": 4,
+    "y": 1,
+    "d": 3
+   },
+   {
+    "id": "brick",
+    "x": 6,
+    "y": 2,
+    "d": 1
+   }
+  ],
+  "skill": {},
+  "skillIdx": {},
+  "retreats": [],
+  "pol": {
+   "fire": 1,
+   "melt": 1,
+   "lamp": 1
+  },
+  "_par": "[[[\"tao\",5,2,0,null,null,null],[\"ker\",6,3,3,null,null,null],[\"lilith\",6,0,1,null,null,null],[\"guard\",3,3,3,null,null,null],[\"teka\",4,1,1,null,null,null],[\"brick\",6,2,1,null,null,null]],{},{},[],{\"fire\":1,\"melt\":1,\"lamp\":1}]"
+ }
+}

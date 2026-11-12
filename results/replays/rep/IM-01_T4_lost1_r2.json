@@ -1,0 +1,395 @@
+{
+ "stage": "IM-01",
+ "name": "얼어붙은 진창",
+ "level": "E0L1",
+ "lost": 0,
+ "seed": 1,
+ "K": 1,
+ "variant": "none",
+ "stageMul": {
+  "hp": 0.435,
+  "atk": 0.525,
+  "def": 0.65
+ },
+ "deck": "T4",
+ "criterion": "lost<=1",
+ "fiveSeedLost": [
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "family": "new:IM-01:axty5z",
+ "gameHash": "fca95f6aaf8d",
+ "rng": "Math.random replaced before `new TD.Game` by im_sim's seed(n): a = n*7919, mulberry32-style step; nothing else draws from it between seeding and the game",
+ "stepping": "fixed g.update(1/30) per frame, max 420*30 frames; actions run at the start of a frame, before that frame's update, in log order",
+ "squad": [
+  {
+   "id": "specialist",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.5989159891598916,
+    "atk": 0.49853372434017595,
+    "def": 0.5373665480427047
+   }
+  },
+  {
+   "id": "miho",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.5386075949367088,
+    "atk": 0.35333333333333333,
+    "def": 0.4342105263157895
+   }
+  },
+  {
+   "id": "ker",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.3932367149758454,
+    "atk": 0.529113924050633,
+    "def": 0.36086956521739133
+   }
+  },
+  {
+   "id": "teka",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.45399828030954426,
+    "atk": 0.4227053140096618,
+    "def": 0.4479166666666667
+   }
+  },
+  {
+   "id": "lilith",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.5381818181818182,
+    "atk": 0.5297872340425532,
+    "def": 0.4222222222222222
+   }
+  },
+  {
+   "id": "falchion",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.3924119241192412,
+    "atk": 0.44368600682593856,
+    "def": 0.43304843304843305
+   }
+  },
+  {
+   "id": "brick",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.5621621621621622,
+    "atk": 0.625,
+    "def": 0.49387755102040815
+   }
+  }
+ ],
+ "squadNote": "card order = squad order (card index ci in actions); Game(stageIdx, squad) receives {id, elite, mult, pot, skillIdx, slv, sm}; skill level and mastery by rung (sim.js skillRank, slv-r1); sm[k] = mastery of skill k",
+ "expected": {
+  "win": true,
+  "rwin": true,
+  "over": "win",
+  "life": 10,
+  "lost": 0,
+  "winTime": 123.16666666666224,
+  "frames": 3695,
+  "kills": 45,
+  "total": 45
+ },
+ "actions": [
+  {
+   "t": 0,
+   "k": 0,
+   "a": "deploy",
+   "ci": 0,
+   "id": "specialist",
+   "x": 5,
+   "y": 3,
+   "dir": 3,
+   "uid": 1,
+   "cost": 6
+  },
+  {
+   "t": 0,
+   "k": 0,
+   "a": "skill",
+   "ci": 0,
+   "id": "specialist",
+   "uid": 1
+  },
+  {
+   "t": 1.0333333333333332,
+   "k": 31,
+   "a": "deploy",
+   "ci": 5,
+   "id": "falchion",
+   "x": 6,
+   "y": 2,
+   "dir": 0,
+   "uid": 2,
+   "cost": 9
+  },
+  {
+   "t": 14.033333333333294,
+   "k": 421,
+   "a": "skill",
+   "ci": 0,
+   "id": "specialist",
+   "uid": 1
+  },
+  {
+   "t": 17.03333333333334,
+   "k": 511,
+   "a": "deploy",
+   "ci": 4,
+   "id": "lilith",
+   "x": 7,
+   "y": 1,
+   "dir": 1,
+   "uid": 10,
+   "cost": 16
+  },
+  {
+   "t": 29.033333333333935,
+   "k": 871,
+   "a": "deploy",
+   "ci": 3,
+   "id": "teka",
+   "x": 6,
+   "y": 1,
+   "dir": 1,
+   "uid": 14,
+   "cost": 12
+  },
+  {
+   "t": 40.066666666666954,
+   "k": 1202,
+   "a": "skill",
+   "ci": 0,
+   "id": "specialist",
+   "uid": 1
+  },
+  {
+   "t": 44.033333333333395,
+   "k": 1321,
+   "a": "deploy",
+   "ci": 6,
+   "id": "brick",
+   "x": 6,
+   "y": 3,
+   "dir": 0,
+   "uid": 19,
+   "cost": 16
+  },
+  {
+   "t": 71.56666666666517,
+   "k": 2147,
+   "a": "deploy",
+   "ci": 0,
+   "id": "specialist",
+   "x": 5,
+   "y": 3,
+   "dir": 3,
+   "uid": 32,
+   "cost": 9
+  },
+  {
+   "t": 71.56666666666517,
+   "k": 2147,
+   "a": "skill",
+   "ci": 0,
+   "id": "specialist",
+   "uid": 32
+  },
+  {
+   "t": 71.5999999999985,
+   "k": 2148,
+   "a": "deploy",
+   "ci": 2,
+   "id": "ker",
+   "x": 7,
+   "y": 2,
+   "dir": 2,
+   "uid": 33,
+   "cost": 17
+  },
+  {
+   "t": 81.06666666666463,
+   "k": 2432,
+   "a": "skill",
+   "ci": 6,
+   "id": "brick",
+   "uid": 19
+  },
+  {
+   "t": 85.03333333333107,
+   "k": 2551,
+   "a": "deploy",
+   "ci": 1,
+   "id": "miho",
+   "x": 6,
+   "y": 4,
+   "dir": 3,
+   "uid": 40,
+   "cost": 16
+  },
+  {
+   "t": 85.5999999999977,
+   "k": 2568,
+   "a": "skill",
+   "ci": 0,
+   "id": "specialist",
+   "uid": 32
+  },
+  {
+   "t": 115.46666666666268,
+   "k": 3464,
+   "a": "deploy",
+   "ci": 0,
+   "id": "specialist",
+   "x": 5,
+   "y": 3,
+   "dir": 3,
+   "uid": 54,
+   "cost": 12
+  },
+  {
+   "t": 115.46666666666268,
+   "k": 3464,
+   "a": "skill",
+   "ci": 0,
+   "id": "specialist",
+   "uid": 54
+  }
+ ],
+ "plan": {
+  "entries": [
+   {
+    "id": "specialist",
+    "x": 5,
+    "y": 3,
+    "d": 3
+   },
+   {
+    "id": "falchion",
+    "x": 6,
+    "y": 2,
+    "d": 0
+   },
+   {
+    "id": "lilith",
+    "x": 7,
+    "y": 1,
+    "d": 1
+   },
+   {
+    "id": "teka",
+    "x": 6,
+    "y": 1,
+    "d": 1
+   },
+   {
+    "id": "brick",
+    "x": 6,
+    "y": 3,
+    "d": 0
+   },
+   {
+    "id": "ker",
+    "x": 7,
+    "y": 2,
+    "d": 2
+   },
+   {
+    "id": "miho",
+    "x": 6,
+    "y": 4,
+    "d": 3
+   }
+  ],
+  "skill": {},
+  "skillIdx": {},
+  "retreats": [],
+  "pol": {
+   "fire": 1,
+   "melt": 1,
+   "lamp": 1
+  },
+  "_par": "[[[\"specialist\",5,3,3,null,null,null],[\"falchion\",6,2,0,null,null,null],[\"vanguard\",9,2,2,null,null,null],[\"lilith\",7,1,1,null,null,null],[\"teka\",6,1,1,null,null,null],[\"brick\",6,3,3,null,null,null],[\"ker\",7,2,2,null,null,null],[\"miho\",8,4,3,null,null,null]],{},{},[],{\"fire\":1,\"melt\":1,\"lamp\":1}]"
+ }
+}
