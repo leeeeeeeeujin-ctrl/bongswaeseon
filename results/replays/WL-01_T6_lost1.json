@@ -1,0 +1,489 @@
+{
+ "stage": "WL-01",
+ "name": "불 꺼진 거리",
+ "level": "E0L20",
+ "lost": 1,
+ "seed": 1,
+ "K": 1,
+ "variant": "none",
+ "stageMul": {
+  "hp": 1,
+  "atk": 1.1,
+  "def": 0.85
+ },
+ "deck": "T6",
+ "criterion": "lost<=1",
+ "fiveSeedLost": [
+  1,
+  1,
+  1,
+  1,
+  1
+ ],
+ "family": "WL-01:mcy3mj",
+ "gameHash": "af57ca578387",
+ "rng": "Math.random replaced before `new TD.Game` by im_sim's seed(n): a = n*7919, mulberry32-style step; nothing else draws from it between seeding and the game",
+ "stepping": "fixed g.update(1/30) per frame, max 420*30 frames; actions run at the start of a frame, before that frame's update, in log order",
+ "squad": [
+  {
+   "id": "vanguard",
+   "elite": 0,
+   "lvl": 20,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 2,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.676923076923077,
+    "atk": 0.6001654259718776,
+    "def": 0.6068047337278106
+   }
+  },
+  {
+   "id": "belina",
+   "elite": 0,
+   "lvl": 20,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 2,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.42631083202511777,
+    "atk": 0.48044897959183674,
+    "def": 0.4832510263580651
+   }
+  },
+  {
+   "id": "lulu",
+   "elite": 0,
+   "lvl": 20,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 2,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.49503330721003136,
+    "atk": 0.48745653253849974,
+    "def": 0.5193006993006993
+   }
+  },
+  {
+   "id": "eungyeol",
+   "elite": 0,
+   "lvl": 20,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 2,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.47925412527536476,
+    "atk": 0.4830034888388033,
+    "def": 0.456403823988067
+   }
+  },
+  {
+   "id": "hiro",
+   "elite": 0,
+   "lvl": 20,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 2,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.6918246805222047,
+    "atk": 0.633398247322298,
+    "def": 0.6236525379382523
+   }
+  },
+  {
+   "id": "lilith",
+   "elite": 0,
+   "lvl": 20,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 2,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.6511188811188812,
+    "atk": 0.6417348608837972,
+    "def": 0.5683760683760684
+   }
+  },
+  {
+   "id": "ayaki",
+   "elite": 0,
+   "lvl": 20,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 2,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.6757709251101321,
+    "atk": 0.5652795292139554,
+    "def": 0.644318983768525
+   }
+  },
+  {
+   "id": "silphy",
+   "elite": 0,
+   "lvl": 20,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 2,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.4633645124716553,
+    "atk": 0.5260604241696679,
+    "def": 0.5383867832847424
+   }
+  },
+  {
+   "id": "smoqueen",
+   "elite": 0,
+   "lvl": 20,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 2,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.4637817780674924,
+    "atk": 0.5263960529266651,
+    "def": 0.5414347557204701
+   }
+  },
+  {
+   "id": "brick",
+   "elite": 0,
+   "lvl": 20,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 2,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.6536130536130537,
+    "atk": 0.7099731663685152,
+    "def": 0.6131868131868131
+   }
+  }
+ ],
+ "squadNote": "card order = squad order (card index ci in actions); Game(stageIdx, squad) receives {id, elite, mult, pot, skillIdx, slv, sm}; skill level and mastery by rung (sim.js skillRank, slv-r1); sm[k] = mastery of skill k",
+ "expected": {
+  "win": true,
+  "rwin": true,
+  "over": "win",
+  "life": 9,
+  "lost": 1,
+  "winTime": 199.2333333333246,
+  "frames": 5977,
+  "kills": 55,
+  "total": 56
+ },
+ "actions": [
+  {
+   "t": 0,
+   "k": 0,
+   "a": "deploy",
+   "ci": 4,
+   "id": "hiro",
+   "x": 2,
+   "y": 2,
+   "dir": 3,
+   "uid": 1,
+   "cost": 15
+  },
+  {
+   "t": 2.033333333333336,
+   "k": 61,
+   "a": "deploy",
+   "ci": 0,
+   "id": "vanguard",
+   "x": 8,
+   "y": 5,
+   "dir": 3,
+   "uid": 2,
+   "cost": 9
+  },
+  {
+   "t": 19.033333333333438,
+   "k": 571,
+   "a": "deploy",
+   "ci": 2,
+   "id": "lulu",
+   "x": 3,
+   "y": 4,
+   "dir": 1,
+   "uid": 7,
+   "cost": 17
+  },
+  {
+   "t": 30.033333333333985,
+   "k": 901,
+   "a": "skill",
+   "ci": 0,
+   "id": "vanguard",
+   "uid": 2
+  },
+  {
+   "t": 30.06666666666732,
+   "k": 902,
+   "a": "deploy",
+   "ci": 9,
+   "id": "brick",
+   "x": 1,
+   "y": 1,
+   "dir": 1,
+   "uid": 10,
+   "cost": 16
+  },
+  {
+   "t": 37.03333333333379,
+   "k": 1111,
+   "a": "deploy",
+   "ci": 7,
+   "id": "silphy",
+   "x": 3,
+   "y": 3,
+   "dir": 3,
+   "uid": 13,
+   "cost": 10
+  },
+  {
+   "t": 51.06666666666633,
+   "k": 1532,
+   "a": "skill",
+   "ci": 9,
+   "id": "brick",
+   "uid": 10
+  },
+  {
+   "t": 52.03333333333294,
+   "k": 1561,
+   "a": "deploy",
+   "ci": 6,
+   "id": "ayaki",
+   "x": 2,
+   "y": 3,
+   "dir": 0,
+   "uid": 17,
+   "cost": 15
+  },
+  {
+   "t": 63.033333333332315,
+   "k": 1891,
+   "a": "deploy",
+   "ci": 8,
+   "id": "smoqueen",
+   "x": 6,
+   "y": 6,
+   "dir": 3,
+   "uid": 21,
+   "cost": 11
+  },
+  {
+   "t": 63.033333333332315,
+   "k": 1891,
+   "a": "skill",
+   "ci": 0,
+   "id": "vanguard",
+   "uid": 2
+  },
+  {
+   "t": 66.03333333333215,
+   "k": 1981,
+   "a": "deploy",
+   "ci": 1,
+   "id": "belina",
+   "x": 2,
+   "y": 5,
+   "dir": 3,
+   "uid": 24,
+   "cost": 11
+  },
+  {
+   "t": 87.46666666666427,
+   "k": 2624,
+   "a": "deploy",
+   "ci": 5,
+   "id": "lilith",
+   "x": 4,
+   "y": 3,
+   "dir": 2,
+   "uid": 31,
+   "cost": 16
+  },
+  {
+   "t": 97.59999999999702,
+   "k": 2928,
+   "a": "skill",
+   "ci": 9,
+   "id": "brick",
+   "uid": 10
+  },
+  {
+   "t": 105.03333333332994,
+   "k": 3151,
+   "a": "retreat",
+   "ci": 9,
+   "id": "brick",
+   "uid": 10,
+   "x": 1,
+   "y": 1,
+   "why": "plan"
+  },
+  {
+   "t": 105.03333333332994,
+   "k": 3151,
+   "a": "deploy",
+   "ci": 3,
+   "id": "eungyeol",
+   "x": 4,
+   "y": 1,
+   "dir": 1,
+   "uid": 38,
+   "cost": 30
+  }
+ ],
+ "plan": {
+  "entries": [
+   {
+    "id": "hiro",
+    "x": 2,
+    "y": 2,
+    "d": 3
+   },
+   {
+    "id": "vanguard",
+    "x": 8,
+    "y": 5,
+    "d": 3
+   },
+   {
+    "id": "lulu",
+    "x": 3,
+    "y": 4,
+    "d": 1
+   },
+   {
+    "id": "brick",
+    "x": 1,
+    "y": 1,
+    "d": 1,
+    "until": 105
+   },
+   {
+    "id": "silphy",
+    "x": 3,
+    "y": 3,
+    "d": 3
+   },
+   {
+    "id": "brick",
+    "x": 4,
+    "y": 2,
+    "d": 1,
+    "from": 105
+   },
+   {
+    "id": "ayaki",
+    "x": 2,
+    "y": 3,
+    "d": 0
+   },
+   {
+    "id": "smoqueen",
+    "x": 6,
+    "y": 6,
+    "d": 3
+   },
+   {
+    "id": "belina",
+    "x": 2,
+    "y": 5,
+    "d": 3
+   },
+   {
+    "id": "lilith",
+    "x": 4,
+    "y": 3,
+    "d": 2
+   },
+   {
+    "id": "belina",
+    "x": 8,
+    "y": 4,
+    "d": 0,
+    "from": 49
+   },
+   {
+    "id": "eungyeol",
+    "x": 4,
+    "y": 1,
+    "d": 1
+   }
+  ],
+  "skill": {},
+  "skillIdx": {},
+  "retreats": [
+   {
+    "id": "brick",
+    "t": 105
+   }
+  ],
+  "pol": {
+   "fire": 1,
+   "melt": 1,
+   "lamp": 1
+  },
+  "_par": "[[[\"hiro\",2,2,3,null,null,null],[\"vanguard\",8,5,3,null,null,null],[\"lulu\",3,4,1,null,null,null],[\"brick\",1,1,1,null,null,null],[\"silphy\",3,3,3,null,null,null],[\"ayaki\",2,3,0,null,null,null],[\"smoqueen\",6,6,3,null,null,null],[\"belina\",2,5,3,null,null,null],[\"lilith\",4,3,2,null,null,null],[\"eungyeol\",4,1,1,null,null,null],[\"piania\",3,0,1,null,null,null]],{},{},[],{\"fire\":1,\"melt\":1,\"lamp\":1}]"
+ }
+}

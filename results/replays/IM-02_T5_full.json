@@ -1,0 +1,395 @@
+{
+ "stage": "IM-02",
+ "name": "생울타리",
+ "level": "E0L20",
+ "lost": 0,
+ "seed": 1,
+ "K": 1,
+ "variant": "none",
+ "stageMul": {
+  "hp": 0.378,
+  "atk": 0.468,
+  "def": 0.8
+ },
+ "deck": "T5",
+ "criterion": "lost<=0 (full block)",
+ "fiveSeedLost": [
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "family": "new:IM-02:lteveu",
+ "gameHash": "af57ca578387",
+ "rng": "Math.random replaced before `new TD.Game` by im_sim's seed(n): a = n*7919, mulberry32-style step; nothing else draws from it between seeding and the game",
+ "stepping": "fixed g.update(1/30) per frame, max 420*30 frames; actions run at the start of a frame, before that frame's update, in log order",
+ "squad": [
+  {
+   "id": "vanguard",
+   "elite": 0,
+   "lvl": 20,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 2,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.676923076923077,
+    "atk": 0.6001654259718776,
+    "def": 0.6068047337278106
+   }
+  },
+  {
+   "id": "defender",
+   "elite": 0,
+   "lvl": 20,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 2,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.6536130536130537,
+    "atk": 0.7096045197740113,
+    "def": 0.6131868131868131
+   }
+  },
+  {
+   "id": "capy",
+   "elite": 0,
+   "lvl": 20,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 2,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.717948717948718,
+    "atk": 0.6671141540251488,
+    "def": 0.6917043740573152
+   }
+  },
+  {
+   "id": "nana",
+   "elite": 0,
+   "lvl": 20,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 2,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.7049272566513946,
+    "atk": 0.6488789413751129,
+    "def": 0.6974358974358974
+   }
+  },
+  {
+   "id": "geomseon",
+   "elite": 0,
+   "lvl": 20,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 2,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.4897959183673469,
+    "atk": 0.49587367793832865,
+    "def": 0.5430248811853509
+   }
+  },
+  {
+   "id": "bongeun",
+   "elite": 0,
+   "lvl": 20,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 2,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.5212003222341568,
+    "atk": 0.425058124515629,
+    "def": 0.4391233766233766
+   }
+  },
+  {
+   "id": "alpha2",
+   "elite": 0,
+   "lvl": 20,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 2,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.5276561122787985,
+    "atk": 0.45594157395399637,
+    "def": 0.5227733477496959
+   }
+  }
+ ],
+ "squadNote": "card order = squad order (card index ci in actions); Game(stageIdx, squad) receives {id, elite, mult, pot, skillIdx, slv, sm}; skill level and mastery by rung (sim.js skillRank, slv-r1); sm[k] = mastery of skill k",
+ "expected": {
+  "win": true,
+  "rwin": true,
+  "over": "win",
+  "life": 10,
+  "lost": 0,
+  "winTime": 133.499999999995,
+  "frames": 4005,
+  "kills": 55,
+  "total": 55
+ },
+ "actions": [
+  {
+   "t": 0,
+   "k": 0,
+   "a": "deploy",
+   "ci": 0,
+   "id": "vanguard",
+   "x": 11,
+   "y": 2,
+   "dir": 3,
+   "uid": 1,
+   "cost": 9
+  },
+  {
+   "t": 9.033333333333312,
+   "k": 271,
+   "a": "deploy",
+   "ci": 1,
+   "id": "defender",
+   "x": 12,
+   "y": 2,
+   "dir": 0,
+   "uid": 10,
+   "cost": 16
+  },
+  {
+   "t": 26.033333333333786,
+   "k": 781,
+   "a": "deploy",
+   "ci": 4,
+   "id": "geomseon",
+   "x": 11,
+   "y": 5,
+   "dir": 2,
+   "uid": 15,
+   "cost": 17
+  },
+  {
+   "t": 27.033333333333836,
+   "k": 811,
+   "a": "skill",
+   "ci": 1,
+   "id": "defender",
+   "uid": 10
+  },
+  {
+   "t": 28.00000000000055,
+   "k": 840,
+   "a": "skill",
+   "ci": 0,
+   "id": "vanguard",
+   "uid": 1
+  },
+  {
+   "t": 35.03333333333391,
+   "k": 1051,
+   "a": "deploy",
+   "ci": 3,
+   "id": "nana",
+   "x": 9,
+   "y": 2,
+   "dir": 1,
+   "uid": 18,
+   "cost": 17
+  },
+  {
+   "t": 42.03333333333351,
+   "k": 1261,
+   "a": "deploy",
+   "ci": 6,
+   "id": "alpha2",
+   "x": 9,
+   "y": 3,
+   "dir": 2,
+   "uid": 21,
+   "cost": 7
+  },
+  {
+   "t": 60.9999999999991,
+   "k": 1830,
+   "a": "skill",
+   "ci": 0,
+   "id": "vanguard",
+   "uid": 1
+  },
+  {
+   "t": 61.03333333333243,
+   "k": 1831,
+   "a": "deploy",
+   "ci": 2,
+   "id": "capy",
+   "x": 11,
+   "y": 1,
+   "dir": 1,
+   "uid": 29,
+   "cost": 21
+  },
+  {
+   "t": 66.03333333333215,
+   "k": 1981,
+   "a": "deploy",
+   "ci": 5,
+   "id": "bongeun",
+   "x": 11,
+   "y": 4,
+   "dir": 2,
+   "uid": 30,
+   "cost": 11
+  },
+  {
+   "t": 72.83333333333177,
+   "k": 2185,
+   "a": "skill",
+   "ci": 1,
+   "id": "defender",
+   "uid": 10
+  },
+  {
+   "t": 89.03333333333084,
+   "k": 2671,
+   "a": "retreat",
+   "ci": 3,
+   "id": "nana",
+   "uid": 18,
+   "x": 9,
+   "y": 2,
+   "why": "plan"
+  },
+  {
+   "t": 109.06666666666304,
+   "k": 3272,
+   "a": "skill",
+   "ci": 0,
+   "id": "vanguard",
+   "uid": 1
+  },
+  {
+   "t": 111.69999999999622,
+   "k": 3351,
+   "a": "deploy",
+   "ci": 6,
+   "id": "alpha2",
+   "x": 9,
+   "y": 3,
+   "dir": 2,
+   "uid": 57,
+   "cost": 11
+  },
+  {
+   "t": 118.63333333332916,
+   "k": 3559,
+   "a": "skill",
+   "ci": 1,
+   "id": "defender",
+   "uid": 10
+  }
+ ],
+ "plan": {
+  "entries": [
+   {
+    "id": "vanguard",
+    "x": 11,
+    "y": 2,
+    "d": 3
+   },
+   {
+    "id": "defender",
+    "x": 12,
+    "y": 2,
+    "d": 0
+   },
+   {
+    "id": "geomseon",
+    "x": 11,
+    "y": 5,
+    "d": 2
+   },
+   {
+    "id": "nana",
+    "x": 9,
+    "y": 2,
+    "d": 1
+   },
+   {
+    "id": "alpha2",
+    "x": 9,
+    "y": 3,
+    "d": 2
+   },
+   {
+    "id": "capy",
+    "x": 11,
+    "y": 1,
+    "d": 1
+   },
+   {
+    "id": "bongeun",
+    "x": 11,
+    "y": 4,
+    "d": 2
+   }
+  ],
+  "skill": {
+   "vanguard": {
+    "m": 2
+   }
+  },
+  "skillIdx": {},
+  "retreats": [
+   {
+    "id": "nana",
+    "t": 89
+   }
+  ],
+  "pol": {
+   "fire": 1,
+   "melt": 1,
+   "lamp": 1
+  },
+  "_par": "[[[\"vanguard\",11,2,3,null,null,null],[\"sniper\",9,1,1,null,null,null],[\"defender\",12,3,0,null,null,null],[\"geomseon\",11,5,2,null,null,null],[\"nana\",9,2,1,null,null,null],[\"alpha2\",9,3,2,null,null,null],[\"sniper\",2,5,0,23,null,null],[\"capy\",11,1,1,null,null,null],[\"bongeun\",11,4,2,null,null,null]],{\"vanguard\":{\"m\":2}},{},[[\"nana\",89]],{\"fire\":1,\"melt\":1,\"lamp\":1}]"
+ }
+}

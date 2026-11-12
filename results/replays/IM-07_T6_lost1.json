@@ -1,0 +1,501 @@
+{
+ "stage": "IM-07",
+ "name": "반란의 그늘",
+ "level": "E0L1",
+ "lost": 0,
+ "seed": 1,
+ "K": 1,
+ "variant": "none",
+ "stageMul": {
+  "hp": 0.49,
+  "atk": 0.635,
+  "def": 0.75
+ },
+ "deck": "T6",
+ "criterion": "lost<=1",
+ "fiveSeedLost": [
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "family": "IM-07:1d2f2hf",
+ "gameHash": "af57ca578387",
+ "rng": "Math.random replaced before `new TD.Game` by im_sim's seed(n): a = n*7919, mulberry32-style step; nothing else draws from it between seeding and the game",
+ "stepping": "fixed g.update(1/30) per frame, max 420*30 frames; actions run at the start of a frame, before that frame's update, in log order",
+ "squad": [
+  {
+   "id": "defender",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.5621621621621622,
+    "atk": 0.6237288135593221,
+    "def": 0.49387755102040815
+   }
+  },
+  {
+   "id": "lulu",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.4267241379310345,
+    "atk": 0.4080145719489982,
+    "def": 0.4369230769230769
+   }
+  },
+  {
+   "id": "lilith",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.5381818181818182,
+    "atk": 0.5297872340425532,
+    "def": 0.4222222222222222
+   }
+  },
+  {
+   "id": "nana",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.6152037617554859,
+    "atk": 0.5451761102603369,
+    "def": 0.6
+   }
+  },
+  {
+   "id": "rabi",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.4729044834307992,
+    "atk": 0.4117647058823529,
+    "def": 0.43142857142857144
+   }
+  },
+  {
+   "id": "geomseon",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.42,
+    "atk": 0.41605839416058393,
+    "def": 0.473972602739726
+   }
+  },
+  {
+   "id": "silphy",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.3917824074074074,
+    "atk": 0.45098039215686275,
+    "def": 0.45714285714285713
+   }
+  },
+  {
+   "id": "bongeun",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.44671052631578945,
+    "atk": 0.3367088607594937,
+    "def": 0.3465909090909091
+   }
+  },
+  {
+   "id": "brick",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.5621621621621622,
+    "atk": 0.625,
+    "def": 0.49387755102040815
+   }
+  },
+  {
+   "id": "jayeon",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.5914438502673797,
+    "atk": 0.5094339622641509,
+    "def": 0.5301204819277109
+   }
+  }
+ ],
+ "squadNote": "card order = squad order (card index ci in actions); Game(stageIdx, squad) receives {id, elite, mult, pot, skillIdx, slv, sm}; skill level and mastery by rung (sim.js skillRank, slv-r1); sm[k] = mastery of skill k",
+ "expected": {
+  "win": true,
+  "rwin": true,
+  "over": "win",
+  "life": 10,
+  "lost": 0,
+  "winTime": 253.26666666665486,
+  "frames": 7598,
+  "kills": 75,
+  "total": 75
+ },
+ "actions": [
+  {
+   "t": 1.0333333333333332,
+   "k": 31,
+   "a": "deploy",
+   "ci": 5,
+   "id": "geomseon",
+   "x": 11,
+   "y": 1,
+   "dir": 2,
+   "uid": 9,
+   "cost": 17
+  },
+  {
+   "t": 17.03333333333334,
+   "k": 511,
+   "a": "deploy",
+   "ci": 0,
+   "id": "defender",
+   "x": 11,
+   "y": 0,
+   "dir": 0,
+   "uid": 17,
+   "cost": 16
+  },
+  {
+   "t": 34.033333333333964,
+   "k": 1021,
+   "a": "deploy",
+   "ci": 3,
+   "id": "nana",
+   "x": 9,
+   "y": 2,
+   "dir": 0,
+   "uid": 22,
+   "cost": 17
+  },
+  {
+   "t": 37.03333333333379,
+   "k": 1111,
+   "a": "skill",
+   "ci": 0,
+   "id": "defender",
+   "uid": 17
+  },
+  {
+   "t": 50.033333333333054,
+   "k": 1501,
+   "a": "deploy",
+   "ci": 8,
+   "id": "brick",
+   "x": 8,
+   "y": 1,
+   "dir": 0,
+   "uid": 25,
+   "cost": 16
+  },
+  {
+   "t": 66.03333333333215,
+   "k": 1981,
+   "a": "deploy",
+   "ci": 2,
+   "id": "lilith",
+   "x": 8,
+   "y": 3,
+   "dir": 3,
+   "uid": 32,
+   "cost": 16
+  },
+  {
+   "t": 73.03333333333175,
+   "k": 2191,
+   "a": "skill",
+   "ci": 8,
+   "id": "brick",
+   "uid": 25
+  },
+  {
+   "t": 76.03333333333158,
+   "k": 2281,
+   "a": "deploy",
+   "ci": 9,
+   "id": "jayeon",
+   "x": 11,
+   "y": 3,
+   "dir": 1,
+   "uid": 35,
+   "cost": 10
+  },
+  {
+   "t": 79.06666666666474,
+   "k": 2372,
+   "a": "skill",
+   "ci": 0,
+   "id": "defender",
+   "uid": 17
+  },
+  {
+   "t": 84.03333333333113,
+   "k": 2521,
+   "a": "deploy",
+   "ci": 4,
+   "id": "rabi",
+   "x": 11,
+   "y": 5,
+   "dir": 3,
+   "uid": 40,
+   "cost": 8
+  },
+  {
+   "t": 95.0333333333305,
+   "k": 2851,
+   "a": "deploy",
+   "ci": 7,
+   "id": "bongeun",
+   "x": 6,
+   "y": 2,
+   "dir": 2,
+   "uid": 43,
+   "cost": 11
+  },
+  {
+   "t": 120.06666666666241,
+   "k": 3602,
+   "a": "skill",
+   "ci": 8,
+   "id": "brick",
+   "uid": 25
+  },
+  {
+   "t": 121.09999999999569,
+   "k": 3633,
+   "a": "skill",
+   "ci": 0,
+   "id": "defender",
+   "uid": 17
+  },
+  {
+   "t": 131.1666666666618,
+   "k": 3935,
+   "a": "deploy",
+   "ci": 1,
+   "id": "lulu",
+   "x": 8,
+   "y": 0,
+   "dir": 2,
+   "uid": 61,
+   "cost": 17
+  },
+  {
+   "t": 155.5666666666604,
+   "k": 4667,
+   "a": "deploy",
+   "ci": 6,
+   "id": "silphy",
+   "x": 3,
+   "y": 4,
+   "dir": 2,
+   "uid": 77,
+   "cost": 10
+  },
+  {
+   "t": 163.13333333332665,
+   "k": 4894,
+   "a": "skill",
+   "ci": 0,
+   "id": "defender",
+   "uid": 17
+  },
+  {
+   "t": 201.19999999999115,
+   "k": 6036,
+   "a": "deploy",
+   "ci": 7,
+   "id": "bongeun",
+   "x": 6,
+   "y": 2,
+   "dir": 2,
+   "uid": 92,
+   "cost": 17
+  },
+  {
+   "t": 205.1666666666576,
+   "k": 6155,
+   "a": "skill",
+   "ci": 0,
+   "id": "defender",
+   "uid": 17
+  },
+  {
+   "t": 247.19999999998853,
+   "k": 7416,
+   "a": "skill",
+   "ci": 0,
+   "id": "defender",
+   "uid": 17
+  }
+ ],
+ "plan": {
+  "entries": [
+   {
+    "id": "geomseon",
+    "x": 11,
+    "y": 1,
+    "d": 2
+   },
+   {
+    "id": "defender",
+    "x": 11,
+    "y": 0,
+    "d": 0
+   },
+   {
+    "id": "nana",
+    "x": 9,
+    "y": 2,
+    "d": 0
+   },
+   {
+    "id": "lilith",
+    "x": 8,
+    "y": 3,
+    "d": 3
+   },
+   {
+    "id": "brick",
+    "x": 8,
+    "y": 1,
+    "d": 0
+   },
+   {
+    "id": "jayeon",
+    "x": 11,
+    "y": 3,
+    "d": 1
+   },
+   {
+    "id": "bongeun",
+    "x": 6,
+    "y": 2,
+    "d": 2
+   },
+   {
+    "id": "lulu",
+    "x": 8,
+    "y": 0,
+    "d": 2
+   },
+   {
+    "id": "silphy",
+    "x": 3,
+    "y": 4,
+    "d": 2
+   },
+   {
+    "id": "rabi",
+    "x": 11,
+    "y": 5,
+    "d": 3
+   }
+  ],
+  "skill": {},
+  "skillIdx": {},
+  "retreats": [],
+  "pol": {
+   "fire": 1,
+   "melt": 1,
+   "lamp": 1
+  }
+ }
+}

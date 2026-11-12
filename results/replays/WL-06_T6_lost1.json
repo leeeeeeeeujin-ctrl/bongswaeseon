@@ -1,0 +1,427 @@
+{
+ "stage": "WL-06",
+ "name": "우구몽 농장",
+ "level": "E0L40",
+ "lost": 0,
+ "seed": 1,
+ "K": 1,
+ "variant": "none",
+ "stageMul": {
+  "hp": 0.784,
+  "atk": 0.869,
+  "def": 0.85
+ },
+ "deck": "T6",
+ "criterion": "lost<=1",
+ "fiveSeedLost": [
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "family": "WL-06:1nuggkf",
+ "gameHash": "af57ca578387",
+ "rng": "Math.random replaced before `new TD.Game` by im_sim's seed(n): a = n*7919, mulberry32-style step; nothing else draws from it between seeding and the game",
+ "stepping": "fixed g.update(1/30) per frame, max 420*30 frames; actions run at the start of a frame, before that frame's update, in log order",
+ "squad": [
+  {
+   "id": "vanguard",
+   "elite": 0,
+   "lvl": 40,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 4,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.8,
+    "atk": 0.7225806451612903,
+    "def": 0.7192307692307692
+   }
+  },
+  {
+   "id": "lulu",
+   "elite": 0,
+   "lvl": 40,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 4,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.5669376959247648,
+    "atk": 0.5710796489485014,
+    "def": 0.6060139860139859
+   }
+  },
+  {
+   "id": "eungyeol",
+   "elite": 0,
+   "lvl": 40,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 4,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.5343270709505799,
+    "atk": 0.5503102905307358,
+    "def": 0.536409248084616
+   }
+  },
+  {
+   "id": "teka",
+   "elite": 0,
+   "lvl": 40,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 4,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.6033768467130463,
+    "atk": 0.6004062362758015,
+    "def": 0.6233428030303031
+   }
+  },
+  {
+   "id": "capy",
+   "elite": 0,
+   "lvl": 40,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 4,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.8,
+    "atk": 0.7888307155322862,
+    "def": 0.788235294117647
+   }
+  },
+  {
+   "id": "bongeun",
+   "elite": 0,
+   "lvl": 40,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 4,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.599610633727175,
+    "atk": 0.5180573495220873,
+    "def": 0.536525974025974
+   }
+  },
+  {
+   "id": "skakea2",
+   "elite": 0,
+   "lvl": 40,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 4,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.6115830115830115,
+    "atk": 0.5992396958783514,
+    "def": 0.6137628605161073
+   }
+  },
+  {
+   "id": "brick",
+   "elite": 0,
+   "lvl": 40,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 4,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.7498771498771499,
+    "atk": 0.7994186046511628,
+    "def": 0.7387755102040816
+   }
+  }
+ ],
+ "squadNote": "card order = squad order (card index ci in actions); Game(stageIdx, squad) receives {id, elite, mult, pot, skillIdx, slv, sm}; skill level and mastery by rung (sim.js skillRank, slv-r1); sm[k] = mastery of skill k",
+ "expected": {
+  "win": true,
+  "rwin": true,
+  "over": "win",
+  "life": 10,
+  "lost": 0,
+  "winTime": 214.36666666665707,
+  "frames": 6431,
+  "kills": 50,
+  "total": 50
+ },
+ "actions": [
+  {
+   "t": 0,
+   "k": 0,
+   "a": "deploy",
+   "ci": 7,
+   "id": "brick",
+   "x": 9,
+   "y": 1,
+   "dir": 2,
+   "uid": 1,
+   "cost": 16
+  },
+  {
+   "t": 3.0333333333333323,
+   "k": 91,
+   "a": "deploy",
+   "ci": 0,
+   "id": "vanguard",
+   "x": 9,
+   "y": 2,
+   "dir": 2,
+   "uid": 2,
+   "cost": 9
+  },
+  {
+   "t": 17.000000000000004,
+   "k": 510,
+   "a": "skill",
+   "ci": 7,
+   "id": "brick",
+   "uid": 1
+  },
+  {
+   "t": 24.033333333333687,
+   "k": 721,
+   "a": "deploy",
+   "ci": 4,
+   "id": "capy",
+   "x": 10,
+   "y": 5,
+   "dir": 3,
+   "uid": 8,
+   "cost": 21
+  },
+  {
+   "t": 27.033333333333836,
+   "k": 811,
+   "a": "skill",
+   "ci": 0,
+   "id": "vanguard",
+   "uid": 2
+  },
+  {
+   "t": 27.06666666666717,
+   "k": 812,
+   "a": "deploy",
+   "ci": 5,
+   "id": "bongeun",
+   "x": 11,
+   "y": 3,
+   "dir": 2,
+   "uid": 9,
+   "cost": 11
+  },
+  {
+   "t": 57.033333333332656,
+   "k": 1711,
+   "a": "deploy",
+   "ci": 2,
+   "id": "eungyeol",
+   "x": 9,
+   "y": 6,
+   "dir": 2,
+   "uid": 15,
+   "cost": 30
+  },
+  {
+   "t": 58.0333333333326,
+   "k": 1741,
+   "a": "skill",
+   "ci": 0,
+   "id": "vanguard",
+   "uid": 2
+  },
+  {
+   "t": 62.43333333333235,
+   "k": 1873,
+   "a": "skill",
+   "ci": 7,
+   "id": "brick",
+   "uid": 1
+  },
+  {
+   "t": 66.03333333333215,
+   "k": 1981,
+   "a": "deploy",
+   "ci": 1,
+   "id": "lulu",
+   "x": 3,
+   "y": 4,
+   "dir": 0,
+   "uid": 20,
+   "cost": 17
+  },
+  {
+   "t": 84.03333333333113,
+   "k": 2521,
+   "a": "deploy",
+   "ci": 6,
+   "id": "skakea2",
+   "x": 10,
+   "y": 3,
+   "dir": 0,
+   "uid": 25,
+   "cost": 18
+  },
+  {
+   "t": 89.03333333333084,
+   "k": 2671,
+   "a": "skill",
+   "ci": 0,
+   "id": "vanguard",
+   "uid": 2
+  },
+  {
+   "t": 89.06666666666418,
+   "k": 2672,
+   "a": "deploy",
+   "ci": 3,
+   "id": "teka",
+   "x": 11,
+   "y": 5,
+   "dir": 3,
+   "uid": 28,
+   "cost": 12
+  },
+  {
+   "t": 107.86666666666311,
+   "k": 3236,
+   "a": "skill",
+   "ci": 7,
+   "id": "brick",
+   "uid": 1
+  },
+  {
+   "t": 120.03333333332908,
+   "k": 3601,
+   "a": "skill",
+   "ci": 0,
+   "id": "vanguard",
+   "uid": 2
+  },
+  {
+   "t": 208.39999999999074,
+   "k": 6252,
+   "a": "deploy",
+   "ci": 0,
+   "id": "vanguard",
+   "x": 9,
+   "y": 2,
+   "dir": 2,
+   "uid": 59,
+   "cost": 14
+  }
+ ],
+ "plan": {
+  "entries": [
+   {
+    "id": "brick",
+    "x": 9,
+    "y": 1,
+    "d": 2
+   },
+   {
+    "id": "vanguard",
+    "x": 9,
+    "y": 2,
+    "d": 2
+   },
+   {
+    "id": "capy",
+    "x": 10,
+    "y": 5,
+    "d": 3
+   },
+   {
+    "id": "bongeun",
+    "x": 11,
+    "y": 3,
+    "d": 2
+   },
+   {
+    "id": "eungyeol",
+    "x": 9,
+    "y": 6,
+    "d": 2
+   },
+   {
+    "id": "lulu",
+    "x": 3,
+    "y": 4,
+    "d": 0
+   },
+   {
+    "id": "skakea2",
+    "x": 10,
+    "y": 3,
+    "d": 0
+   },
+   {
+    "id": "teka",
+    "x": 11,
+    "y": 5,
+    "d": 3
+   }
+  ],
+  "skill": {
+   "bongeun": {
+    "m": 2
+   },
+   "eungyeol": {
+    "m": 3
+   }
+  },
+  "skillIdx": {},
+  "retreats": [],
+  "pol": {
+   "fire": 0,
+   "melt": 1,
+   "lamp": 1
+  },
+  "_par": "[[[\"brick\",9,1,2,null,null,null],[\"vanguard\",9,2,2,null,null,null],[\"capy\",10,5,3,null,null,null],[\"bongeun\",11,3,2,null,null,null],[\"eungyeol\",9,6,2,null,null,null],[\"lulu\",3,4,0,null,null,null],[\"skakea2\",10,3,0,null,null,null],[\"teka\",11,5,3,null,null,null],[\"defender\",9,5,1,null,null,null]],{\"bongeun\":{\"m\":2},\"eungyeol\":{\"m\":3}},{},[],{\"fire\":0,\"melt\":1,\"lamp\":1}]"
+ }
+}

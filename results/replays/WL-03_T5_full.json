@@ -1,0 +1,310 @@
+{
+ "stage": "WL-03",
+ "name": "경찰청 뒷마당",
+ "level": "E0L20",
+ "lost": 0,
+ "seed": 1,
+ "K": 1,
+ "variant": "none",
+ "stageMul": {
+  "hp": 0.612,
+  "atk": 0.693,
+  "def": 0.85
+ },
+ "deck": "T5",
+ "criterion": "lost<=0 (full block)",
+ "fiveSeedLost": [
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "family": "WL-03:10myyom",
+ "gameHash": "af57ca578387",
+ "rng": "Math.random replaced before `new TD.Game` by im_sim's seed(n): a = n*7919, mulberry32-style step; nothing else draws from it between seeding and the game",
+ "stepping": "fixed g.update(1/30) per frame, max 420*30 frames; actions run at the start of a frame, before that frame's update, in log order",
+ "squad": [
+  {
+   "id": "sniper",
+   "elite": 0,
+   "lvl": 20,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 2,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.6432994678277697,
+    "atk": 0.5457777777777778,
+    "def": 0.5518925518925519
+   }
+  },
+  {
+   "id": "ker",
+   "elite": 0,
+   "lvl": 20,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 2,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.4499780412823891,
+    "atk": 0.5947065592635212,
+    "def": 0.43784584980237157
+   }
+  },
+  {
+   "id": "lilith",
+   "elite": 0,
+   "lvl": 20,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 2,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.6511188811188812,
+    "atk": 0.6417348608837972,
+    "def": 0.5683760683760684
+   }
+  },
+  {
+   "id": "rabi",
+   "elite": 0,
+   "lvl": 20,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 2,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.5374547479810639,
+    "atk": 0.4869006426099852,
+    "def": 0.5045481049562682
+   }
+  },
+  {
+   "id": "geomseon",
+   "elite": 0,
+   "lvl": 20,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 2,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.4897959183673469,
+    "atk": 0.49587367793832865,
+    "def": 0.5430248811853509
+   }
+  },
+  {
+   "id": "brick",
+   "elite": 0,
+   "lvl": 20,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 2,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.6536130536130537,
+    "atk": 0.7099731663685152,
+    "def": 0.6131868131868131
+   }
+  }
+ ],
+ "squadNote": "card order = squad order (card index ci in actions); Game(stageIdx, squad) receives {id, elite, mult, pot, skillIdx, slv, sm}; skill level and mastery by rung (sim.js skillRank, slv-r1); sm[k] = mastery of skill k",
+ "expected": {
+  "win": true,
+  "rwin": true,
+  "over": "win",
+  "life": 10,
+  "lost": 0,
+  "winTime": 211.2333333333239,
+  "frames": 6337,
+  "kills": 55,
+  "total": 55
+ },
+ "actions": [
+  {
+   "t": 0,
+   "k": 0,
+   "a": "deploy",
+   "ci": 4,
+   "id": "geomseon",
+   "x": 7,
+   "y": 3,
+   "dir": 1,
+   "uid": 1,
+   "cost": 17
+  },
+  {
+   "t": 5.033333333333325,
+   "k": 151,
+   "a": "deploy",
+   "ci": 3,
+   "id": "rabi",
+   "x": 2,
+   "y": 1,
+   "dir": 2,
+   "uid": 7,
+   "cost": 8
+  },
+  {
+   "t": 14.033333333333294,
+   "k": 421,
+   "a": "deploy",
+   "ci": 0,
+   "id": "sniper",
+   "x": 4,
+   "y": 4,
+   "dir": 0,
+   "uid": 11,
+   "cost": 9
+  },
+  {
+   "t": 30.033333333333985,
+   "k": 901,
+   "a": "deploy",
+   "ci": 5,
+   "id": "brick",
+   "x": 3,
+   "y": 3,
+   "dir": 0,
+   "uid": 17,
+   "cost": 16
+  },
+  {
+   "t": 47.033333333333225,
+   "k": 1411,
+   "a": "deploy",
+   "ci": 1,
+   "id": "ker",
+   "x": 9,
+   "y": 4,
+   "dir": 0,
+   "uid": 20,
+   "cost": 17
+  },
+  {
+   "t": 51.033333333333,
+   "k": 1531,
+   "a": "skill",
+   "ci": 5,
+   "id": "brick",
+   "uid": 17
+  },
+  {
+   "t": 63.033333333332315,
+   "k": 1891,
+   "a": "deploy",
+   "ci": 2,
+   "id": "lilith",
+   "x": 9,
+   "y": 1,
+   "dir": 1,
+   "uid": 25,
+   "cost": 16
+  },
+  {
+   "t": 97.56666666666369,
+   "k": 2927,
+   "a": "skill",
+   "ci": 5,
+   "id": "brick",
+   "uid": 17
+  },
+  {
+   "t": 144.0999999999944,
+   "k": 4323,
+   "a": "skill",
+   "ci": 5,
+   "id": "brick",
+   "uid": 17
+  },
+  {
+   "t": 190.63333333332508,
+   "k": 5719,
+   "a": "skill",
+   "ci": 5,
+   "id": "brick",
+   "uid": 17
+  }
+ ],
+ "plan": {
+  "entries": [
+   {
+    "id": "geomseon",
+    "x": 7,
+    "y": 3,
+    "d": 1
+   },
+   {
+    "id": "rabi",
+    "x": 2,
+    "y": 1,
+    "d": 2
+   },
+   {
+    "id": "sniper",
+    "x": 4,
+    "y": 4,
+    "d": 0
+   },
+   {
+    "id": "brick",
+    "x": 3,
+    "y": 3,
+    "d": 0
+   },
+   {
+    "id": "ker",
+    "x": 9,
+    "y": 4,
+    "d": 0
+   },
+   {
+    "id": "lilith",
+    "x": 9,
+    "y": 1,
+    "d": 1
+   }
+  ],
+  "skill": {},
+  "skillIdx": {},
+  "retreats": [],
+  "pol": {
+   "fire": 1,
+   "melt": 1,
+   "lamp": 1
+  },
+  "_par": "[[[\"geomseon\",7,3,1,null,null,null],[\"guard\",2,1,2,null,null,null],[\"sniper\",4,4,0,null,null,null],[\"brick\",3,3,0,null,null,null],[\"ker\",9,4,0,null,null,null],[\"lilith\",9,1,1,null,null,null]],{},{},[],{\"fire\":1,\"melt\":1,\"lamp\":1}]"
+ }
+}

@@ -1,0 +1,512 @@
+{
+ "stage": "IM-09",
+ "name": "세관 성벽",
+ "level": "E0L20",
+ "lost": 0,
+ "seed": 1,
+ "K": 1,
+ "variant": "none",
+ "stageMul": {
+  "hp": 0.27,
+  "atk": 0.35,
+  "def": 0.78
+ },
+ "deck": "T5",
+ "criterion": "lost<=0 (full block)",
+ "fiveSeedLost": [
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "family": "IM-09:u9htmi",
+ "gameHash": "af57ca578387",
+ "rng": "Math.random replaced before `new TD.Game` by im_sim's seed(n): a = n*7919, mulberry32-style step; nothing else draws from it between seeding and the game",
+ "stepping": "fixed g.update(1/30) per frame, max 420*30 frames; actions run at the start of a frame, before that frame's update, in log order",
+ "squad": [
+  {
+   "id": "caster",
+   "elite": 0,
+   "lvl": 20,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 2,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.6511188811188812,
+    "atk": 0.6417348608837972,
+    "def": 0.5683760683760684
+   }
+  },
+  {
+   "id": "yui",
+   "elite": 0,
+   "lvl": 20,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 2,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.47173689619732784,
+    "atk": 0.48205629557212104,
+    "def": 0.4935936113575865
+   }
+  },
+  {
+   "id": "hakuren",
+   "elite": 0,
+   "lvl": 20,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 2,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.4877722916061574,
+    "atk": 1,
+    "def": 0.5391666666666667
+   }
+  },
+  {
+   "id": "miho",
+   "elite": 0,
+   "lvl": 20,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 2,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.6249712313003453,
+    "atk": 0.45217171717171717,
+    "def": 0.5194377990430622
+   }
+  },
+  {
+   "id": "sunae",
+   "elite": 0,
+   "lvl": 20,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 2,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.4499780412823891,
+    "atk": 0.5930431071276141,
+    "def": 0.43784584980237157
+   }
+  },
+  {
+   "id": "capy",
+   "elite": 0,
+   "lvl": 20,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 2,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.717948717948718,
+    "atk": 0.6671141540251488,
+    "def": 0.6917043740573152
+   }
+  },
+  {
+   "id": "nana",
+   "elite": 0,
+   "lvl": 20,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 2,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.7049272566513946,
+    "atk": 0.6488789413751129,
+    "def": 0.6974358974358974
+   }
+  },
+  {
+   "id": "geomseon",
+   "elite": 0,
+   "lvl": 20,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 2,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.4897959183673469,
+    "atk": 0.49587367793832865,
+    "def": 0.5430248811853509
+   }
+  },
+  {
+   "id": "skakea2",
+   "elite": 0,
+   "lvl": 20,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 2,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.5401544401544401,
+    "atk": 0.5232092837134854,
+    "def": 0.5024456063417103
+   }
+  },
+  {
+   "id": "brick",
+   "elite": 0,
+   "lvl": 20,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 2,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.6536130536130537,
+    "atk": 0.7099731663685152,
+    "def": 0.6131868131868131
+   }
+  }
+ ],
+ "squadNote": "card order = squad order (card index ci in actions); Game(stageIdx, squad) receives {id, elite, mult, pot, skillIdx, slv, sm}; skill level and mastery by rung (sim.js skillRank, slv-r1); sm[k] = mastery of skill k",
+ "expected": {
+  "win": true,
+  "rwin": true,
+  "over": "win",
+  "life": 10,
+  "lost": 0,
+  "winTime": 200.86666666665784,
+  "frames": 6026,
+  "kills": 68,
+  "total": 68
+ },
+ "actions": [
+  {
+   "t": 0,
+   "k": 0,
+   "a": "deploy",
+   "ci": 7,
+   "id": "geomseon",
+   "x": 9,
+   "y": 5,
+   "dir": 2,
+   "uid": 1,
+   "cost": 17
+  },
+  {
+   "t": 13.033333333333298,
+   "k": 391,
+   "a": "deploy",
+   "ci": 1,
+   "id": "yui",
+   "x": 12,
+   "y": 4,
+   "dir": 1,
+   "uid": 10,
+   "cost": 17
+  },
+  {
+   "t": 31.033333333334035,
+   "k": 931,
+   "a": "deploy",
+   "ci": 8,
+   "id": "skakea2",
+   "x": 7,
+   "y": 6,
+   "dir": 3,
+   "uid": 15,
+   "cost": 18
+  },
+  {
+   "t": 39.03333333333368,
+   "k": 1171,
+   "a": "deploy",
+   "ci": 2,
+   "id": "hakuren",
+   "x": 12,
+   "y": 2,
+   "dir": 3,
+   "uid": 16,
+   "cost": 8
+  },
+  {
+   "t": 55.03333333333277,
+   "k": 1651,
+   "a": "deploy",
+   "ci": 3,
+   "id": "miho",
+   "x": 10,
+   "y": 6,
+   "dir": 3,
+   "uid": 17,
+   "cost": 16
+  },
+  {
+   "t": 61.56666666666573,
+   "k": 1847,
+   "a": "deploy",
+   "ci": 4,
+   "id": "sunae",
+   "x": 1,
+   "y": 2,
+   "dir": 3,
+   "uid": 21,
+   "cost": 17
+  },
+  {
+   "t": 79.03333333333141,
+   "k": 2371,
+   "a": "deploy",
+   "ci": 5,
+   "id": "capy",
+   "x": 11,
+   "y": 4,
+   "dir": 1,
+   "uid": 28,
+   "cost": 21
+  },
+  {
+   "t": 91.33333333333071,
+   "k": 2740,
+   "a": "deploy",
+   "ci": 6,
+   "id": "nana",
+   "x": 1,
+   "y": 0,
+   "dir": 0,
+   "uid": 33,
+   "cost": 17
+  },
+  {
+   "t": 98.03333333333033,
+   "k": 2941,
+   "a": "deploy",
+   "ci": 0,
+   "id": "caster",
+   "x": 5,
+   "y": 6,
+   "dir": 2,
+   "uid": 35,
+   "cost": 16
+  },
+  {
+   "t": 110.03333333332965,
+   "k": 3301,
+   "a": "skill",
+   "ci": 0,
+   "id": "caster",
+   "uid": 35
+  },
+  {
+   "t": 133.03333333332836,
+   "k": 3991,
+   "a": "skill",
+   "ci": 0,
+   "id": "caster",
+   "uid": 35
+  },
+  {
+   "t": 139.03333333332802,
+   "k": 4171,
+   "a": "retreat",
+   "ci": 7,
+   "id": "geomseon",
+   "uid": 1,
+   "x": 9,
+   "y": 5,
+   "why": "plan"
+  },
+  {
+   "t": 139.03333333332802,
+   "k": 4171,
+   "a": "deploy",
+   "ci": 9,
+   "id": "brick",
+   "x": 9,
+   "y": 5,
+   "dir": 0,
+   "uid": 56,
+   "cost": 16
+  },
+  {
+   "t": 139.56666666666132,
+   "k": 4187,
+   "a": "deploy",
+   "ci": 4,
+   "id": "sunae",
+   "x": 1,
+   "y": 2,
+   "dir": 3,
+   "uid": 57,
+   "cost": 26
+  },
+  {
+   "t": 159.03333333332688,
+   "k": 4771,
+   "a": "skill",
+   "ci": 0,
+   "id": "caster",
+   "uid": 35
+  },
+  {
+   "t": 163.03333333332665,
+   "k": 4891,
+   "a": "skill",
+   "ci": 9,
+   "id": "brick",
+   "uid": 56
+  },
+  {
+   "t": 182.03333333332557,
+   "k": 5461,
+   "a": "skill",
+   "ci": 0,
+   "id": "caster",
+   "uid": 35
+  }
+ ],
+ "plan": {
+  "entries": [
+   {
+    "id": "geomseon",
+    "x": 9,
+    "y": 5,
+    "d": 2
+   },
+   {
+    "id": "skakea2",
+    "x": 7,
+    "y": 6,
+    "d": 3,
+    "from": 14
+   },
+   {
+    "id": "yui",
+    "x": 12,
+    "y": 4,
+    "d": 1
+   },
+   {
+    "id": "brick",
+    "x": 9,
+    "y": 5,
+    "d": 0,
+    "from": 56
+   },
+   {
+    "id": "hakuren",
+    "x": 12,
+    "y": 2,
+    "d": 3
+   },
+   {
+    "id": "miho",
+    "x": 10,
+    "y": 6,
+    "d": 3
+   },
+   {
+    "id": "sunae",
+    "x": 1,
+    "y": 2,
+    "d": 3,
+    "from": 13
+   },
+   {
+    "id": "capy",
+    "x": 11,
+    "y": 4,
+    "d": 1
+   },
+   {
+    "id": "geomseon",
+    "x": 10,
+    "y": 4,
+    "d": 1,
+    "from": 133
+   },
+   {
+    "id": "nana",
+    "x": 1,
+    "y": 0,
+    "d": 0
+   },
+   {
+    "id": "caster",
+    "x": 5,
+    "y": 6,
+    "d": 2,
+    "from": 27
+   }
+  ],
+  "skill": {
+   "geomseon": {
+    "m": 2
+   },
+   "miho": {
+    "m": 2
+   }
+  },
+  "skillIdx": {},
+  "retreats": [
+   {
+    "id": "geomseon",
+    "t": 139
+   }
+  ],
+  "pol": {
+   "fire": 1,
+   "melt": 1,
+   "lamp": 0
+  },
+  "_par": "[[[\"geomseon\",9,5,2,null,null,null],[\"yui\",12,4,1,null,null,null],[\"skakea2\",7,6,3,14,null,null],[\"brick\",9,5,0,56,null,null],[\"hakuren\",12,2,3,null,null,null],[\"miho\",10,6,3,null,null,null],[\"sunae\",3,1,0,13,null,null],[\"capy\",11,4,1,null,null,null],[\"geomseon\",10,4,1,133,null,null],[\"nana\",1,0,0,null,null,null],[\"caster\",5,6,2,27,null,null]],{\"geomseon\":{\"m\":2},\"miho\":{\"m\":2}},{},[[\"geomseon\",139]],{\"fire\":1,\"melt\":1,\"lamp\":0}]"
+ }
+}
