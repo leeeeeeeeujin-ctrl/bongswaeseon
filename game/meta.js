@@ -65,6 +65,7 @@
   const EPISODES = { 1: { no: "01", t: "망자의 행진", en: "THE MARCH OF THE DEAD", art: "st_war" }, 2: { no: "02", t: "지옥 기계", en: "THE INFERNAL MACHINE", art: "st_lane" }, 3: { no: "03", t: "쏘지 않은 탄환", en: "THE UNFIRED BULLET", art: "st_parade" } };   // chapter 3: a working title and a borrowed backdrop until its own is drawn
   const epArt = (n) => ART[(EPISODES[n] || EPISODES[1]).art] || ART.st_war || ART.bg;
   const POOL = { 6: ["rabi6", "veil", "eungyeol", "smoqueen", "angelina"], 5: ["geomseon", "belina", "yui", "rabi", "piania", "silphy", "bongeun", "alpha2", "skakea2"], 4: ["falchion", "atat", "hakuren", "miho", "lulu", "irins", "alpha", "skakea", "ker", "sunae", "teka"], 3: ["brick", "jayeon", "capy", "hiro", "lilith", "ayaki", "nana", "tao"] };
+  const DUMMY_OPS = new Set(["vanguard", "guard", "defender", "sniper", "caster", "medic", "supporter", "specialist"]);   /* the eight stand-ins from the first builds (로완, 카이, 브람, 세라, 이오, 미르, 노바, 제트): never offered on trial */
   const PULL = 600, STAM_EVERY = 360;
   // the archive's banners, after the original's: a standard one with no rate-up, and a pick-up whose featured six and five take half of their rarity;
   // each keeps its own pity, and on the pick-up 150 links without the featured six make the next six the featured one
@@ -2675,7 +2676,7 @@
     sandbox(el) {
       el.appendChild(h("div", "lobby-bg"));
       el.appendChild(topBar("훈련장 편성", "TRAINING", () => go("lobby")));
-      const all = TD.UNITS.filter((u) => !u.summon && u.rarity).map((u) => u.id).sort((a, c) => (S.ops[c] ? 1 : 0) - (S.ops[a] ? 1 : 0) || def(c).rarity - def(a).rarity);   /* every operator: yours as they stand first, the rest on trial at full promotion */
+      const all = TD.UNITS.filter((u) => !u.summon && u.rarity && (S.ops[u.id] || !DUMMY_OPS.has(u.id))).map((u) => u.id).sort((a, c) => (S.ops[c] ? 1 : 0) - (S.ops[a] ? 1 : 0) || def(c).rarity - def(a).rarity);   /* every operator: yours as they stand first, the rest on trial at full promotion */
       let sel = (S.sbSquad || []).filter((q) => def(q.id));
       if (!S.sbSquad) sel = all.slice(0, 12).map((id) => ({ id, s: S.ops[id] ? S.ops[id].skill : 0 }));
       const keep = () => { S.sbSquad = sel; save(); };

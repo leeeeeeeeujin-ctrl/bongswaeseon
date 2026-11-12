@@ -1395,7 +1395,7 @@
     // a story-only entry between the crossroads and the checkpoint: no battle, no cost (the board is only here so the stage list stays one shape)
     { code: "IM-ST1", name: "불 꺼진 밤", map: MAP_C2.shadow, bg: null, hz: 0.5, ep: 2, story: true, startCost: 10, mul: { hp: 1, atk: 1, def: 1 }, waves: [],
       boss: ["", ""], desc: "갈림길의 반란군은 거의 남지 않았다. 검문소를 앞둔 밤, 불을 피우지 못한 채 모여 앉은 사람들.", lose: "" },
-    { code: "IM-08", name: "황제가 죽었다", map: MAP_C2.barrier, bg: null, hz: 0.5, ep: 2, startCost: 10, mul: { hp: 0.41, atk: 0.67, def: 0.76 },
+    { code: "IM-08", name: "황제가 죽었다", map: MAP_C2.barrier, bg: null, hz: 0.5, ep: 2, startCost: 10, mul: { hp: 0.48, atk: 0.715, def: 0.76 },
       wind: { dir: 2, first: 52, every: 46, dur: 12 },   /* from the east, through the gap: the barrier (W) takes it on rows 2 and 4, the two round roads (1, 5) and the gap row (3) take all of it */
       lamps: { r: 1, fire: true },   /* the checkpoint brazier (4,3): it can be put out (a drone), and only someone set down beside it afterwards lights it again */
       // gates: 0 the north-east road (the gendarmes: hounds, pikemen, frost gunners, the drones), 1 the south-east road (the Emperor's column). Everything comes through the one gap (7,3);
