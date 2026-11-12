@@ -1395,7 +1395,7 @@
     // a story-only entry between the crossroads and the checkpoint: no battle, no cost (the board is only here so the stage list stays one shape)
     { code: "IM-ST1", name: "불 꺼진 밤", map: MAP_C2.shadow, bg: null, hz: 0.5, ep: 2, story: true, startCost: 10, mul: { hp: 1, atk: 1, def: 1 }, waves: [],
       boss: ["", ""], desc: "갈림길의 반란군은 거의 남지 않았다. 검문소를 앞둔 밤, 불을 피우지 못한 채 모여 앉은 사람들.", lose: "" },
-    { code: "IM-08", name: "황제가 죽었다", map: MAP_C2.barrier, bg: null, hz: 0.5, ep: 2, startCost: 10, mul: { hp: 0.48, atk: 0.715, def: 0.76 },
+    { code: "IM-08", name: "황제가 죽었다", map: MAP_C2.barrier, bg: null, hz: 0.5, ep: 2, startCost: 10, mul: { hp: 0.445, atk: 0.69, def: 0.76 },
       wind: { dir: 2, first: 52, every: 46, dur: 12 },   /* from the east, through the gap: the barrier (W) takes it on rows 2 and 4, the two round roads (1, 5) and the gap row (3) take all of it */
       lamps: { r: 1, fire: true },   /* the checkpoint brazier (4,3): it can be put out (a drone), and only someone set down beside it afterwards lights it again */
       // gates: 0 the north-east road (the gendarmes: hounds, pikemen, frost gunners, the drones), 1 the south-east road (the Emperor's column). Everything comes through the one gap (7,3);
@@ -1718,6 +1718,7 @@
         prev.set(key(nx, ny), [x, y]);
         q.push([nx, ny]);
       }
+      if (TUN_OUT.size) for (const [nx, ny] of TUN_OUT.get(y * 1000 + x) || []) { if (prev.has(key(nx, ny))) continue; prev.set(key(nx, ny), [x, y]); q.push([nx, ny]); }   /* a tunnel: one step to its far mouth */
     }
     const path = [];
     if (!prev.has(key(...to))) return null;   // no way through on foot (a drone-only gate)
@@ -1726,6 +1727,15 @@
     return path.reverse();
   }
   const PATHS = [], AIR_PATHS = [];
+  /* quick routes (tunnels): a foe stepping onto a tunnel mouth goes underground and comes up at the paired exit after t seconds; while under it can be neither seen, struck nor blocked.
+     stage.tunnels: [{ a: [x, y], b: [x, y], t: seconds, both: false }] (one way a -> b unless both). Mouths sit on walkable squares; pathfinding counts the passage as one step */
+  const TUN = new Map(), TUN_OUT = new Map();
+  function setTunnels(list) {
+    TUN.clear(); TUN_OUT.clear();
+    for (const q of list || []) { const add = (a, b) => { TUN.set(a[0] + "," + a[1] + ">" + b[0] + "," + b[1], { t: q.t === undefined ? 3 : q.t, a, b }); const k = a[1] * 1000 + a[0]; if (!TUN_OUT.has(k)) TUN_OUT.set(k, []); TUN_OUT.get(k).push(b); };
+      add(q.a, q.b); if (q.both) add(q.b, q.a); }
+  }
+  const tunAt = (a, b) => TUN.size ? TUN.get(a[0] + "," + a[1] + ">" + b[0] + "," + b[1]) || null : null;
   const VIA = new Map();   // routes through waypoints, built once per map
   function viaPath(s, via) {
     const k = s + ":" + JSON.stringify(via);
@@ -1820,7 +1830,7 @@
       // board shifts (a wall that opens at a set time): such a stage plays on its own copy of the rows, so the stage's map stays as written and a new game starts shut again
       this.rows = this.stage.shifts && this.stage.map ? this.stage.map.slice() : null;
       this.shifts = (this.stage.shifts || []).map((q) => ({ t: q.when ? Infinity : q.t, when: q.when, warn: q.warn || 0, set: q.set, banner: q.banner, tiles: q.set.map(([x, y]) => [x, y]), warned: false, done: false }));
-      setMap(this.rows || this.stage.map || MAP0);
+      setTunnels(this.stage.tunnels); setMap(this.rows || this.stage.map || MAP0);
       this.costRate = this.stage.costRate !== undefined ? this.stage.costRate : CFG.costPerSec;
       if (this.stage.startCost) this.cost = this.stage.startCost;
       this.hold = !!(this.stage.tutorial || this.stage.sandbox);
@@ -2491,7 +2501,8 @@
     onGround(u) { return u.ground !== undefined ? u.ground : u.def.tile === "g"; }
     rangeTiles(u, dir = u.dir) { const c = this.cards[u.card]; return RANGE[u.rangeKey || rangeKeyOf(u.def, c ? c.elite : 0)].map((o) => { const [dx, dy] = rotate(o, dir); return [u.x + dx, u.y + dy]; }); }
     inRange(u, e, tiles = this.rangeTiles(u)) {
-      if (e.isEnemy && e.downUntil > this.t) return false;   // lying where it fell: there is nothing to strike yet
+      if (e.isEnemy && e.downUntil > this.t) return false;
+      if (e.underT > 0) return false;   /* underground in a tunnel */   // lying where it fell: there is nothing to strike yet
       if (e.mask && !e.judged) return false;   // lab L3 (LAB-04): a masked figure not judged for killing is never struck
       if (e.ghost && !u.isEnemy) return false;   // lab L5: a ghost is not ours to heal or help
       if (!u.isEnemy && this.smoke.size && this.smokeAt(u.x, u.y) && Math.max(Math.abs(e.x - u.x), Math.abs(e.y - u.y)) > 1.5) return false;   // in the smoke: no further than the next square
@@ -2541,6 +2552,7 @@
     damage(target, raw, type, fromUnit, fromEnemy) {
       if (this._beatAmpU && fromUnit === this._beatAmpU) raw *= 1.3;   // lab L2: an instant skill started on the downbeat
       if (target.isEnemy && (target.crownUntil > this.t || target.downUntil > this.t)) return 0;
+      if (target.underT > 0) return 0;   /* underground in a tunnel */
       if (target.mask && !target.judged) return 0;   // lab L3 (LAB-04): nor harmed by a blast   // a boss between his two stages, or an armour still lying where it fell: nothing harms them
       if (fromEnemy && !target.isEnemy && target.markT > this.t) raw *= target.markAmp || 1;   // pointed out by an informer
       if (fromEnemy && fromEnemy.def.vsFrozen && !target.isEnemy && target.frozenT > 0) raw *= fromEnemy.def.vsFrozen;   // fangs into the frozen
@@ -3102,6 +3114,8 @@
       // move along the path; returns true when the base is reached
       while (dist > 0 && e.seg < e.path.length - 1) {
         const a = e.path[e.seg], b = e.path[e.seg + 1];
+        const tn = !e.def.flying && tunAt(a, b);
+        if (tn) { e.seg++; e.segT = 0; e.underT = tn.t; e.underFrom = a.slice(); dist = 0; if (this.fx) this.fx.push({ k: "tunin", x: a[0], y: a[1], t: 0, life: 0.6 }); break; }   /* into the tunnel: up again at b after t s */
         const L = Math.hypot(b[0] - a[0], b[1] - a[1]);
         const left = (1 - e.segT) * L;
         if (dist < left) { e.segT += dist / L; dist = 0; }
@@ -3110,6 +3124,7 @@
       if (dist < 0) {   // pushed backwards
         let back = -dist;
         while (back > 0 && (e.seg > 0 || e.segT > 0)) {
+          if (e.segT <= 0 && e.seg > 0 && tunAt(e.path[e.seg - 1], e.path[e.seg])) break;   /* nobody is pushed back down a tunnel */
           const a = e.path[e.seg], b = e.path[Math.min(e.seg + 1, e.path.length - 1)];
           const L = Math.max(1e-6, Math.hypot(b[0] - a[0], b[1] - a[1]));
           const done = e.segT * L;
@@ -3666,7 +3681,7 @@
           if ((e.fuseT -= dt) <= 0) e.hp = 0;
         }
         // a ranged foe keeps walking between shots; when the next one is due it stops, shoulders the gun and takes aim, then walks on
-        if (e.def.ranged && (e.def.melt || (!e.blockedBy && !e.heldBy))) {   // the firebottle man takes aim even when someone has hold of him
+        if (e.def.ranged && !(e.underT > 0) && (e.def.melt || (!e.blockedBy && !e.heldBy))) {   // the firebottle man takes aim even when someone has hold of him
           let tg = this.rangedTarget(e); const held = e.blockedBy || e.heldBy;
           if (held && !(tg && tg.frozenT > 0)) tg = held;
           if (tg && !e.aimTgt) e.atkT = Math.max(e.atkT, e.def.aim || RANGED_AIM);   // the sights first: never a snap shot
@@ -3696,6 +3711,7 @@
             }
             e.windK = null;
           }
+        } else if (e.underT > 0) { e.underT -= dt; if (e.underT <= 0) { e.underT = 0; this.fx.push({ k: "tunout", x: e.x, y: e.y, t: 0, life: 0.6 }); }   /* underground: out of sight and reach until it comes up */
         } else if (e.pauseT > 0) { e.pauseT -= dt;   // stopped at a waypoint of its route: looking the ground over
         } else if (this.beat && !e.def.flying && !e.blockedBy && !e.heldBy && ((!e.aiming && !settling) || e.hop) && !(e.postUntil > this.t) && !e.noWay) {   // lab L2: on the beat (a hop once begun is finished)
           const reached = this.beatMove(e, dt, slow);
@@ -3705,7 +3721,7 @@
           const sx = e.x, sy = e.y, sseg = e.seg, st = e.segT;
           let reached = this.advance(e, step);
           if (e.path.waits && e.path.waits[e.seg] && e.waitedAt !== e.seg) { e.waitedAt = e.seg; e.pauseT = typeof e.path.waits[e.seg] === "object" ? Math.max(0.01, e.path.waits[e.seg].until - this.t) : e.path.waits[e.seg]; }
-          if (!e.def.flying) {
+          if (!e.def.flying && !(e.underT > 0)) {   /* just gone underground: nobody can take hold of it */
             const tx = Math.round(e.x), ty = Math.round(e.y);
             const u = this.unitAt(tx, ty);
             if (e.def.claim && u && this.onGround(u) && !(e.breachT > this.t && e.breachFrom === u)) this.claimBlocker(e, u);   // a boss is never walked past: a full blocker lets go of others to take him
@@ -4145,5 +4161,5 @@
   for (const d of UNITS) { if (d.talents) d.talent = d.talents[0]; else if (d.talent) d.talents = [Object.assign({ elite: 0 }, d.talent)]; }   // 제1·제2 재능: every operator has a list; the second opens at the second promotion
   const HOLY = { max: 1000, dur: 10, dps: 100, onHit: 0.1 };
   const ERODE = { max: 1000, burst: 1500, dur: 8, resDown: 25 };
-  root.TD = { echoGet, echoSet, echoClear, BASES, MAP0, get W() { return W; }, get H() { return H; }, get MAP() { return MAP; }, bfsPath, viaPath, atPath, STATUS, HOLY, ERODE, rangeKeyOf, eliteCost, potOf, potList, growth, AKSTAT, SANDBOX, TUTORIAL, MAP_TUT, setMap, nameOf, revealAt, skillAt, skillDesc, skillFields, maxMastery, SK_CURVE, SKILL_LV, near, Game, UNITS, SUMMONS, ENEMIES, WAVES, STAGES, CFG, RANGE, PATHS, AIR_PATHS, SPAWNS, BASE, tileAt, rotate };
+  root.TD = { echoGet, echoSet, echoClear, setTunnels, BASES, MAP0, get W() { return W; }, get H() { return H; }, get MAP() { return MAP; }, bfsPath, viaPath, atPath, STATUS, HOLY, ERODE, rangeKeyOf, eliteCost, potOf, potList, growth, AKSTAT, SANDBOX, TUTORIAL, MAP_TUT, setMap, nameOf, revealAt, skillAt, skillDesc, skillFields, maxMastery, SK_CURVE, SKILL_LV, near, Game, UNITS, SUMMONS, ENEMIES, WAVES, STAGES, CFG, RANGE, PATHS, AIR_PATHS, SPAWNS, BASE, tileAt, rotate };
 })(typeof window !== "undefined" ? window : globalThis);
