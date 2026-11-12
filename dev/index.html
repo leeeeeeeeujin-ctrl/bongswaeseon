@@ -9135,8 +9135,8 @@ window.BGM = (() => {
     if (game.shifts) for (const sh of game.shifts) { if (!sh.when || sh.done || !game.volleys) continue; const v = game.volleys[sh.when.volley]; if (!v) continue;
       let mx = 0, my = 0; for (const [x, y] of sh.tiles) { mx += x / sh.tiles.length; my += y / sh.tiles.length; }
       const c0 = P(mx, my, 1.55), n = Math.min(v.nShot || 0, sh.when.shots), ours = !!v.ours;
-      text("문 · 포격 " + n + "/" + sh.when.shots, c0[0], c0[1], 18, n >= sh.when.shots - 1 && !ours ? "rgba(255,140,110,.98)" : "rgba(255,226,180,.95)", { align: "center", weight: 800, shadow: true });
-      if (ours) text("포를 쥐고 있는 동안 문은 버틴다", c0[0], c0[1] + 20, 13, "rgba(190,230,255,.92)", { align: "center", weight: 700, shadow: true }); }
+      const gs = "문 · 포격 " + n + "/" + sh.when.shots, gc = n >= sh.when.shots - 1 && !ours ? "rgba(255,140,110,.98)" : "rgba(255,226,180,.95)";
+      lateLabels.push(() => { text(gs, c0[0], c0[1], 18, gc, { align: "center", weight: 800, shadow: true }); if (ours) text("포를 쥐고 있는 동안 문은 버틴다", c0[0], c0[1] + 20, 13, "rgba(190,230,255,.92)", { align: "center", weight: 700, shadow: true }); }); }
     // quick routes (stage.tunnels): a dark mouth at each end, numbered in pairs (an arrow on the way in), a faint dotted line between them, and a count over the exit
     // while someone is underground on the way to it
     if (game.stage.tunnels) game.stage.tunnels.forEach((q, i) => {
@@ -9150,7 +9150,7 @@ window.BGM = (() => {
       ctx.save(); ctx.strokeStyle = "rgba(200,180,150,.28)"; ctx.lineWidth = 2; ctx.setLineDash([3, 7]); ctx.beginPath(); ctx.moveTo(A[0], A[1]); ctx.quadraticCurveTo((A[0] + B[0]) / 2, Math.max(A[1], B[1]) + 40, B[0], B[1]); ctx.stroke(); ctx.restore();
       mouth(q.a, true); mouth(q.b, false); if (q.both) mouth(q.a, false);
       let soon = null; for (const e of game.enemies) if (!e.dead && e.underT > 0 && Math.round(e.x) === q.b[0] && Math.round(e.y) === q.b[1] && (soon === null || e.underT < soon)) soon = e.underT;
-      if (soon !== null) { const c0 = P(q.b[0], q.b[1], 0.9); text(soon.toFixed(1), c0[0], c0[1], 18, "rgba(255,120,90,.98)", { align: "center", font: FONT_NUM, weight: 800, shadow: true }); }
+      if (soon !== null) { const c0 = P(q.b[0], q.b[1], 0.9), str = "출구 " + soon.toFixed(1); lateLabels.push(() => text(str, c0[0], c0[1], 18, "rgba(255,120,90,.98)", { align: "center", font: FONT_NUM, weight: 800, shadow: true })); }   /* over the figures, so a blocker at the exit does not hide it */
     });
     // each lit lamp throws a warm pool of light on the ground round it, as wide as its reach and half a square more, added over the shade
     if (game.stage.lamps) { const R = (game.stage.lamps.r || 1) + 0.5;
