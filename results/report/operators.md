@@ -1,24 +1,24 @@
 # Operator balance report (solver v2)
 
-185 answers (deck searches + squad queries, done, with a clear). key = a role-based re-search without the operator fails at the same rung.
+186 answers (deck searches + squad queries, done, with a clear). key = a role-based re-search without the operator fails at the same rung.
 
 | op | name | class | ★ | used | key | key share | skills used | rung range | stages | flags |
 |---|---|---|---|---|---|---|---|---|---|---|
 | lilith | 리리스 | caster/코어 캐스터 | 3 | 121 | 1 | 0.5 | S1×121 | E0L1–E2L40 | 23 | everywhere |
-| tao | 타오 | vanguard/척후병 | 3 | 82 | 1 | 1 | S1×82 | E0L1–E2L40 | 23 |  |
+| tao | 타오 | vanguard/척후병 | 3 | 83 | 1 | 1 | S1×83 | E0L1–E2L40 | 23 |  |
 | ker | 케르 | defender/프로텍터 | 4 | 57 | 1 | 1 | S1×42 S2×15 | E0L1–E1L45 | 16 |  |
-| ayaki | 아야키 | medic/메딕 | 3 | 49 | 1 | 0.5 | S1×49 | E0L1–E2L40 | 19 |  |
+| ayaki | 아야키 | medic/메딕 | 3 | 50 | 1 | 0.5 | S1×50 | E0L1–E2L40 | 19 |  |
 | skakea | 스카케아 | specialist/푸쉬마스터 | 4 | 19 | 1 | 1 | S1×16 S2×3 | E0L1–E1L30 | 8 |  |
-| sunae | 순애기사 | defender/프로텍터 | 4 | 100 | 0 | 0 | S1×61 S2×39 | E0L1–E2L40 | 24 |  |
+| sunae | 순애기사 | defender/프로텍터 | 4 | 101 | 0 | 0 | S1×61 S2×40 | E0L1–E2L40 | 24 |  |
 | teka | 테카 | supporter/감속자 | 4 | 99 | 0 | - | S1×74 S2×25 | E0L1–E2L40 | 24 |  |
-| hiro | 히로 | guard/공격수 | 3 | 92 | 0 | 0 | S1×92 | E0L1–E2L40 | 23 |  |
-| yui | 서브테러 | defender/가디언 | 5 | 81 | 0 | - | S1×60 S2×15 S3×6 | E0L1–E2L40 | 21 |  |
+| hiro | 히로 | guard/공격수 | 3 | 93 | 0 | 0 | S1×93 | E0L1–E2L40 | 23 |  |
+| yui | 서브테러 | defender/가디언 | 5 | 82 | 0 | - | S1×60 S2×15 S3×7 | E0L1–E2L40 | 21 |  |
+| capy | 마이웨이 카피바라 | sniper/포격사수 | 3 | 75 | 0 | 0 | S1×75 | E0L1–E2L40 | 23 |  |
 | lulu | 루루 | guard/소드마스터 | 4 | 74 | 0 | 0 | S1×70 S2×4 | E0L1–E1L45 | 18 |  |
-| capy | 마이웨이 카피바라 | sniper/포격사수 | 3 | 74 | 0 | 0 | S1×74 | E0L1–E2L40 | 22 |  |
 | jayeon | 자연 | supporter/감속자 | 3 | 67 | 0 | 0 | S1×67 | E0L1–E1L45 | 20 |  |
+| atat | @@@ | supporter/소환사 | 4 | 61 | 0 | 0 | S1×34 S2×27 | E0L1–E2L40 | 22 |  |
 | alpha | 알파 | sniper/명사수 | 4 | 61 | 0 | - | S1×37 S2×24 | E0L1–E2L40 | 21 |  |
 | defender | 브람 | defender/- | 3 | 60 | 0 | 0 | S1×60 | E0L20–E1L45 | 17 |  |
-| atat | @@@ | supporter/소환사 | 4 | 60 | 0 | 0 | S1×33 S2×27 | E0L1–E2L40 | 22 |  |
 | irins | 아이린스 | caster/코어 캐스터 | 4 | 51 | 0 | 0 | S1×38 S2×13 | E0L1–E1L45 | 14 |  |
 | brick | 벽돌 | defender/프로텍터 | 3 | 50 | 0 | - | S1×50 | E0L20–E1L45 | 15 |  |
 | hakuren | 하쿠렌 | vanguard/기수 | 4 | 45 | 0 | - | S1×26 S2×19 | E0L40–E2L40 | 15 |  |
