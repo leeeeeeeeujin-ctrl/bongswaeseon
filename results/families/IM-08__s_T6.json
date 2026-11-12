@@ -222,7 +222,7 @@
    "members": 15
   },
   {
-   "id": "IM-08:1x3zr74",
+   "id": "IM-08:lzch4x",
    "T": {
     "slots": [
      {
@@ -233,27 +233,34 @@
       "role": {
        "tile": "g",
        "kind": "block",
-       "block": 3,
-       "cls": "defender",
-       "dmg": "phys",
-       "sub": "가디언"
-      },
-      "src": "yui"
-     },
-     {
-      "x": 4,
-      "y": 5,
-      "d": 0,
-      "prim": 1,
-      "role": {
-       "tile": "g",
-       "kind": "block",
        "block": 2,
        "cls": "guard",
        "dmg": "phys",
        "sub": "소드마스터"
       },
-      "src": "lulu"
+      "src": "lulu",
+      "skill": {
+       "m": 3
+      }
+     },
+     {
+      "x": 4,
+      "y": 5,
+      "d": 3,
+      "prim": 1,
+      "role": {
+       "tile": "g",
+       "kind": "block",
+       "block": 3,
+       "cls": "defender",
+       "dmg": "phys",
+       "sub": ""
+      },
+      "src": "defender",
+      "from": 3,
+      "skill": {
+       "m": 2
+      }
      },
      {
       "x": 2,
@@ -262,13 +269,13 @@
       "prim": 2,
       "role": {
        "tile": "h",
-       "kind": "arts",
+       "kind": "supp",
        "block": 0,
-       "cls": "caster",
+       "cls": "supporter",
        "dmg": "arts",
-       "sub": "코어 캐스터"
+       "sub": "감속자"
       },
-      "src": "lilith"
+      "src": "jayeon"
      },
      {
       "x": 3,
@@ -283,7 +290,8 @@
        "dmg": "phys",
        "sub": "명사수"
       },
-      "src": "bongeun"
+      "src": "bongeun",
+      "from": 31
      },
      {
       "x": 9,
@@ -292,13 +300,18 @@
       "prim": 4,
       "role": {
        "tile": "h",
-       "kind": "phys",
+       "kind": "supp",
        "block": 0,
-       "cls": "sniper",
-       "dmg": "phys",
-       "sub": ""
+       "cls": "supporter",
+       "dmg": "arts",
+       "sub": "약화자"
       },
-      "src": "sniper"
+      "src": "smoqueen",
+      "until": 109,
+      "skill": {
+       "m": 1,
+       "t": 63
+      }
      },
      {
       "x": 1,
@@ -307,13 +320,13 @@
       "prim": 5,
       "role": {
        "tile": "h",
-       "kind": "supp",
+       "kind": "arts",
        "block": 0,
-       "cls": "supporter",
+       "cls": "caster",
        "dmg": "arts",
-       "sub": "감속자"
+       "sub": "코어 캐스터"
       },
-      "src": "jayeon"
+      "src": "lilith"
      },
      {
       "x": 2,
@@ -323,30 +336,88 @@
       "role": {
        "tile": "g",
        "kind": "block",
-       "block": 3,
-       "cls": "defender",
-       "dmg": "phys",
-       "sub": "프로텍터"
-      },
-      "src": "brick"
-     },
-     {
-      "x": 2,
-      "y": 1,
-      "d": 0,
-      "prim": 7,
-      "role": {
-       "tile": "g",
-       "kind": "block",
        "block": 2,
        "cls": "guard",
        "dmg": "phys",
        "sub": "로드"
       },
-      "src": "geomseon"
+      "src": "veil"
+     },
+     {
+      "x": 2,
+      "y": 4,
+      "d": 3,
+      "prim": 2,
+      "role": {
+       "tile": "h",
+       "kind": "supp",
+       "block": 0,
+       "cls": "supporter",
+       "dmg": "arts",
+       "sub": "감속자"
+      },
+      "src": "jayeon",
+      "from": 14
+     },
+     {
+      "x": 4,
+      "y": 5,
+      "d": 0,
+      "prim": 8,
+      "role": {
+       "tile": "g",
+       "kind": "block",
+       "block": 1,
+       "cls": "vanguard",
+       "dmg": "phys",
+       "sub": "돌격수"
+      },
+      "src": "rabi6",
+      "from": 24
+     },
+     {
+      "x": 9,
+      "y": 2,
+      "d": 2,
+      "prim": 4,
+      "role": {
+       "tile": "h",
+       "kind": "supp",
+       "block": 0,
+       "cls": "supporter",
+       "dmg": "arts",
+       "sub": "약화자"
+      },
+      "src": "smoqueen",
+      "from": 109
+     },
+     {
+      "x": 4,
+      "y": 5,
+      "d": 0,
+      "prim": 10,
+      "role": {
+       "tile": "g",
+       "kind": "block",
+       "block": 3,
+       "cls": "defender",
+       "dmg": "phys",
+       "sub": "가디언"
+      },
+      "src": "yui",
+      "until": 166
      }
     ],
-    "retreats": [],
+    "retreats": [
+     {
+      "slot": 4,
+      "t": 81
+     },
+     {
+      "slot": 10,
+      "t": 166
+     }
+    ],
     "pol": {
      "fire": 1,
      "melt": 1,
@@ -355,30 +426,34 @@
    },
    "tags": [
     "deep block",
-    "no medic"
+    "no medic",
+    "relocate",
+    "skill held"
    ],
-   "q": -40,
+   "q": -23,
    "rec": {
-    "lvl": "E0L40",
-    "lost": 0,
-    "worstLost": 0,
+    "lvl": "E0L20",
+    "lost": 2,
+    "worstLost": 3,
     "verified": true,
     "deck": "T6",
-    "gameHash": "af57ca578387",
+    "crit": "lost1",
+    "gameHash": "4f7cf8edbded",
     "ops": [
-     "yui",
      "lulu",
-     "lilith",
-     "bongeun",
-     "sniper",
+     "defender",
      "jayeon",
-     "brick",
-     "geomseon"
+     "bongeun",
+     "smoqueen",
+     "lilith",
+     "veil",
+     "rabi6",
+     "yui"
     ]
    },
    "src": "s_T6",
-   "members": 13
+   "members": 34
   }
  ],
- "updated": "2026-11-11T23:19:21.596Z"
+ "updated": "2026-11-12T02:53:50.468Z"
 }
