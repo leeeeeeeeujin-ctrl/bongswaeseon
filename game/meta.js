@@ -2675,8 +2675,8 @@
     sandbox(el) {
       el.appendChild(h("div", "lobby-bg"));
       el.appendChild(topBar("훈련장 편성", "TRAINING", () => go("lobby")));
-      const all = Object.keys(S.ops).filter((id) => def(id)).sort((a, c) => def(c).rarity - def(a).rarity);   // only who you have
-      let sel = (S.sbSquad || []).filter((q) => def(q.id) && S.ops[q.id]);
+      const all = TD.UNITS.filter((u) => !u.summon && u.rarity).map((u) => u.id).sort((a, c) => (S.ops[c] ? 1 : 0) - (S.ops[a] ? 1 : 0) || def(c).rarity - def(a).rarity);   /* every operator: yours as they stand first, the rest on trial at full promotion */
+      let sel = (S.sbSquad || []).filter((q) => def(q.id));
       if (!S.sbSquad) sel = all.slice(0, 12).map((id) => ({ id, s: S.ops[id] ? S.ops[id].skill : 0 }));
       const keep = () => { S.sbSquad = sel; save(); };
       const bar = h("div", ""); Object.assign(bar.style, { position: "absolute", left: "40px", right: "40px", bottom: "16px", display: "flex", gap: "10px", alignItems: "center", zIndex: "5" });
@@ -2689,10 +2689,11 @@
       const paint = () => { cnt.textContent = `${sel.length} / 12`; };
       for (const id of all) {
         const d = def(id), c = h("div", "btn card"), fn = nm(id);
-        const ns = Math.min((d.skills || []).length, S.ops[id].elite + 1);   // skills open with promotion, as everywhere else
+        const ns = Math.min((d.skills || []).length, sbOp(id).elite + 1);   /* skills open with promotion, as everywhere else */
         c.innerHTML = `<img class="art" src="${opArt(id, "card")}"><div class="rtop" style="background:${RAR_COL[d.rarity]}"></div><img class="cls" src="${clsIcon(id, 28)}">
           <div class="bar"><div>${stars(d.rarity)}</div><div class="nm">${esc(fn.main)}</div><div class="lv en">${fn.sub ? esc(fn.sub) : ""}</div></div>`;
         const tag = h("div", "tag en", ""); c.appendChild(tag);
+        if (!S.ops[id]) { const tr = h("div", "en", "체험"); Object.assign(tr.style, { position: "absolute", left: "4px", top: "40px", background: "#111c", color: "#9cf", border: "1px solid #9cf", fontSize: "12px", fontWeight: "900", padding: "1px 6px", borderRadius: "3px" }); c.appendChild(tr); }
         const sk = h("div", "en", ""); Object.assign(sk.style, { position: "absolute", right: "4px", top: "40px", background: "#111c", color: "#ffd400", border: "1px solid #ffd400", fontSize: "13px", fontWeight: "900", padding: "2px 7px", borderRadius: "3px" });
         c.appendChild(sk);
         const upd = () => {
@@ -5004,9 +5005,11 @@
   }
 
   // the training room: your own operators as they stand, endless cost, foes on demand
+  // operators you don't have can be tried too, at full promotion and level with skill level 7 (no mastery)
+  function sbOp(id) { if (S.ops[id]) return S.ops[id]; const e = def(id).rarity <= 3 ? 1 : 2; return { elite: e, lvl: maxLv(id, e), sl: 7, pot: 1, skill: 0 }; }
   function startSandbox(sel) {
     // the training room fields your own operators as they are now
-    const squad = sel.filter((q) => S.ops[q.id]).slice(0, 12).map((q) => { const o = S.ops[q.id]; return { id: q.id, skillIdx: Math.min(q.s || 0, o.elite, Math.max(0, (def(q.id).skills || []).length - 1)), mult: mult(q.id), elite: o.elite, look: lookElite(q.id), pot: o.pot, slv: o.sl || 1, sm: smList(q.id) }; });
+    const squad = sel.filter((q) => def(q.id)).slice(0, 12).map((q) => { const own = !!S.ops[q.id], o = sbOp(q.id); return { id: q.id, skillIdx: Math.min(q.s || 0, o.elite, Math.max(0, (def(q.id).skills || []).length - 1)), mult: own ? mult(q.id) : TD.growth(def(q.id), o.elite, o.lvl, maxLv(q.id, o.elite)), elite: o.elite, look: own ? lookElite(q.id) : o.elite, pot: o.pot || 1, slv: o.sl || 1, sm: own ? smList(q.id) : [0, 0, 0] }; });
     host.hidden = true;
     B.start("sandbox", squad, () => { host.hidden = false; render(); });
   }
