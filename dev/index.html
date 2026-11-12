@@ -11252,6 +11252,22 @@ window.BGM = (() => {
   EN_POSED.gunretaker = Object.assign({}, EN_POSED.grenadier, { h: 1.46 });   /* the gun retaker: the Old Guard grenadier a size down, in the gunners' brown */
   EN_POSED.collector = EN_POSED.mouchard;   // lab L4: the collector wears the informer, grey-green
   EN_POSED.masked = EN_POSED.maskGuest = EN_POSED.maskAssassin = EN_POSED.mouchard;   // lab L3 (LAB-04): the masked figure wears the informer, pale (its half-mask is drawn over it: drawMasksTop)
+  // an enemy atlas recoloured with a canvas filter, drawn once per (atlas, filter) and kept; null when the filter cannot be baked (the caller then filters per draw)
+  const TINT_CACHE = new Map();
+  function tintAtlas(name, im, tf) {
+    const key = name + "|" + tf; let c = TINT_CACHE.get(key);
+    if (c !== undefined) return c;
+    c = null;
+    try {
+      const w = im.naturalWidth || im.width, h = im.naturalHeight || im.height;
+      if (w > 0 && h > 0 && w * h <= 16e6) {
+        const cv = document.createElement("canvas"); cv.width = w; cv.height = h;
+        const x = cv.getContext("2d");
+        if (x && "filter" in x) { x.filter = tf; x.drawImage(im, 0, 0); c = cv; }
+      }
+    } catch (err) { c = null; }
+    TINT_CACHE.set(key, c); return c;
+  }
   function drawPosedEnemy(g, e, sx, sy, k, t, D) {
     const f = e.face || 1;
     const d = e._lx === undefined ? 0 : Math.hypot(e.x - e._lx, e.y - e._ly); e._lx = e.x; e._ly = e.y;
@@ -11277,10 +11293,10 @@ window.BGM = (() => {
     g.scale(f, 1);
     const lunge = e.def.ranged ? (since < 0.14 ? -k * 0.05 * (1 - since / 0.14) : 0) : since < 0.32 ? Math.sin(Math.min(1, since / 0.32) * Math.PI) * k * 0.08 * (D.lunge === undefined ? 1 : D.lunge) : 0;   // the thrust carries him a little forward
     g.translate(lunge, 0);
-    if (e.flash && "filter" in g) g.filter = "brightness(1.8) saturate(0.3)";
-    else { const tf = enFilter(e); if (tf && "filter" in g) g.filter = tf; }   // its recolour, and in chapter 3 the gold of the crown or the dimness of one lying down
-    g.drawImage(im, rx, ry, rw, rh, -ax * sc, -ay * sc, rw * sc, rh * sc);
-    g.filter = "none";
+    const tf = e.flash ? "brightness(1.8) saturate(0.3)" : enFilter(e);   // its recolour, and in chapter 3 the gold of the crown or the dimness of one lying down
+    const tim = tf ? tintAtlas(D.atlas, im, tf) : im;   /* the recoloured atlas is drawn once and kept: a canvas filter on every draw stalls the frame */
+    if (tim) g.drawImage(tim, rx, ry, rw, rh, -ax * sc, -ay * sc, rw * sc, rh * sc);
+    else { if ("filter" in g) g.filter = tf; g.drawImage(im, rx, ry, rw, rh, -ax * sc, -ay * sc, rw * sc, rh * sc); g.filter = "none"; }
     if (aiming && D.scope) {   // the glint on the scope: he has someone in his sights
       const [gx, gy] = D.scope, pulse = 0.55 + 0.45 * Math.sin(t * 7 + e.id);
       g.globalCompositeOperation = "lighter";
