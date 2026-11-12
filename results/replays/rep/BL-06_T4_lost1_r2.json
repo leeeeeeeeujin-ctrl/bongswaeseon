@@ -1,0 +1,297 @@
+{
+ "stage": "BL-06",
+ "name": "낙하 지점",
+ "level": "E0L1",
+ "lost": 0,
+ "seed": 1,
+ "K": 1,
+ "variant": "none",
+ "stageMul": {
+  "hp": 0.55,
+  "atk": 0.72,
+  "def": 0.8
+ },
+ "deck": "T4",
+ "criterion": "lost<=1",
+ "fiveSeedLost": [
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "family": "BL-06:1a9jtvc",
+ "gameHash": "fca95f6aaf8d",
+ "rng": "Math.random replaced before `new TD.Game` by im_sim's seed(n): a = n*7919, mulberry32-style step; nothing else draws from it between seeding and the game",
+ "stepping": "fixed g.update(1/30) per frame, max 420*30 frames; actions run at the start of a frame, before that frame's update, in log order",
+ "squad": [
+  {
+   "id": "caster",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.5381818181818182,
+    "atk": 0.5297872340425532,
+    "def": 0.4222222222222222
+   }
+  },
+  {
+   "id": "specialist",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.5989159891598916,
+    "atk": 0.49853372434017595,
+    "def": 0.5373665480427047
+   }
+  },
+  {
+   "id": "irins",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.43591549295774645,
+    "atk": 0.4339622641509434,
+    "def": 0.38181818181818183
+   }
+  },
+  {
+   "id": "teka",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.45399828030954426,
+    "atk": 0.4227053140096618,
+    "def": 0.4479166666666667
+   }
+  },
+  {
+   "id": "jayeon",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.5914438502673797,
+    "atk": 0.5094339622641509,
+    "def": 0.5301204819277109
+   }
+  }
+ ],
+ "squadNote": "card order = squad order (card index ci in actions); Game(stageIdx, squad) receives {id, elite, mult, pot, skillIdx, slv, sm}; skill level and mastery by rung (sim.js skillRank, slv-r1); sm[k] = mastery of skill k",
+ "expected": {
+  "win": true,
+  "rwin": true,
+  "over": "win",
+  "life": 10,
+  "lost": 0,
+  "winTime": 139.7666666666613,
+  "frames": 4193,
+  "kills": 30,
+  "total": 30
+ },
+ "actions": [
+  {
+   "t": 2.033333333333336,
+   "k": 61,
+   "a": "deploy",
+   "ci": 3,
+   "id": "teka",
+   "x": 11,
+   "y": 5,
+   "dir": 3,
+   "uid": 8,
+   "cost": 12
+  },
+  {
+   "t": 19.033333333333438,
+   "k": 571,
+   "a": "deploy",
+   "ci": 2,
+   "id": "irins",
+   "x": 10,
+   "y": 5,
+   "dir": 3,
+   "uid": 11,
+   "cost": 17
+  },
+  {
+   "t": 35.03333333333391,
+   "k": 1051,
+   "a": "deploy",
+   "ci": 0,
+   "id": "caster",
+   "x": 3,
+   "y": 5,
+   "dir": 0,
+   "uid": 13,
+   "cost": 16
+  },
+  {
+   "t": 45.03333333333334,
+   "k": 1351,
+   "a": "deploy",
+   "ci": 4,
+   "id": "jayeon",
+   "x": 7,
+   "y": 2,
+   "dir": 0,
+   "uid": 18,
+   "cost": 10
+  },
+  {
+   "t": 49.03333333333311,
+   "k": 1471,
+   "a": "skill",
+   "ci": 0,
+   "id": "caster",
+   "uid": 13
+  },
+  {
+   "t": 51.033333333333,
+   "k": 1531,
+   "a": "deploy",
+   "ci": 1,
+   "id": "specialist",
+   "x": 10,
+   "y": 3,
+   "dir": 1,
+   "uid": 21,
+   "cost": 6
+  },
+  {
+   "t": 51.033333333333,
+   "k": 1531,
+   "a": "skill",
+   "ci": 1,
+   "id": "specialist",
+   "uid": 21
+  },
+  {
+   "t": 65.06666666666554,
+   "k": 1952,
+   "a": "skill",
+   "ci": 1,
+   "id": "specialist",
+   "uid": 21
+  },
+  {
+   "t": 79.09999999999808,
+   "k": 2373,
+   "a": "skill",
+   "ci": 1,
+   "id": "specialist",
+   "uid": 21
+  },
+  {
+   "t": 93.13333333333061,
+   "k": 2794,
+   "a": "skill",
+   "ci": 1,
+   "id": "specialist",
+   "uid": 21
+  },
+  {
+   "t": 107.16666666666315,
+   "k": 3215,
+   "a": "skill",
+   "ci": 1,
+   "id": "specialist",
+   "uid": 21
+  },
+  {
+   "t": 121.19999999999568,
+   "k": 3636,
+   "a": "skill",
+   "ci": 1,
+   "id": "specialist",
+   "uid": 21
+  }
+ ],
+ "plan": {
+  "entries": [
+   {
+    "id": "teka",
+    "x": 11,
+    "y": 5,
+    "d": 3
+   },
+   {
+    "id": "irins",
+    "x": 10,
+    "y": 5,
+    "d": 3
+   },
+   {
+    "id": "caster",
+    "x": 3,
+    "y": 5,
+    "d": 0
+   },
+   {
+    "id": "jayeon",
+    "x": 7,
+    "y": 2,
+    "d": 0
+   },
+   {
+    "id": "specialist",
+    "x": 10,
+    "y": 3,
+    "d": 1
+   }
+  ],
+  "skill": {},
+  "skillIdx": {},
+  "retreats": [],
+  "pol": {
+   "fire": 1,
+   "melt": 1,
+   "lamp": 1
+  },
+  "_par": "[[[\"teka\",11,5,3,null,null,null],[\"irins\",10,5,3,null,null,null],[\"caster\",3,5,0,null,null,null],[\"jayeon\",7,2,0,null,null,null],[\"skakea\",10,3,1,null,null,null]],{},{},[],{\"fire\":1,\"melt\":1,\"lamp\":1}]"
+ }
+}

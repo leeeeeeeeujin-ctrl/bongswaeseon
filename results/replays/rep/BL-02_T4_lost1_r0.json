@@ -1,0 +1,228 @@
+{
+ "stage": "BL-02",
+ "name": "무너진 지하보도",
+ "level": "E0L1",
+ "lost": 0,
+ "seed": 1,
+ "K": 1,
+ "variant": "none",
+ "stageMul": {
+  "hp": 0.55,
+  "atk": 0.7,
+  "def": 0.8
+ },
+ "deck": "T4",
+ "criterion": "lost<=1",
+ "fiveSeedLost": [
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "family": "BL-02:1s6ea49",
+ "gameHash": "fca95f6aaf8d",
+ "rng": "Math.random replaced before `new TD.Game` by im_sim's seed(n): a = n*7919, mulberry32-style step; nothing else draws from it between seeding and the game",
+ "stepping": "fixed g.update(1/30) per frame, max 420*30 frames; actions run at the start of a frame, before that frame's update, in log order",
+ "squad": [
+  {
+   "id": "sniper",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.5141509433962265,
+    "atk": 0.4106666666666667,
+    "def": 0.4126984126984127
+   }
+  },
+  {
+   "id": "lulu",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.4267241379310345,
+    "atk": 0.4080145719489982,
+    "def": 0.4369230769230769
+   }
+  },
+  {
+   "id": "alpha",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.4575757575757576,
+    "atk": 0.3431578947368421,
+    "def": 0.35064935064935066
+   }
+  },
+  {
+   "id": "tao",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.56,
+    "atk": 0.4838709677419355,
+    "def": 0.5
+   }
+  }
+ ],
+ "squadNote": "card order = squad order (card index ci in actions); Game(stageIdx, squad) receives {id, elite, mult, pot, skillIdx, slv, sm}; skill level and mastery by rung (sim.js skillRank, slv-r1); sm[k] = mastery of skill k",
+ "expected": {
+  "win": true,
+  "rwin": true,
+  "over": "win",
+  "life": 10,
+  "lost": 0,
+  "winTime": 124.83333333332881,
+  "frames": 3745,
+  "kills": 45,
+  "total": 45
+ },
+ "actions": [
+  {
+   "t": 0,
+   "k": 0,
+   "a": "deploy",
+   "ci": 0,
+   "id": "sniper",
+   "x": 11,
+   "y": 1,
+   "dir": 1,
+   "uid": 1,
+   "cost": 9
+  },
+  {
+   "t": 8.033333333333315,
+   "k": 241,
+   "a": "deploy",
+   "ci": 3,
+   "id": "tao",
+   "x": 11,
+   "y": 2,
+   "dir": 0,
+   "uid": 4,
+   "cost": 9
+  },
+  {
+   "t": 25.033333333333736,
+   "k": 751,
+   "a": "deploy",
+   "ci": 1,
+   "id": "lulu",
+   "x": 1,
+   "y": 5,
+   "dir": 2,
+   "uid": 10,
+   "cost": 17
+  },
+  {
+   "t": 30.033333333333985,
+   "k": 901,
+   "a": "skill",
+   "ci": 3,
+   "id": "tao",
+   "uid": 4
+  },
+  {
+   "t": 30.06666666666732,
+   "k": 902,
+   "a": "deploy",
+   "ci": 2,
+   "id": "alpha",
+   "x": 10,
+   "y": 1,
+   "dir": 2,
+   "uid": 13,
+   "cost": 10
+  },
+  {
+   "t": 66.06666666666548,
+   "k": 1982,
+   "a": "skill",
+   "ci": 3,
+   "id": "tao",
+   "uid": 4
+  },
+  {
+   "t": 102.09999999999677,
+   "k": 3063,
+   "a": "skill",
+   "ci": 3,
+   "id": "tao",
+   "uid": 4
+  }
+ ],
+ "plan": {
+  "entries": [
+   {
+    "id": "sniper",
+    "x": 11,
+    "y": 1,
+    "d": 1
+   },
+   {
+    "id": "tao",
+    "x": 11,
+    "y": 2,
+    "d": 0
+   },
+   {
+    "id": "lulu",
+    "x": 1,
+    "y": 5,
+    "d": 2
+   },
+   {
+    "id": "alpha",
+    "x": 10,
+    "y": 1,
+    "d": 2
+   }
+  ],
+  "skill": {},
+  "skillIdx": {},
+  "retreats": [],
+  "pol": {
+   "fire": 1,
+   "melt": 1,
+   "lamp": 1
+  },
+  "_par": "[[[\"sniper\",11,1,1,null,null,null],[\"tao\",11,2,0,null,null,null],[\"alpha\",10,1,2,null,null,null],[\"lulu\",1,5,2,null,null,null]],{},{},[],{\"fire\":1,\"melt\":1,\"lamp\":1}]"
+ }
+}

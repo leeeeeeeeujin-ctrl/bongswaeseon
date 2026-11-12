@@ -1,0 +1,420 @@
+{
+ "stage": "BL-05",
+ "name": "협공",
+ "level": "E0L1",
+ "lost": 0,
+ "seed": 1,
+ "K": 1,
+ "variant": "none",
+ "stageMul": {
+  "hp": 0.55,
+  "atk": 0.76,
+  "def": 0.8
+ },
+ "deck": "T4",
+ "criterion": "lost<=0 (full block)",
+ "fiveSeedLost": [
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "family": "BL-05:oji5x0",
+ "gameHash": "fca95f6aaf8d",
+ "rng": "Math.random replaced before `new TD.Game` by im_sim's seed(n): a = n*7919, mulberry32-style step; nothing else draws from it between seeding and the game",
+ "stepping": "fixed g.update(1/30) per frame, max 420*30 frames; actions run at the start of a frame, before that frame's update, in log order",
+ "squad": [
+  {
+   "id": "specialist",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.5989159891598916,
+    "atk": 0.49853372434017595,
+    "def": 0.5373665480427047
+   }
+  },
+  {
+   "id": "atat",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.44952380952380955,
+    "atk": 0.4488517745302714,
+    "def": 0.424
+   }
+  },
+  {
+   "id": "teka",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.45399828030954426,
+    "atk": 0.4227053140096618,
+    "def": 0.4479166666666667
+   }
+  },
+  {
+   "id": "capy",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.64,
+    "atk": 0.5514834205933682,
+    "def": 0.6
+   }
+  },
+  {
+   "id": "hiro",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.6081808396124866,
+    "atk": 0.5316455696202531,
+    "def": 0.5142857142857142
+   }
+  },
+  {
+   "id": "lilith",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.5381818181818182,
+    "atk": 0.5297872340425532,
+    "def": 0.4222222222222222
+   }
+  },
+  {
+   "id": "jayeon",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.5914438502673797,
+    "atk": 0.5094339622641509,
+    "def": 0.5301204819277109
+   }
+  }
+ ],
+ "squadNote": "card order = squad order (card index ci in actions); Game(stageIdx, squad) receives {id, elite, mult, pot, skillIdx, slv, sm}; skill level and mastery by rung (sim.js skillRank, slv-r1); sm[k] = mastery of skill k",
+ "expected": {
+  "win": true,
+  "rwin": true,
+  "over": "win",
+  "life": 10,
+  "lost": 0,
+  "winTime": 126.36666666666206,
+  "frames": 3791,
+  "kills": 93,
+  "total": 93
+ },
+ "actions": [
+  {
+   "t": 0,
+   "k": 0,
+   "a": "deploy",
+   "ci": 1,
+   "id": "atat",
+   "x": 5,
+   "y": 2,
+   "dir": 0,
+   "uid": 1,
+   "cost": 8
+  },
+  {
+   "t": 1.0333333333333332,
+   "k": 31,
+   "a": "deploy",
+   "ci": 7,
+   "id": "scribble",
+   "x": 7,
+   "y": 5,
+   "dir": 2,
+   "uid": 2,
+   "cost": 3,
+   "summon": true
+  },
+  {
+   "t": 11.033333333333305,
+   "k": 331,
+   "a": "deploy",
+   "ci": 6,
+   "id": "jayeon",
+   "x": 5,
+   "y": 4,
+   "dir": 0,
+   "uid": 8,
+   "cost": 10
+  },
+  {
+   "t": 17.03333333333334,
+   "k": 511,
+   "a": "deploy",
+   "ci": 0,
+   "id": "specialist",
+   "x": 8,
+   "y": 1,
+   "dir": 2,
+   "uid": 10,
+   "cost": 6
+  },
+  {
+   "t": 17.03333333333334,
+   "k": 511,
+   "a": "skill",
+   "ci": 0,
+   "id": "specialist",
+   "uid": 10
+  },
+  {
+   "t": 20.033333333333488,
+   "k": 601,
+   "a": "deploy",
+   "ci": 7,
+   "id": "scribble",
+   "x": 3,
+   "y": 1,
+   "dir": 0,
+   "uid": 15,
+   "cost": 3,
+   "summon": true
+  },
+  {
+   "t": 31.06666666666737,
+   "k": 932,
+   "a": "skill",
+   "ci": 0,
+   "id": "specialist",
+   "uid": 10
+  },
+  {
+   "t": 36.03333333333385,
+   "k": 1081,
+   "a": "deploy",
+   "ci": 5,
+   "id": "lilith",
+   "x": 6,
+   "y": 4,
+   "dir": 1,
+   "uid": 26,
+   "cost": 16
+  },
+  {
+   "t": 48.03333333333317,
+   "k": 1441,
+   "a": "deploy",
+   "ci": 2,
+   "id": "teka",
+   "x": 6,
+   "y": 2,
+   "dir": 0,
+   "uid": 32,
+   "cost": 12
+  },
+  {
+   "t": 57.033333333332656,
+   "k": 1711,
+   "a": "deploy",
+   "ci": 0,
+   "id": "specialist",
+   "x": 8,
+   "y": 1,
+   "dir": 2,
+   "uid": 40,
+   "cost": 9
+  },
+  {
+   "t": 57.033333333332656,
+   "k": 1711,
+   "a": "skill",
+   "ci": 0,
+   "id": "specialist",
+   "uid": 40
+  },
+  {
+   "t": 71.0666666666652,
+   "k": 2132,
+   "a": "skill",
+   "ci": 0,
+   "id": "specialist",
+   "uid": 40
+  },
+  {
+   "t": 72.03333333333181,
+   "k": 2161,
+   "a": "deploy",
+   "ci": 4,
+   "id": "hiro",
+   "x": 4,
+   "y": 3,
+   "dir": 0,
+   "uid": 53,
+   "cost": 15
+  },
+  {
+   "t": 92.53333333333065,
+   "k": 2776,
+   "a": "deploy",
+   "ci": 0,
+   "id": "specialist",
+   "x": 8,
+   "y": 1,
+   "dir": 2,
+   "uid": 67,
+   "cost": 12
+  },
+  {
+   "t": 92.53333333333065,
+   "k": 2776,
+   "a": "skill",
+   "ci": 0,
+   "id": "specialist",
+   "uid": 67
+  },
+  {
+   "t": 106.56666666666318,
+   "k": 3197,
+   "a": "skill",
+   "ci": 0,
+   "id": "specialist",
+   "uid": 67
+  },
+  {
+   "t": 120.59999999999572,
+   "k": 3618,
+   "a": "skill",
+   "ci": 0,
+   "id": "specialist",
+   "uid": 67
+  }
+ ],
+ "plan": {
+  "entries": [
+   {
+    "id": "atat",
+    "x": 5,
+    "y": 2,
+    "d": 0
+   },
+   {
+    "id": "scribble",
+    "x": 7,
+    "y": 5,
+    "d": 2
+   },
+   {
+    "id": "jayeon",
+    "x": 5,
+    "y": 4,
+    "d": 0
+   },
+   {
+    "id": "specialist",
+    "x": 8,
+    "y": 1,
+    "d": 2
+   },
+   {
+    "id": "scribble",
+    "x": 3,
+    "y": 1,
+    "d": 0
+   },
+   {
+    "id": "lilith",
+    "x": 6,
+    "y": 4,
+    "d": 1
+   },
+   {
+    "id": "teka",
+    "x": 6,
+    "y": 2,
+    "d": 0
+   },
+   {
+    "id": "hiro",
+    "x": 4,
+    "y": 3,
+    "d": 0
+   },
+   {
+    "id": "capy",
+    "x": 4,
+    "y": 2,
+    "d": 1
+   }
+  ],
+  "skill": {},
+  "skillIdx": {},
+  "retreats": [],
+  "pol": {
+   "fire": 1,
+   "melt": 1,
+   "lamp": 1
+  }
+ }
+}

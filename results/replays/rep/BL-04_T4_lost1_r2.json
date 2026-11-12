@@ -1,0 +1,376 @@
+{
+ "stage": "BL-04",
+ "name": "감시탑 아래",
+ "level": "E0L1",
+ "lost": 1,
+ "seed": 1,
+ "K": 1,
+ "variant": "none",
+ "stageMul": {
+  "hp": 0.62,
+  "atk": 0.85,
+  "def": 0.9
+ },
+ "deck": "T4",
+ "criterion": "lost<=1",
+ "fiveSeedLost": [
+  1,
+  1,
+  1,
+  1,
+  1
+ ],
+ "family": "new:BL-04:1s4schg",
+ "gameHash": "fca95f6aaf8d",
+ "rng": "Math.random replaced before `new TD.Game` by im_sim's seed(n): a = n*7919, mulberry32-style step; nothing else draws from it between seeding and the game",
+ "stepping": "fixed g.update(1/30) per frame, max 420*30 frames; actions run at the start of a frame, before that frame's update, in log order",
+ "squad": [
+  {
+   "id": "sniper",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.5141509433962265,
+    "atk": 0.4106666666666667,
+    "def": 0.4126984126984127
+   }
+  },
+  {
+   "id": "supporter",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.5914438502673797,
+    "atk": 0.5053763440860215,
+    "def": 0.5301204819277109
+   }
+  },
+  {
+   "id": "atat",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.44952380952380955,
+    "atk": 0.4488517745302714,
+    "def": 0.424
+   }
+  },
+  {
+   "id": "lulu",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.4267241379310345,
+    "atk": 0.4080145719489982,
+    "def": 0.4369230769230769
+   }
+  },
+  {
+   "id": "irins",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.43591549295774645,
+    "atk": 0.4339622641509434,
+    "def": 0.38181818181818183
+   }
+  },
+  {
+   "id": "skakea",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.461624649859944,
+    "atk": 0.43448275862068964,
+    "def": 0.4136986301369863
+   }
+  },
+  {
+   "id": "hiro",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.6081808396124866,
+    "atk": 0.5316455696202531,
+    "def": 0.5142857142857142
+   }
+  },
+  {
+   "id": "jayeon",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.5914438502673797,
+    "atk": 0.5094339622641509,
+    "def": 0.5301204819277109
+   }
+  }
+ ],
+ "squadNote": "card order = squad order (card index ci in actions); Game(stageIdx, squad) receives {id, elite, mult, pot, skillIdx, slv, sm}; skill level and mastery by rung (sim.js skillRank, slv-r1); sm[k] = mastery of skill k",
+ "expected": {
+  "win": true,
+  "rwin": true,
+  "over": "win",
+  "life": 9,
+  "lost": 1,
+  "winTime": 109.99999999999632,
+  "frames": 3300,
+  "kills": 53,
+  "total": 54
+ },
+ "actions": [
+  {
+   "t": 7.033333333333318,
+   "k": 211,
+   "a": "deploy",
+   "ci": 4,
+   "id": "irins",
+   "x": 7,
+   "y": 3,
+   "dir": 0,
+   "uid": 2,
+   "cost": 17
+  },
+  {
+   "t": 17.03333333333334,
+   "k": 511,
+   "a": "deploy",
+   "ci": 1,
+   "id": "supporter",
+   "x": 9,
+   "y": 3,
+   "dir": 0,
+   "uid": 7,
+   "cost": 10
+  },
+  {
+   "t": 26.033333333333786,
+   "k": 781,
+   "a": "deploy",
+   "ci": 0,
+   "id": "sniper",
+   "x": 10,
+   "y": 3,
+   "dir": 2,
+   "uid": 11,
+   "cost": 9
+  },
+  {
+   "t": 31.033333333334035,
+   "k": 931,
+   "a": "skill",
+   "ci": 1,
+   "id": "supporter",
+   "uid": 7
+  },
+  {
+   "t": 36.03333333333385,
+   "k": 1081,
+   "a": "deploy",
+   "ci": 7,
+   "id": "jayeon",
+   "x": 5,
+   "y": 2,
+   "dir": 3,
+   "uid": 17,
+   "cost": 10
+  },
+  {
+   "t": 53.033333333332884,
+   "k": 1591,
+   "a": "deploy",
+   "ci": 5,
+   "id": "skakea",
+   "x": 6,
+   "y": 1,
+   "dir": 2,
+   "uid": 24,
+   "cost": 17
+  },
+  {
+   "t": 59.066666666665874,
+   "k": 1772,
+   "a": "skill",
+   "ci": 1,
+   "id": "supporter",
+   "uid": 7
+  },
+  {
+   "t": 68.03333333333204,
+   "k": 2041,
+   "a": "deploy",
+   "ci": 6,
+   "id": "hiro",
+   "x": 10,
+   "y": 4,
+   "dir": 3,
+   "uid": 33,
+   "cost": 15
+  },
+  {
+   "t": 76.03333333333158,
+   "k": 2281,
+   "a": "deploy",
+   "ci": 2,
+   "id": "atat",
+   "x": 8,
+   "y": 3,
+   "dir": 0,
+   "uid": 42,
+   "cost": 8
+  },
+  {
+   "t": 87.09999999999762,
+   "k": 2613,
+   "a": "skill",
+   "ci": 1,
+   "id": "supporter",
+   "uid": 7
+  },
+  {
+   "t": 93.03333333333062,
+   "k": 2791,
+   "a": "deploy",
+   "ci": 3,
+   "id": "lulu",
+   "x": 8,
+   "y": 2,
+   "dir": 0,
+   "uid": 49,
+   "cost": 17
+  }
+ ],
+ "plan": {
+  "entries": [
+   {
+    "id": "irins",
+    "x": 7,
+    "y": 3,
+    "d": 0
+   },
+   {
+    "id": "supporter",
+    "x": 9,
+    "y": 3,
+    "d": 0
+   },
+   {
+    "id": "sniper",
+    "x": 10,
+    "y": 3,
+    "d": 2
+   },
+   {
+    "id": "jayeon",
+    "x": 5,
+    "y": 2,
+    "d": 3
+   },
+   {
+    "id": "skakea",
+    "x": 6,
+    "y": 1,
+    "d": 2
+   },
+   {
+    "id": "hiro",
+    "x": 10,
+    "y": 4,
+    "d": 3
+   },
+   {
+    "id": "atat",
+    "x": 8,
+    "y": 3,
+    "d": 0
+   },
+   {
+    "id": "lulu",
+    "x": 8,
+    "y": 2,
+    "d": 0
+   }
+  ],
+  "skill": {},
+  "skillIdx": {},
+  "retreats": [],
+  "pol": {
+   "fire": 1,
+   "melt": 1,
+   "lamp": 1
+  },
+  "_par": "[[[\"irins\",7,3,0,null,null,null],[\"supporter\",9,3,0,null,null,null],[\"sniper\",10,3,2,null,null,null],[\"jayeon\",5,2,3,null,null,null],[\"skakea\",7,1,2,null,null,null],[\"hiro\",10,4,3,null,null,null],[\"atat\",8,3,0,null,null,null],[\"lulu\",8,2,0,null,null,null]],{},{},[],{\"fire\":1,\"melt\":1,\"lamp\":1}]"
+ }
+}

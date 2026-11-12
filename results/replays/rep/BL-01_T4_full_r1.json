@@ -1,0 +1,130 @@
+{
+ "stage": "BL-01",
+ "name": "마트로 가는 길",
+ "level": "E0L1",
+ "lost": 0,
+ "seed": 1,
+ "K": 1,
+ "variant": "none",
+ "stageMul": {
+  "hp": 0.7,
+  "atk": 0.85,
+  "def": 0.5
+ },
+ "deck": "T4",
+ "criterion": "lost<=0 (full block)",
+ "fiveSeedLost": [
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "family": "new:BL-01:1b2nvsp",
+ "gameHash": "fca95f6aaf8d",
+ "rng": "Math.random replaced before `new TD.Game` by im_sim's seed(n): a = n*7919, mulberry32-style step; nothing else draws from it between seeding and the game",
+ "stepping": "fixed g.update(1/30) per frame, max 420*30 frames; actions run at the start of a frame, before that frame's update, in log order",
+ "squad": [
+  {
+   "id": "lulu",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.4267241379310345,
+    "atk": 0.4080145719489982,
+    "def": 0.4369230769230769
+   }
+  },
+  {
+   "id": "falchion",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.3924119241192412,
+    "atk": 0.44368600682593856,
+    "def": 0.43304843304843305
+   }
+  }
+ ],
+ "squadNote": "card order = squad order (card index ci in actions); Game(stageIdx, squad) receives {id, elite, mult, pot, skillIdx, slv, sm}; skill level and mastery by rung (sim.js skillRank, slv-r1); sm[k] = mastery of skill k",
+ "expected": {
+  "win": true,
+  "rwin": true,
+  "over": "win",
+  "life": 10,
+  "lost": 0,
+  "winTime": 90.66666666666409,
+  "frames": 2720,
+  "kills": 28,
+  "total": 28
+ },
+ "actions": [
+  {
+   "t": 0,
+   "k": 0,
+   "a": "deploy",
+   "ci": 1,
+   "id": "falchion",
+   "x": 3,
+   "y": 1,
+   "dir": 3,
+   "uid": 1,
+   "cost": 9
+  },
+  {
+   "t": 16.03333333333329,
+   "k": 481,
+   "a": "deploy",
+   "ci": 0,
+   "id": "lulu",
+   "x": 2,
+   "y": 1,
+   "dir": 2,
+   "uid": 5,
+   "cost": 17
+  }
+ ],
+ "plan": {
+  "entries": [
+   {
+    "id": "falchion",
+    "x": 3,
+    "y": 1,
+    "d": 3
+   },
+   {
+    "id": "lulu",
+    "x": 2,
+    "y": 1,
+    "d": 2
+   }
+  ],
+  "skill": {},
+  "skillIdx": {},
+  "retreats": [],
+  "pol": {
+   "fire": 1,
+   "melt": 1,
+   "lamp": 1
+  },
+  "_par": "[[[\"falchion\",3,1,0,null,null,null],[\"lulu\",4,1,1,null,null,null]],{},{},[],{\"fire\":1,\"melt\":1,\"lamp\":1}]"
+ }
+}

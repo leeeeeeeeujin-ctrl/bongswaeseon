@@ -1,0 +1,145 @@
+{
+ "stage": "BL-01",
+ "name": "마트로 가는 길",
+ "level": "E0L1",
+ "lost": 0,
+ "seed": 1,
+ "K": 1,
+ "variant": "none",
+ "stageMul": {
+  "hp": 0.7,
+  "atk": 0.85,
+  "def": 0.5
+ },
+ "deck": "T4",
+ "criterion": "lost<=1",
+ "fiveSeedLost": [
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "family": "BL-01:we9ktz",
+ "gameHash": "fca95f6aaf8d",
+ "rng": "Math.random replaced before `new TD.Game` by im_sim's seed(n): a = n*7919, mulberry32-style step; nothing else draws from it between seeding and the game",
+ "stepping": "fixed g.update(1/30) per frame, max 420*30 frames; actions run at the start of a frame, before that frame's update, in log order",
+ "squad": [
+  {
+   "id": "lulu",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.4267241379310345,
+    "atk": 0.4080145719489982,
+    "def": 0.4369230769230769
+   }
+  },
+  {
+   "id": "tao",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.56,
+    "atk": 0.4838709677419355,
+    "def": 0.5
+   }
+  }
+ ],
+ "squadNote": "card order = squad order (card index ci in actions); Game(stageIdx, squad) receives {id, elite, mult, pot, skillIdx, slv, sm}; skill level and mastery by rung (sim.js skillRank, slv-r1); sm[k] = mastery of skill k",
+ "expected": {
+  "win": true,
+  "rwin": true,
+  "over": "win",
+  "life": 10,
+  "lost": 0,
+  "winTime": 93.69999999999725,
+  "frames": 2811,
+  "kills": 28,
+  "total": 28
+ },
+ "actions": [
+  {
+   "t": 0,
+   "k": 0,
+   "a": "deploy",
+   "ci": 1,
+   "id": "tao",
+   "x": 1,
+   "y": 1,
+   "dir": 0,
+   "uid": 1,
+   "cost": 9
+  },
+  {
+   "t": 16.03333333333329,
+   "k": 481,
+   "a": "deploy",
+   "ci": 0,
+   "id": "lulu",
+   "x": 2,
+   "y": 1,
+   "dir": 0,
+   "uid": 5,
+   "cost": 17
+  },
+  {
+   "t": 22.000000000000252,
+   "k": 660,
+   "a": "skill",
+   "ci": 1,
+   "id": "tao",
+   "uid": 1
+  },
+  {
+   "t": 58.0333333333326,
+   "k": 1741,
+   "a": "skill",
+   "ci": 1,
+   "id": "tao",
+   "uid": 1
+  }
+ ],
+ "plan": {
+  "entries": [
+   {
+    "id": "tao",
+    "x": 1,
+    "y": 1,
+    "d": 0
+   },
+   {
+    "id": "lulu",
+    "x": 2,
+    "y": 1,
+    "d": 0
+   }
+  ],
+  "skill": {},
+  "skillIdx": {},
+  "retreats": [],
+  "pol": {
+   "fire": 1,
+   "melt": 1,
+   "lamp": 1
+  }
+ }
+}

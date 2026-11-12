@@ -1,0 +1,384 @@
+{
+ "stage": "BL-02",
+ "name": "무너진 지하보도",
+ "level": "E0L1",
+ "lost": 0,
+ "seed": 1,
+ "K": 1,
+ "variant": "none",
+ "stageMul": {
+  "hp": 0.55,
+  "atk": 0.7,
+  "def": 0.8
+ },
+ "deck": "T4",
+ "criterion": "lost<=0 (full block)",
+ "fiveSeedLost": [
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "family": "new:BL-02:1ddvnp8",
+ "gameHash": "fca95f6aaf8d",
+ "rng": "Math.random replaced before `new TD.Game` by im_sim's seed(n): a = n*7919, mulberry32-style step; nothing else draws from it between seeding and the game",
+ "stepping": "fixed g.update(1/30) per frame, max 420*30 frames; actions run at the start of a frame, before that frame's update, in log order",
+ "squad": [
+  {
+   "id": "guard",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.5317604355716878,
+    "atk": 0.505938242280285,
+    "def": 0.574468085106383
+   }
+  },
+  {
+   "id": "caster",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.5381818181818182,
+    "atk": 0.5297872340425532,
+    "def": 0.4222222222222222
+   }
+  },
+  {
+   "id": "supporter",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.5914438502673797,
+    "atk": 0.5053763440860215,
+    "def": 0.5301204819277109
+   }
+  },
+  {
+   "id": "alpha",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.4575757575757576,
+    "atk": 0.3431578947368421,
+    "def": 0.35064935064935066
+   }
+  },
+  {
+   "id": "capy",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.64,
+    "atk": 0.5514834205933682,
+    "def": 0.6
+   }
+  },
+  {
+   "id": "lilith",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.5381818181818182,
+    "atk": 0.5297872340425532,
+    "def": 0.4222222222222222
+   }
+  },
+  {
+   "id": "tao",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.56,
+    "atk": 0.4838709677419355,
+    "def": 0.5
+   }
+  },
+  {
+   "id": "falchion",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.3924119241192412,
+    "atk": 0.44368600682593856,
+    "def": 0.43304843304843305
+   }
+  }
+ ],
+ "squadNote": "card order = squad order (card index ci in actions); Game(stageIdx, squad) receives {id, elite, mult, pot, skillIdx, slv, sm}; skill level and mastery by rung (sim.js skillRank, slv-r1); sm[k] = mastery of skill k",
+ "expected": {
+  "win": true,
+  "rwin": true,
+  "over": "win",
+  "life": 10,
+  "lost": 0,
+  "winTime": 121.33333333332901,
+  "frames": 3640,
+  "kills": 45,
+  "total": 45
+ },
+ "actions": [
+  {
+   "t": 0,
+   "k": 0,
+   "a": "deploy",
+   "ci": 3,
+   "id": "alpha",
+   "x": 9,
+   "y": 1,
+   "dir": 1,
+   "uid": 1,
+   "cost": 10
+  },
+  {
+   "t": 10.033333333333308,
+   "k": 301,
+   "a": "deploy",
+   "ci": 2,
+   "id": "supporter",
+   "x": 11,
+   "y": 1,
+   "dir": 1,
+   "uid": 5,
+   "cost": 10
+  },
+  {
+   "t": 19.033333333333438,
+   "k": 571,
+   "a": "deploy",
+   "ci": 7,
+   "id": "falchion",
+   "x": 12,
+   "y": 4,
+   "dir": 2,
+   "uid": 8,
+   "cost": 9
+  },
+  {
+   "t": 24.033333333333687,
+   "k": 721,
+   "a": "skill",
+   "ci": 2,
+   "id": "supporter",
+   "uid": 5
+  },
+  {
+   "t": 34.033333333333964,
+   "k": 1021,
+   "a": "deploy",
+   "ci": 5,
+   "id": "lilith",
+   "x": 10,
+   "y": 1,
+   "dir": 1,
+   "uid": 15,
+   "cost": 16
+  },
+  {
+   "t": 42.93333333333346,
+   "k": 1288,
+   "a": "deploy",
+   "ci": 6,
+   "id": "tao",
+   "x": 3,
+   "y": 5,
+   "dir": 0,
+   "uid": 17,
+   "cost": 9
+  },
+  {
+   "t": 52.06666666666627,
+   "k": 1562,
+   "a": "skill",
+   "ci": 2,
+   "id": "supporter",
+   "uid": 5
+  },
+  {
+   "t": 56.03333333333271,
+   "k": 1681,
+   "a": "deploy",
+   "ci": 1,
+   "id": "caster",
+   "x": 12,
+   "y": 1,
+   "dir": 1,
+   "uid": 25,
+   "cost": 16
+  },
+  {
+   "t": 70.03333333333192,
+   "k": 2101,
+   "a": "skill",
+   "ci": 1,
+   "id": "caster",
+   "uid": 25
+  },
+  {
+   "t": 80.09999999999802,
+   "k": 2403,
+   "a": "skill",
+   "ci": 2,
+   "id": "supporter",
+   "uid": 5
+  },
+  {
+   "t": 94.03333333333056,
+   "k": 2821,
+   "a": "skill",
+   "ci": 1,
+   "id": "caster",
+   "uid": 25
+  },
+  {
+   "t": 108.13333333332976,
+   "k": 3244,
+   "a": "skill",
+   "ci": 2,
+   "id": "supporter",
+   "uid": 5
+  },
+  {
+   "t": 118.0333333333292,
+   "k": 3541,
+   "a": "skill",
+   "ci": 1,
+   "id": "caster",
+   "uid": 25
+  }
+ ],
+ "plan": {
+  "entries": [
+   {
+    "id": "alpha",
+    "x": 9,
+    "y": 1,
+    "d": 1
+   },
+   {
+    "id": "supporter",
+    "x": 11,
+    "y": 1,
+    "d": 1
+   },
+   {
+    "id": "falchion",
+    "x": 12,
+    "y": 4,
+    "d": 2
+   },
+   {
+    "id": "lilith",
+    "x": 10,
+    "y": 1,
+    "d": 1
+   },
+   {
+    "id": "tao",
+    "x": 3,
+    "y": 5,
+    "d": 0
+   },
+   {
+    "id": "caster",
+    "x": 12,
+    "y": 1,
+    "d": 1
+   },
+   {
+    "id": "guard",
+    "x": 8,
+    "y": 4,
+    "d": 2
+   },
+   {
+    "id": "capy",
+    "x": 10,
+    "y": 5,
+    "d": 2
+   }
+  ],
+  "skill": {},
+  "skillIdx": {},
+  "retreats": [],
+  "pol": {
+   "fire": 1,
+   "melt": 1,
+   "lamp": 1
+  },
+  "_par": "[[[\"alpha\",9,1,1,null,null,null],[\"supporter\",11,1,1,null,null,null],[\"falchion\",12,4,2,null,null,null],[\"lilith\",10,1,1,null,null,null],[\"caster\",12,1,1,null,null,null],[\"guard\",8,4,2,null,null,null],[\"capy\",10,5,2,null,null,null]],{},{},[],{\"fire\":1,\"melt\":1,\"lamp\":1}]"
+ }
+}

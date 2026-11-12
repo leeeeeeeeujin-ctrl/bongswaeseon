@@ -1,0 +1,219 @@
+{
+ "stage": "BL-03",
+ "name": "분수 광장",
+ "level": "E0L1",
+ "lost": 0,
+ "seed": 1,
+ "K": 1,
+ "variant": "none",
+ "stageMul": {
+  "hp": 0.82,
+  "atk": 0.9,
+  "def": 1
+ },
+ "deck": "T4",
+ "criterion": "lost<=1",
+ "fiveSeedLost": [
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "family": "BL-03:vkqeiz",
+ "gameHash": "fca95f6aaf8d",
+ "rng": "Math.random replaced before `new TD.Game` by im_sim's seed(n): a = n*7919, mulberry32-style step; nothing else draws from it between seeding and the game",
+ "stepping": "fixed g.update(1/30) per frame, max 420*30 frames; actions run at the start of a frame, before that frame's update, in log order",
+ "squad": [
+  {
+   "id": "guard",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.5317604355716878,
+    "atk": 0.505938242280285,
+    "def": 0.574468085106383
+   }
+  },
+  {
+   "id": "lulu",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.4267241379310345,
+    "atk": 0.4080145719489982,
+    "def": 0.4369230769230769
+   }
+  },
+  {
+   "id": "lilith",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.5381818181818182,
+    "atk": 0.5297872340425532,
+    "def": 0.4222222222222222
+   }
+  },
+  {
+   "id": "brick",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.5621621621621622,
+    "atk": 0.625,
+    "def": 0.49387755102040815
+   }
+  }
+ ],
+ "squadNote": "card order = squad order (card index ci in actions); Game(stageIdx, squad) receives {id, elite, mult, pot, skillIdx, slv, sm}; skill level and mastery by rung (sim.js skillRank, slv-r1); sm[k] = mastery of skill k",
+ "expected": {
+  "win": true,
+  "rwin": true,
+  "over": "win",
+  "life": 10,
+  "lost": 0,
+  "winTime": 144.0999999999944,
+  "frames": 4323,
+  "kills": 96,
+  "total": 96
+ },
+ "actions": [
+  {
+   "t": 3.0333333333333323,
+   "k": 91,
+   "a": "deploy",
+   "ci": 0,
+   "id": "guard",
+   "x": 6,
+   "y": 2,
+   "dir": 0,
+   "uid": 11,
+   "cost": 13
+  },
+  {
+   "t": 20.033333333333488,
+   "k": 601,
+   "a": "deploy",
+   "ci": 1,
+   "id": "lulu",
+   "x": 2,
+   "y": 2,
+   "dir": 2,
+   "uid": 18,
+   "cost": 17
+  },
+  {
+   "t": 36.03333333333385,
+   "k": 1081,
+   "a": "deploy",
+   "ci": 2,
+   "id": "lilith",
+   "x": 1,
+   "y": 0,
+   "dir": 1,
+   "uid": 27,
+   "cost": 16
+  },
+  {
+   "t": 52.03333333333294,
+   "k": 1561,
+   "a": "deploy",
+   "ci": 3,
+   "id": "brick",
+   "x": 5,
+   "y": 3,
+   "dir": 0,
+   "uid": 40,
+   "cost": 16
+  },
+  {
+   "t": 75.03333333333164,
+   "k": 2251,
+   "a": "skill",
+   "ci": 3,
+   "id": "brick",
+   "uid": 40
+  },
+  {
+   "t": 122.0666666666623,
+   "k": 3662,
+   "a": "skill",
+   "ci": 3,
+   "id": "brick",
+   "uid": 40
+  }
+ ],
+ "plan": {
+  "entries": [
+   {
+    "id": "guard",
+    "x": 6,
+    "y": 2,
+    "d": 0
+   },
+   {
+    "id": "lulu",
+    "x": 2,
+    "y": 2,
+    "d": 2
+   },
+   {
+    "id": "lilith",
+    "x": 1,
+    "y": 0,
+    "d": 1
+   },
+   {
+    "id": "brick",
+    "x": 5,
+    "y": 3,
+    "d": 0
+   }
+  ],
+  "skill": {},
+  "skillIdx": {},
+  "retreats": [],
+  "pol": {
+   "fire": 1,
+   "melt": 1,
+   "lamp": 1
+  }
+ }
+}

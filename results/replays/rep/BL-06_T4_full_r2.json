@@ -1,0 +1,257 @@
+{
+ "stage": "BL-06",
+ "name": "낙하 지점",
+ "level": "E0L1",
+ "lost": 0,
+ "seed": 1,
+ "K": 1,
+ "variant": "none",
+ "stageMul": {
+  "hp": 0.55,
+  "atk": 0.72,
+  "def": 0.8
+ },
+ "deck": "T4",
+ "criterion": "lost<=0 (full block)",
+ "fiveSeedLost": [
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "family": "new:BL-06:nxwhek",
+ "gameHash": "fca95f6aaf8d",
+ "rng": "Math.random replaced before `new TD.Game` by im_sim's seed(n): a = n*7919, mulberry32-style step; nothing else draws from it between seeding and the game",
+ "stepping": "fixed g.update(1/30) per frame, max 420*30 frames; actions run at the start of a frame, before that frame's update, in log order",
+ "squad": [
+  {
+   "id": "sniper",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.5141509433962265,
+    "atk": 0.4106666666666667,
+    "def": 0.4126984126984127
+   }
+  },
+  {
+   "id": "irins",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.43591549295774645,
+    "atk": 0.4339622641509434,
+    "def": 0.38181818181818183
+   }
+  },
+  {
+   "id": "teka",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.45399828030954426,
+    "atk": 0.4227053140096618,
+    "def": 0.4479166666666667
+   }
+  },
+  {
+   "id": "brick",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.5621621621621622,
+    "atk": 0.625,
+    "def": 0.49387755102040815
+   }
+  },
+  {
+   "id": "jayeon",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.5914438502673797,
+    "atk": 0.5094339622641509,
+    "def": 0.5301204819277109
+   }
+  }
+ ],
+ "squadNote": "card order = squad order (card index ci in actions); Game(stageIdx, squad) receives {id, elite, mult, pot, skillIdx, slv, sm}; skill level and mastery by rung (sim.js skillRank, slv-r1); sm[k] = mastery of skill k",
+ "expected": {
+  "win": true,
+  "rwin": true,
+  "over": "win",
+  "life": 10,
+  "lost": 0,
+  "winTime": 139.06666666666135,
+  "frames": 4172,
+  "kills": 30,
+  "total": 30
+ },
+ "actions": [
+  {
+   "t": 0,
+   "k": 0,
+   "a": "deploy",
+   "ci": 4,
+   "id": "jayeon",
+   "x": 11,
+   "y": 5,
+   "dir": 3,
+   "uid": 1,
+   "cost": 10
+  },
+  {
+   "t": 17.03333333333334,
+   "k": 511,
+   "a": "deploy",
+   "ci": 1,
+   "id": "irins",
+   "x": 10,
+   "y": 5,
+   "dir": 3,
+   "uid": 11,
+   "cost": 17
+  },
+  {
+   "t": 26.033333333333786,
+   "k": 781,
+   "a": "deploy",
+   "ci": 0,
+   "id": "sniper",
+   "x": 12,
+   "y": 5,
+   "dir": 2,
+   "uid": 13,
+   "cost": 9
+  },
+  {
+   "t": 38.03333333333374,
+   "k": 1141,
+   "a": "deploy",
+   "ci": 2,
+   "id": "teka",
+   "x": 7,
+   "y": 2,
+   "dir": 0,
+   "uid": 16,
+   "cost": 12
+  },
+  {
+   "t": 54.03333333333283,
+   "k": 1621,
+   "a": "deploy",
+   "ci": 3,
+   "id": "brick",
+   "x": 10,
+   "y": 3,
+   "dir": 1,
+   "uid": 21,
+   "cost": 16
+  },
+  {
+   "t": 77.03333333333153,
+   "k": 2311,
+   "a": "skill",
+   "ci": 3,
+   "id": "brick",
+   "uid": 21
+  },
+  {
+   "t": 124.06666666666219,
+   "k": 3722,
+   "a": "skill",
+   "ci": 3,
+   "id": "brick",
+   "uid": 21
+  }
+ ],
+ "plan": {
+  "entries": [
+   {
+    "id": "jayeon",
+    "x": 11,
+    "y": 5,
+    "d": 3
+   },
+   {
+    "id": "irins",
+    "x": 10,
+    "y": 5,
+    "d": 3
+   },
+   {
+    "id": "sniper",
+    "x": 12,
+    "y": 5,
+    "d": 2
+   },
+   {
+    "id": "teka",
+    "x": 7,
+    "y": 2,
+    "d": 0
+   },
+   {
+    "id": "brick",
+    "x": 10,
+    "y": 3,
+    "d": 1
+   }
+  ],
+  "skill": {},
+  "skillIdx": {},
+  "retreats": [],
+  "pol": {
+   "fire": 1,
+   "melt": 1,
+   "lamp": 1
+  },
+  "_par": "[[[\"jayeon\",11,5,3,null,null,null],[\"irins\",10,5,3,null,null,null],[\"lilith\",12,5,2,null,null,null],[\"teka\",7,2,0,null,null,null],[\"brick\",10,3,1,null,null,null]],{},{},[],{\"fire\":1,\"melt\":1,\"lamp\":1}]"
+ }
+}
