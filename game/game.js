@@ -1312,9 +1312,9 @@
       waves: (() => { const POST = (x, y, i) => ({ at: [x, y], until: 120 }), posts = [[2, 6], [3, 6], [4, 6], [5, 6], [6, 6], [7, 6], [7, 5], [8, 5], [9, 5], [10, 5]];   // the designer's ten: every bottom-road square but two, held until after the last wave
         return W1([...posts.map(([x, y], i) => [0.5, "snowsniper", 2, 1, 0, POST(x, y, i)]),
         [6, "yfang", 1, 4, 1.2], [14, "chouang", 0, 1], [24, "yfang", 0, 4, 1.1],
-        [40, "chouang", 1, 1], [42, "yfang", 2, 2, 1.5], [52, "yrazor", 0, 1], [53, "yfang", 2, 4, 1.1],
-        [70, "yfang", 0, 4, 1], [70, "yfang", 1, 4, 1], [71, "yfang", 2, 3, 1],
-        [95, "chouang", 1, 1], [96, "yrazor", 2, 1], [102, "yfang", 0, 5, 1], [108, "yrazor", 1, 2, 2], [114, "yfang", 2, 5, 0.9], [116, "yrazor", 0, 1]]); })(),
+        [40, "chouang", 1, 2, 2.5], [42, "yfang", 2, 3, 1.5], [52, "yrazor", 0, 1], [53, "yfang", 2, 4, 1.1],
+        [70, "yfang", 0, 5, 1], [70, "yfang", 1, 5, 1], [71, "yfang", 2, 4, 1],
+        [95, "chouang", 1, 2, 1.8], [96, "yrazor", 2, 2, 2], [102, "yfang", 0, 6, 1], [108, "yrazor", 1, 2, 2], [114, "yfang", 2, 5, 0.9], [116, "yrazor", 0, 1]]); })(),
       boss: ["", ""], desc: "생울타리 사이의 길. 아래쪽 길에는 처음부터 설원 저격수들이 빼곡히 자리를 잡고 오래 버팁니다. 눈보라는 남쪽, 아래쪽 길에서 불어옵니다. 빠른 적이 길을 돌파해 옵니다. 저격수는 마법에 강하고 멀리서 쏘며, 얼어붙은 가사인격에게 훨씬 큰 피해를 줍니다. 눈보라가 부는 동안에는 모습을 감춥니다. 아래쪽 길로도 적이 오니, 저격수를 일찍 쓰러뜨려야 화망을 세울 수 있습니다. 생울타리는 올라온 벽이라 눈보라를 막습니다.",
       lose: "저격수는 눈보라가 그친 사이에 물리 화력으로 하나씩 잡으세요. 저격수가 남아 있는 동안 고지대에 세운 가사인격은 계속 노려집니다." },
     { code: "IM-03", name: "지옥 종대", map: MAP_C2.village, bg: null, hz: 0.5, ep: 2, startCost: 16, mul: { hp: 0.17, atk: 0.23, def: 0.7 }, rmul: { hp: 0.47, atk: 0.25 },
@@ -1323,9 +1323,9 @@
       // the frost gunner first, the firebottles four to six seconds behind him (and now two or three together, with infantry in front of them); two lulls (34-44, 78-90);
       // the ice-clad guards still set the clock: they stir at 50/58 and come round the long way
       waves: W1([[0.5, "iceguard", 1, 1, 0, { at: [3, 3], wait: 50, via: [[5, 2]] }], [0.5, "iceguard", 1, 1, 0, { at: [3, 4], wait: 58, via: [[5, 2]] }],   // by (5,2): the new forward square can take one of them
-        [4, "yfang", 2, 2, 1.6], [11, "chouang", 0, 1], [12, "frostgun", 2, 1], [16, "chouang", 0, 2, 1.5], [17.5, "molotov", 0, 1], [24, "yfang", 2, 2, 1.4], [30, "chxbow", 0, 1],
-        [44, "frostgun", 2, 1], [47, "chouang", 0, 2, 1.5], [48.5, "molotov", 0, 2, 1.5], [54, "yfang", 2, 3, 1.2], [60, "strag", 1, 3, 1.2], [66, "frostgun", 2, 1], [69, "soldier", 0, 2, 1.5], [70.5, "molotov", 0, 1], [74, "yrazor", 2, 1],
-        [90, "yfang", 2, 3, 1.2], [96, "frostgun", 2, 1], [99, "chouang", 0, 2, 1.5], [100.5, "molotov", 0, 2, 1.5], [106, "soldier", 1, 2, 2], [112, "frostgun", 2, 1], [113, "yfang", 2, 3, 1.1],
+        [4, "yfang", 2, 3, 1.6], [11, "chouang", 0, 1], [12, "frostgun", 2, 1], [16, "chouang", 0, 2, 1.5], [17.5, "molotov", 0, 1], [24, "yfang", 2, 3, 1.4], [30, "chxbow", 0, 1],
+        [44, "frostgun", 2, 1], [47, "chouang", 0, 3, 1.5], [50, "molotov", 0, 2, 1.5], [54, "yfang", 2, 3, 1.2], [60, "strag", 1, 5, 1.2], [66, "frostgun", 2, 1], [69, "soldier", 0, 2, 1.5], [70.5, "molotov", 0, 1], [74, "yrazor", 2, 1],
+        [90, "yfang", 2, 3, 1.2], [96, "frostgun", 2, 1], [99, "chouang", 0, 3, 1.5], [102, "molotov", 0, 2, 1.5], [106, "soldier", 1, 2, 2], [112, "frostgun", 2, 1], [113, "yfang", 2, 3, 1.1],
         [116, "chouang", 0, 2, 1.2], [120, "yrazor", 2, 1], [121, "yfang", 2, 3, 1], [124.5, "molotov", 0, 2, 1.5]]),
       boss: ["", ""], desc: "불탄 수도 외곽 시가 한가운데를 지킵니다. 동쪽에서는 화염병 투척병이 북쪽 길을 돌아오고, 남쪽에서는 사냥개와 서리 사수가 올라옵니다. 서쪽에는 빙갑 근위병 둘이 쉬다가 움직입니다. 눈보라는 북쪽에서 불어옵니다. 무너지지 않은 성당 벽(올라온 벽) 아래 서쪽은 바람을 피할 수 있습니다. 화염병 투척병은 얼어붙은 가사인격을 먼저 노리고, 얼어 있는 채로 맞으면 얼음이 녹으며 큰 피해를 연달아 입습니다.",
       lose: "화염병 투척병은 북쪽 길 위에서 먼저 쓰러뜨리세요. 서리 사수의 동상도 얼음입니다. 빙갑 근위병은 느리니, 셋을 저지할 수 있는 중장으로 오래 붙잡아 두세요." },
@@ -1432,9 +1432,9 @@
         [5, "soldier", 1, 2, 2.5], [12, "soldier", 2, 2, 2.5], [18, "cart", 0], [24, "grenadier", 1, 1], [30, "yfang", 3, 3, 1.3], [38, "soldier", 2, 3, 1.4], [40, "drummer", 2, 1],
         [58, "lancer", 1, 2, 2], [62, "cart", 3], [64, "yshield", 2, 1], [70, "frostgun", 1, 1], [78, "grenadier", 2, 2, 3], [80, "drummer", 2, 1], [86, "bomber", 1, 1, 0, HOV_P], [90, "cart", 0], [92, "chouang", 0, 3, 1.4],
         [96, "eagle", 2, 1, 0, EAGLE], [100, "soldier", 1, 4, 1.5], [110, "yfang", 3, 4, 1], [112, "lancer", 2, 2, 2],
-        [130, "grenadier", 1, 2, 3], [134, "cart", 0], [135, "cart", 3], [140, "grenadier", 2, 2, 2.5], [143, "drummer", 2, 1], [148, "frostgun", 1, 2, 2.5], [150, "bomber", 2, 2, 6, HOV_S], [156, "yshield", 1, 1, 0, CROSS], [168, "yfang", 3, 3, 1],
+        [118, "grenadier", 1, 1, 0, { via: [[11, 2, { until: 130 }], [10, 2]] }], [118, "grenadier", 2, 1, 0, { via: [[11, 4, { until: 130 }], [10, 4]] }], [121, "grenadier", 1, 1, 0, { via: [[12, 2, { until: 140 }], [10, 2]] }], [121, "grenadier", 2, 1, 0, { via: [[12, 4, { until: 140 }], [10, 4]] }], [134, "cart", 0], [135, "cart", 3], [143, "drummer", 2, 1], [148, "frostgun", 1, 2, 2.5], [150, "bomber", 2, 2, 6, HOV_S], [156, "yshield", 1, 1, 0, CROSS], [168, "yfang", 3, 3, 1],
         [164, "lancer", 1, 2, 1.5], [172, "soldier", 1, 6, 1.2], [175, "drummer", 1, 1], [180, "cart", 3], [182, "yrazor", 3, 1], [184, "grenadier", 1, 1]]); })(),
-      boss: ["경고: 황제의 독수리", "독수리 기수 · WARNING"], desc: "성문 앞 광장. 근위대가 두 탑 사이 성문에서 쏟아져 나와 위쪽 길과 아래쪽 길로 광장을 건너옵니다. 두 길 사이에는 기념비와 그 계단(고지)이 있고, 성문 목 (10,3)이 두 길을 잇습니다. 반란군의 지옥 기계는 북쪽과 남쪽 골목에서 광장 서쪽으로 굴러 내려옵니다. 눈보라는 성문에서, 동쪽에서 불어와 두 길을 따라 들이치고, 탑 뒤의 줄과 가운데 줄은 바람을 피합니다. 길 위에 선 가사인격은 얼어붙는 대신 그 뒤를 지켜 줍니다. 두 탑 위 (11,1)·(11,5)에는 설원 저격수가 올라가 성문 앞을 겨누다가, 130초가 지나면 내려와 걸어옵니다. 독수리 기수는 성문 목에 군기를 꽂고 한참 서 있다가 아래쪽 길로 오고, 기념비 아래 (7,4)에서 한 번 더 멈춰 섭니다. 군기 둘레의 적은 빨라지고 세집니다. 체력이 2/3, 1/3로 줄 때마다 군기를 치켜들어 보병을 불러 세우고, 성문에서 눈보라가 한 번 더 불어옵니다.",
+      boss: ["경고: 황제의 독수리", "독수리 기수 · WARNING"], desc: "성문 앞 광장. 근위대가 두 탑 사이 성문에서 쏟아져 나와 위쪽 길과 아래쪽 길로 광장을 건너옵니다. 두 길 사이에는 기념비와 그 계단(고지)이 있고, 성문 목 (10,3)이 두 길을 잇습니다. 반란군의 지옥 기계는 북쪽과 남쪽 골목에서 광장 서쪽으로 굴러 내려옵니다. 눈보라는 성문에서, 동쪽에서 불어와 두 길을 따라 들이치고, 탑 뒤의 줄과 가운데 줄은 바람을 피합니다. 길 위에 선 가사인격은 얼어붙는 대신 그 뒤를 지켜 줍니다. 두 탑 위 (11,1)·(11,5)에는 설원 저격수가 올라가 성문 앞을 겨누다가, 130초가 지나면 내려와 걸어옵니다. 118초에는 근위 척탄병 넷이 성문 안쪽 두 길에 두 줄로 늘어서고, 130초에 앞줄이, 140초에 뒷줄이 걸어 나옵니다. 독수리 기수는 성문 목에 군기를 꽂고 한참 서 있다가 아래쪽 길로 오고, 기념비 아래 (7,4)에서 한 번 더 멈춰 섭니다. 군기 둘레의 적은 빨라지고 세집니다. 체력이 2/3, 1/3로 줄 때마다 군기를 치켜들어 보병을 불러 세우고, 성문에서 눈보라가 한 번 더 불어옵니다.",
       lose: "성문 가까운 (10,2)·(10,4)에 선 가사인격은 눈보라를 맞는 대신 그 뒤의 길 전체를 지켜 줍니다. 이 두 칸은 성문에서 나오는 근위대가 모두 지나는 길목이기도 합니다(골목의 수레와 사냥개는 그 뒤로 들어옵니다). 탑 위 저격수의 사거리 안이니, 저격수부터 쓰러뜨리세요. 독수리 기수의 체력을 깎을 때는 눈보라가 곧 불어온다는 것을 먼저 떠올리세요. 수레는 기념비 옆을 지날 때 그의 곁에서 터뜨리면 크게 아픕니다. 북과 군기 둘레의 적은 훨씬 빠르니, 고수를 먼저 떨어뜨리세요." },
     // a side branch shown under IM-01 and open with chapter 2: the terminal's lesson on the blizzard, with a fixed squad (lines by 유진)
     { code: "TR-03", name: "눈보라 학습", map: MAP_C2.lesson, bg: null, hz: 0.5, ep: 2, branch: "IM-01", startCost: 30, mul: { hp: 0.245, atk: 0.262, def: 0.5 },
@@ -1517,7 +1517,7 @@
         SN1 = { via: [[9, 1], [7, 1], [2, 1], [1, 3]] }, SN2 = { via: [[9, 4], [7, 4], [4, 4], [2, 4]] };
         return W1([[0.5, "soldier", 0, 1, 0, POST(4, 1)], [0.5, "soldier", 0, 1, 0, POST(10, 1)],
         [6, "soldier", 1, 2, 2, M1], [22, "soldier", 2, 2, 2, M2], [30, "snuffer", 1, 1, 0, SN1], [34, "dog", 2, 2, 1.5, S2], [42, "chasseur", 2, 1, 0, M2],
-        [48, "grenadier", 1, 1, 0, M1], [52, "soldier", 2, 3, 1.5, S2], [58, "mouchard", 1, 1, 0, N1], [62, "lancer", 1, 2, 2, N1],
+        [48, "grenadier", 1, 1, 0, M1], [52, "soldier", 2, 3, 1.5, S2], [54, "mouchard", 1, 1, 0, N1], [72, "lancer", 1, 2, 2, N1],
         [70, "colonel", 0, 1, 0, BOSS], [74, "soldier", 1, 3, 1.5, N1], [86, "dog", 2, 3, 1.2, S2], [94, "chasseur", 1, 1, 0, M1], [104, "snuffer", 1, 1, 0, SN1], [112, "soldier", 1, 2, 1.5, N1],
         [124, "grenadier", 2, 1, 0, S2], [136, "lancer", 1, 2, 2, N1], [146, "soldier", 2, 3, 1.4, M2], [148, "drummer", 2, 1, 0, M2], [156, "chasseur", 2, 1, 0, S2], [160, "soldier", 0, 3, 1.4, DS],
         [166, "grenadier", 1, 1, 0, M1], [172, "soldier", 2, 4, 1.3, M2], [174, "mouchard", 2, 1, 0, M2], [180, "dog", 1, 4, 1, N1], [184, "grenadier", 0, 1, 0, DS]]); })(),
@@ -1573,9 +1573,9 @@
         [5, "soldier", 0, 2, 2, N2], [18, "soldier", 2, 2, 2, S6], [30, "soldier", 1, 2, 2, C4], [40, "chasseur", 0, 1, 0, N1], [46, "lancer", 1, 1, 0, C3],
         [60, "soldier", 1, 3, 1.5, C4], [66, "lancer", 0, 2, 2, N1], [72, "grenadier", 1, 1, 0, C3], [80, "soldier", 2, 3, 1.5, S6], [82, "drummer", 2, 1, 0, S5], [90, "chasseur", 1, 1, 0, C4], [96, "lancer", 2, 1, 0, S5], [102, "soldier", 0, 3, 1.4, N2],
         [124, "soldier", 0, 3, 1.4, N1], [128, "soldier", 2, 2, 1.5, S6], [138, "drummer", 2, 1, 0, S6], [156, "chasseur", 2, 1, 0, S6],   // his descent: no weight-2 men and no lancers on the outer roads
-        [166, "soldier", 1, 3, 1.4, C4], [172, "grenadier", 0, 1, 0, N2], [176, "soldier", 2, 3, 1.4, S5], [184, "lancer", 1, 2, 2, C4], [190, "soldier", 0, 3, 1.3, N1]]); })(),
+        [150, "soldier", 1, 1, 0, { via: [[12, 4, { until: 166 }], [11, 4], [7, 4], [2, 4]] }], [167.4, "soldier", 1, 2, 1.4, C4], [150, "grenadier", 0, 1, 0, { via: [[12, 1, { until: 172 }], [11, 1], [10, 2], [7, 2], [2, 2], [1, 3]] }], [150, "soldier", 2, 1, 0, { via: [[12, 6, { until: 176 }], [2, 6], [2, 4]] }], [177.4, "soldier", 2, 2, 1.4, S5], [184, "lancer", 1, 2, 2, C4], [190, "soldier", 0, 3, 1.3, N1]]); })(),
       boss: ["경고: 황제", "관을 쓴 쪽 · WARNING"], desc: "능선. 길 셋이 서쪽의 방어 지점으로 옵니다. 바깥 두 줄에는 기병 돌격, 가운데 길의 위쪽 줄에는 포도탄이 옵니다. 포도탄은 능선마루를 넘지 못합니다. 황제는 포구 앞에서 지휘하다가 118초에 가운데 길로 내려옵니다. 황제가 방어 지점에 닿으면 작전은 실패합니다.",
-      lose: "황제는 둘 몫으로 저지됩니다. 그가 닿으면 가사인격은 막던 적을 놓고 그를 붙듭니다. 저지선은 둘: 능선마루 동쪽의 포격 줄 위와, 능선마루. 화력과 의무는 방어 지점 앞에 남기지 말고 그 두 줄을 내려다보는 고지에 올리세요. 쓰러뜨려도 관을 다시 쓰고 한 번 일어나며, 그때 첫 줄을 뚫습니다. 그가 떠난 포구 앞 칸을 8초 지키면 포는 우리 것이고, 8초마다 그의 체력을 10%씩 깎습니다. \"전군\"에는 포도탄도 능선마루를 넘습니다. 멈춰 선 6초에 모든 것을 쏟으세요. 위쪽 길과 가운데 길의 적은 각각 (11,1)·(11,4)를 지나 들어옵니다. 황제의 포구 바로 곁이라 오래 버틸 자리는 아니지만, 첫 물결은 거기서 끊을 수 있습니다." },
+      lose: "황제는 둘 몫으로 저지됩니다. 그가 닿으면 가사인격은 막던 적을 놓고 그를 붙듭니다. 저지선은 둘: 능선마루 동쪽의 포격 줄 위와, 능선마루. 화력과 의무는 방어 지점 앞에 남기지 말고 그 두 줄을 내려다보는 고지에 올리세요. 쓰러뜨려도 관을 다시 쓰고 한 번 일어나며, 그때 첫 줄을 뚫습니다. 그가 떠난 포구 앞 칸을 8초 지키면 포는 우리 것이고, 8초마다 그의 체력을 10%씩 깎습니다. \"전군\"에는 포도탄도 능선마루를 넘습니다. 멈춰 선 6초에 모든 것을 쏟으세요. 150초에는 남은 근위대의 선두가 동쪽 세 길머리에 나와 멈춰 섭니다. 가운데, 위, 아래 순서로 한 길씩 내려옵니다. 위쪽 길과 가운데 길의 적은 각각 (11,1)·(11,4)를 지나 들어옵니다. 황제의 포구 바로 곁이라 오래 버틸 자리는 아니지만, 첫 물결은 거기서 끊을 수 있습니다." },
     { code: "WL-09", name: "튈르리", map: MAP_C3.palace, bg: null, hz: 0.5, ep: 3, startCost: 12, mul: { hp: 1.14, atk: 1.09, def: 0.85 }, rmul: { hp: 1, atk: 0.75 },
       lamps: { r: 2 },
       // gates: 0 the palace door, 1 the upper east gate, 2 the lower. The Emperor is beaten; the confessor rings the armoury awake. Empty armour that falls in the dark gets up again:
@@ -1585,7 +1585,7 @@
         DW = { via: [[5, 1], [2, 2], [2, 3]] }, DE = { via: [[9, 1], [10, 2], [10, 4], [9, 5], [3, 5]] }, N = { via: [[10, 2], [9, 1], [2, 1], [1, 2], [1, 3]] }, S = { via: [[10, 4], [10, 5], [3, 5]] }, S2 = { via: [[10, 4], [9, 5], [6, 5], [4, 4], [3, 4], [3, 3], [2, 3]] },
         SNA = { via: [[10, 2], [10, 4], [8, 5], [4, 4], [3, 4]] }, SNB = { via: [[10, 2], [9, 1], [4, 2], [3, 2], [2, 3]] };
         return W1([[1, "armour", 2, 1, 0, { at: [11, 5], fallen: 5, until: 14, via: [[3, 5]] }], [12, "soldier", 1, 3, 2, N], [20, "armour", 0, 1, 0, DW], [30, "chasseur", 1, 1, 0, N], [36, "soldier", 2, 2, 2, S2],
-        [55, "snuffer", 2, 1, 0, SNA], [57, "armour", 2, 2, 3, S], [66, "soldier", 1, 2, 1.5, N], [69, "chasseur", 1, 1, 0, N], [74, "armour", 0, 1, 0, DE], [80, "lancer", 2, 1, 0, S2], [88, "lampbreaker", 1, 1, 0, SNB], [90, "armour", 1, 2, 3, N], [98, "mouchard", 0, 1, 0, DW], [102, "soldier", 2, 2, 1.4, S], [105, "chasseur", 2, 1, 0, S],
+        [55, "snuffer", 2, 1, 0, SNA], [57, "armour", 2, 2, 3, S], [66, "soldier", 1, 2, 1.5, N], [69, "chasseur", 1, 1, 0, N], [74, "armour", 0, 1, 0, DE], [80, "lancer", 2, 1, 0, S2], [88, "lampbreaker", 1, 1, 0, SNB], [90, "armour", 1, 2, 3, N], [98, "mouchard", 0, 1, 0, DW], [99, "soldier", 2, 2, 1.4, S], [102, "chasseur", 2, 1, 0, S],
         [118, "kingarmour", 0, 1, 0, { via: [[7, 1, 6], [5, 1], [2, 2], [2, 3]] }], [122, "armour", 1, 1, 0, N], [124, "armour", 2, 1, 0, S],
         [126, "cadoudal", 0, 1, 0, RAID(8, 5)], [126, "chouang", 0, 1, 0, RAIDK(5, 5)], [126, "chouang", 0, 1, 0, RAIDK(4, 4)], [126, "chouang", 0, 1, 0, RAIDK(4, 2)], [126, "chxbow", 0, 1, 0, RAID(2, 2)], [126, "chxbow", 0, 1, 0, RAID(2, 5)],
         [134, "snuffer", 1, 1, 0, SNA], [136, "soldier", 2, 3, 1.3, S2], [140, "chasseur", 2, 1, 0, S2], [142, "armour", 1, 1, 3, N], [150, "chasseur", 2, 1, 0, S], [150, "snuffer", 2, 1, 0, SNA], [156, "armour", 2, 2, 3, S], [162, "lancer", 1, 2, 2, N], [170, "armour", 0, 1, 3, DE], [170, "snuffer", 1, 1, 0, SNB], [176, "soldier", 1, 3, 1.3, N], [180, "chasseur", 1, 1, 0, N], [182, "armour", 2, 1, 0, S2]]); })(),
@@ -2177,7 +2177,7 @@
         const rem = (1 - e.segT) * L;
         if (d < rem) { this.advance(e, d); d = 0; break; }
         this.advance(e, rem); d -= rem; e.hop.left--;
-        if (e.path.waits && e.path.waits[e.seg] && e.waitedAt !== e.seg) { e.waitedAt = e.seg; e.pauseT = e.path.waits[e.seg]; e.hop.left = 0; }
+        if (e.path.waits && e.path.waits[e.seg] && e.waitedAt !== e.seg) { e.waitedAt = e.seg; e.pauseT = typeof e.path.waits[e.seg] === "object" ? Math.max(0.01, e.path.waits[e.seg].until - this.t) : e.path.waits[e.seg]; e.hop.left = 0; }
         if (tileAt(Math.round(e.x), Math.round(e.y)) === "R") { e.restUntilDown = true; e.hop.left = 0; this.fx.push({ k: "rest", x: e.x, y: e.y, t: 0, life: 0.8 }); }
         if (e.hop.left > 0 && this.beatBlock(e)) e.hop.left = 0;
       }
@@ -3669,7 +3669,7 @@
           const step = e.def.speed * (1 - slow) * (e.dashMul || 1) * (this.calls && this.calls.until > this.t && !e.def.flying ? this.calls.speed : 1) * (rally ? rally.speed : 1) * (e.chargeT > 0 ? ch.mult : 1) * (e.dropped ? e.def.bomber.dash : 1) * dt;
           const sx = e.x, sy = e.y, sseg = e.seg, st = e.segT;
           let reached = this.advance(e, step);
-          if (e.path.waits && e.path.waits[e.seg] && e.waitedAt !== e.seg) { e.waitedAt = e.seg; e.pauseT = e.path.waits[e.seg]; }
+          if (e.path.waits && e.path.waits[e.seg] && e.waitedAt !== e.seg) { e.waitedAt = e.seg; e.pauseT = typeof e.path.waits[e.seg] === "object" ? Math.max(0.01, e.path.waits[e.seg].until - this.t) : e.path.waits[e.seg]; }
           if (!e.def.flying) {
             const tx = Math.round(e.x), ty = Math.round(e.y);
             const u = this.unitAt(tx, ty);
