@@ -2967,23 +2967,23 @@
    ],
    "cleared": false,
    "wins": 5,
-   "worstLost": 2,
+   "worstLost": 3,
    "lives": [
     10,
-    8,
-    8,
-    8,
-    8
+    7,
+    7,
+    10,
+    10
    ],
    "lost5": [
     0,
-    2,
-    2,
-    2,
-    2
+    3,
+    3,
+    0,
+    0
    ],
-   "units": 9,
-   "spent": 153,
+   "units": 10,
+   "spent": 211,
    "plan": {
     "entries": [
      {
@@ -2993,16 +2993,35 @@
       "d": 1
      },
      {
+      "id": "hakuren",
+      "x": 6,
+      "y": 6,
+      "d": 3
+     },
+     {
       "id": "hiro",
       "x": 2,
       "y": 4,
-      "d": 0
+      "d": 3
      },
      {
-      "id": "alpha",
+      "id": "lilith",
       "x": 3,
       "y": 5,
       "d": 3
+     },
+     {
+      "id": "yui",
+      "x": 8,
+      "y": 6,
+      "d": 1,
+      "from": 4
+     },
+     {
+      "id": "scribble",
+      "x": 9,
+      "y": 3,
+      "d": 1
      },
      {
       "id": "teka",
@@ -3011,50 +3030,36 @@
       "d": 1
      },
      {
-      "id": "atat",
-      "x": 10,
-      "y": 5,
-      "d": 0,
-      "from": 57
-     },
-     {
-      "id": "yui",
-      "x": 8,
-      "y": 6,
-      "d": 2,
-      "from": 4
-     },
-     {
-      "id": "atat",
-      "x": 8,
-      "y": 0,
-      "d": 1,
-      "until": 57
-     },
-     {
-      "id": "lilith",
+      "id": "capy",
       "x": 2,
       "y": 0,
       "d": 1
      },
      {
-      "id": "tao",
-      "x": 8,
-      "y": 6,
-      "d": 2,
-      "from": 115
-     },
-     {
-      "id": "capy",
-      "x": 10,
+      "id": "alpha",
+      "x": 7,
       "y": 5,
-      "d": 2
+      "d": 3
      },
      {
       "id": "ayaki",
       "x": 3,
       "y": 7,
       "d": 3
+     },
+     {
+      "id": "tao",
+      "x": 8,
+      "y": 2,
+      "d": 3,
+      "from": 115
+     },
+     {
+      "id": "atat",
+      "x": 10,
+      "y": 5,
+      "d": 2,
+      "until": 57
      }
     ],
     "skill": {
@@ -3063,10 +3068,11 @@
      }
     },
     "skillIdx": {
-     "sunae": 0,
-     "alpha": 0,
-     "teka": 0,
+     "sunae": 1,
+     "teka": 1,
      "yui": 0,
+     "hakuren": 0,
+     "alpha": 1,
      "atat": 0
     },
     "retreats": [
@@ -3084,9 +3090,9 @@
      "melt": 1,
      "lamp": 1
     },
-    "_par": "[[[\"sunae\",2,3,1,null,null,null],[\"hiro\",2,4,0,null,null,null],[\"alpha\",3,5,3,null,null,null],[\"teka\",1,1,1,null,null,null],[\"atat\",10,5,0,57,null,null],[\"yui\",8,6,2,4,null,null],[\"atat\",8,0,1,null,57,null],[\"lilith\",2,0,1,null,null,null],[\"tao\",8,6,2,115,null,null],[\"hakuren\",6,6,2,null,null,null],[\"capy\",10,5,2,null,null,null],[\"ayaki\",3,7,3,null,null,null]],{\"sunae\":{\"m\":2}},{\"sunae\":0,\"alpha\":0,\"teka\":0,\"yui\":0,\"hakuren\":0,\"atat\":0},[[\"ayaki\",205],[\"atat\",57]],{\"fire\":1,\"melt\":1,\"lamp\":1}]"
+    "_par": "[[[\"sunae\",2,3,1,null,null,null],[\"hakuren\",6,6,3,null,null,null],[\"hiro\",2,4,3,null,null,null],[\"lilith\",3,5,3,null,null,null],[\"scribble\",9,3,1,null,null,null],[\"teka\",1,1,1,null,null,null],[\"yui\",8,6,1,4,null,null],[\"capy\",2,0,1,null,null,null],[\"alpha\",7,5,2,null,null,null],[\"ayaki\",3,7,3,null,null,null],[\"tao\",8,2,3,115,null,null],[\"atat\",10,5,2,null,57,null]],{\"sunae\":{\"m\":2}},{\"sunae\":1,\"teka\":1,\"yui\":0,\"hakuren\":0,\"alpha\":1,\"atat\":0},[[\"ayaki\",205],[\"atat\",57]],{\"fire\":1,\"melt\":1,\"lamp\":1}]"
    },
-   "winTime": 213.39999999999046,
+   "winTime": 231.23333333332278,
    "recLost": 0,
    "actions": [
     {
@@ -3102,100 +3108,212 @@
      "cost": 21
     },
     {
-     "t": 26.033333333333786,
-     "k": 781,
+     "t": 18.400000000000073,
+     "k": 552,
+     "a": "skill",
+     "ci": 7,
+     "id": "sunae",
+     "uid": 4
+    },
+    {
+     "t": 19.033333333333438,
+     "k": 571,
+     "a": "deploy",
+     "ci": 6,
+     "id": "hakuren",
+     "x": 6,
+     "y": 6,
+     "dir": 3,
+     "uid": 6,
+     "cost": 10
+    },
+    {
+     "t": 29.033333333333935,
+     "k": 871,
      "a": "deploy",
      "ci": 1,
      "id": "hiro",
      "x": 2,
      "y": 4,
-     "dir": 0,
-     "uid": 7,
+     "dir": 3,
+     "uid": 8,
      "cost": 17
     },
     {
-     "t": 38.03333333333374,
-     "k": 1141,
+     "t": 40.03333333333362,
+     "k": 1201,
      "a": "deploy",
-     "ci": 8,
-     "id": "alpha",
+     "ci": 2,
+     "id": "lilith",
      "x": 3,
      "y": 5,
      "dir": 3,
-     "uid": 10,
-     "cost": 12
+     "uid": 12,
+     "cost": 18
     },
     {
-     "t": 52.03333333333294,
-     "k": 1561,
+     "t": 55.66666666666607,
+     "k": 1670,
+     "a": "deploy",
+     "ci": 0,
+     "id": "yui",
+     "x": 8,
+     "y": 6,
+     "dir": 1,
+     "uid": 14,
+     "cost": 21
+    },
+    {
+     "t": 61.866666666665715,
+     "k": 1856,
      "a": "deploy",
      "ci": 10,
      "id": "teka",
      "x": 1,
      "y": 1,
      "dir": 1,
-     "uid": 13,
+     "uid": 17,
      "cost": 14
     },
     {
-     "t": 62.03333333333237,
-     "k": 1861,
-     "a": "deploy",
-     "ci": 9,
-     "id": "atat",
-     "x": 10,
-     "y": 5,
-     "dir": 0,
-     "uid": 16,
-     "cost": 10
+     "t": 64.86666666666555,
+     "k": 1946,
+     "a": "skill",
+     "ci": 10,
+     "id": "teka",
+     "uid": 17
     },
     {
-     "t": 83.03333333333119,
-     "k": 2491,
-     "a": "deploy",
-     "ci": 0,
-     "id": "yui",
-     "x": 8,
-     "y": 6,
-     "dir": 2,
-     "uid": 25,
-     "cost": 21
+     "t": 71.29999999999852,
+     "k": 2139,
+     "a": "skill",
+     "ci": 7,
+     "id": "sunae",
+     "uid": 4
     },
     {
-     "t": 101.03333333333016,
-     "k": 3031,
+     "t": 81.26666666666462,
+     "k": 2438,
      "a": "deploy",
-     "ci": 2,
-     "id": "lilith",
+     "ci": 4,
+     "id": "capy",
      "x": 2,
      "y": 0,
      "dir": 1,
-     "uid": 28,
-     "cost": 18
+     "uid": 23,
+     "cost": 23
     },
     {
-     "t": 118.0333333333292,
-     "k": 3541,
+     "t": 89.03333333333084,
+     "k": 2671,
+     "a": "deploy",
+     "ci": 8,
+     "id": "alpha",
+     "x": 7,
+     "y": 5,
+     "dir": 3,
+     "uid": 27,
+     "cost": 12
+    },
+    {
+     "t": 95.29999999999715,
+     "k": 2859,
+     "a": "skill",
+     "ci": 8,
+     "id": "alpha",
+     "uid": 27
+    },
+    {
+     "t": 106.03333333332988,
+     "k": 3181,
      "a": "deploy",
      "ci": 5,
      "id": "ayaki",
      "x": 3,
      "y": 7,
      "dir": 3,
-     "uid": 32,
+     "uid": 33,
      "cost": 17
     },
     {
-     "t": 157.69999999999362,
-     "k": 4731,
+     "t": 107.26666666666314,
+     "k": 3218,
+     "a": "skill",
+     "ci": 10,
+     "id": "teka",
+     "uid": 17
+    },
+    {
+     "t": 119.53333333332911,
+     "k": 3586,
+     "a": "skill",
+     "ci": 7,
+     "id": "sunae",
+     "uid": 4
+    },
+    {
+     "t": 148.7666666666608,
+     "k": 4463,
      "a": "deploy",
-     "ci": 4,
-     "id": "capy",
-     "x": 10,
-     "y": 5,
-     "dir": 2,
-     "uid": 45,
-     "cost": 23
+     "ci": 3,
+     "id": "tao",
+     "x": 8,
+     "y": 2,
+     "dir": 3,
+     "uid": 42,
+     "cost": 11
+    },
+    {
+     "t": 149.66666666666075,
+     "k": 4490,
+     "a": "skill",
+     "ci": 10,
+     "id": "teka",
+     "uid": 17
+    },
+    {
+     "t": 149.8333333333274,
+     "k": 4495,
+     "a": "skill",
+     "ci": 8,
+     "id": "alpha",
+     "uid": 27
+    },
+    {
+     "t": 159.76666666666017,
+     "k": 4793,
+     "a": "skill",
+     "ci": 3,
+     "id": "tao",
+     "uid": 42
+    },
+    {
+     "t": 189.2666666666585,
+     "k": 5678,
+     "a": "deploy",
+     "ci": 6,
+     "id": "hakuren",
+     "x": 6,
+     "y": 6,
+     "dir": 3,
+     "uid": 53,
+     "cost": 15
+    },
+    {
+     "t": 192.06666666665834,
+     "k": 5762,
+     "a": "skill",
+     "ci": 10,
+     "id": "teka",
+     "uid": 17
+    },
+    {
+     "t": 192.233333333325,
+     "k": 5767,
+     "a": "skill",
+     "ci": 8,
+     "id": "alpha",
+     "uid": 27
     },
     {
      "t": 205.03333333332426,
@@ -3203,37 +3321,56 @@
      "a": "retreat",
      "ci": 5,
      "id": "ayaki",
-     "uid": 32,
+     "uid": 33,
      "x": 3,
      "y": 7,
      "why": "plan"
+    },
+    {
+     "t": 218.79999999999015,
+     "k": 6564,
+     "a": "deploy",
+     "ci": 7,
+     "id": "sunae",
+     "x": 2,
+     "y": 3,
+     "dir": 1,
+     "uid": 57,
+     "cost": 32
+    },
+    {
+     "t": 222.26666666665662,
+     "k": 6668,
+     "a": "skill",
+     "ci": 7,
+     "id": "sunae",
+     "uid": 57
     }
    ],
    "family": {
-    "id": "WL-08:1jf3dr",
-    "d": 0.15,
+    "id": "WL-08:ejeyjn",
+    "d": 0.26,
     "tags": [
      "deep block",
      "boss: late deploy",
-     "boss: relocate",
-     "skill held"
+     "boss: relocate"
     ]
    },
    "start": {
     "fills": 16,
     "bestFill": {
-     "fam": "WL-08:1jf3dr",
+     "fam": "WL-08:ejeyjn",
      "lost": 1,
      "cdLost": 1
     },
     "fams": 8,
     "pruned": []
    },
-   "evals": 2627,
-   "secs": 160,
-   "tFill": 9,
+   "evals": 3734,
+   "secs": 156,
+   "tFill": 6,
    "truncated": false,
-   "gameHash": "35c22d066cd2"
+   "gameHash": "1289f5cc4a9d"
   }
  }
 }

@@ -7,8 +7,8 @@
  "K": 1,
  "variant": "none",
  "stageMul": {
-  "hp": 0.83,
-  "atk": 0.88,
+  "hp": 0.78,
+  "atk": 0.99,
   "def": 0.74
  },
  "deck": "starter",
@@ -21,7 +21,7 @@
   0
  ],
  "family": "IM-06:ba1lrf",
- "gameHash": "35c22d066cd2",
+ "gameHash": "1289f5cc4a9d",
  "rng": "Math.random replaced before `new TD.Game` by im_sim's seed(n): a = n*7919, mulberry32-style step; nothing else draws from it between seeding and the game",
  "stepping": "fixed g.update(1/30) per frame, max 420*30 frames; actions run at the start of a frame, before that frame's update, in log order",
  "squad": [
@@ -201,8 +201,8 @@
    "elite": 1,
    "lvl": 45,
    "pot": 1,
-   "skillIdx": 0,
-   "skill": "S1",
+   "skillIdx": 1,
+   "skill": "S2",
    "slv": 7,
    "sm": [
     0,
@@ -220,8 +220,8 @@
    "elite": 1,
    "lvl": 45,
    "pot": 1,
-   "skillIdx": 1,
-   "skill": "S2",
+   "skillIdx": 0,
+   "skill": "S1",
    "slv": 7,
    "sm": [
     0,
@@ -242,409 +242,324 @@
   "over": "win",
   "life": 10,
   "lost": 0,
-  "winTime": 208.3666666666574,
-  "frames": 6251,
+  "winTime": 221.03333333332336,
+  "frames": 6631,
   "kills": 53,
   "total": 53
  },
  "actions": [
   {
-   "t": 1.0333333333333332,
-   "k": 31,
-   "a": "deploy",
-   "ci": 3,
-   "id": "tao",
-   "x": 1,
-   "y": 2,
-   "dir": 1,
-   "uid": 4,
-   "cost": 11
-  },
-  {
-   "t": 11.033333333333305,
-   "k": 331,
+   "t": 0,
+   "k": 0,
    "a": "deploy",
    "ci": 6,
    "id": "hakuren",
    "x": 1,
    "y": 4,
-   "dir": 3,
-   "uid": 8,
+   "dir": 0,
+   "uid": 1,
    "cost": 10
   },
   {
-   "t": 12.033333333333301,
-   "k": 361,
+   "t": 3.9999999999999956,
+   "k": 120,
    "a": "skill",
-   "ci": 3,
-   "id": "tao",
-   "uid": 4
+   "ci": 6,
+   "id": "hakuren",
+   "uid": 1
   },
   {
-   "t": 15.03333333333329,
-   "k": 451,
+   "t": 9.966666666666642,
+   "k": 299,
    "a": "deploy",
    "ci": 8,
    "id": "alpha",
    "x": 2,
    "y": 4,
    "dir": 3,
-   "uid": 9,
+   "uid": 8,
    "cost": 12
   },
   {
-   "t": 15.03333333333329,
-   "k": 451,
+   "t": 16.96666666666667,
+   "k": 509,
    "a": "skill",
-   "ci": 6,
-   "id": "hakuren",
+   "ci": 8,
+   "id": "alpha",
    "uid": 8
   },
   {
    "t": 22.033333333333587,
    "k": 661,
-   "a": "skill",
-   "ci": 8,
-   "id": "alpha",
-   "uid": 9
-  },
-  {
-   "t": 28.033333333333886,
-   "k": 841,
    "a": "deploy",
    "ci": 7,
    "id": "sunae",
    "x": 2,
    "y": 3,
-   "dir": 0,
-   "uid": 13,
+   "dir": 2,
+   "uid": 10,
    "cost": 19
   },
   {
-   "t": 35.03333333333391,
-   "k": 1051,
+   "t": 29.033333333333935,
+   "k": 871,
    "a": "skill",
    "ci": 7,
    "id": "sunae",
+   "uid": 10
+  },
+  {
+   "t": 31.033333333334035,
+   "k": 931,
+   "a": "deploy",
+   "ci": 9,
+   "id": "atat",
+   "x": 8,
+   "y": 4,
+   "dir": 3,
+   "uid": 13,
+   "cost": 10
+  },
+  {
+   "t": 34.033333333333964,
+   "k": 1021,
+   "a": "deploy",
+   "ci": 11,
+   "id": "scribble",
+   "x": 9,
+   "y": 3,
+   "dir": 0,
+   "uid": 15,
+   "cost": 3,
+   "summon": true
+  },
+  {
+   "t": 34.033333333333964,
+   "k": 1021,
+   "a": "skill",
+   "ci": 9,
+   "id": "atat",
    "uid": 13
   },
   {
-   "t": 43.03333333333345,
-   "k": 1291,
-   "a": "deploy",
-   "ci": 0,
-   "id": "yui",
-   "x": 9,
-   "y": 3,
-   "dir": 3,
-   "uid": 16,
-   "cost": 19
-  },
-  {
-   "t": 44.966666666666676,
-   "k": 1349,
-   "a": "skill",
-   "ci": 3,
-   "id": "tao",
-   "uid": 4
-  },
-  {
-   "t": 53.033333333332884,
-   "k": 1591,
-   "a": "deploy",
-   "ci": 2,
-   "id": "lilith",
-   "x": 12,
-   "y": 1,
-   "dir": 2,
-   "uid": 18,
-   "cost": 18
-  },
-  {
-   "t": 60.83333333333244,
-   "k": 1825,
+   "t": 49.799999999999734,
+   "k": 1494,
    "a": "skill",
    "ci": 6,
    "id": "hakuren",
-   "uid": 8
+   "uid": 1
   },
   {
-   "t": 63.033333333332315,
-   "k": 1891,
-   "a": "skill",
-   "ci": 0,
-   "id": "yui",
-   "uid": 16
-  },
-  {
-   "t": 67.0333333333321,
-   "k": 2011,
+   "t": 51.033333333333,
+   "k": 1531,
    "a": "deploy",
    "ci": 1,
    "id": "hiro",
    "x": 5,
    "y": 3,
-   "dir": 1,
-   "uid": 23,
+   "dir": 2,
+   "uid": 17,
    "cost": 17
   },
   {
-   "t": 77.89999999999814,
-   "k": 2337,
-   "a": "skill",
-   "ci": 3,
-   "id": "tao",
-   "uid": 4
-  },
-  {
-   "t": 77.93333333333148,
-   "k": 2338,
+   "t": 66.03333333333215,
+   "k": 1981,
    "a": "deploy",
    "ci": 4,
    "id": "capy",
    "x": 1,
    "y": 1,
-   "dir": 1,
-   "uid": 25,
+   "dir": 0,
+   "uid": 23,
    "cost": 23
   },
   {
-   "t": 78.63333333333144,
-   "k": 2359,
+   "t": 72.63333333333178,
+   "k": 2179,
    "a": "skill",
    "ci": 7,
    "id": "sunae",
+   "uid": 10
+  },
+  {
+   "t": 78.83333333333142,
+   "k": 2365,
+   "a": "skill",
+   "ci": 9,
+   "id": "atat",
    "uid": 13
   },
   {
-   "t": 85.03333333333107,
-   "k": 2551,
+   "t": 82.03333333333124,
+   "k": 2461,
    "a": "deploy",
-   "ci": 9,
-   "id": "atat",
-   "x": 4,
+   "ci": 2,
+   "id": "lilith",
+   "x": 3,
    "y": 1,
    "dir": 1,
-   "uid": 30,
-   "cost": 10
+   "uid": 27,
+   "cost": 18
   },
   {
-   "t": 88.0333333333309,
-   "k": 2641,
+   "t": 89.43333333333082,
+   "k": 2683,
+   "a": "skill",
+   "ci": 8,
+   "id": "alpha",
+   "uid": 8
+  },
+  {
+   "t": 95.59999999999714,
+   "k": 2868,
+   "a": "skill",
+   "ci": 6,
+   "id": "hakuren",
+   "uid": 1
+  },
+  {
+   "t": 96.03333333333045,
+   "k": 2881,
+   "a": "deploy",
+   "ci": 10,
+   "id": "teka",
+   "x": 11,
+   "y": 4,
+   "dir": 3,
+   "uid": 35,
+   "cost": 14
+  },
+  {
+   "t": 112.89999999999615,
+   "k": 3387,
    "a": "deploy",
    "ci": 11,
    "id": "scribble",
-   "x": 6,
-   "y": 4,
-   "dir": 3,
-   "uid": 31,
+   "x": 9,
+   "y": 3,
+   "dir": 0,
+   "uid": 39,
    "cost": 3,
    "summon": true
   },
   {
-   "t": 102.0333333333301,
-   "k": 3061,
-   "a": "deploy",
-   "ci": 10,
-   "id": "teka",
-   "x": 3,
-   "y": 1,
-   "dir": 1,
-   "uid": 39,
-   "cost": 14
-  },
-  {
-   "t": 106.63333333332984,
-   "k": 3199,
-   "a": "skill",
-   "ci": 6,
-   "id": "hakuren",
-   "uid": 8
-  },
-  {
-   "t": 108.76666666666306,
-   "k": 3263,
-   "a": "skill",
-   "ci": 0,
-   "id": "yui",
-   "uid": 16
-  },
-  {
-   "t": 110.8333333333296,
-   "k": 3325,
-   "a": "skill",
-   "ci": 3,
-   "id": "tao",
-   "uid": 4
-  },
-  {
-   "t": 110.86666666666294,
-   "k": 3326,
-   "a": "deploy",
-   "ci": 8,
-   "id": "alpha",
-   "x": 2,
-   "y": 4,
-   "dir": 3,
-   "uid": 41,
-   "cost": 18
-  },
-  {
-   "t": 111.0333333333296,
-   "k": 3331,
-   "a": "skill",
-   "ci": 10,
-   "id": "teka",
-   "uid": 39
-  },
-  {
-   "t": 118.4666666666625,
-   "k": 3554,
-   "a": "skill",
-   "ci": 8,
-   "id": "alpha",
-   "uid": 41
-  },
-  {
-   "t": 122.23333333332896,
-   "k": 3667,
+   "t": 116.2333333333293,
+   "k": 3487,
    "a": "skill",
    "ci": 7,
    "id": "sunae",
+   "uid": 10
+  },
+  {
+   "t": 123.63333333332888,
+   "k": 3709,
+   "a": "skill",
+   "ci": 9,
+   "id": "atat",
    "uid": 13
   },
   {
-   "t": 143.76666666666108,
-   "k": 4313,
+   "t": 134.39999999999495,
+   "k": 4032,
    "a": "skill",
-   "ci": 3,
-   "id": "tao",
-   "uid": 4
-  },
-  {
-   "t": 152.3666666666606,
-   "k": 4571,
-   "a": "skill",
-   "ci": 0,
-   "id": "yui",
-   "uid": 16
-  },
-  {
-   "t": 152.43333333332725,
-   "k": 4573,
-   "a": "skill",
-   "ci": 6,
-   "id": "hakuren",
+   "ci": 8,
+   "id": "alpha",
    "uid": 8
   },
   {
-   "t": 155.43333333332708,
-   "k": 4663,
+   "t": 141.39999999999455,
+   "k": 4242,
+   "a": "skill",
+   "ci": 6,
+   "id": "hakuren",
+   "uid": 1
+  },
+  {
+   "t": 152.19999999999393,
+   "k": 4566,
    "a": "deploy",
    "ci": 1,
    "id": "hiro",
    "x": 5,
    "y": 3,
-   "dir": 1,
-   "uid": 57,
+   "dir": 2,
+   "uid": 54,
    "cost": 26
   },
   {
-   "t": 159.29999999999353,
-   "k": 4779,
-   "a": "deploy",
-   "ci": 9,
-   "id": "atat",
-   "x": 4,
-   "y": 1,
-   "dir": 1,
-   "uid": 59,
-   "cost": 15
-  },
-  {
-   "t": 159.7999999999935,
-   "k": 4794,
+   "t": 155.06666666666044,
+   "k": 4652,
    "a": "deploy",
    "ci": 11,
    "id": "scribble",
-   "x": 6,
-   "y": 4,
-   "dir": 3,
-   "uid": 60,
+   "x": 9,
+   "y": 3,
+   "dir": 0,
+   "uid": 56,
    "cost": 3,
    "summon": true
   },
   {
-   "t": 165.8333333333265,
-   "k": 4975,
+   "t": 159.83333333332683,
+   "k": 4795,
    "a": "skill",
    "ci": 7,
    "id": "sunae",
-   "uid": 13
+   "uid": 10
   },
   {
-   "t": 167.76666666665972,
-   "k": 5033,
-   "a": "skill",
-   "ci": 8,
-   "id": "alpha",
-   "uid": 41
-  },
-  {
-   "t": 168.13333333332636,
-   "k": 5044,
-   "a": "deploy",
-   "ci": 2,
-   "id": "lilith",
-   "x": 12,
-   "y": 1,
-   "dir": 2,
-   "uid": 65,
-   "cost": 27
-  },
-  {
-   "t": 170.4999999999929,
-   "k": 5115,
+   "t": 163.09999999999332,
+   "k": 4893,
    "a": "deploy",
    "ci": 11,
    "id": "scribble",
-   "x": 6,
-   "y": 4,
-   "dir": 3,
-   "uid": 68,
+   "x": 9,
+   "y": 3,
+   "dir": 0,
+   "uid": 59,
    "cost": 3,
    "summon": true
   },
   {
-   "t": 176.69999999999254,
-   "k": 5301,
+   "t": 168.43333333332635,
+   "k": 5053,
    "a": "skill",
-   "ci": 3,
-   "id": "tao",
-   "uid": 4
+   "ci": 9,
+   "id": "atat",
+   "uid": 13
   },
   {
-   "t": 198.23333333332465,
-   "k": 5947,
+   "t": 177.99999999999247,
+   "k": 5340,
+   "a": "skill",
+   "ci": 8,
+   "id": "alpha",
+   "uid": 8
+  },
+  {
+   "t": 187.19999999999195,
+   "k": 5616,
    "a": "skill",
    "ci": 6,
    "id": "hakuren",
-   "uid": 8
+   "uid": 1
+  },
+  {
+   "t": 203.43333333332436,
+   "k": 6103,
+   "a": "skill",
+   "ci": 7,
+   "id": "sunae",
+   "uid": 10
   }
  ],
  "plan": {
   "entries": [
    {
-    "id": "tao",
-    "x": 1,
-    "y": 2,
-    "d": 1
-   },
-   {
     "id": "hakuren",
     "x": 1,
     "y": 4,
-    "d": 3
+    "d": 0
    },
    {
     "id": "alpha",
@@ -656,23 +571,17 @@
     "id": "sunae",
     "x": 2,
     "y": 3,
-    "d": 0
-   },
-   {
-    "id": "yui",
-    "x": 9,
-    "y": 3,
-    "d": 3
-   },
-   {
-    "id": "lilith",
-    "x": 12,
-    "y": 1,
     "d": 2
    },
    {
     "id": "scribble",
-    "x": 6,
+    "x": 9,
+    "y": 3,
+    "d": 0
+   },
+   {
+    "id": "atat",
+    "x": 8,
     "y": 4,
     "d": 3
    },
@@ -680,56 +589,46 @@
     "id": "hiro",
     "x": 5,
     "y": 3,
-    "d": 1,
-    "from": 21
+    "d": 2
    },
    {
     "id": "capy",
     "x": 1,
     "y": 1,
-    "d": 1
+    "d": 0
    },
    {
-    "id": "atat",
-    "x": 4,
-    "y": 1,
+    "id": "teka",
+    "x": 8,
+    "y": 4,
     "d": 1,
     "until": 65
    },
    {
-    "id": "atat",
-    "x": 4,
-    "y": 1,
-    "d": 1,
-    "from": 65
-   },
-   {
-    "id": "teka",
+    "id": "lilith",
     "x": 3,
     "y": 1,
     "d": 1
+   },
+   {
+    "id": "teka",
+    "x": 11,
+    "y": 4,
+    "d": 3,
+    "from": 65
    }
   ],
-  "skill": {
-   "yui": {
-    "m": 1,
-    "t": 63
-   },
-   "atat": {
-    "m": 2
-   }
-  },
+  "skill": {},
   "skillIdx": {
    "hakuren": 1,
    "alpha": 1,
    "sunae": 1,
-   "yui": 1,
-   "atat": 0,
-   "teka": 1
+   "atat": 1,
+   "teka": 0
   },
   "retreats": [
    {
-    "id": "atat",
+    "id": "teka",
     "t": 65
    }
   ],
@@ -738,6 +637,6 @@
    "melt": 1,
    "lamp": 1
   },
-  "_par": "[[[\"tao\",1,2,1,null,null,null],[\"hakuren\",1,4,3,null,null,null],[\"alpha\",2,4,3,null,null,null],[\"sunae\",2,3,0,null,null,null],[\"yui\",9,3,3,null,null,null],[\"scribble\",6,4,3,null,null,null],[\"lilith\",12,1,2,null,null,null],[\"hiro\",5,3,1,null,null,null],[\"capy\",1,1,1,null,null,null],[\"atat\",4,1,1,null,65,null],[\"atat\",4,1,1,65,null,null],[\"teka\",3,1,1,null,null,null]],{\"yui\":{\"m\":1,\"t\":63},\"atat\":{\"m\":2}},{\"hakuren\":1,\"alpha\":1,\"sunae\":1,\"yui\":1,\"atat\":0,\"teka\":1},[[\"atat\",65]],{\"fire\":1,\"melt\":1,\"lamp\":1}]"
+  "_par": "[[[\"hakuren\",1,4,0,null,null,null],[\"alpha\",2,4,3,null,null,null],[\"sunae\",2,3,2,null,null,null],[\"scribble\",9,3,0,null,null,null],[\"atat\",8,4,3,null,null,null],[\"hiro\",5,3,2,null,null,null],[\"capy\",1,1,0,null,null,null],[\"teka\",8,4,1,null,65,null],[\"lilith\",3,1,1,null,null,null],[\"teka\",11,4,2,65,null,null]],{},{\"hakuren\":1,\"alpha\":1,\"sunae\":1,\"atat\":1,\"teka\":0},[[\"teka\",65]],{\"fire\":1,\"melt\":1,\"lamp\":1}]"
  }
 }
