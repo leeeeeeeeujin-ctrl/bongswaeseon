@@ -1445,7 +1445,7 @@
     // ---- chapter 3 (second cut) ----
     // act 1, the Prefect's order: the dark. A street lamp lights two squares round it; whatever stands outside the light cannot be seen, and once it is held or met there only
     // those right beside it can strike it. A lamp is kept by whoever stands right beside it (above, below, left, right)
-    { code: "WL-01", name: "불 꺼진 거리", map: MAP_C3.lamps1, bg: null, hz: 0.5, ep: 3, startCost: 10, mul: { hp: 1.42, atk: 1.27, def: 0.85 }, rmul: { hp: 1, atk: 0.75 },
+    { code: "WL-01", name: "불 꺼진 거리", map: MAP_C3.lamps1, bg: null, hz: 0.5, ep: 3, startCost: 10, mul: { hp: 1.31, atk: 1.23, def: 0.85 }, rmul: { hp: 1, atk: 0.75 },
       lamps: { r: 2, events: [{ t: 80, off: [[1, 0]] }, { t: 125, off: [[5, 6]] }] },   // the two lamps nearest the point run dry in turn, unless somebody is standing by them
       // gates: 0 the upper street, 1 the lower. No surges here: a patrol every eight seconds or so, now on one street, now on the other, and from 76 on some of them change
       // streets by the cross street, in the dark
@@ -1486,7 +1486,7 @@
       lose: "꺼진 등 옆 칸에 가사인격을 배치하고 4초를 버티면 등이 켜집니다. 동쪽 등이 켜지면 묶인 셋이 풀려 남쪽 문 앞을 막습니다. 북서쪽 고지의 엽병은 등으로 비출 수 없으니 근거리 가사인격을 곁에 붙이세요." },
     // act 2, the Emperor's order: grapeshot. A gun fires down its line on a timetable, warned first. It takes a third of whatever of ours stands in the line, armour or no,
     // and far less of theirs. Stand on the square before the muzzle and it is silent; hold that square eight seconds and the gun is ours, firing only at them
-    { code: "WL-04", name: "성당 계단", map: MAP_C3.steps, bg: null, hz: 0.5, ep: 3, startCost: 14, mul: { hp: 1.06, atk: 1.166, def: 0.85 }, rmul: { hp: 1, atk: 0.75 },
+    { code: "WL-04", name: "성당 계단", map: MAP_C3.steps, bg: null, hz: 0.5, ep: 3, startCost: 14, mul: { hp: 1.25, atk: 1.24, def: 0.85 }, rmul: { hp: 1, atk: 0.75 },
       // every third shot of each gun goes down the outer row of its street; a gun of ours fires every 13 s down both rows and takes 30% of each foe's strength
       volleys: [{ first: 30, every: 26, warn: 4, dmg: 700, pct: 0.35, foe: 0.3, mine: 1.7, mineEvery: 13, minePct: 0.3, capture: 8, linger: 20, muzzle: [11, 2], gun: [13, 2], tiles: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((x) => [x, 2]),
                   alt: { every: 3, tiles: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((x) => [x, 1]) } },
@@ -1504,7 +1504,7 @@
         [149, "grenadier", 1, 1, 0, XS], [153, "chasseur", 1, 1, 0, NF], [162, "soldier", 2, 5, 1.2, SF], [166, "grenadier", 1, 1, 0, NF]]); })(),
       boss: ["", ""], desc: "성당 계단 앞. 대포 두 문이 두 길에 포도탄을 쏩니다(26초마다, 4초 전 표시). 두 발은 안쪽 줄, 세 발째는 바깥 줄입니다. 줄 위의 가사인격은 최대 체력의 35%를 잃고, 근위대는 거의 다치지 않습니다. 길 한가운데의 왕당파 시민 넷도 함께 맞습니다. 포구 앞 칸에 서면 포가 멈추고, 8초를 지키면 빼앗습니다.",
       lose: "포구 앞은 척탄병이 지킵니다(150초에 스스로 내려옵니다). 술사로 먼저 쓰러뜨리세요. 빼앗은 포는 13초마다 그 길의 두 줄을 모두 쏘아, 적마다 최대 체력의 30%를 깎습니다. 자리를 떠나도 20초 동안은 우리 편입니다. 포 하나를 빼앗고 남은 길에 힘을 모으세요." },
-    { code: "WL-05", name: "대성당 앞", map: MAP_C3.nave, bg: null, hz: 0.5, ep: 3, startCost: 14, mul: { hp: 1.04, atk: 1.06, def: 0.85 }, rmul: { hp: 1, atk: 0.75 },
+    { code: "WL-05", name: "대성당 앞", map: MAP_C3.nave, bg: null, hz: 0.5, ep: 3, startCost: 14, mul: { hp: 1.23, atk: 1.12, def: 0.85 }, rmul: { hp: 1, atk: 0.75 },
       lamps: { r: 2 },
       volleys: [{ first: 34, every: 26, warn: 4, dmg: 700, pct: 0.35, foe: 0.3, mine: 1.7, capture: 8, linger: 20, muzzle: [4, 1], gun: [4, 0], tiles: [2, 3, 4, 5].map((y) => [4, y]) },
                 { first: 47, every: 26, warn: 4, dmg: 700, pct: 0.35, foe: 0.3, mine: 1.7, capture: 8, linger: 20, muzzle: [10, 1], gun: [10, 0], tiles: [2, 3, 4, 5].map((y) => [10, y]) }],
@@ -1559,7 +1559,7 @@
         [144, "chasseur", 1, 1, 0, MW], [146, "lancer", 1, 2, 2, MW], [150, "grenadier", 1, 1, 0, ME], [152, "drummer", 1, 1, 0, MW], [156, "soldier", 1, 3, 1.4, MW], [160, "lancer", 2, 2, 2, EB], [164, "soldier", 0, 2, 1.5, WX], [168, "grenadier", 2, 1, 0, EA], [172, "soldier", 1, 3, 1.3, ME], [176, "lancer", 1, 1, 0, MW]]); })(),
       boss: ["", ""], desc: "능선 한가운데의 농장. 적은 북쪽에서 두 길로 내려오고, 방어 지점은 두 길의 끝, 둘입니다. 두 길의 바깥 줄에는 기병 돌격, 방어 지점 앞을 가로지르는 길에는 포도탄이 옵니다(붙어 선 가사인격은 1.6배). 가운데 농장은 우리 고지입니다. 100초에 농장의 북쪽 문이 부서지면, 안뜰이 세 번째 길이 되어 가로지르는 길 한복판으로 이어집니다.",
       lose: "동쪽 끝 고지에서 보초를 쓰러뜨리고, 포가 처음 쏘기 전(62초)에 포구 앞 칸을 8초 지켜 포를 빼앗으세요. 서쪽은 안쪽 칸(문 쪽)부터 세우세요. 그다음 두 방어 지점 앞, 가로지르는 길 위에 둘씩 세우면 세 길이 모두 그 앞을 지납니다. 빼앗은 포는 13초마다 그 길 위의 적을 최대 체력의 20%씩 깎습니다." },
-    { code: "WL-08", name: "몽생장 능선", map: MAP_C3.ridge, bg: null, hz: 0.5, ep: 3, startCost: 12, mul: { hp: 1.23, atk: 1.1, def: 0.85 }, rmul: { hp: 1, atk: 0.75 }, crest: 4,
+    { code: "WL-08", name: "몽생장 능선", map: MAP_C3.ridge, bg: null, hz: 0.5, ep: 3, startCost: 12, mul: { hp: 2.38, atk: 1.39, def: 0.85 }, rmul: { hp: 1, atk: 0.75 }, crest: 4,
       volleys: [{ kind: "charge", first: 34, every: 34, warn: 5, dmg: 1100, pct: 0.6, tiles: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((x) => [x, 1]) },
                 { kind: "charge", first: 51, every: 34, warn: 5, dmg: 1100, pct: 0.6, tiles: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((x) => [x, 6]) },
                 { first: 68, every: 34, warn: 4, dmg: 700, pct: 0.3, foe: 0.3, mine: 1.7, pack: 1.6, capture: 8, linger: 20, muzzle: [12, 3], gun: [13, 3], mineEvery: 8, bossPct: 0.10, full: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((x) => [x, 3]), tiles: [5, 6, 7, 8, 9, 10, 11].map((x) => [x, 3]) }],   // the shot stops at the crest: west of column 5 the centre is in dead ground
