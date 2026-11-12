@@ -4,24 +4,24 @@
 
 | op | name | class | ★ | used | key | key share | skills used | rung range | stages | flags |
 |---|---|---|---|---|---|---|---|---|---|---|
-| lilith | 리리스 | caster/코어 캐스터 | 3 | 123 | 1 | 0.5 | S1×123 | E0L1–E2L40 | 23 | everywhere |
+| lilith | 리리스 | caster/코어 캐스터 | 3 | 125 | 1 | 0.5 | S1×125 | E0L1–E2L40 | 23 | everywhere |
 | tao | 타오 | vanguard/척후병 | 3 | 87 | 1 | 1 | S1×87 | E0L1–E2L40 | 23 |  |
 | ker | 케르 | defender/프로텍터 | 4 | 57 | 1 | 1 | S1×42 S2×15 | E0L1–E1L45 | 16 |  |
 | ayaki | 아야키 | medic/메딕 | 3 | 50 | 1 | 0.5 | S1×50 | E0L1–E2L40 | 19 |  |
 | skakea | 스카케아 | specialist/푸쉬마스터 | 4 | 19 | 1 | 1 | S1×16 S2×3 | E0L1–E1L30 | 8 |  |
 | sunae | 순애기사 | defender/프로텍터 | 4 | 105 | 0 | 0 | S1×66 S2×39 | E0L1–E2L40 | 24 |  |
-| teka | 테카 | supporter/감속자 | 4 | 97 | 0 | - | S1×73 S2×24 | E0L1–E2L40 | 23 |  |
+| teka | 테카 | supporter/감속자 | 4 | 96 | 0 | - | S1×73 S2×23 | E0L1–E2L40 | 23 |  |
 | hiro | 히로 | guard/공격수 | 3 | 96 | 0 | 0 | S1×96 | E0L1–E2L40 | 23 |  |
 | yui | 서브테러 | defender/가디언 | 5 | 88 | 0 | - | S1×66 S2×15 S3×7 | E0L1–E2L40 | 21 |  |
 | capy | 마이웨이 카피바라 | sniper/포격사수 | 3 | 80 | 0 | 0 | S1×80 | E0L1–E2L40 | 23 |  |
 | lulu | 루루 | guard/소드마스터 | 4 | 74 | 0 | 0 | S1×70 S2×4 | E0L1–E1L45 | 18 |  |
 | jayeon | 자연 | supporter/감속자 | 3 | 67 | 0 | 0 | S1×67 | E0L1–E1L45 | 20 |  |
-| alpha | 알파 | sniper/명사수 | 4 | 64 | 0 | - | S1×39 S2×25 | E0L1–E2L40 | 20 |  |
-| atat | @@@ | supporter/소환사 | 4 | 63 | 0 | 0 | S1×39 S2×24 | E0L1–E2L40 | 21 |  |
+| alpha | 알파 | sniper/명사수 | 4 | 64 | 0 | - | S1×38 S2×26 | E0L1–E2L40 | 20 |  |
+| atat | @@@ | supporter/소환사 | 4 | 63 | 0 | 0 | S1×38 S2×25 | E0L1–E2L40 | 21 |  |
 | defender | 브람 | defender/- | 3 | 60 | 0 | 0 | S1×60 | E0L20–E1L45 | 17 |  |
 | irins | 아이린스 | caster/코어 캐스터 | 4 | 51 | 0 | 0 | S1×38 S2×13 | E0L1–E1L45 | 14 |  |
 | brick | 벽돌 | defender/프로텍터 | 3 | 50 | 0 | - | S1×50 | E0L20–E1L45 | 15 |  |
-| hakuren | 하쿠렌 | vanguard/기수 | 4 | 48 | 0 | - | S1×29 S2×19 | E0L40–E2L40 | 16 |  |
+| hakuren | 하쿠렌 | vanguard/기수 | 4 | 49 | 0 | - | S1×28 S2×21 | E0L40–E2L40 | 16 |  |
 | vanguard | 로완 | vanguard/- | 3 | 43 | 0 | 0 | S1×43 | E0L1–E1L45 | 17 |  |
 | nana | 나나 | sniper/저격수 | 3 | 36 | 0 | - | S1×36 | E0L1–E1L45 | 13 |  |
 | falchion | 팔시온 | vanguard/돌격수 | 4 | 33 | 0 | 0 | S1×21 S2×12 | E0L1–E1L45 | 14 |  |
