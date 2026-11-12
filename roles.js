@@ -17,7 +17,8 @@ const readJSON = (f, d) => { try { return JSON.parse(fs.readFileSync(f, "utf8"))
 const writeJSON = (f, o, pretty) => { fs.mkdirSync(path.dirname(f), { recursive: true }); const tmp = f + ".tmp" + process.pid; fs.writeFileSync(tmp, JSON.stringify(o, null, pretty === false ? 0 : 1)); fs.renameSync(tmp, f); };
 const CLS = { "중장": "defender", "근위": "guard", "선봉": "vanguard", "술사": "caster", "저격": "sniper", "의무": "medic", "보조": "supporter", "특수": "specialist", "소환물": "summon" };
 const defAny = (id) => S.def(id) || TD.SUMMONS[id];
-const ALL = TD.UNITS.map((u) => u.id);
+const DUMMY = new Set(["vanguard", "guard", "defender", "sniper", "caster", "medic", "supporter", "specialist"]);   /* the eight stand-ins from the first builds: in no deck (designer 2026-11-13) */
+const ALL = TD.UNITS.map((u) => u.id).filter((id) => !DUMMY.has(id));
 
 function kindOf(d) {
   if (!d) return "none";
