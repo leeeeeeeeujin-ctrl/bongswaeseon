@@ -39,3 +39,6 @@ AKBENCH CONTROL: AK OPERATORS (PRIVATE; same rules: the AK tables and the conver
   node akops.js fetch --out DIR ; node akops.js convert --raw DIR/en_US/gamedata/excel --out FILE     AK 3★/4★ operators -> FILE (decks AK4, AKstart); akops.js documents the mapping
   AKOPS=FILE node search.js run --stages AK1-7,IM-02 --decks AKstart,AK4 ...        (sim.js adds the operators in memory; our decks never include them; cache under results/cache_akops)
   ./ci.sh run mode=akbench stages=1-7,IM-02..IM-05 decks=starter,T4,AKstart,AK4 crit=lost1,full split=stage-deck-rep reps=3 hours=2   (AK stages and/or ours; numbers only)
+PLACEMENT CONSTRAINTS (habitual wrong-answer tests, cons.js)
+  filter terms: sq=x.y+x.y (all units on these squares) | sq[중장+근위]=x.y+.. (only those classes bound) | nosq=.. | noretreat
+  squad shorthand: --squad "deck:starter|sq[저격+술사]=4.0+5.0;noretreat"   (also via CI squad=)

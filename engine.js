@@ -11,6 +11,7 @@ const path = require("path");
 const zlib = require("zlib");
 const G = require("./ga.js");
 const R = require("./roles.js");
+const C = require("./cons.js");
 const F = require("./families.js");
 const SG = require("./surrogate.js");
 const { S, TD } = R;
@@ -41,7 +42,7 @@ const squadSig = (q, plan) => q.join(",") + "|" + q.map((id) => (plan.skillIdx |
 const CLSN = { defender: "중장", guard: "근위", vanguard: "선봉", caster: "술사", sniper: "저격", medic: "의무", supporter: "보조", specialist: "특수" };
 function constraintPen(p, o) { let pen = 0; const ids = new Set(p.entries.map((q) => q.id)); for (const id of o.must || []) if (!ids.has(id)) pen += 1e7;
   if (o.quota) { const n = {}; for (const id of ids) { if (S.isSummon(id)) continue; const c = S.def(id).cls; n[c] = (n[c] || 0) + 1; } for (const [c, q] of Object.entries(o.quota)) { const k = n[CLSN[c] || c] || 0; if ((q.max !== undefined && k > q.max) || (q.min !== undefined && k < q.min)) pen += 1e7; } }
-  if (S.squadIdsOf(p).length > 12) pen += 1e7; return pen; }
+  if (S.squadIdsOf(p).length > 12) pen += 1e7; return pen + C.pen(p, o.place); }
 const LOGS = { groups: null };
 function logGroup(rec) { if (!LOGS.groups) return; fs.appendFileSync(LOGS.groups, JSON.stringify(rec) + "\n"); }
 
@@ -107,7 +108,7 @@ async function squadSolve(pool, code, lvl, squad, o = {}) {
   const warmAll = (o.warmPlans || []).map((p) => G.clone(p)).concat(warm);   // o.warmPlans: plans to start from (a contained deck's answer, for the cross-deck bound)
   const seedHere = o.rngSeed !== undefined ? ((o.rngSeed ^ Math.imul(RUNGS.indexOf(lvl) + 1, 0x9e3779b1)) >>> 0) : undefined;   // one seed per rung
   const r = await G.solve(pool, code, lvl, squad, { time: Math.min(+(o.refineSec || 90), left), evals: 1e9, warm: warmAll.slice(0, 14), allOps: squad.length > 12, pool: squad, sameRung: true,
-    earlyStop: +(o.polish || 20), earlyLife: 10 - critLost, critLost, memo, screen: true, p1: o.p1 !== undefined ? +o.p1 : 0.35, verbose: !!o.verbose, must: o.must, quota: o.quota, rngSeed: seedHere, finalists: o.finalists || 6 });
+    earlyStop: +(o.polish || 20), earlyLife: 10 - critLost, critLost, memo, screen: true, p1: o.p1 !== undefined ? +o.p1 : 0.35, verbose: !!o.verbose, must: o.must, quota: o.quota, place: o.place, rngSeed: seedHere, finalists: o.finalists || 6 });
   memo && memo.flush();
   evals += r.evals;
   const near = F.nearest(fams, r.plan); const isNew = !near || near.d >= +(process.env.FAM_DIST || 0.45);

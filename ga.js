@@ -11,6 +11,7 @@ const ROOT = __dirname;
 const GAME = process.env.SOLVER_GAME_DIR || path.join(ROOT, "game");
 process.env.SOLVER_GAME_DIR = GAME;
 const S = require("./sim.js");
+const C = require("./cons.js");
 const { TD } = S;
 const defAny = (id) => S.def(id) || TD.SUMMONS[id];
 const maxSk = (id, E) => S.isSummon(id) ? 0 : S.maxSkillIdx(id, E);
@@ -174,7 +175,7 @@ class Space {
 async function solve(pool, code, lvl, ids, o = {}) {
   const t0 = Date.now();
   if (o.rngSeed !== undefined) reseed(o.rngSeed);
-  const info = S.stageInfo(code, ids, lvl);
+  const info = C.restrictInfo(S.stageInfo(code, ids, lvl), o.place);   /* placement constraints: only allowed squares are sampled */
   const sp = new Space(code, lvl, ids, info, { allOps: o.allOps, topK: o.allOps ? 8 : 0 });
   const maxEvals = +(o.evals || 3000), maxSec = +(o.time || 900);
   const p1Share = o.p1 !== undefined ? +o.p1 : 0.6;
@@ -191,7 +192,7 @@ async function solve(pool, code, lvl, ids, o = {}) {
     for (const id of o.must || []) if (!ids.has(id)) pen += 1e7;
     if (o.quota) { const n = {}; for (const id of ids) { if (S.isSummon(id)) continue; const c = S.def(id).cls; n[c] = (n[c] || 0) + 1; }
       for (const [c, q] of Object.entries(o.quota)) { const k = n[CLSN[c] || c] || 0; if (q.max !== undefined && k > q.max) pen += 1e7; if (q.min !== undefined && k < q.min) pen += 1e7; } }
-    return pen; };
+    return pen + C.pen(p, o.place); };
   const job = (plan, seed, prune, fps) => ({ code, lvl, plan, opt: { seed, squadIds: squadFor(plan), pruneLost: prune, sameRung: SR, fps, keepFx: o.keepFx || undefined } });
   const squadSig = (plan) => { const q = squadFor(plan); return q.join(",") + "|" + q.map((id) => (plan.skillIdx || {})[id] ?? "-").join(""); };
   const memo = o.memo || null;   // persistent plan->result memo {get(k), set(k, r)}, keyed by game hash + stage + level + squad + seed + fps + prune + plan

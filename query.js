@@ -10,6 +10,7 @@ const path = require("path");
 const crypto = require("crypto");
 const E = require("./engine.js");
 const R = require("./roles.js");
+const C = require("./cons.js");
 const G = require("./ga.js");
 const { S, TD } = R;
 
@@ -35,12 +36,14 @@ function applyFilter(ids, spec, cons) {
     else if ((m = /^cost<=(\d+)$/.exec(part))) ids = ids.filter((id) => S.def(id).cost <= +m[1]);
     else if ((m = /^cls=(.+)$/.exec(part))) { const c = new Set(m[1].split("+")); ids = ids.filter((id) => c.has(R.CLS[S.def(id).cls])); }
     else if ((m = /^quota=(.+)$/.exec(part))) { cons.quota = cons.quota || {}; for (const q of m[1].split("+")) { const mm = /^(\w+)(<=|>=)(\d+)$/.exec(q); if (!mm) throw new Error("bad quota " + q); const e = cons.quota[mm[1]] = cons.quota[mm[1]] || {}; e[mm[2] === "<=" ? "max" : "min"] = +mm[3]; } }
+    else if (C.parseTerm(part, cons)) { /* placement term (cons.js) */ }
     else throw new Error("unknown filter term: " + part);
   }
   return ids;
 }
 function parseSquad(spec, extraFilter) {
   const cons = {}; let ids;
+  if (spec && !spec.startsWith("filter:") && spec.includes("|")) { const i = spec.indexOf("|"); extraFilter = [spec.slice(i + 1), extraFilter].filter(Boolean).join(";"); spec = spec.slice(0, i); }   /* "deck:starter|sq=..;noretreat": a deck plus filter/placement terms */
   if (!spec || spec.startsWith("filter:")) ids = R.ALL.slice();
   else if (spec.startsWith("owned:")) ids = parseOwned(spec.slice(6));
   else if (spec.startsWith("deck:")) ids = DECKS()[spec.slice(5)].slice();
@@ -64,7 +67,7 @@ async function main() {
   const log = (s) => { const line = `${new Date().toISOString()} ${s}`; console.log(line); fs.appendFileSync(LOGF, line + "\n"); };
   E.LOGS.groups = path.join(R.RESULTS, "surrogate", `groups_${name}_${process.pid}.jsonl`); fs.mkdirSync(path.dirname(E.LOGS.groups), { recursive: true });
   log(`=== query ${name}: ${ids.length} operators (${ids.join(",")}) constraints ${JSON.stringify(cons)} | stages ${stages.join(",")} | ${crits.join("+")} | game ${R.GAMEHASH} | workers ${nW}`);
-  const opt = { refineSec: +(A.refine || 90), cdFams: A.cdfams || 4, passes: +(A.passes || 2), polish: +(A.polish || 20), verbose: !!A.verbose, must: cons.must, quota: cons.quota, deadline, log, label: name, memoTag: "q_" + name, famSource: A.nofam ? null : "q_" + name, deckName: name };
+  const opt = { refineSec: +(A.refine || 90), cdFams: A.cdfams || 4, passes: +(A.passes || 2), polish: +(A.polish || 20), verbose: !!A.verbose, must: cons.must, quota: cons.quota, place: C.has(cons) ? { sq: cons.sq, nosq: cons.nosq, noretreat: cons.noretreat } : undefined, deadline, log, label: name, memoTag: "q_" + name, famSource: A.nofam ? null : "q_" + name, deckName: name };
   try {
     for (const st of stages) {
       const memo = new E.Memo(path.join(R.RESULTS, "memo"), st, "q_" + name);
