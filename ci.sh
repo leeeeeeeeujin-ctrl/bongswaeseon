@@ -35,7 +35,7 @@ case "$cmd" in
     if [ "${1:-}" = "--with-results" ]; then mkdir -p "$CL/results"; tar -C "$S2/results" --exclude=./cache --exclude=./memo --exclude='./surrogate/groups_*' -cf - . | tar -C "$CL/results" -xf -; fi
     git rm -r -q --cached --ignore-unmatch results/memo results/cache >/dev/null
     git add -A
-    git diff --cached --name-only --diff-filter=AM -z | while IFS= read -r -d '' f; do [ -f "$f" ] && [ "$(stat -c%s "$f")" -gt 52428800 ] && { echo "unstaging big file $f"; git rm -q --cached "$f"; }; done
+    git diff --cached --name-only --diff-filter=AM -z | while IFS= read -r -d '' f; do [ -f "$f" ] && [ "$(stat -c%s "$f")" -gt 52428800 ] && { echo "unstaging big file $f"; git rm -q --cached "$f"; }; true; done || true
     if git diff --cached --quiet; then echo "nothing new to push"; else git commit -q -m "solver v2: code + game snapshot $(cut -c1-12 <<< "$(md5sum "$S2/game/game.js")")" "${TR[@]}"; fi
     git push origin "HEAD:refs/heads/$BR" 2>&1 | tail -3 ;;
   run)

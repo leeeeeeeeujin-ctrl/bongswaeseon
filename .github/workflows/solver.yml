@@ -139,7 +139,7 @@ jobs:
           git rm -r -q --cached --ignore-unmatch results/memo results/cache >/dev/null
           git add -A results
           # never stage a file over 50 MB (GitHub refuses pushes with a file over 100 MB)
-          git diff --cached --name-only --diff-filter=AM -z | while IFS= read -r -d '' f; do [ -f "$f" ] && [ "$(stat -c%s "$f")" -gt 52428800 ] && { echo "unstaging big file $f ($(stat -c%s "$f") bytes)"; git rm -q --cached "$f"; }; done
+          git diff --cached --name-only --diff-filter=AM -z | while IFS= read -r -d '' f; do [ -f "$f" ] && [ "$(stat -c%s "$f")" -gt 52428800 ] && { echo "unstaging big file $f ($(stat -c%s "$f") bytes)"; git rm -q --cached "$f"; }; true; done || true
           echo "staged: $(git diff --cached --name-only | wc -l) files, $(git diff --cached --name-only -z | xargs -0 -r du -cb 2>/dev/null | tail -1 | cut -f1) bytes"
           git diff --cached --quiet && { echo "nothing to commit"; exit 0; }
           git commit -q -m "$MSG"
