@@ -1,0 +1,13 @@
+game f29a41ff4e55; cell = robust value [replicate minima; spread]
+WL-01  | starter: E1L30 [E1L30,E1L30,E1L30; s0] / E1L30 [E1L30,E1L30,E1L45; s1] (lost1-0lost E1L30) | T4: E0L40 [E0L40,E1L30,E1L30; s3] / E1L1 [E1L1,E1L30,E1L30; s2] (lost1-0lost E1L30) | T5: E0L40* [E1L1,E1L15,E1L30; s2] / E1L1* [E1L15,E1L15,E1L30; s1] | T6: E0L40 [E0L40,E1L1,E1L1; s1] / E1L1 [E1L1,E1L30,E1L45; s3] (lost1-0lost E1L1)
+WL-04  | starter: E2L20 [E2L20,E2L20,none; s0] / none [none,none,none] | T4: E1L15 [E1L15,E1L15,E1L30; s1] / E1L30 [E1L30,E1L45,E1L45; s1] | T5: E1L15* [E1L30,E1L30,E1L30; s0] / E1L30 [E1L30,E1L30,E1L60; s2] (lost1-0lost E1L30) | T6: E1L15 [E1L15,E1L15,E1L15; s0] / E1L15 [E1L30,E1L30,E1L30; s0] (lost1-0lost E1L15)
+WL-05  | starter: E1L45 [E1L45,E1L60,E2L40; s4] / E1L45 [E1L60,E2L40,none; s3] (lost1-0lost E1L45) | T4: E1L30 [E1L30,E1L30,E1L30; s0] / E1L30 [E1L30,E1L30,E1L30; s0] (lost1-0lost E1L30) | T5: E1L30 [E1L30,E1L30,E1L30; s0] / E1L30 [E1L30,E1L45,E1L45; s1] (lost1-0lost E1L30) | T6: E1L15 [E1L15,E1L45,E1L45; s2] / E1L15 [E1L45,E1L45,E1L45; s0] (lost1-0lost E1L15)
+WL-08  | starter: E1L30 [E1L30,E1L45,E1L60; s2] / E1L60 [E1L60,E1L60,none; s0] | T4: E1L15 [E1L15,E1L30,E1L30; s1] / E1L30 [E1L30,E1L30,E1L60; s2] | T5: E1L1 [E1L1,E1L45,E1L45; s3] / E1L30 [E1L30,E1L45,E1L45; s1] | T6: E1L1* [E1L15,E1L15,E1L45; s2] / E1L30* [E1L45,E1L45,E1L60; s1]
+(* = lowered by a cross-deck bound)
+bounds:
+  WL-01 lost1 T5 E1L1 > T4 E0L40: replayed: clears, worst lost 1
+  WL-01 full T5 E1L15 > T4 E1L1: replayed: clears, worst lost 0
+  WL-04 lost1 T5 E1L30 > T4 E1L15: replayed: clears, worst lost 1
+  WL-08 lost1 T6 E1L15 > T5 E1L1: replayed: clears, worst lost 1
+  WL-08 full T6 E1L45 > T5 E1L30: replayed: clears, worst lost 0
+noise: 31 cells with >= 2 replicates; spread histogram (rungs: cells) 0:10 1:9 2:7 3:4 4:1; mean 1.26; max 4; by deck starter 1.43, T4 1.25, T5 1.25, T6 1.13; cells with a 'none' replicate: 4
