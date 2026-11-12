@@ -1,0 +1,265 @@
+{
+ "stage": "IM-02",
+ "name": "생울타리",
+ "level": "E0L20",
+ "lost": 0,
+ "seed": 1,
+ "K": 1,
+ "variant": "none",
+ "stageMul": {
+  "hp": 0.336,
+  "atk": 0.416,
+  "def": 0.8
+ },
+ "deck": "T5",
+ "criterion": "lost<=0 (full block)",
+ "fiveSeedLost": [
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "family": "IM-02:1y84ih1",
+ "gameHash": "56853043e745",
+ "rng": "Math.random replaced before `new TD.Game` by im_sim's seed(n): a = n*7919, mulberry32-style step; nothing else draws from it between seeding and the game",
+ "stepping": "fixed g.update(1/30) per frame, max 420*30 frames; actions run at the start of a frame, before that frame's update, in log order",
+ "squad": [
+  {
+   "id": "sunae",
+   "elite": 0,
+   "lvl": 20,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 2,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.4499780412823891,
+    "atk": 0.5930431071276141,
+    "def": 0.43784584980237157
+   }
+  },
+  {
+   "id": "capy",
+   "elite": 0,
+   "lvl": 20,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 2,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.717948717948718,
+    "atk": 0.6671141540251488,
+    "def": 0.6917043740573152
+   }
+  },
+  {
+   "id": "falchion",
+   "elite": 0,
+   "lvl": 20,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 2,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.4584134023158413,
+    "atk": 0.5269547005895129,
+    "def": 0.5142450142450142
+   }
+  },
+  {
+   "id": "geomseon",
+   "elite": 0,
+   "lvl": 20,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 2,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.4897959183673469,
+    "atk": 0.49587367793832865,
+    "def": 0.5430248811853509
+   }
+  },
+  {
+   "id": "brick",
+   "elite": 0,
+   "lvl": 20,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 2,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.6536130536130537,
+    "atk": 0.7099731663685152,
+    "def": 0.6131868131868131
+   }
+  }
+ ],
+ "squadNote": "card order = squad order (card index ci in actions); Game(stageIdx, squad) receives {id, elite, mult, pot, skillIdx, slv, sm}; skill level and mastery by rung (sim.js skillRank, slv-r1); sm[k] = mastery of skill k",
+ "expected": {
+  "win": true,
+  "rwin": true,
+  "over": "win",
+  "life": 10,
+  "lost": 0,
+  "winTime": 154.26666666666048,
+  "frames": 4628,
+  "kills": 53,
+  "total": 53
+ },
+ "actions": [
+  {
+   "t": 0,
+   "k": 0,
+   "a": "deploy",
+   "ci": 2,
+   "id": "falchion",
+   "x": 11,
+   "y": 2,
+   "dir": 1,
+   "uid": 1,
+   "cost": 9
+  },
+  {
+   "t": 9.033333333333312,
+   "k": 271,
+   "a": "deploy",
+   "ci": 4,
+   "id": "brick",
+   "x": 12,
+   "y": 2,
+   "dir": 0,
+   "uid": 15,
+   "cost": 16
+  },
+  {
+   "t": 23.033333333333637,
+   "k": 691,
+   "a": "deploy",
+   "ci": 3,
+   "id": "geomseon",
+   "x": 11,
+   "y": 5,
+   "dir": 2,
+   "uid": 18,
+   "cost": 17
+  },
+  {
+   "t": 38.53333333333371,
+   "k": 1156,
+   "a": "skill",
+   "ci": 4,
+   "id": "brick",
+   "uid": 15
+  },
+  {
+   "t": 41.033333333333566,
+   "k": 1231,
+   "a": "deploy",
+   "ci": 1,
+   "id": "capy",
+   "x": 11,
+   "y": 4,
+   "dir": 2,
+   "uid": 24,
+   "cost": 21
+  },
+  {
+   "t": 55.03333333333277,
+   "k": 1651,
+   "a": "deploy",
+   "ci": 0,
+   "id": "sunae",
+   "x": 12,
+   "y": 3,
+   "dir": 3,
+   "uid": 30,
+   "cost": 17
+  },
+  {
+   "t": 85.0666666666644,
+   "k": 2552,
+   "a": "skill",
+   "ci": 4,
+   "id": "brick",
+   "uid": 15
+  },
+  {
+   "t": 131.5999999999951,
+   "k": 3948,
+   "a": "skill",
+   "ci": 4,
+   "id": "brick",
+   "uid": 15
+  }
+ ],
+ "plan": {
+  "entries": [
+   {
+    "id": "falchion",
+    "x": 11,
+    "y": 2,
+    "d": 1
+   },
+   {
+    "id": "brick",
+    "x": 12,
+    "y": 2,
+    "d": 0
+   },
+   {
+    "id": "geomseon",
+    "x": 11,
+    "y": 5,
+    "d": 2
+   },
+   {
+    "id": "capy",
+    "x": 11,
+    "y": 4,
+    "d": 2
+   },
+   {
+    "id": "sunae",
+    "x": 12,
+    "y": 3,
+    "d": 3
+   }
+  ],
+  "skill": {},
+  "skillIdx": {},
+  "retreats": [],
+  "pol": {
+   "fire": 1,
+   "melt": 1,
+   "lamp": 1
+  },
+  "_par": "[[[\"falchion\",11,2,1,null,null,null],[\"brick\",12,2,0,null,null,null],[\"geomseon\",11,5,2,null,null,null],[\"capy\",11,4,2,null,null,null],[\"sunae\",12,3,3,null,null,null],[\"nana\",11,3,1,null,null,null],[\"specialist\",9,3,0,null,null,null]],{},{},[],{\"fire\":1,\"melt\":1,\"lamp\":1}]"
+ }
+}

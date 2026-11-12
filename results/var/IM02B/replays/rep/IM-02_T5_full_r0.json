@@ -1,0 +1,415 @@
+{
+ "stage": "IM-02",
+ "name": "생울타리",
+ "level": "E0L20",
+ "lost": 0,
+ "seed": 1,
+ "K": 1,
+ "variant": "none",
+ "stageMul": {
+  "hp": 0.336,
+  "atk": 0.416,
+  "def": 0.8
+ },
+ "deck": "T5",
+ "criterion": "lost<=0 (full block)",
+ "fiveSeedLost": [
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "family": "IM-02:lteveu",
+ "gameHash": "56853043e745",
+ "rng": "Math.random replaced before `new TD.Game` by im_sim's seed(n): a = n*7919, mulberry32-style step; nothing else draws from it between seeding and the game",
+ "stepping": "fixed g.update(1/30) per frame, max 420*30 frames; actions run at the start of a frame, before that frame's update, in log order",
+ "squad": [
+  {
+   "id": "sniper",
+   "elite": 0,
+   "lvl": 20,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 2,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.6432994678277697,
+    "atk": 0.5457777777777778,
+    "def": 0.5518925518925519
+   }
+  },
+  {
+   "id": "specialist",
+   "elite": 0,
+   "lvl": 20,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 2,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.6966159405183796,
+    "atk": 0.6099706744868035,
+    "def": 0.6500593119810202
+   }
+  },
+  {
+   "id": "belina",
+   "elite": 0,
+   "lvl": 20,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 2,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.42631083202511777,
+    "atk": 0.48044897959183674,
+    "def": 0.4832510263580651
+   }
+  },
+  {
+   "id": "capy",
+   "elite": 0,
+   "lvl": 20,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 2,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.717948717948718,
+    "atk": 0.6671141540251488,
+    "def": 0.6917043740573152
+   }
+  },
+  {
+   "id": "geomseon",
+   "elite": 0,
+   "lvl": 20,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 2,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.4897959183673469,
+    "atk": 0.49587367793832865,
+    "def": 0.5430248811853509
+   }
+  },
+  {
+   "id": "bongeun",
+   "elite": 0,
+   "lvl": 20,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 2,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.5212003222341568,
+    "atk": 0.425058124515629,
+    "def": 0.4391233766233766
+   }
+  },
+  {
+   "id": "brick",
+   "elite": 0,
+   "lvl": 20,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 2,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.6536130536130537,
+    "atk": 0.7099731663685152,
+    "def": 0.6131868131868131
+   }
+  }
+ ],
+ "squadNote": "card order = squad order (card index ci in actions); Game(stageIdx, squad) receives {id, elite, mult, pot, skillIdx, slv, sm}; skill level and mastery by rung (sim.js skillRank, slv-r1); sm[k] = mastery of skill k",
+ "expected": {
+  "win": true,
+  "rwin": true,
+  "over": "win",
+  "life": 10,
+  "lost": 0,
+  "winTime": 156.69999999999368,
+  "frames": 4701,
+  "kills": 53,
+  "total": 53
+ },
+ "actions": [
+  {
+   "t": 0,
+   "k": 0,
+   "a": "deploy",
+   "ci": 6,
+   "id": "brick",
+   "x": 12,
+   "y": 2,
+   "dir": 0,
+   "uid": 1,
+   "cost": 16
+  },
+  {
+   "t": 11.033333333333305,
+   "k": 331,
+   "a": "deploy",
+   "ci": 2,
+   "id": "belina",
+   "x": 11,
+   "y": 2,
+   "dir": 3,
+   "uid": 16,
+   "cost": 11
+  },
+  {
+   "t": 21.000000000000203,
+   "k": 630,
+   "a": "skill",
+   "ci": 6,
+   "id": "brick",
+   "uid": 1
+  },
+  {
+   "t": 28.033333333333886,
+   "k": 841,
+   "a": "deploy",
+   "ci": 4,
+   "id": "geomseon",
+   "x": 11,
+   "y": 5,
+   "dir": 2,
+   "uid": 22,
+   "cost": 17
+  },
+  {
+   "t": 37.50000000000043,
+   "k": 1125,
+   "a": "deploy",
+   "ci": 1,
+   "id": "specialist",
+   "x": 10,
+   "y": 2,
+   "dir": 2,
+   "uid": 23,
+   "cost": 6
+  },
+  {
+   "t": 37.50000000000043,
+   "k": 1125,
+   "a": "skill",
+   "ci": 1,
+   "id": "specialist",
+   "uid": 23
+  },
+  {
+   "t": 38.60000000000037,
+   "k": 1158,
+   "a": "deploy",
+   "ci": 0,
+   "id": "sniper",
+   "x": 9,
+   "y": 2,
+   "dir": 1,
+   "uid": 24,
+   "cost": 9
+  },
+  {
+   "t": 42.03333333333351,
+   "k": 1261,
+   "a": "deploy",
+   "ci": 5,
+   "id": "bongeun",
+   "x": 11,
+   "y": 4,
+   "dir": 2,
+   "uid": 27,
+   "cost": 11
+  },
+  {
+   "t": 51.53333333333297,
+   "k": 1546,
+   "a": "skill",
+   "ci": 1,
+   "id": "specialist",
+   "uid": 23
+  },
+  {
+   "t": 69.56666666666528,
+   "k": 2087,
+   "a": "deploy",
+   "ci": 3,
+   "id": "capy",
+   "x": 10,
+   "y": 4,
+   "dir": 2,
+   "uid": 34,
+   "cost": 21
+  },
+  {
+   "t": 73.9333333333317,
+   "k": 2218,
+   "a": "skill",
+   "ci": 1,
+   "id": "specialist",
+   "uid": 23
+  },
+  {
+   "t": 78.33333333333145,
+   "k": 2350,
+   "a": "skill",
+   "ci": 6,
+   "id": "brick",
+   "uid": 1
+  },
+  {
+   "t": 87.96666666666424,
+   "k": 2639,
+   "a": "skill",
+   "ci": 1,
+   "id": "specialist",
+   "uid": 23
+  },
+  {
+   "t": 89.03333333333084,
+   "k": 2671,
+   "a": "retreat",
+   "ci": 0,
+   "id": "sniper",
+   "uid": 24,
+   "x": 9,
+   "y": 2,
+   "why": "plan"
+  },
+  {
+   "t": 101.99999999999677,
+   "k": 3060,
+   "a": "skill",
+   "ci": 1,
+   "id": "specialist",
+   "uid": 23
+  },
+  {
+   "t": 116.03333333332931,
+   "k": 3481,
+   "a": "skill",
+   "ci": 1,
+   "id": "specialist",
+   "uid": 23
+  },
+  {
+   "t": 133.89999999999498,
+   "k": 4017,
+   "a": "skill",
+   "ci": 1,
+   "id": "specialist",
+   "uid": 23
+  },
+  {
+   "t": 147.9333333333275,
+   "k": 4438,
+   "a": "skill",
+   "ci": 1,
+   "id": "specialist",
+   "uid": 23
+  }
+ ],
+ "plan": {
+  "entries": [
+   {
+    "id": "brick",
+    "x": 12,
+    "y": 2,
+    "d": 0
+   },
+   {
+    "id": "belina",
+    "x": 11,
+    "y": 2,
+    "d": 3
+   },
+   {
+    "id": "geomseon",
+    "x": 11,
+    "y": 5,
+    "d": 2
+   },
+   {
+    "id": "specialist",
+    "x": 10,
+    "y": 2,
+    "d": 2
+   },
+   {
+    "id": "sniper",
+    "x": 9,
+    "y": 2,
+    "d": 1
+   },
+   {
+    "id": "bongeun",
+    "x": 11,
+    "y": 4,
+    "d": 2
+   },
+   {
+    "id": "capy",
+    "x": 10,
+    "y": 4,
+    "d": 2
+   }
+  ],
+  "skill": {
+   "belina": {
+    "m": 2
+   }
+  },
+  "skillIdx": {},
+  "retreats": [
+   {
+    "id": "sniper",
+    "t": 89
+   }
+  ],
+  "pol": {
+   "fire": 1,
+   "melt": 1,
+   "lamp": 1
+  },
+  "_par": "[[[\"brick\",12,2,0,null,null,null],[\"belina\",11,2,3,null,null,null],[\"geomseon\",11,5,2,null,null,null],[\"sniper\",9,2,1,null,null,null],[\"specialist\",10,2,2,null,null,null],[\"bongeun\",11,4,2,null,null,null],[\"capy\",10,4,2,null,null,null]],{\"belina\":{\"m\":2}},{},[[\"sniper\",89]],{\"fire\":1,\"melt\":1,\"lamp\":1}]"
+ }
+}

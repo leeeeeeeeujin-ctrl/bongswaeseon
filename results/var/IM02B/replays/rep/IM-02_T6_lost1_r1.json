@@ -1,0 +1,249 @@
+{
+ "stage": "IM-02",
+ "name": "생울타리",
+ "level": "E0L1",
+ "lost": 0,
+ "seed": 1,
+ "K": 1,
+ "variant": "none",
+ "stageMul": {
+  "hp": 0.336,
+  "atk": 0.416,
+  "def": 0.8
+ },
+ "deck": "T6",
+ "criterion": "lost<=1",
+ "fiveSeedLost": [
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "family": "IM-02:1y84ih1",
+ "gameHash": "56853043e745",
+ "rng": "Math.random replaced before `new TD.Game` by im_sim's seed(n): a = n*7919, mulberry32-style step; nothing else draws from it between seeding and the game",
+ "stepping": "fixed g.update(1/30) per frame, max 420*30 frames; actions run at the start of a frame, before that frame's update, in log order",
+ "squad": [
+  {
+   "id": "eungyeol",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.4269348268839104,
+    "atk": 0.41906202723146746,
+    "def": 0.3803986710963455
+   }
+  },
+  {
+   "id": "capy",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.64,
+    "atk": 0.5514834205933682,
+    "def": 0.6
+   }
+  },
+  {
+   "id": "rabi6",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.392512077294686,
+    "atk": 0.4276422764227642,
+    "def": 0.45287958115183247
+   }
+  },
+  {
+   "id": "veil",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.419921875,
+    "atk": 0.41676792223572295,
+    "def": 0.4760705289672544
+   }
+  },
+  {
+   "id": "brick",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.5621621621621622,
+    "atk": 0.625,
+    "def": 0.49387755102040815
+   }
+  }
+ ],
+ "squadNote": "card order = squad order (card index ci in actions); Game(stageIdx, squad) receives {id, elite, mult, pot, skillIdx, slv, sm}; skill level and mastery by rung (sim.js skillRank, slv-r1); sm[k] = mastery of skill k",
+ "expected": {
+  "win": true,
+  "rwin": true,
+  "over": "win",
+  "life": 10,
+  "lost": 0,
+  "winTime": 148.93333333332745,
+  "frames": 4468,
+  "kills": 53,
+  "total": 53
+ },
+ "actions": [
+  {
+   "t": 2.033333333333336,
+   "k": 61,
+   "a": "deploy",
+   "ci": 3,
+   "id": "veil",
+   "x": 12,
+   "y": 2,
+   "dir": 2,
+   "uid": 11,
+   "cost": 18
+  },
+  {
+   "t": 13.033333333333298,
+   "k": 391,
+   "a": "deploy",
+   "ci": 2,
+   "id": "rabi6",
+   "x": 11,
+   "y": 2,
+   "dir": 2,
+   "uid": 16,
+   "cost": 11
+  },
+  {
+   "t": 38.83333333333369,
+   "k": 1165,
+   "a": "deploy",
+   "ci": 0,
+   "id": "eungyeol",
+   "x": 11,
+   "y": 5,
+   "dir": 3,
+   "uid": 22,
+   "cost": 30
+  },
+  {
+   "t": 54.03333333333283,
+   "k": 1621,
+   "a": "deploy",
+   "ci": 4,
+   "id": "brick",
+   "x": 12,
+   "y": 3,
+   "dir": 3,
+   "uid": 28,
+   "cost": 16
+  },
+  {
+   "t": 74.0333333333317,
+   "k": 2221,
+   "a": "deploy",
+   "ci": 1,
+   "id": "capy",
+   "x": 11,
+   "y": 1,
+   "dir": 1,
+   "uid": 43,
+   "cost": 21
+  },
+  {
+   "t": 86.53333333333099,
+   "k": 2596,
+   "a": "skill",
+   "ci": 4,
+   "id": "brick",
+   "uid": 28
+  }
+ ],
+ "plan": {
+  "entries": [
+   {
+    "id": "veil",
+    "x": 12,
+    "y": 2,
+    "d": 2
+   },
+   {
+    "id": "rabi6",
+    "x": 11,
+    "y": 2,
+    "d": 2
+   },
+   {
+    "id": "eungyeol",
+    "x": 11,
+    "y": 5,
+    "d": 3
+   },
+   {
+    "id": "brick",
+    "x": 12,
+    "y": 3,
+    "d": 3
+   },
+   {
+    "id": "capy",
+    "x": 11,
+    "y": 1,
+    "d": 1
+   }
+  ],
+  "skill": {},
+  "skillIdx": {},
+  "retreats": [],
+  "pol": {
+   "fire": 1,
+   "melt": 1,
+   "lamp": 1
+  },
+  "_par": "[[[\"veil\",12,2,2,null,null,null],[\"rabi6\",11,2,2,null,null,null],[\"eungyeol\",11,5,2,null,null,null],[\"brick\",12,3,3,null,null,null],[\"capy\",11,1,1,null,null,null]],{},{},[],{\"fire\":1,\"melt\":1,\"lamp\":1}]"
+ }
+}
