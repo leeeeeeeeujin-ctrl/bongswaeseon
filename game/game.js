@@ -1344,46 +1344,46 @@
         [118, "chouang", 2, 3, 1, RA], [119, "yshield", 0, 1, 0, CA], [126, "icestalker", 1, 3, 2, CB], [128, "yfang", 3, 4, 0.9, LB], [132, "soldier", 2, 3, 1.5, RA], [134, "yshield", 1, 1, 0, CB]]); })(),
       boss: ["", ""], desc: "밤의 마르스 연병장. 적은 얼음판 한가운데와 동쪽, 남서쪽에서 나와 얼음판을 한 바퀴 돈 뒤 방어 지점으로 갑니다. 방어 지점은 북서쪽과 남동쪽, 둘입니다. 방어 지점 앞과 얼음판 한가운데에는 단단한 엽총수 다섯이 처음부터 앉아 있다가, 120초가 지나면 남은 엽총수가 모두 일어나 방어 지점으로 걸어옵니다. 흰 망토의 설원 척후병은 빙판 위에서는 보이지 않습니다. 얼음폭탄 드론은 얼음판을 한 바퀴 돈 뒤 반대편 방어 지점으로 날아가고, 폭탄을 한 번 떨어뜨리면 바로 빠져나갑니다.",
       lose: "앉아 있는 엽총수는 선봉과 근위를 바로 옆 칸에 붙여 쓰러뜨리세요. 그 칸을 되찾아야 방어 지점 앞이 막힙니다." },
-    { code: "IM-05", name: "목 없는 장군", map: MAP_C2.camp, bg: null, hz: 0.5, ep: 2, startCost: 21, mul: { hp: 0.265, atk: 0.35, def: 0.72 }, rmul: { hp: 0.9, atk: 0.85 },
+    { code: "IM-05", name: "목 없는 장군", map: MAP_C2.camp, bg: null, hz: 0.5, ep: 2, startCost: 12, mul: { hp: 0.34, atk: 0.4, def: 0.72 }, rmul: { hp: 0.9, atk: 0.85 },
       // gates: 0 the sunken road (top side), 1 the camp's own gate under the guillotine, 2 the ravine (bottom side). Three surges: the scouts (6-34), the general and his column (48-100),
       // the whole camp (112-175). SLEEP: the camp asleep on the far and middle squares of both sides (and its priest by the best rise): it wakes when someone is set down beside it,
-      // when it is hit, or when the general sounds his horn. POST: two fowlers who hold the western half until late. bossFlee: switch `on` to make him quit the field at that share
+      // when it is hit, or when the general sounds his horn. POST: three fowlers, two holding the western half until late and the third on the east rise (10,4) over the point. bossFlee: switch `on` to make him quit the field at that share
       // of his strength instead of falling (the designer has not decided yet: off)
       bossFlee: { on: false, at: 0.3, text: ["카두달 퇴각", "언덕 너머로 물러났습니다"] },
       waves: (() => { const SLEEP = (x, y) => ({ at: [x, y], wait: 150 }), POST = (x, y) => ({ at: [x, y], until: 150 }),   // whoever the horn has not roused is up by 150 anyway
         ROW2 = { via: [[9, 2]] }, ROW5 = { via: [[9, 5]] }, UP = { via: [[9, 1]] }, DOWN = { via: [[2, 4], [9, 6]] },
         BOSS = { via: [[6, 1, 10], [1, 2], [2, 4], [9, 6]] };   // under the blade a long moment, then west about the hill and in along the bottom side (only those he calls or rouses run straight for the point)
         return W1([[0, "chouang", 1, 1, 0, SLEEP(3, 1)], [0, "chouang", 1, 1, 0, SLEEP(9, 1)], [0, "chouang", 1, 1, 0, SLEEP(3, 6)], [0, "chouang", 1, 1, 0, SLEEP(9, 6)], [0, "vicar", 1, 1, 0, SLEEP(9, 2)],
-        [0.5, "chxbow", 0, 1, 0, POST(4, 2)], [0.5, "chxbow", 2, 1, 0, POST(4, 5)],
-        [6, "yfang", 2, 3, 1.4], [14, "chouang", 0, 2, 2], [24, "yfang", 2, 3, 1.3, ROW5], [30, "chouang", 0, 2, 2, ROW2],
+        [0.5, "chxbow", 0, 1, 0, POST(4, 2)], [0.5, "chxbow", 2, 1, 0, POST(4, 5)], [0.5, "chxbow", 1, 1, 0, POST(10, 4)],
+        [8, "yfang", 2, 2, 1.6], [14, "chouang", 0, 2, 2], [24, "yfang", 2, 3, 1.3, ROW5], [30, "chouang", 0, 2, 2, ROW2],
         [48, "chouang", 0, 2, 2], [50, "chxbow", 0, 1], [56, "yrazor", 2, 1], [57, "yfang", 2, 3, 1.2], [66, "cadoudal", 1, 1, 0, BOSS], [72, "molotov", 0, 2, 2], [84, "chouang", 2, 3, 1.5], [86, "vicar", 2, 1], [92, "yfang", 0, 3, 1],
         [112, "chouang", 0, 2, 1.5], [118, "yfang", 2, 4, 1], [128, "chouang", 1, 2, 1.2, UP], [129, "chouang", 1, 2, 1.2, DOWN], [138, "molotov", 2, 1], [140, "yrazor", 2, 1],
         [148, "chxbow", 0, 1], [150, "chouang", 0, 2, 1.3, ROW2], [152, "vicar", 0, 1, 0, ROW2], [158, "chouang", 2, 2, 1.5], [160, "yfang", 0, 2, 1], [168, "yrazor", 2, 1], [172, "chouang", 1, 2, 1.2, DOWN]]); })(),
-      boss: ["경고: 목 없는 장군", "조르주 카두달 · WARNING"], desc: "처형장 언덕의 반란군 진지. 언덕을 두 칸 폭의 길이 한 바퀴 두르고, 단두대 바로 아래가 진지의 출입구입니다. 서쪽 움푹한 길로는 슈앙 종대가 위쪽 길을, 남서쪽 골짜기로는 사냥개 무리가 아래쪽 길을 타고 동쪽 방어 지점으로 옵니다. 길 위의 설 자리는 양쪽 모두 먼 곳·가운데·방어 지점 앞, 세 군데입니다. 먼 곳과 가운데 자리에는 반란군이 모닥불 곁에서 자고 있고, 옆에 가사인격을 세우거나 공격하면 깨어납니다. 서쪽 절반은 엽총수 둘이 지키고 있습니다. 카두달은 단두대 아래에 한참 서 있다가 언덕을 서쪽으로 돌아 아래쪽 길로 옵니다. 그가 부르거나 깨운 반란군은 돌지 않고 방어 지점으로 곧장 달려옵니다. 막는 이가 없으면 옆 칸 고지의 가사인격까지 베고, 세 번째 공격마다 둘레 한 칸을 휩쓸며, 2칸 안 고지에 갈고리를 던져 끌어내립니다. 체력이 줄 때마다 호각을 불어 진지 전체를 깨우고, 절반 아래부터는 깃발을 올려 둘레의 반란군을 북돋우며 돌격으로 저지를 뚫고 지나갑니다.",
-      lose: "처음에는 방어 지점 앞 (12,2)·(12,5)에서 받고(그 바로 앞 (12,1)·(12,6)에 한 겹을 더 세울 수 있습니다), 잠든 반란군은 준비가 됐을 때 하나씩 깨워 정리하세요. 호각이 울리면 남은 진지가 한꺼번에 일어납니다. 카두달은 한 겹으로는 못 막습니다. 아래쪽 길 가운데 (9,6)과 방어 지점 앞 (12,6)·(12,5)에 겹쳐 서세요. 막혀 있는 동안에는 갈고리를 던지지 못합니다. 붉은 원이 뜨면 옆 고지의 가사인격을 잠깐 물리거나 치료를 붙이세요. 사제는 곁의 반란군을 계속 치료하니 먼저 쓰러뜨리세요." },
-    { code: "IM-06", name: "생니카즈 거리", map: MAP_C2.street, bg: null, hz: 0.5, ep: 2, startCost: 16, mul: { hp: 0.58, atk: 0.755, def: 0.74 }, rmul: { hp: 0.95, atk: 0.9 },
+      boss: ["경고: 목 없는 장군", "조르주 카두달 · WARNING"], desc: "처형장 언덕의 반란군 진지. 언덕을 두 칸 폭의 길이 한 바퀴 두르고, 단두대 바로 아래가 진지의 출입구입니다. 서쪽 움푹한 길로는 슈앙 종대가 위쪽 길을, 남서쪽 골짜기로는 사냥개 무리가 아래쪽 길을 타고 동쪽 방어 지점으로 옵니다. 길 위의 설 자리는 양쪽 모두 먼 곳·가운데·방어 지점 앞, 세 군데입니다. 먼 곳과 가운데 자리에는 반란군이 모닥불 곁에서 자고 있고, 옆에 가사인격을 세우거나 공격하면 깨어납니다. 서쪽 절반은 엽총수 둘이 지키고, 방어 지점을 내려다보는 동쪽 고지 (10,4)에도 엽총수 하나가 먼저 올라가 있습니다. 카두달은 단두대 아래에 한참 서 있다가 언덕을 서쪽으로 돌아 아래쪽 길로 옵니다. 그가 부르거나 깨운 반란군은 돌지 않고 방어 지점으로 곧장 달려옵니다. 막는 이가 없으면 옆 칸 고지의 가사인격까지 베고, 세 번째 공격마다 둘레 한 칸을 휩쓸며, 2칸 안 고지에 갈고리를 던져 끌어내립니다. 체력이 줄 때마다 호각을 불어 진지 전체를 깨우고, 절반 아래부터는 깃발을 올려 둘레의 반란군을 북돋우며 돌격으로 저지를 뚫고 지나갑니다.",
+      lose: "처음에는 방어 지점 앞 (12,2)·(12,5)에서 받고(그 바로 앞 (12,1)·(12,6)에 한 겹을 더 세울 수 있습니다), 잠든 반란군은 준비가 됐을 때 하나씩 깨워 정리하세요. 호각이 울리면 남은 진지가 한꺼번에 일어납니다. 카두달은 한 겹으로는 못 막습니다. 아래쪽 길 가운데 (9,6)과 방어 지점 앞 (12,6)·(12,5)에 겹쳐 서세요. 막혀 있는 동안에는 갈고리를 던지지 못합니다. 붉은 원이 뜨면 옆 고지의 가사인격을 잠깐 물리거나 치료를 붙이세요. 사제는 곁의 반란군을 계속 치료하니 먼저 쓰러뜨리세요. 동쪽 고지 (10,4)의 엽총수는 바로 옆 (11,4)에 근거리 가사인격을 세우면 쓰러뜨릴 수 있습니다." },
+    { code: "IM-06", name: "생니카즈 거리", map: MAP_C2.street, bg: null, hz: 0.5, ep: 2, startCost: 10, mul: { hp: 0.7, atk: 0.83, def: 0.74 }, rmul: { hp: 0.95, atk: 0.9 },
       // gates: 0 the carts' alley from the north (into the square), 1 the street from the east gate (the escort), 2 the back alley from the south. Three surges: one cart alone to be
       // learnt on (5-40), carts with their escorts (52-108: each cart leaves a few seconds before the men who will bunch up behind it), carts against the shield-bearers, with the drones
       // and a cart up the back alley (120-175). A cart goes round the fountain by the west and onto the street at (6,3); EAST sends it round the other way and in at (10,3)
       waves: (() => { const EAST = { via: [[10, 1], [10, 2]] }, SLEEP = (x, y, t) => ({ at: [x, y], wait: t }),   // the bomb-makers get up of their own accord late on
         HOV_W = { air: [[11, 4, 4], [4, 4, 6], [1, 1, 4], [0, 3]] }, HOV_E = { air: [[12, 1, 5], [8, 4, 6], [0, 3]] };
-        return W1([[0, "chouang", 0, 1, 0, SLEEP(6, 1, 112)], [0, "chxbow", 0, 1, 0, SLEEP(10, 1, 126)],
+        return W1([[0, "chouang", 0, 1, 0, SLEEP(6, 1, 112)], [0, "chxbow", 0, 1, 0, SLEEP(10, 1, 126)], [0.5, "chxbow", 2, 1, 0, { at: [4, 4], until: 112 }],
         [5, "soldier", 1, 3, 2.2], [16, "cart", 0], [26, "soldier", 1, 2, 2], [34, "chouang", 0, 2, 1.5],
         [52, "cart", 0, 1, 0, EAST], [55, "soldier", 1, 3, 1.5], [62, "molotov", 2, 1], [70, "frostgun", 1, 1], [78, "cart", 0], [81, "chouang", 0, 3, 1.5], [90, "soldier", 1, 4, 1.4], [96, "bomber", 1, 1, 0, HOV_E], [100, "yfang", 2, 3, 1.2],
         [120, "yshield", 1, 1], [122, "cart", 0, 1, 0, EAST], [128, "molotov", 2, 2, 2], [136, "soldier", 1, 4, 1.4], [142, "cart", 0], [144, "chouang", 0, 3, 1.4], [150, "frostgun", 1, 2, 2.5], [152, "bomber", 1, 1, 0, HOV_W],
         [158, "yshield", 1, 1], [160, "cart", 2], [166, "yfang", 2, 4, 1], [170, "soldier", 1, 3, 1.3]]); })(),
-      boss: ["", ""], desc: "생니카즈 거리. 발코니(고지)가 내려다보는 골목이 동쪽 성문에서 서쪽 우리 자리까지 이어집니다. 차도 위쪽으로는 문간 한 줄이 나란히 붙어 있습니다. 북쪽 분수 광장으로 반란군이 화약 수레(지옥 기계)를 굴려 내려보내고, 수레는 분수를 서쪽이나 동쪽으로 돌아 골목에 들어섭니다. 동쪽에서는 호위 보병이 골목을 따라 오고, 남쪽 뒷골목은 골목 한가운데로 이어집니다. 수레는 부서지거나, 막힌 채 도화선이 다 타면 터져 둘레의 적과 아군을 가리지 않습니다. 광장에는 폭탄꾼 둘이 쉬고 있습니다. 나중에는 방패를 든 중장병이 오는데, 수레의 폭발은 방어력을 무시합니다.",
+      boss: ["", ""], desc: "생니카즈 거리. 발코니(고지)가 내려다보는 골목이 동쪽 성문에서 서쪽 우리 자리까지 이어집니다. 차도 위쪽으로는 문간 한 줄이 나란히 붙어 있습니다. 북쪽 분수 광장으로 반란군이 화약 수레(지옥 기계)를 굴려 내려보내고, 수레는 분수를 서쪽이나 동쪽으로 돌아 골목에 들어섭니다. 동쪽에서는 호위 보병이 골목을 따라 오고, 남쪽 뒷골목은 골목 한가운데로 이어집니다. 수레는 부서지거나, 막힌 채 도화선이 다 타면 터져 둘레의 적과 아군을 가리지 않습니다. 광장에는 폭탄꾼 둘이 쉬고 있습니다. 우리 자리 바로 앞 남쪽 발코니 (4,4)에는 엽총수 하나가 먼저 올라가 있다가, 112초가 지나면 내려와 걸어옵니다. 나중에는 방패를 든 중장병이 오는데, 수레의 폭발은 방어력을 무시합니다.",
       lose: "수레는 광장에서 원거리로 미리 부수거나, 호위 보병이나 중장병 한가운데서 터지게 하세요. 수레를 막아 세울 칸의 바로 옆 발코니는 비워 두는 편이 안전합니다. 광장을 내려다보는 발코니 (3,1)·(12,1)이 수레를 일찍 잡기 좋습니다." },
-    { code: "IM-07", name: "반란의 그늘", map: MAP_C2.shadow, bg: null, hz: 0.5, ep: 2, startCost: 16, mul: { hp: 0.49, atk: 0.635, def: 0.75 },
+    { code: "IM-07", name: "반란의 그늘", map: MAP_C2.shadow, bg: null, hz: 0.5, ep: 2, startCost: 10, mul: { hp: 0.62, atk: 0.72, def: 0.75 },
       wind: { dir: 0, first: 40, every: 34, dur: 12 },
       // gates: 0 the north road, 1 the south road; WALL: the hounds' way round by the wall lane along the top. Our rebels (white rings) hold both road mouths and stand in the wind.
       // Three surges: the line comes on and the rebels hold it alone (5-45, the first gust at 40 shows what they shelter); the drums come up and the mouths give way (58-112);
       // the ice-clad guard on the south road, the drums on the north and the pack on the wall lane all at once (124-180)
-      waves: (() => { const ALLY = (x, y) => ({ at: [x, y], ally: true }), WALL = { via: [[3, 0], [8, 0]] }, ROW2 = { via: [[4, 2], [11, 2]] }, ROW4 = { via: [[4, 4], [11, 4]] };
-        return W1([[0, "chouang", 0, 1, 0, ALLY(1, 1)], [0, "chouang", 0, 1, 0, ALLY(2, 1)], [0, "chxbow", 0, 1, 0, ALLY(3, 1)], [0, "chouang", 1, 1, 0, ALLY(1, 5)], [0, "chouang", 1, 1, 0, ALLY(2, 5)], [0, "chxbow", 1, 1, 0, ALLY(3, 5)],
+      waves: (() => { const ALLY = (x, y) => ({ at: [x, y], ally: true }), ALLYK = (x, y) => ({ at: [x, y], ally: true, hp: 0.79, atk: 0.88 }), WALL = { via: [[3, 0], [8, 0]] }, ROW2 = { via: [[4, 2], [11, 2]] }, ROW4 = { via: [[4, 4], [11, 4]] };
+        return W1([[0, "chouang", 0, 1, 0, ALLYK(1, 1)], [0, "chouang", 0, 1, 0, ALLYK(2, 1)], [0, "chxbow", 0, 1, 0, ALLY(3, 1)], [0, "chouang", 1, 1, 0, ALLYK(1, 5)], [0, "chouang", 1, 1, 0, ALLYK(2, 5)], [0, "chxbow", 1, 1, 0, ALLY(3, 5)],
         [0.5, "snowsniper", 0, 1, 0, { at: [1, 2], until: 80 }], [0.5, "snowsniper", 1, 1, 0, { at: [1, 4], until: 80 }],
         [5, "soldier", 0, 3, 2.5], [12, "strag", 1, 4, 1.5], [22, "soldier", 1, 2, 2.5], [30, "yfang", 0, 2, 1.4, WALL], [36, "soldier", 0, 2, 2, ROW2],
-        [58, "soldier", 0, 4, 1.2], [60, "drummer", 0, 1], [66, "frostgun", 1, 1], [74, "yfang", 0, 3, 1.2, WALL], [82, "soldier", 1, 3, 1.3, ROW4], [84, "drummer", 1, 1, 0, ROW4], [90, "yshield", 0, 1], [96, "strag", 1, 6, 0.9], [104, "frostgun", 0, 2, 3, ROW2], [106, "yfang", 0, 2, 1.2, WALL], [110, "iceguard", 1, 1],
+        [58, "soldier", 0, 4, 1.2], [60, "drummer", 0, 1], [66, "frostgun", 1, 1], [74, "yfang", 0, 3, 1.2, WALL], [82, "soldier", 1, 3, 1.3, ROW4], [84, "drummer", 1, 1, 0, ROW4], [90, "yshield", 0, 1], [96, "strag", 1, 6, 0.9], [104, "frostgun", 0, 2, 3, ROW2], [106, "yfang", 0, 2, 1.2, WALL], [110, "iceguard", 1, 1, 0, { hp: 0.55 }],
         [124, "yrazor", 0, 1, 0, WALL], [125, "yfang", 0, 4, 1, WALL], [130, "soldier", 0, 5, 1.2], [133, "drummer", 0, 1], [138, "soldier", 1, 3, 1.4, ROW4], [146, "frostgun", 0, 1], [148, "strag", 1, 6, 0.8],
         [156, "yfang", 0, 3, 1, WALL], [158, "soldier", 0, 4, 1.3, ROW2], [166, "soldier", 1, 5, 1.2], [168, "drummer", 1, 1], [174, "yrazor", 0, 1, 0, WALL]]); })(),
       boss: ["", ""], desc: "갈림길. 북쪽 길과 남쪽 길이 나란히 동쪽 방어 지점으로 이어지고, 두 길 사이에는 양쪽을 다 내려다보는 고지가 줄지어 있습니다. 맨 위 담벼락 길은 아무도 지키지 않는 사냥개의 우회로입니다. 흰 고리를 두른 반란군이 서쪽 두 길목을 붙잡고 황제군을 막아섭니다. 이번 작전 동안 우리 편이고, 서쪽에서 번져 오는 눈보라도 몸으로 막아 그 줄의 뒤쪽을 지켜 줍니다. 그들이 쓰러지면 그 뒤부터 눈에 덮입니다. 서쪽 끝 두 고지에는 설원 저격수가 엎드려 길목 근처를 겨누다가, 80초가 지나면 일어나 걸어옵니다. 북을 치는 고수가 오면 둘레의 적이 빨라지고 세지며, 눈보라에도 느려지지 않습니다.",
@@ -1391,46 +1391,48 @@
     // a story-only entry between the crossroads and the checkpoint: no battle, no cost (the board is only here so the stage list stays one shape)
     { code: "IM-ST1", name: "불 꺼진 밤", map: MAP_C2.shadow, bg: null, hz: 0.5, ep: 2, story: true, startCost: 10, mul: { hp: 1, atk: 1, def: 1 }, waves: [],
       boss: ["", ""], desc: "갈림길의 반란군은 거의 남지 않았다. 검문소를 앞둔 밤, 불을 피우지 못한 채 모여 앉은 사람들.", lose: "" },
-    { code: "IM-08", name: "황제가 죽었다", map: MAP_C2.barrier, bg: null, hz: 0.5, ep: 2, startCost: 17, mul: { hp: 0.455, atk: 0.59, def: 0.76 },
+    { code: "IM-08", name: "황제가 죽었다", map: MAP_C2.barrier, bg: null, hz: 0.5, ep: 2, startCost: 10, mul: { hp: 0.52, atk: 0.64, def: 0.76 },
       // gates: 0 the north-east road (the gendarmes: hounds, pikemen, frost gunners, the drones), 1 the south-east road (the Emperor's column). Everything comes through the one gap (7,3);
       // the gendarmes then go round the checkpoint house by the north (vias), the column by the south. Two frost gunners stand on the wall either side of the gap until late.
       // The maddened are let loose from just behind the gap (MAD), so they reach us at the height of their frenzy. Three surges: 5-42, 55-110, 122-178
       vias: { 0: [[6, 1]] },
       waves: (() => { const POST = (x, y) => ({ at: [x, y], until: 130 }), MAD = (x, y, t, via) => ({ at: [x, y], wait: t + 1, via }), N = [[6, 1]], HOV_N = { air: [[9, 2, 4], [3, 2, 7], [0, 3]] }, HOV_S = { air: [[9, 4, 4], [2, 4, 7], [0, 3]] };
         return W1([[0.5, "frostgun", 0, 1, 0, POST(7, 1)], [0.5, "frostgun", 1, 1, 0, POST(7, 5)],
-        [5, "yfang", 0, 3, 1.3], [12, "soldier", 1, 3, 2], [22, "lancer", 0, 1], [30, "yfang", 1, 3, 1.3], [36, "soldier", 0, 3, 2],
+        [7, "yfang", 0, 2, 1.5], [12, "soldier", 1, 3, 2], [22, "lancer", 0, 1], [30, "yfang", 1, 3, 1.3], [36, "soldier", 0, 3, 2],
         [55, "berserk", 1, 1, 0, MAD(8, 3, 55)], [60, "bomber", 0, 1, 0, HOV_N], [66, "lancer", 1, 2, 2], [74, "strag", 1, 5, 0.8], [76, "frostgun", 0, 1], [84, "yshield", 0, 1], [86, "soldier", 1, 4, 1.4],
         [94, "berserk", 0, 1, 0, MAD(8, 2, 94, N)], [94, "berserk", 1, 1, 0, MAD(8, 4, 94)], [100, "yfang", 0, 4, 1], [102, "bomber", 1, 1, 0, HOV_S],
         [122, "iceguard", 1, 1, 0, MAD(8, 3, 122)], [126, "lancer", 0, 3, 1.5], [134, "soldier", 1, 5, 1.3], [136, "yrazor", 0, 1], [144, "berserk", 0, 1, 0, MAD(8, 2, 144, N)], [144, "berserk", 1, 1, 0, MAD(8, 4, 144)], [146, "bomber", 0, 2, 5, HOV_N],
         [154, "yfang", 1, 4, 1], [156, "frostgun", 0, 1], [164, "lancer", 1, 3, 1.5], [166, "soldier", 0, 4, 1.3], [172, "yrazor", 1, 1]]); })(),
       boss: ["", ""], desc: "세관 성벽 앞의 검문소. \"황제가 죽었다\"는 소문에 헌병대가 길을 막았습니다. 차단벽에 난 틈 하나(7,3)로 두 길의 적이 모두 빠져나온 뒤, 검문소 건물을 북쪽이나 남쪽으로 돌아 방어 지점으로 옵니다. 헌병대(북동쪽)는 북쪽으로, 황제군 종대(남동쪽)는 남쪽으로 돕니다. 틈 양옆 성벽 위에는 서리 사수 둘이 올라서서 틈 앞뒤를 겨누다가, 130초가 지나면 내려와 걸어옵니다. 창병은 몇 초마다 창을 낮추고 내달리며, 그 뒤 첫 일격이 두 배로 들어갑니다. 동상 광인은 틈 바로 뒤에서 풀려나 금세 미쳐 날뜁니다. 체력은 저절로 줄지만 오래 둘수록 감당할 수 없습니다. 얼음폭탄 드론은 벽을 넘어 우리 고지 위에 잠시 떠 있습니다.",
       lose: "성벽 위 사수는 바로 옆 칸 (6,1)·(6,5)에 근거리 가사인격을 세워 쓰러뜨릴 수 있습니다. 사수가 사라지면 벽 너머 마당을 보는 고지 (9,2)·(9,4)도 쓸 수 있습니다. 방어 지점 바로 앞에는 설 자리가 없으니, 북쪽과 남쪽 우회로를 각각 막아야 합니다. 동상 광인은 막자마자 화력을 모으세요." },
-    { code: "IM-09", name: "세관 성벽", map: MAP_C2.wall, bg: null, hz: 0.5, ep: 2, startCost: 21, mul: { hp: 0.27, atk: 0.35, def: 0.78 }, rmul: { hp: 0.85, atk: 0.8 },
+    { code: "IM-09", name: "세관 성벽", map: MAP_C2.wall, bg: null, hz: 0.5, ep: 2, startCost: 12, mul: { hp: 0.37, atk: 0.42, def: 0.78 }, rmul: { hp: 0.85, atk: 0.8 },
       wind: { dir: 1, first: 30, every: 32, dur: 12 },   // from the north: the wall takes it, but it pours down the gate column and the corner column
       // gates: 0 the boulevard outside (the slow and the armoured turn in at the toll gate, the hounds and the maddened run on round the corner), 1 the road inside (the Guard, and its carts:
       // each cart leaves a few seconds before the men who will bunch up behind it). Two white snipers lie on the customs roofs until late. Three surges: 5-42, 56-112, 124-178
       vias: { 0: [[12, 3]] },
       waves: (() => { const GATE = { via: [[6, 3]] }, CORNER = { via: [[12, 3]] }, POST = (x, y) => ({ at: [x, y], until: 90 });
-        return W1([[0.5, "snowsniper", 0, 1, 0, POST(4, 2)], [0.5, "snowsniper", 0, 1, 0, POST(10, 2)],
+        return W1([[0.5, "snowsniper", 0, 1, 0, POST(4, 2)], [0.5, "snowsniper", 0, 1, 0, POST(10, 2)], [0.5, "grenadier", 1, 1, 0, { at: [12, 4], until: 124, hp: 1.5, atk: 1.2 }],
         [5, "strag", 0, 4, 1.2, GATE], [10, "soldier", 1, 2, 2.5], [18, "yfang", 0, 3, 1.3, CORNER], [28, "grenadier", 1, 1],
         [58, "cart", 1], [60, "soldier", 1, 3, 1.5], [64, "frostgun", 0, 1, 0, GATE], [72, "yfang", 0, 3, 1.2, CORNER], [74, "yrazor", 0, 1, 0, CORNER], [80, "grenadier", 1, 2, 3], [88, "yshield", 0, 1, 0, GATE], [90, "berserk", 0, 1, 0, CORNER],
         [98, "strag", 0, 6, 0.8, GATE], [100, "soldier", 1, 4, 1.4], [106, "cart", 1], [109, "grenadier", 1, 1],
         [124, "iceguard", 1, 1], [128, "yfang", 0, 4, 1, CORNER], [130, "frostgun", 0, 2, 2.5, GATE], [136, "cart", 1], [139, "soldier", 1, 3, 1.3], [144, "berserk", 0, 2, 3, CORNER],
         [152, "grenadier", 1, 2, 2.5], [154, "drummer", 1, 1], [160, "yrazor", 0, 2, 2, CORNER], [162, "strag", 0, 6, 0.8, GATE], [168, "cart", 1], [171, "soldier", 1, 3, 1.2], [174, "yfang", 0, 3, 1, CORNER]]); })(),
-      boss: ["", ""], desc: "성 안을 두른 세관 성벽. 바깥 큰길의 적은 통행세 문(6,3)으로 꺾어 들거나 동쪽 무너진 모퉁이(12,3)로 돌아 들어오고, 성 안 길로는 근위대와 화약 수레가 옵니다. 눈보라는 북쪽에서 불어와 성벽이 막아 주지만, 문 아래와 모퉁이 아래로는 그대로 들이칩니다. 화로(F) 둘레 여덟 칸은 얼지 않습니다. 세관 건물의 화로는 문 바깥 칸 (6,2)를, 무너진 모퉁이의 화로는 모퉁이 바깥 (12,2)와 안쪽 (12,4)를 덥힙니다. 성벽 바깥의 나머지 칸과 문 바로 아래 (6,4)는 눈보라마다 얼어붙습니다. 세관 지붕 (4,2)·(10,2)에는 설원 저격수가 엎드려 있다가 90초가 지나면 일어나 걸어옵니다. 곰가죽 모자의 근위 척탄병은 단단하고 둘 몫으로 저지됩니다.",
-      lose: "문은 바깥 (6,2)에서 막으면 얼지 않지만 저격수가 겨누고, 안쪽 (6,4)에서 막으면 눈보라마다 얼어붙습니다. 모퉁이로 들어오는 적은 바깥 (12,2)나 안쪽 (12,4)에서 막습니다. 바깥은 저격수 (10,2)의 사거리 안이고, 안쪽은 방어 지점 바로 곁입니다. 성벽 그늘의 고지 (11,4)가 모퉁이를 내려다봅니다. 수레는 근위대 한가운데서 터지게 하세요." },
-    { code: "IM-10", name: "지옥 기계", map: MAP_C2.gate, bg: null, hz: 0.5, ep: 2, startCost: 22, mul: { hp: 0.28, atk: 0.375, def: 0.8 },
+      boss: ["", ""], desc: "성 안을 두른 세관 성벽. 바깥 큰길의 적은 통행세 문(6,3)으로 꺾어 들거나 동쪽 무너진 모퉁이(12,3)로 돌아 들어오고, 성 안 길로는 근위대와 화약 수레가 옵니다. 눈보라는 북쪽에서 불어와 성벽이 막아 주지만, 문 아래와 모퉁이 아래로는 그대로 들이칩니다. 화로(F) 둘레 여덟 칸은 얼지 않습니다. 세관 건물의 화로는 문 바깥 칸 (6,2)를, 무너진 모퉁이의 화로는 모퉁이 바깥 (12,2)와 안쪽 (12,4)를 덥힙니다. 성벽 바깥의 나머지 칸과 문 바로 아래 (6,4)는 눈보라마다 얼어붙습니다. 세관 지붕 (4,2)·(10,2)에는 설원 저격수가 엎드려 있다가 90초가 지나면 일어나 걸어옵니다. 곰가죽 모자의 근위 척탄병은 단단하고 둘 몫으로 저지됩니다. 모퉁이 안쪽 (12,4)에는 척탄병 하나가 처음부터 초소를 지키다가, 124초가 지나면 방어 지점으로 걸어옵니다.",
+      lose: "문은 바깥 (6,2)에서 막으면 얼지 않지만 저격수가 겨누고, 안쪽 (6,4)에서 막으면 눈보라마다 얼어붙습니다. 모퉁이로 들어오는 적은 바깥 (12,2)나 안쪽 (12,4)에서 막습니다. 바깥은 저격수 (10,2)의 사거리 안이고, 안쪽은 방어 지점 바로 곁이지만 초소의 척탄병부터 쓰러뜨려야 설 수 있습니다. 성벽 그늘의 고지 (11,4)가 모퉁이를 내려다봅니다. 수레는 근위대 한가운데서 터지게 하세요." },
+    { code: "IM-10", name: "지옥 기계", map: MAP_C2.gate, bg: null, hz: 0.5, ep: 2, startCost: 12, mul: { hp: 0.39, atk: 0.43, def: 0.8 },
       wind: { dir: 2, first: 36, every: 36, dur: 12 },   // out of the gate, from the east: down both roads; the towers shelter the rows beside and between them
       // gates: 0 the north side street (carts), 1 the gate's upper road, 2 the gate's lower road, 3 the south side street (carts and hounds). Four movements: the Guard comes out (4-44),
       // pikemen, carts and the first drums (58-92), the eagle (96: he plants the standard in the gate's throat, then comes down the lower road, halting once more below the monument;
-      // twice he raises it — grenadiers behind him, the blizzard out of the gate), and everything at once (130-190)
+      // twice he raises it — grenadiers behind him, the blizzard out of the gate), and everything at once (130-190).
+      // Posts: two snipers on the tower rises (11,1) and (11,5) from the start, aiming in front of the gate; at 130 they come down and walk in with the rest
       waves: (() => { const EAGLE = { via: [[10, 3, 9], [7, 4, 5], [2, 4]] }, CROSS = { via: [[10, 3], [7, 4]] }, HOV_P = { air: [[10, 1, 4], [6, 3, 6], [3, 3, 5], [0, 3]] }, HOV_S = { air: [[11, 5, 4], [8, 3, 5], [1, 5, 5], [0, 3]] };
-        return W1([[4, "soldier", 1, 3, 2], [10, "soldier", 2, 3, 2], [18, "cart", 0], [24, "grenadier", 1, 1], [30, "yfang", 3, 3, 1.3], [38, "soldier", 2, 3, 1.4], [40, "drummer", 2, 1],
+        return W1([[0.5, "snowsniper", 1, 1, 0, { at: [11, 1], until: 130, hp: 0.8, atk: 0.6 }], [0.5, "snowsniper", 2, 1, 0, { at: [11, 5], until: 130, hp: 0.8, atk: 0.6 }],
+        [5, "soldier", 1, 2, 2.5], [12, "soldier", 2, 2, 2.5], [18, "cart", 0], [24, "grenadier", 1, 1], [30, "yfang", 3, 3, 1.3], [38, "soldier", 2, 3, 1.4], [40, "drummer", 2, 1],
         [58, "lancer", 1, 2, 2], [62, "cart", 3], [64, "yshield", 2, 1], [70, "frostgun", 1, 1], [78, "grenadier", 2, 2, 3], [80, "drummer", 2, 1], [86, "bomber", 1, 1, 0, HOV_P], [90, "cart", 0], [92, "chouang", 0, 3, 1.4],
         [96, "eagle", 2, 1, 0, EAGLE], [100, "soldier", 1, 4, 1.5], [110, "yfang", 3, 4, 1], [112, "lancer", 2, 2, 2],
         [130, "grenadier", 1, 2, 3], [134, "cart", 0], [135, "cart", 3], [140, "grenadier", 2, 2, 2.5], [143, "drummer", 2, 1], [148, "frostgun", 1, 2, 2.5], [150, "bomber", 2, 2, 6, HOV_S], [156, "yshield", 1, 1, 0, CROSS], [168, "yfang", 3, 3, 1],
         [164, "lancer", 1, 2, 1.5], [172, "soldier", 1, 6, 1.2], [175, "drummer", 1, 1], [180, "cart", 3], [182, "yrazor", 3, 1], [184, "grenadier", 1, 1]]); })(),
-      boss: ["경고: 황제의 독수리", "독수리 기수 · WARNING"], desc: "성문 앞 광장. 근위대가 두 탑 사이 성문에서 쏟아져 나와 위쪽 길과 아래쪽 길로 광장을 건너옵니다. 두 길 사이에는 기념비와 그 계단(고지)이 있고, 성문 목 (10,3)이 두 길을 잇습니다. 반란군의 지옥 기계는 북쪽과 남쪽 골목에서 광장 서쪽으로 굴러 내려옵니다. 눈보라는 성문에서, 동쪽에서 불어와 두 길을 따라 들이치고, 탑 뒤의 줄과 가운데 줄은 바람을 피합니다. 길 위에 선 가사인격은 얼어붙는 대신 그 뒤를 지켜 줍니다. 독수리 기수는 성문 목에 군기를 꽂고 한참 서 있다가 아래쪽 길로 오고, 기념비 아래 (7,4)에서 한 번 더 멈춰 섭니다. 군기 둘레의 적은 빨라지고 세집니다. 체력이 2/3, 1/3로 줄 때마다 군기를 치켜들어 보병을 불러 세우고, 성문에서 눈보라가 한 번 더 불어옵니다.",
+      boss: ["경고: 황제의 독수리", "독수리 기수 · WARNING"], desc: "성문 앞 광장. 근위대가 두 탑 사이 성문에서 쏟아져 나와 위쪽 길과 아래쪽 길로 광장을 건너옵니다. 두 길 사이에는 기념비와 그 계단(고지)이 있고, 성문 목 (10,3)이 두 길을 잇습니다. 반란군의 지옥 기계는 북쪽과 남쪽 골목에서 광장 서쪽으로 굴러 내려옵니다. 눈보라는 성문에서, 동쪽에서 불어와 두 길을 따라 들이치고, 탑 뒤의 줄과 가운데 줄은 바람을 피합니다. 길 위에 선 가사인격은 얼어붙는 대신 그 뒤를 지켜 줍니다. 두 탑 위 (11,1)·(11,5)에는 설원 저격수가 올라가 성문 앞을 겨누다가, 130초가 지나면 내려와 걸어옵니다. 독수리 기수는 성문 목에 군기를 꽂고 한참 서 있다가 아래쪽 길로 오고, 기념비 아래 (7,4)에서 한 번 더 멈춰 섭니다. 군기 둘레의 적은 빨라지고 세집니다. 체력이 2/3, 1/3로 줄 때마다 군기를 치켜들어 보병을 불러 세우고, 성문에서 눈보라가 한 번 더 불어옵니다.",
       lose: "성문 가까운 (10,2)·(10,4)에 선 가사인격은 눈보라를 맞는 대신 그 뒤의 길 전체를 지켜 줍니다. 독수리 기수의 체력을 깎을 때는 눈보라가 곧 불어온다는 것을 먼저 떠올리세요. 수레는 기념비 옆을 지날 때 그의 곁에서 터뜨리면 크게 아픕니다. 북과 군기 둘레의 적은 훨씬 빠르니, 고수를 먼저 떨어뜨리세요." },
     // a side branch shown under IM-01 and open with chapter 2: the terminal's lesson on the blizzard, with a fixed squad (lines by 유진)
     { code: "TR-03", name: "눈보라 학습", map: MAP_C2.lesson, bg: null, hz: 0.5, ep: 2, branch: "IM-01", startCost: 30, mul: { hp: 0.245, atk: 0.262, def: 0.5 },
@@ -2904,6 +2906,7 @@
       if (d.masked && this.stage.masks) { e.mask = (o && o.mask) || "guest"; e.leakTo = { meter: e.mask === "assassin" ? "knife" : "in", by: 1 }; }   // lab L3 (LAB-04): through the door, a guest counts in, an assassin counts a knife
       if (this.mirror) { e.room = SPAWNS[s] && SPAWNS[s][0] > this.mirror.x ? "R" : "L"; if (e.room === "R" && e.aim === undefined && this.mirror.sq.some((q) => q.broken)) this.toRealPoint(e); }   // lab L3   // lab: it makes for the walking ally, for one of ours, or for a square   // BL-07's lighthouse: the three nearest him, not the three furthest along
       if (o && o.atk) e.atkMul = (e.atkMul || 1) * o.atk;
+      if (o && o.hp) e.hp = e.maxHp = Math.round(e.maxHp * o.hp);   // this entry's own HP scale on top of the stage's (a picket stronger than the line; an ally kept as it was)
       if (d.sniper) { e.shots = 0; e.scanned = 0; e.scanQ = 0; e.atkT = d.interval; }
       if (!d.boss) for (const q of this.enemies) if (q.stealth && q.def.stealth && !q.dead && q !== e && ++q.mins >= q.def.stealth.reveal) this.reveal(q);
       return e;
