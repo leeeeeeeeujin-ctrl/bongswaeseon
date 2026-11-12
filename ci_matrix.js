@@ -12,7 +12,10 @@ const DEF = { mode: "search", stages: "IM-02..WL-09", decks: "starter,T4,T5,T6",
 const repList = (s) => { s = String(s || "3").trim(); let m; if ((m = /^(\d+)-(\d+)$/.exec(s))) { const o = []; for (let k = +m[1]; k <= +m[2]; k++) o.push(k); return o; } if (s.includes(",")) return s.split(",").map((x) => +x); return [...Array(Math.max(1, +s || 3)).keys()]; };
 let [mode, stages, decks, split, reps] = process.argv.slice(2); let IN = null;
 if (mode === "--github") {
-  let src = {}; if (stages === "push") { try { src = JSON.parse(require("fs").readFileSync("ci/request.json", "utf8")); } catch (e) { src = { mode: "none" }; } } else { try { src = JSON.parse(process.env.INPUTS || "{}") || {}; } catch (e) { src = {}; } }
+  let src = {}; if (stages === "push") {   // the request of the commit that triggered this run (GITHUB_SHA), not the branch head's: a later request pushed before this plan ran must not be read twice
+    let txt = null; const sha = process.env.GITHUB_SHA, cp = require("child_process");
+    if (sha) { try { cp.execSync(`git fetch -q --depth 1 origin ${sha}`, { stdio: "ignore" }); txt = cp.execSync(`git show ${sha}:ci/request.json`, { encoding: "utf8" }); } catch (e) { txt = null; } }
+    try { src = JSON.parse(txt || require("fs").readFileSync("ci/request.json", "utf8")); } catch (e) { src = { mode: "none" }; } } else { try { src = JSON.parse(process.env.INPUTS || "{}") || {}; } catch (e) { src = {}; } }
   IN = Object.assign({}, DEF, src); for (const k of Object.keys(IN)) IN[k] = String(IN[k] === undefined || IN[k] === null ? "" : IN[k]).replace(/[\r\n]/g, " ");
   IN.hours = String(Math.min(5.5, Math.max(0.05, +IN.hours || 5.4)));
   [mode, stages, decks, split, reps] = [IN.mode, IN.stages, IN.decks, IN.split, IN.reps];
@@ -24,7 +27,8 @@ else if (mode === "akbench") {   // the private AK benchmark: one job per AK sta
   // stage codes: AK benchmark codes (1-7, 4-2, ...) and/or our own stages (IM-02, IM-02..WL-09: an AK-operator deck on our stages; numbers only, like the AK ones)
   const AK = require("./akbench.js"), isAK = (s) => AK.BENCH.some((b) => b[0] === s.replace(/^AK/, ""));
   const list = !stages || stages === DEF.stages ? AK.BENCH.map((b) => b[0]) : stages.split(",").flatMap((p) => isAK(p.trim()) ? [p.trim().replace(/^AK/, "")] : range(p.trim()));
-  inc = split === "stage-deck-rep" ? list.flatMap((s) => dk.flatMap((d) => repList(reps).map((k) => ({ stage: s, deck: d, rep: String(k), label: `ak-${s}-${d}-r${k}` }))))
+  inc = split === "stage-rep" ? list.flatMap((s) => repList(reps).map((k) => ({ stage: s, deck: dk.join(","), rep: String(k), label: `ak-${s}-r${k}` })))   // fewer, longer jobs: every deck of a stage x replicate in one job
+    : split === "stage-deck-rep" ? list.flatMap((s) => dk.flatMap((d) => repList(reps).map((k) => ({ stage: s, deck: d, rep: String(k), label: `ak-${s}-${d}-r${k}` }))))
     : split === "stage-deck" ? list.flatMap((s) => dk.map((d) => ({ stage: s, deck: d, label: `ak-${s}-${d}` }))) : list.map((s) => ({ stage: s, deck: dk.join(","), label: `ak-${s}` }));
 }
 else if (mode === "trace") inc = [{ stage: "all", deck: "all", label: "trace" }];
