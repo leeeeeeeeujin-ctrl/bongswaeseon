@@ -5,6 +5,8 @@
 //                                                       its criterion is reopened (its probes are dropped); order = the impact screening's, else stage order
 //   node search.js recheck [--stages ..] [--decks ..]   a second, independent search (fresh dice, double budget) at the rung just below each minimum; a clear lowers it
 //   node search.js status
+//   --rep K (run): replicate K of each cell, an independent search (its own dice seed; K >= 1 also starts from a seeded subset of the stored families). Files go to
+//              results/jobs/rep/<STAGE>__<deck>__<crit>__rK.json and results/replays/rep/; robust.js collect takes the minimum over replicates (and the spread).
 // State: results/jobs/<STAGE>__<deck>__<crit>.json (answer), .partial.json (probes so far), results/replays/<STAGE>_<deck>_<crit>.json, results/memo, results/families.
 "use strict";
 const fs = require("fs");
@@ -16,12 +18,16 @@ const Q = require("./query.js");
 const { S } = R;
 const argv = process.argv.slice(2); const A = { _: [] }; for (let i = 0; i < argv.length; i++) { const s = argv[i]; if (s.startsWith("--")) { const n = argv[i + 1]; if (n === undefined || n.startsWith("--")) A[s.slice(2)] = true; else { A[s.slice(2)] = n; i++; } } else A._.push(s); }
 const T0 = Date.now();
-const JOBS = path.join(R.RESULTS, "jobs"), REP = path.join(R.RESULTS, "replays"); fs.mkdirSync(JOBS, { recursive: true }); fs.mkdirSync(REP, { recursive: true });
-const LOGF = path.join(R.RESULTS, "logs", `search_${(A.stages || "all").replace(/[^\w.-]/g, "_")}_${(A.decks || "all").replace(/[^\w,]/g, "")}.log`); fs.mkdirSync(path.dirname(LOGF), { recursive: true });
+const REPK = A.rep !== undefined && A.rep !== true && A.rep !== "" ? (+A.rep | 0) : null;
+const JOBS0 = path.join(R.RESULTS, "jobs"), REP0 = path.join(R.RESULTS, "replays");
+const JOBS = REPK === null ? JOBS0 : path.join(JOBS0, "rep"), REP = REPK === null ? REP0 : path.join(REP0, "rep"); fs.mkdirSync(JOBS, { recursive: true }); fs.mkdirSync(REP, { recursive: true });
+const RSUF = REPK === null ? "" : `__r${REPK}`;
+const LOGF = path.join(R.RESULTS, "logs", `search_${(A.stages || "all").replace(/[^\w.-]/g, "_")}_${(A.decks || "all").replace(/[^\w,]/g, "")}${REPK === null ? "" : "_r" + REPK}.log`); fs.mkdirSync(path.dirname(LOGF), { recursive: true });
 const log = (s) => { const line = `${new Date().toISOString()} ${s}`; console.log(line); fs.appendFileSync(LOGF, line + "\n"); };
 const DECKS = Q.DECKS();
 const jid = (st, d, c) => `${st}__${d}__${c}`;
-const jf = (st, d, c) => path.join(JOBS, jid(st, d, c) + ".json"), pf = (st, d, c) => path.join(JOBS, jid(st, d, c) + ".partial.json");
+const jf = (st, d, c) => path.join(JOBS, jid(st, d, c) + RSUF + ".json"), pf = (st, d, c) => path.join(JOBS, jid(st, d, c) + RSUF + ".partial.json");
+const cjf = (st, d, c) => path.join(JOBS0, jid(st, d, c) + ".json");   // the canonical (aggregated) answer
 const slimProbe = (r) => { const { harvest, ...x } = r; return x; };
 const stages = E.stageRange(A.stages), decks = (A.decks || "starter,T4,T5,T6").split(","), crits = (A.crit || "lost1,full").split(",");
 const SUBSETS = { starter: [], T4: [], T5: ["starter", "T4"], T6: ["T5", "T4", "starter"] };   // a bigger deck's minimum is at most a contained deck's (a guess for where to start)
@@ -32,17 +38,18 @@ async function runJob(pool, st, deck, crit, deadline, memo) {
   const squad = DECKS[deck];
   // bounds and a start: full block cannot be below lost1's minimum; contained decks' minima suggest where to look first
   let lo; if (crit === "full") { const x = R.readJSON(jf(st, deck, "lost1"), null); if (x && x.done && x.gameHash === R.GAMEHASH) lo = x.min ? E.RUNGS.indexOf(x.min) : E.RUNGS.length - 1; }
-  let start; for (const d of [deck, ...SUBSETS[deck]]) { const x = R.readJSON(jf(st, d, crit), null); if (x && x.min && x.gameHash === R.GAMEHASH) { const i = E.RUNGS.indexOf(x.min); start = start === undefined ? i : Math.min(start, i); } }
-  const opt = { refineSec: +(A.refine || 150), cdFams: A.cdfams || "all", passes: 2, polish: +(A.polish || 25), deadline, log, label: deck, memo, famSource: "s_" + deck, deckName: deck, known, lo, start,
+  let start; for (const d of [deck, ...SUBSETS[deck]]) for (const x of [R.readJSON(jf(st, d, crit), null), REPK === null ? null : R.readJSON(cjf(st, d, crit), null)]) { if (x && x.min && x.gameHash === R.GAMEHASH) { const i = E.RUNGS.indexOf(x.min); start = start === undefined ? i : Math.min(start, i); } }
+  const rs = REPK === null ? {} : { rngSeed: E.strSeed(`${st}|${deck}|${crit}|r${REPK}|${R.GAMEHASH}`), famSeed: REPK >= 1 ? E.strSeed(`fam|${st}|${deck}|r${REPK}`) : undefined, famFrac: 0.6 };
+  const opt = { refineSec: +(A.refine || 150), cdFams: A.cdfams || "all", passes: 2, polish: +(A.polish || 25), deadline, log, label: deck + (REPK === null ? "" : " r" + REPK), memo, famSource: "s_" + deck + (REPK === null ? "" : "_r" + REPK), deckName: deck, known, lo, start, ...rs,
     onProbe: (lv, r) => { part.probes[lv] = slimProbe(r); R.writeJSON(pf(st, deck, crit), part); } };
   const t = Date.now(); log(`JOB ${jid(st, deck, crit)}`);
   const lad = await E.ladder(pool, st, squad, crit, opt);
   if (lad.cut) { log(`  ${jid(st, deck, crit)}: time limit inside the job; probes kept (resume with the same command)`); return "cut"; }
-  const out = Object.assign({ stage: st, deck, crit, need: E.CRIT[crit], gameHash: R.GAMEHASH, done: true, finished: new Date().toISOString(), squad: lad.squadUsed || squad }, lad);
+  const out = Object.assign({ stage: st, deck, crit, need: E.CRIT[crit], gameHash: R.GAMEHASH, done: true, finished: new Date().toISOString(), squad: lad.squadUsed || squad }, REPK === null ? {} : { rep: REPK, rngSeed: rs.rngSeed, famSeed: rs.famSeed ?? null }, lad);
   if (lad.min) {
     const kd = Math.min(deadline, Date.now() + (+(A.keybudget || 900)) * 1000);
     if (!A.nokeyops) { const k = await E.keyOps(pool, st, lad.min, squad, { plan: lad.plan }, crit, Object.assign({}, opt, { deadline: kd, keySec: +(A.keysec || 60), famSource: null, known: null, onProbe: null })); out.keyOps = k.ops; out.keySecs = k.secs; }
-    const rp = require("./replay2.js").writeFromResult(path.join(REP, `${st}_${deck}_${crit}.json`), Object.assign({}, out, { name: deck })); out.replay = `${st}_${deck}_${crit}.json`; out.replayLost = rp.lost;
+    const rpn = `${st}_${deck}_${crit}${REPK === null ? "" : "_r" + REPK}.json`; const rp = require("./replay2.js").writeFromResult(path.join(REP, rpn), Object.assign({}, out, { name: deck })); out.replay = (REPK === null ? "" : "rep/") + rpn; out.replayLost = rp.lost;
   }
   out.secsTotal = Math.round((Date.now() - t) / 1000);
   R.writeJSON(jf(st, deck, crit), out);
@@ -57,11 +64,11 @@ async function main() {
     console.log(`${d}/${n} done; game ${R.GAMEHASH}`); return; }
   const nW = Math.max(1, +(A.workers || 4)); const pool = new G.Pool(nW); await pool.started;
   const deadline = T0 + (+(A.hours || 5.4)) * 3600e3;
-  log(`=== search ${cmd} | game ${R.GAMEHASH} | workers ${nW} | ${A.hours || 5.4} h | ${stages.join(",")} x ${decks.join(",")} x ${crits.join(",")}`);
+  log(`=== search ${cmd} | game ${R.GAMEHASH} | workers ${nW} | ${A.hours || 5.4} h | ${stages.join(",")} x ${decks.join(",")} x ${crits.join(",")}${REPK === null ? "" : " | replicate " + REPK}`);
   E.LOGS.groups = path.join(R.RESULTS, "surrogate", `groups_search_${stages.join("_")}_${process.pid}.jsonl`); fs.mkdirSync(path.dirname(E.LOGS.groups), { recursive: true });
   try {
     if (cmd === "run") {
-      for (const st of stages) { const memo = new E.Memo(path.join(R.RESULTS, "memo"), st, "s_" + decks.join("")); try {
+      for (const st of stages) { const memo = new E.Memo(path.join(R.RESULTS, "memo"), st, "s_" + decks.join("") + RSUF); try {
         for (const dk of decks) for (const c of crits) { if (Date.now() > deadline - 90e3) { log("time limit reached; stopping (resume with the same command)"); return; } await runJob(pool, st, dk, c, deadline, memo); } } finally { memo.flush(); } }
     } else if (cmd === "verify") {
       let list = []; for (const st of stages) for (const dk of decks) for (const c of crits) { const x = R.readJSON(jf(st, dk, c), null); if (x && x.done && x.min) list.push(x); }

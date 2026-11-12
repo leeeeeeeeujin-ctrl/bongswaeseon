@@ -4,7 +4,10 @@
 #    default branch, and only with a token allowed to write Actions;
 #  - a push to `solver` that changes ci/request.json (the inputs as JSON): `ci.sh run` commits the request and pushes it (works with a token that can push).
 # Fan-out: one job per stage (or stage x deck), each with every vCPU as a worker, stopping cleanly before ~5.5 h; rerun the same dispatch to resume.
-# Each job uploads the files it changed as an artifact; the collect job merges them, rebuilds rankings / report / sheet, retrains the surrogate, and commits results/.
+# Each job uploads the files it changed as an artifact; the collect job merges them, aggregates replicates (robust.js: min over replicates, spread, cross-deck
+# bounds), rebuilds rankings / report / sheet, and commits results/ WITHOUT results/memo (a per-job cache, gitignored, never committed: memo files grew past
+# GitHub's 100 MB limit) and without any file over 50 MB. mode=recover (extra = an earlier run id): merge that run's artifacts and commit them.
+# split=stage-deck-rep (search): one job per stage x deck x replicate (`reps`: "3" = r0..r2, "3-5" = r3..r5); search.js --rep K.
 # mode akbench (the PRIVATE Arknights benchmark; jobs akrun / akcollect): each job downloads AK data at run time from Kengxxiao/ArknightsGameData_YoStar, converts
 # it inside the runner ($RUNNER_TEMP, never the checkout), searches, and keeps ONLY derived numbers (min rung, life lost, win time). Converted stages, maps, waves,
 # plans and replays never reach an artifact, a log or a commit; the search log stays in $RUNNER_TEMP and only counts are printed.
@@ -12,20 +15,22 @@ name: solver
 on:
   workflow_dispatch:
     inputs:
-      mode: { description: "search | query | verify | recheck | trace | bench | akbench", required: true, default: "search", type: choice, options: [search, query, verify, recheck, trace, bench, akbench] }
+      mode: { description: "search | query | verify | recheck | trace | bench | akbench | recover", required: true, default: "search", type: choice, options: [search, query, verify, recheck, trace, bench, akbench, recover] }
       stages: { description: "stages, e.g. IM-02..WL-09 or IM-02,IM-05", required: false, default: "IM-02..WL-09" }
       decks: { description: "decks (search / verify / recheck)", required: false, default: "starter,T4,T5,T6" }
       crit: { description: "criteria: lost1,full (search) | lost1 | full | both (query)", required: false, default: "lost1,full" }
       squad: { description: "query squad: ids | deck:T4 | filter:rarity<=4;no6 | owned:<file in repo>", required: false, default: "" }
       name: { description: "query name (results/queries/<name>)", required: false, default: "" }
       hours: { description: "time limit per job in hours (max ~5.5)", required: false, default: "5.4" }
-      split: { description: "stage | stage-deck (search fan-out)", required: false, default: "stage" }
-      extra: { description: "extra CLI arguments for the job command", required: false, default: "" }
+      split: { description: "stage | stage-deck | stage-deck-rep (search fan-out)", required: false, default: "stage" }
+      extra: { description: "extra CLI arguments for the job command (mode recover: the run id to recover)", required: false, default: "" }
+      reps: { description: "replicates for split=stage-deck-rep: 3 = r0..r2, 3-5 = r3..r5", required: false, default: "" }
   push:
     branches: [solver]
     paths: ["ci/request.json"]
 permissions:
   contents: write
+  actions: read
 jobs:
   plan:
     runs-on: ubuntu-latest
@@ -39,6 +44,8 @@ jobs:
       name: ${{ steps.m.outputs.name }}
       hours: ${{ steps.m.outputs.hours }}
       extra: ${{ steps.m.outputs.extra }}
+      split: ${{ steps.m.outputs.split }}
+      reps: ${{ steps.m.outputs.reps }}
     steps:
       - uses: actions/checkout@v4
         with: { ref: solver, fetch-depth: 1 }
@@ -49,7 +56,7 @@ jobs:
         run: node ci_matrix.js --github "$EV" >> "$GITHUB_OUTPUT"
   run:
     needs: plan
-    if: needs.plan.outputs.mode != 'none' && needs.plan.outputs.mode != 'akbench'
+    if: needs.plan.outputs.mode != 'none' && needs.plan.outputs.mode != 'akbench' && needs.plan.outputs.mode != 'recover'
     runs-on: ubuntu-latest
     timeout-minutes: 355
     strategy:
@@ -70,6 +77,7 @@ jobs:
           MODE: ${{ needs.plan.outputs.mode }}
           STAGE: ${{ matrix.stage }}
           DECK: ${{ matrix.deck }}
+          REP: ${{ matrix.rep }}
           CRIT: ${{ needs.plan.outputs.crit }}
           SQUAD: ${{ needs.plan.outputs.squad }}
           QNAME: ${{ needs.plan.outputs.name }}
@@ -78,7 +86,7 @@ jobs:
         run: |
           W=$(nproc); set -x
           case "$MODE" in
-            search)  node search.js run --stages "$STAGE" --decks "$DECK" --crit "$CRIT" --hours "$HOURS" --workers "$W" $EXTRA ;;
+            search)  node search.js run --stages "$STAGE" --decks "$DECK" --crit "$CRIT" --hours "$HOURS" --workers "$W" ${REP:+--rep "$REP"} $EXTRA ;;
             recheck) node search.js recheck --stages "$STAGE" --decks "$DECK" --crit "$CRIT" --hours "$HOURS" --workers "$W" $EXTRA ;;
             verify)  node search.js verify --stages "$STAGE" --decks "$DECK" --crit "$CRIT" --hours "$HOURS" --workers "$W" $EXTRA ;;
             query)   C="$CRIT"; [ "$C" = "lost1,full" ] && C=both; node query.js --squad "$SQUAD" --stages "$STAGE" --crit "$C" --name "${QNAME:-ci}" --hours "$HOURS" --workers "$W" $EXTRA ;;
@@ -90,7 +98,7 @@ jobs:
         run: |
           mkdir -p out
           git add -A results 2>/dev/null || true
-          git diff --cached --name-only -- results | grep -v '^results/cache/' > changed.txt || true
+          git diff --cached --name-only -- results | grep -v -E '^results/(cache|memo|surrogate)/' > changed.txt || true
           echo "$(wc -l < changed.txt) changed files"
           rsync -a --files-from=changed.txt ./ out/ || true
       - uses: actions/upload-artifact@v4
@@ -104,28 +112,35 @@ jobs:
     needs: [plan, run]
     if: always() && needs.plan.outputs.mode != 'none' && needs.plan.outputs.mode != 'akbench'
     runs-on: ubuntu-latest
+    timeout-minutes: 120
     steps:
       - uses: actions/checkout@v4
         with: { ref: solver, fetch-depth: 1 }
       - uses: actions/setup-node@v4
         with: { node-version: "22" }
       - uses: actions/download-artifact@v4
+        if: needs.plan.outputs.mode != 'recover'
         with: { path: incoming, pattern: "results-${{ github.run_id }}-*", merge-multiple: true }
-      - name: merge, rank, sheet, surrogate
-        env: { MODE: "${{ needs.plan.outputs.mode }}", STAGES: "${{ needs.plan.outputs.stages }}", DECKS: "${{ needs.plan.outputs.decks }}", CRIT: "${{ needs.plan.outputs.crit }}" }
+      - uses: actions/download-artifact@v4
+        if: needs.plan.outputs.mode == 'recover'
+        with: { path: incoming, pattern: "results-${{ needs.plan.outputs.extra }}-*", merge-multiple: true, run-id: "${{ needs.plan.outputs.extra }}", github-token: "${{ github.token }}" }
+      - name: merge, robust aggregate, rank, sheet (no memo, no surrogate retraining)
+        env: { MODE: "${{ needs.plan.outputs.mode }}", STAGES: "${{ needs.plan.outputs.stages }}", DECKS: "${{ needs.plan.outputs.decks }}", CRIT: "${{ needs.plan.outputs.crit }}", SPLIT: "${{ needs.plan.outputs.split }}" }
         run: |
-          [ -d incoming ] && cp -a incoming/. ./ || echo "no artifacts"
-          node surrogate.js extract --memo results/memo --out "results/surrogate/data_v2.jsonl.gz" || true
-          ls results/surrogate/data_*.jsonl.gz 2>/dev/null | paste -sd, - > /tmp/data.txt || true
-          [ -s /tmp/data.txt ] && node surrogate.js train --data "$(cat /tmp/data.txt)" --split tail --out results/surrogate/model_holdout.json || true
-          [ -s /tmp/data.txt ] && node surrogate.js train --data "$(cat /tmp/data.txt)" || true
+          if [ -d incoming ]; then rm -rf incoming/results/memo incoming/results/cache incoming/results/surrogate; cp -a incoming/. ./; else echo "no artifacts"; fi
+          du -sh incoming 2>/dev/null || true
+          if [ "$SPLIT" = "stage-deck-rep" ] || [ "$MODE" = "recover" ]; then node robust.js collect --stages "$STAGES" --enforce --hours 1 --workers "$(nproc)" --tag "run_${{ github.run_id }}" || echo "robust.js failed"; fi
           node sheet3.js
           node -e "const fs=require('fs');const b=fs.readdirSync('results/logs').filter(f=>f.startsWith('bench_${{ github.run_id }}_')).map(f=>JSON.parse(fs.readFileSync('results/logs/'+f)));fs.mkdirSync('results/runs',{recursive:true});fs.writeFileSync('results/runs/${{ github.run_id }}.json',JSON.stringify({run:'${{ github.run_id }}',mode:process.env.MODE,stages:process.env.STAGES,decks:process.env.DECKS,crit:process.env.CRIT,finished:new Date().toISOString(),bench:b},null,1));" || true
       - name: commit results
         env: { MSG: "results: ${{ needs.plan.outputs.mode }} ${{ needs.plan.outputs.stages }} ${{ needs.plan.outputs.decks }} ${{ needs.plan.outputs.crit }} ${{ needs.plan.outputs.name }} (run ${{ github.run_id }})" }
         run: |
           git config user.name "solver-bot"; git config user.email "solver-bot@users.noreply.github.com"
+          git rm -r -q --cached --ignore-unmatch results/memo results/cache >/dev/null
           git add -A results
+          # never stage a file over 50 MB (GitHub refuses pushes with a file over 100 MB)
+          git diff --cached --name-only --diff-filter=AM -z | while IFS= read -r -d '' f; do [ -f "$f" ] && [ "$(stat -c%s "$f")" -gt 52428800 ] && { echo "unstaging big file $f ($(stat -c%s "$f") bytes)"; git rm -q --cached "$f"; }; done
+          echo "staged: $(git diff --cached --name-only | wc -l) files, $(git diff --cached --name-only -z | xargs -0 -r du -cb 2>/dev/null | tail -1 | cut -f1) bytes"
           git diff --cached --quiet && { echo "nothing to commit"; exit 0; }
           git commit -q -m "$MSG"
           for i in 1 2 3 4 5; do git pull -q --rebase origin solver && git push -q origin HEAD:solver && exit 0; sleep $((i*7)); done; exit 1

@@ -3,15 +3,17 @@
 #   ci.sh init                      clone the game repo into S/solver2/repo and check out (or create, orphan) the branch `solver`
 #   ci.sh push [--with-results]     snapshot the game files the sim needs from /home/claude/td (game.js econ.js meta.js test/im_sim.js) into game/,
 #                                   copy the solver code, game_v1/, data/ into the clone, commit, push ONLY the branch solver (results/ only with --with-results)
-#   ci.sh run mode=search stages=IM-02 decks=starter crit=lost1 [squad=.. name=.. hours=5.4 split=stage extra=..]   start a run; prints the run id
+#   ci.sh run mode=search stages=IM-02 decks=starter crit=lost1 [squad=.. name=.. hours=5.4 split=stage|stage-deck|stage-deck-rep reps=3 extra=..]   start a run; prints the run id
+#                                   (mode=recover extra=<run id>: re-collect an earlier run's artifacts on GitHub and commit them, memo excluded)
 #                                   (REST workflow_dispatch first; if that is refused, a commit of ci/request.json to the branch triggers the same workflow)
 #   ci.sh status [RUN]              recent runs, or one run's jobs (with durations)
 #   ci.sh wait RUN [SECS]           poll until the run completes (default every 60 s)
-#   ci.sh pull                      fetch the branch and copy its results/ into S/solver2/results
+#   ci.sh pull                      fetch the branch and copy its results/ into S/solver2/results (memo is never in the branch)
 #   ci.sh speed RUN                 bench lines and job durations of a run
 set -euo pipefail
 OWNER=leeeeeeeeujin-ctrl; REPO=bongswaeseon; WF=solver.yml; BR=solver
 S2="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"; CL="$S2/repo"; TD=/home/claude/td; SRC=/home/claude/bongswaeseon
+TR=(); [ -n "${CI_TRAILER:-}" ] && TR=(-m "$CI_TRAILER")   # optional commit trailer lines (e.g. attribution), as one extra message paragraph
 api() { gh api -H "Accept: application/vnd.github+json" "$@"; }
 cmd="${1:-help}"; shift || true
 case "$cmd" in
@@ -30,11 +32,14 @@ case "$cmd" in
     for d in game game_v1 data; do mkdir -p "$CL/$d"; cp -a "$S2/$d/." "$CL/$d/"; done
     mkdir -p "$CL/.github/workflows"; cp "$S2/.github/workflows/solver.yml" "$CL/.github/workflows/solver.yml"
     cp "$S2"/*.js "$S2/ci.sh" "$S2/USAGE.txt" "$S2/.gitignore" "$CL/"; [ -f "$S2/viewer_sm.patch" ] && cp "$S2/viewer_sm.patch" "$CL/"
-    if [ "${1:-}" = "--with-results" ]; then mkdir -p "$CL/results"; tar -C "$S2/results" --exclude=./cache -cf - . | tar -C "$CL/results" -xf -; fi
-    git add -A; if git diff --cached --quiet; then echo "nothing new to push"; else git commit -q -m "solver v2: code + game snapshot $(cut -c1-12 <<< "$(md5sum "$S2/game/game.js")")"; fi
+    if [ "${1:-}" = "--with-results" ]; then mkdir -p "$CL/results"; tar -C "$S2/results" --exclude=./cache --exclude=./memo --exclude='./surrogate/groups_*' -cf - . | tar -C "$CL/results" -xf -; fi
+    git rm -r -q --cached --ignore-unmatch results/memo results/cache >/dev/null
+    git add -A
+    git diff --cached --name-only --diff-filter=AM -z | while IFS= read -r -d '' f; do [ -f "$f" ] && [ "$(stat -c%s "$f")" -gt 52428800 ] && { echo "unstaging big file $f"; git rm -q --cached "$f"; }; done
+    if git diff --cached --quiet; then echo "nothing new to push"; else git commit -q -m "solver v2: code + game snapshot $(cut -c1-12 <<< "$(md5sum "$S2/game/game.js")")" "${TR[@]}"; fi
     git push origin "HEAD:refs/heads/$BR" 2>&1 | tail -3 ;;
   run)
-    declare -A IN=([mode]=search [stages]=IM-02..WL-09 [decks]=starter,T4,T5,T6 [crit]=lost1,full [squad]= [name]= [hours]=5.4 [split]=stage [extra]=)
+    declare -A IN=([mode]=search [stages]=IM-02..WL-09 [decks]=starter,T4,T5,T6 [crit]=lost1,full [squad]= [name]= [hours]=5.4 [split]=stage [extra]= [reps]=)
     for kv in "$@"; do IN[${kv%%=*}]="${kv#*=}"; done
     args=(-f ref="$BR"); for k in "${!IN[@]}"; do args+=(-f "inputs[$k]=${IN[$k]}"); done
     t0=$(date -u +%FT%TZ)
@@ -45,7 +50,7 @@ case "$cmd" in
       echo "workflow_dispatch refused ($(head -c 160 "$S2/.dispatch_err" | tr '\n' ' ')); pushing ci/request.json" >&2
       [ -d "$CL/.git" ] || "$0" init; cd "$CL"; git pull -q --rebase origin "$BR" || true; mkdir -p ci
       { printf '{"requested":"%s"' "$t0"; for k in "${!IN[@]}"; do printf ',"%s":%s' "$k" "$(node -e 'process.stdout.write(JSON.stringify(process.argv[1]))' -- "${IN[$k]}")"; done; printf '}\n'; } > ci/request.json
-      git add ci/request.json; git commit -q -m "ci request: ${IN[mode]} ${IN[stages]} ${IN[decks]} ${IN[crit]} ${IN[name]}"; sha=$(git rev-parse HEAD)
+      git add ci/request.json; git commit -q -m "ci request: ${IN[mode]} ${IN[stages]} ${IN[decks]} ${IN[crit]} ${IN[split]} ${IN[reps]} ${IN[name]}" "${TR[@]}"; sha=$(git rev-parse HEAD)
       for i in 1 2 3; do git push -q origin "HEAD:refs/heads/$BR" 2>/dev/null && break; git pull -q --rebase origin "$BR"; sha=$(git rev-parse HEAD); done
       for i in $(seq 1 30); do sleep 4; id=$(api "repos/$OWNER/$REPO/actions/runs?branch=$BR&event=push&per_page=10" --jq "[.workflow_runs[] | select(.head_sha == \"$sha\")][0].id // empty"); [ -n "$id" ] && { echo "$id"; exit 0; }; done
     fi
@@ -57,7 +62,7 @@ case "$cmd" in
   wait)
     RUN="$1"; P="${2:-60}"; while :; do s=$(api "repos/$OWNER/$REPO/actions/runs/$RUN" --jq '.status + " " + (.conclusion // "-")'); echo "$(date -u +%T) $s"; [[ "$s" == completed* ]] && break; sleep "$P"; done ;;
   pull)
-    [ -d "$CL/.git" ] || "$0" init; cd "$CL"; git pull -q --rebase origin "$BR"; mkdir -p "$S2/results"; tar -C "$CL/results" --exclude=./cache -cf - . | tar -C "$S2/results" -xf -; echo "results pulled into $S2/results ($(git log -1 --format='%h %s'))" ;;
+    [ -d "$CL/.git" ] || "$0" init; cd "$CL"; git pull -q --rebase origin "$BR"; mkdir -p "$S2/results"; tar -C "$CL/results" --exclude=./cache --exclude=./memo -cf - . | tar -C "$S2/results" -xf -; echo "results pulled into $S2/results ($(git log -1 --format='%h %s'))" ;;
   speed)
     RUN="$1"; api "repos/$OWNER/$REPO/actions/runs/$RUN/jobs?per_page=100" --jq '.jobs[] | "\(.name)\t\(.started_at)\t\(.completed_at // "-")"'
     [ -d "$CL/.git" ] && { cd "$CL"; git pull -q --rebase origin "$BR" || true; cat results/logs/bench_"$RUN"_*.json 2>/dev/null || true; } ;;

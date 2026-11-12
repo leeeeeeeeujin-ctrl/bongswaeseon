@@ -21,6 +21,8 @@ const STAGES = ["IM-02", "IM-03", "IM-04", "IM-05", "IM-06", "IM-07", "IM-08", "
 const stageRange = (s) => { if (!s) return STAGES.slice(); const out = []; for (const part of s.split(",")) { const m = /^(.+)\.\.(.+)$/.exec(part); if (m) { const a = STAGES.indexOf(m[1]), b = STAGES.indexOf(m[2]); if (a < 0 || b < 0) throw new Error("unknown stage range " + part); for (let i = a; i <= b; i++) out.push(STAGES[i]); } else out.push(part); } return [...new Set(out)]; };
 const median = G.median;
 const now = () => Date.now();
+const mkRng = (s) => { let a = s | 0; return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; };
+const strSeed = (str) => { let h = 2166136261; for (let i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; };
 
 // ---- persistent memo (same line format as v1: GAMEHASH|stage|rung|squad|skills|seed|fps|prune|plan \t result) ----
 class Memo {
@@ -58,7 +60,9 @@ async function evalPlans(pool, memo, code, lvl, squad, plans, prune, o = {}) {
 async function squadSolve(pool, code, lvl, squad, o = {}) {
   const t0 = now(); const ctx = R.stageCtx(code, lvl); const model = SG.loadModel(); const critLost = o.critLost !== undefined ? o.critLost : 1;
   const memo = o.memo; let evals = 0;
-  const fams = (o.fams || F.loadFamilies(code)).slice();
+  let fams = (o.fams || F.loadFamilies(code)).slice();
+  // replicate searches: a seeded subset of the stored families as starting points (o.famSeed; o.famFrac of them, at least 3), so replicates do not all start from the same fills
+  if (o.famSeed !== undefined && fams.length > 3) { const rg = mkRng(o.famSeed); for (let i = fams.length - 1; i > 0; i--) { const j = Math.floor(rg() * (i + 1)); [fams[i], fams[j]] = [fams[j], fams[i]]; } fams = fams.slice(0, Math.max(3, Math.ceil(fams.length * (+o.famFrac || 0.6)))); }
   const { keep, drop } = o.noPrune ? { keep: squad, drop: [] } : R.prune(squad, lvl);
   const info = S.stageInfo(code, squad, lvl); const space = new G.Space(code, lvl, squad, info, { allOps: squad.length > 12, topK: squad.length > 12 ? 8 : 0 });
   const surr = (p) => { const x = SG.featurize(code, lvl, p, ctx, fams); const pr = model && SG.predict(model, code, x); return { x, pr, s: pr ? pr.s : 0 }; };
@@ -100,8 +104,10 @@ async function squadSolve(pool, code, lvl, squad, o = {}) {
   // 3) local refinement from every family's best (after descent where it ran)
   const warm = lead.map((x) => ({ plan: x.cdPlan || x.plan, sc: x.cdSc !== undefined ? x.cdSc : x.sc })).sort((a, b) => b.sc - a.sc).map((w) => w.plan);
   const left = o.deadline ? Math.max(10, (o.deadline - now()) / 1000) : 1e9;
-  const r = await G.solve(pool, code, lvl, squad, { time: Math.min(+(o.refineSec || 90), left), evals: 1e9, warm: warm.slice(0, 14), allOps: squad.length > 12, pool: squad, sameRung: true,
-    earlyStop: +(o.polish || 20), earlyLife: 10 - critLost, critLost, memo, screen: true, p1: o.p1 !== undefined ? +o.p1 : 0.35, verbose: !!o.verbose, must: o.must, quota: o.quota, rngSeed: o.rngSeed, finalists: o.finalists || 6 });
+  const warmAll = (o.warmPlans || []).map((p) => G.clone(p)).concat(warm);   // o.warmPlans: plans to start from (a contained deck's answer, for the cross-deck bound)
+  const seedHere = o.rngSeed !== undefined ? ((o.rngSeed ^ Math.imul(RUNGS.indexOf(lvl) + 1, 0x9e3779b1)) >>> 0) : undefined;   // one seed per rung
+  const r = await G.solve(pool, code, lvl, squad, { time: Math.min(+(o.refineSec || 90), left), evals: 1e9, warm: warmAll.slice(0, 14), allOps: squad.length > 12, pool: squad, sameRung: true,
+    earlyStop: +(o.polish || 20), earlyLife: 10 - critLost, critLost, memo, screen: true, p1: o.p1 !== undefined ? +o.p1 : 0.35, verbose: !!o.verbose, must: o.must, quota: o.quota, rngSeed: seedHere, finalists: o.finalists || 6 });
   memo && memo.flush();
   evals += r.evals;
   const near = F.nearest(fams, r.plan); const isNew = !near || near.d >= +(process.env.FAM_DIST || 0.45);
@@ -164,4 +170,4 @@ async function keyOps(pool, code, lvl, squad, res, crit, o = {}) {
   return { ops: out, secs: Math.round((now() - t0) / 1000) };
 }
 
-module.exports = { CRIT, RUNGS, STAGES, stageRange, Memo, squadSolve, ladder, keyOps, guessRung, formation, LOGS, evalPlans };
+module.exports = { CRIT, RUNGS, STAGES, stageRange, Memo, squadSolve, ladder, keyOps, guessRung, formation, LOGS, evalPlans, strSeed, mkRng };
