@@ -20,8 +20,8 @@
   0,
   0
  ],
- "family": "IM-04:o89e7o",
- "gameHash": "fca95f6aaf8d",
+ "family": "IM-04:1rd8ps6",
+ "gameHash": "35c22d066cd2",
  "rng": "Math.random replaced before `new TD.Game` by im_sim's seed(n): a = n*7919, mulberry32-style step; nothing else draws from it between seeding and the game",
  "stepping": "fixed g.update(1/30) per frame, max 420*30 frames; actions run at the start of a frame, before that frame's update, in log order",
  "squad": [
@@ -45,7 +45,7 @@
    }
   },
   {
-   "id": "specialist",
+   "id": "belina",
    "elite": 1,
    "lvl": 30,
    "pot": 1,
@@ -58,13 +58,13 @@
     0
    ],
    "mult": {
-    "hp": 0.9071564789721971,
-    "atk": 0.8737373737373738,
-    "def": 0.8929089231580334
+    "hp": 0.5903010033444815,
+    "atk": 0.691304347826087,
+    "def": 0.6872860945620485
    }
   },
   {
-   "id": "capy",
+   "id": "ker",
    "elite": 1,
    "lvl": 30,
    "pot": 1,
@@ -77,18 +77,18 @@
     0
    ],
    "mult": {
-    "hp": 0.9074074074074073,
-    "atk": 0.9022364423760585,
-    "def": 0.9019607843137255
+    "hp": 0.6107535686017631,
+    "atk": 0.7643853250375456,
+    "def": 0.6324490297224269
    }
   },
   {
-   "id": "hiro",
+   "id": "rabi",
    "elite": 1,
    "lvl": 30,
    "pot": 1,
-   "skillIdx": 0,
-   "skill": "S1",
+   "skillIdx": 1,
+   "skill": "S2",
    "slv": 6,
    "sm": [
     0,
@@ -96,9 +96,9 @@
     0
    ],
    "mult": {
-    "hp": 0.8980883466889926,
-    "atk": 0.8798640412564462,
-    "def": 0.8790627362055934
+    "hp": 0.7152414046388113,
+    "atk": 0.6906123063035956,
+    "def": 0.712463768115942
    }
   },
   {
@@ -119,44 +119,6 @@
     "atk": 0.7004337247434677,
     "def": 0.7257494540401033
    }
-  },
-  {
-   "id": "bongeun",
-   "elite": 1,
-   "lvl": 30,
-   "pot": 1,
-   "skillIdx": 0,
-   "skill": "S1",
-   "slv": 6,
-   "sm": [
-    0,
-    0,
-    0
-   ],
-   "mult": {
-    "hp": 0.7148550724637681,
-    "atk": 0.6720234819299212,
-    "def": 0.6926877470355731
-   }
-  },
-  {
-   "id": "alpha2",
-   "elite": 1,
-   "lvl": 30,
-   "pot": 1,
-   "skillIdx": 1,
-   "skill": "S2",
-   "slv": 6,
-   "sm": [
-    0,
-    0,
-    0
-   ],
-   "mult": {
-    "hp": 0.6888824690644711,
-    "atk": 0.6571179293296495,
-    "def": 0.7244937134081966
-   }
   }
  ],
  "squadNote": "card order = squad order (card index ci in actions); Game(stageIdx, squad) receives {id, elite, mult, pot, skillIdx, slv, sm}; skill level and mastery by rung (sim.js skillRank, slv-r1); sm[k] = mastery of skill k",
@@ -166,8 +128,8 @@
   "over": "win",
   "life": 10,
   "lost": 0,
-  "winTime": 164.23333333332658,
-  "frames": 4927,
+  "winTime": 334.0666666667168,
+  "frames": 10022,
   "kills": 54,
   "total": 54
  },
@@ -176,238 +138,133 @@
    "t": 0,
    "k": 0,
    "a": "deploy",
-   "ci": 5,
-   "id": "bongeun",
+   "ci": 0,
+   "id": "sniper",
    "x": 4,
    "y": 1,
    "dir": 2,
    "uid": 1,
-   "cost": 13
+   "cost": 11
   },
   {
-   "t": 2.033333333333336,
-   "k": 61,
+   "t": 1.0333333333333332,
+   "k": 31,
    "a": "deploy",
-   "ci": 6,
-   "id": "alpha2",
-   "x": 1,
-   "y": 4,
+   "ci": 3,
+   "id": "rabi",
+   "x": 7,
+   "y": 3,
    "dir": 1,
    "uid": 9,
-   "cost": 9
+   "cost": 10
   },
   {
-   "t": 21.033333333333537,
-   "k": 631,
+   "t": 20.033333333333488,
+   "k": 601,
    "a": "deploy",
-   "ci": 4,
-   "id": "geomseon",
-   "x": 1,
-   "y": 2,
+   "ci": 2,
+   "id": "ker",
+   "x": 12,
+   "y": 5,
    "dir": 1,
    "uid": 12,
    "cost": 19
   },
   {
-   "t": 35.03333333333391,
-   "k": 1051,
+   "t": 39.03333333333368,
+   "k": 1171,
    "a": "deploy",
-   "ci": 6,
-   "id": "alpha2",
-   "x": 1,
-   "y": 4,
-   "dir": 1,
+   "ci": 4,
+   "id": "geomseon",
+   "x": 3,
+   "y": 3,
+   "dir": 2,
    "uid": 18,
-   "cost": 14
+   "cost": 19
   },
   {
    "t": 52.03333333333294,
    "k": 1561,
    "a": "deploy",
-   "ci": 3,
-   "id": "hiro",
-   "x": 7,
-   "y": 3,
-   "dir": 0,
-   "uid": 21,
-   "cost": 17
-  },
-  {
-   "t": 55.03333333333277,
-   "k": 1651,
-   "a": "retreat",
-   "ci": 3,
-   "id": "hiro",
-   "uid": 21,
-   "x": 7,
-   "y": 3,
-   "why": "plan"
-  },
-  {
-   "t": 67.0333333333321,
-   "k": 2011,
-   "a": "deploy",
-   "ci": 2,
-   "id": "capy",
-   "x": 3,
-   "y": 5,
-   "dir": 0,
-   "uid": 26,
-   "cost": 23
-  },
-  {
-   "t": 75.03333333333164,
-   "k": 2251,
-   "a": "deploy",
    "ci": 1,
-   "id": "specialist",
-   "x": 2,
-   "y": 5,
-   "dir": 3,
+   "id": "belina",
+   "x": 1,
+   "y": 2,
+   "dir": 1,
+   "uid": 21,
+   "cost": 13
+  },
+  {
+   "t": 76.59999999999822,
+   "k": 2298,
+   "a": "deploy",
+   "ci": 3,
+   "id": "rabi",
+   "x": 7,
+   "y": 3,
+   "dir": 1,
    "uid": 30,
-   "cost": 8
+   "cost": 15
   },
   {
-   "t": 86.03333333333102,
-   "k": 2581,
+   "t": 152.1666666666606,
+   "k": 4565,
    "a": "deploy",
-   "ci": 0,
-   "id": "sniper",
-   "x": 9,
-   "y": 5,
-   "dir": 0,
-   "uid": 37,
-   "cost": 11
-  },
-  {
-   "t": 103.03333333333005,
-   "k": 3091,
-   "a": "skill",
-   "ci": 1,
-   "id": "specialist",
-   "uid": 30
-  },
-  {
-   "t": 115.0666666666627,
-   "k": 3452,
-   "a": "skill",
-   "ci": 1,
-   "id": "specialist",
-   "uid": 30
-  },
-  {
-   "t": 127.09999999999535,
-   "k": 3813,
-   "a": "skill",
-   "ci": 1,
-   "id": "specialist",
-   "uid": 30
-  },
-  {
-   "t": 139.133333333328,
-   "k": 4174,
-   "a": "skill",
-   "ci": 1,
-   "id": "specialist",
-   "uid": 30
-  },
-  {
-   "t": 151.16666666666066,
-   "k": 4535,
-   "a": "skill",
-   "ci": 1,
-   "id": "specialist",
-   "uid": 30
-  },
-  {
-   "t": 163.1999999999933,
-   "k": 4896,
-   "a": "skill",
-   "ci": 1,
-   "id": "specialist",
-   "uid": 30
+   "ci": 3,
+   "id": "rabi",
+   "x": 7,
+   "y": 3,
+   "dir": 1,
+   "uid": 61,
+   "cost": 20
   }
  ],
  "plan": {
   "entries": [
    {
-    "id": "bongeun",
+    "id": "sniper",
     "x": 4,
     "y": 1,
     "d": 2
    },
    {
-    "id": "alpha2",
-    "x": 1,
-    "y": 4,
+    "id": "rabi",
+    "x": 7,
+    "y": 3,
+    "d": 1
+   },
+   {
+    "id": "ker",
+    "x": 12,
+    "y": 5,
     "d": 1
    },
    {
     "id": "geomseon",
+    "x": 3,
+    "y": 3,
+    "d": 2
+   },
+   {
+    "id": "belina",
     "x": 1,
     "y": 2,
     "d": 1
-   },
-   {
-    "id": "hiro",
-    "x": 7,
-    "y": 3,
-    "d": 0,
-    "until": 55
-   },
-   {
-    "id": "hiro",
-    "x": 2,
-    "y": 5,
-    "d": 2,
-    "from": 55
-   },
-   {
-    "id": "capy",
-    "x": 3,
-    "y": 5,
-    "d": 0
-   },
-   {
-    "id": "specialist",
-    "x": 2,
-    "y": 5,
-    "d": 3
-   },
-   {
-    "id": "sniper",
-    "x": 9,
-    "y": 5,
-    "d": 0,
-    "from": 9
    }
   ],
-  "skill": {
-   "specialist": {
-    "m": 1,
-    "t": 103
-   }
-  },
+  "skill": {},
   "skillIdx": {
-   "bongeun": 0,
+   "ker": 0,
    "geomseon": 0,
-   "alpha2": 1
+   "belina": 0,
+   "rabi": 1
   },
-  "retreats": [
-   {
-    "id": "sniper",
-    "t": 20
-   },
-   {
-    "id": "hiro",
-    "t": 55
-   }
-  ],
+  "retreats": [],
   "pol": {
-   "fire": 0,
+   "fire": 1,
    "melt": 1,
    "lamp": 1
   },
-  "_par": "[[[\"bongeun\",4,1,2,null,null,null],[\"alpha2\",1,4,1,null,null,null],[\"geomseon\",1,2,1,null,null,null],[\"hiro\",7,3,0,null,55,null],[\"hiro\",2,5,2,55,null,null],[\"capy\",3,5,0,null,null,null],[\"belina\",12,5,1,null,null,null],[\"specialist\",2,5,3,null,null,null],[\"sniper\",9,5,0,9,null,null]],{\"specialist\":{\"m\":1,\"t\":103}},{\"bongeun\":0,\"geomseon\":0,\"belina\":1,\"alpha2\":1},[[\"sniper\",20],[\"hiro\",55]],{\"fire\":0,\"melt\":1,\"lamp\":1}]"
+  "_par": "[[[\"sniper\",4,1,2,null,null,null],[\"hiro\",7,3,1,null,null,null],[\"ker\",12,5,1,null,null,null],[\"geomseon\",3,3,2,null,null,null],[\"belina\",1,2,1,null,null,null]],{},{\"ker\":0,\"geomseon\":0,\"belina\":0},[],{\"fire\":1,\"melt\":1,\"lamp\":1}]"
  }
 }

@@ -1,7 +1,7 @@
 {
  "stage": "IM-04",
  "name": "밤의 연병장",
- "level": "E1L60",
+ "level": "E1L30",
  "lost": 0,
  "seed": 1,
  "K": 1,
@@ -20,85 +20,123 @@
   0,
   0
  ],
- "family": "new:IM-04:19cht1q",
- "gameHash": "fca95f6aaf8d",
+ "family": "IM-04:19cht1q",
+ "gameHash": "35c22d066cd2",
  "rng": "Math.random replaced before `new TD.Game` by im_sim's seed(n): a = n*7919, mulberry32-style step; nothing else draws from it between seeding and the game",
  "stepping": "fixed g.update(1/30) per frame, max 420*30 frames; actions run at the start of a frame, before that frame's update, in log order",
  "squad": [
   {
-   "id": "defender",
+   "id": "guard",
    "elite": 1,
-   "lvl": 55,
+   "lvl": 30,
    "pot": 1,
    "skillIdx": 0,
    "skill": "S1",
-   "slv": 7,
+   "slv": 6,
    "sm": [
     0,
     0,
     0
    ],
    "mult": {
-    "hp": 1,
-    "atk": 1,
-    "def": 1
+    "hp": 0.8888104680603168,
+    "atk": 0.8834345033869975,
+    "def": 0.9014972419227738
+   }
+  },
+  {
+   "id": "sniper",
+   "elite": 1,
+   "lvl": 30,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 6,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.8977987421383647,
+    "atk": 0.8555555555555555,
+    "def": 0.8603762492651381
+   }
+  },
+  {
+   "id": "specialist",
+   "elite": 1,
+   "lvl": 30,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 6,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.9071564789721971,
+    "atk": 0.8737373737373738,
+    "def": 0.8929089231580334
    }
   },
   {
    "id": "ker",
    "elite": 1,
-   "lvl": 60,
+   "lvl": 30,
    "pot": 1,
    "skillIdx": 1,
    "skill": "S2",
-   "slv": 7,
+   "slv": 6,
    "sm": [
     0,
     0,
     0
    ],
    "mult": {
-    "hp": 0.6998389694041868,
-    "atk": 0.850632911392405,
-    "def": 0.7289855072463768
+    "hp": 0.6107535686017631,
+    "atk": 0.7643853250375456,
+    "def": 0.6324490297224269
    }
   },
   {
    "id": "geomseon",
    "elite": 1,
-   "lvl": 60,
+   "lvl": 30,
    "pot": 1,
    "skillIdx": 1,
    "skill": "S2",
-   "slv": 7,
+   "slv": 6,
    "sm": [
     0,
     0,
     0
    ],
    "mult": {
-    "hp": 0.762281837804502,
-    "atk": 0.7816777742515604,
-    "def": 0.8019853087155053
+    "hp": 0.6797656490903484,
+    "atk": 0.7004337247434677,
+    "def": 0.7257494540401033
    }
   },
   {
-   "id": "skakea2",
+   "id": "bongeun",
    "elite": 1,
-   "lvl": 60,
+   "lvl": 30,
    "pot": 1,
    "skillIdx": 0,
    "skill": "S1",
-   "slv": 7,
+   "slv": 6,
    "sm": [
     0,
     0,
     0
    ],
    "mult": {
-    "hp": 0.785957696827262,
-    "atk": 0.8105048782798143,
-    "def": 0.8743562103245898
+    "hp": 0.7148550724637681,
+    "atk": 0.6720234819299212,
+    "def": 0.6926877470355731
    }
   }
  ],
@@ -109,8 +147,8 @@
   "over": "win",
   "life": 10,
   "lost": 0,
-  "winTime": 166.0666666666598,
-  "frames": 4982,
+  "winTime": 206.39999999999085,
+  "frames": 6192,
   "kills": 54,
   "total": 54
  },
@@ -119,7 +157,7 @@
    "t": 0,
    "k": 0,
    "a": "deploy",
-   "ci": 1,
+   "ci": 3,
    "id": "ker",
    "x": 12,
    "y": 5,
@@ -128,144 +166,284 @@
    "cost": 19
   },
   {
-   "t": 7.999999999999981,
-   "k": 240,
+   "t": 9.999999999999975,
+   "k": 300,
    "a": "skill",
-   "ci": 1,
+   "ci": 3,
    "id": "ker",
    "uid": 1
   },
   {
-   "t": 17.03333333333334,
-   "k": 511,
+   "t": 18.03333333333339,
+   "k": 541,
    "a": "deploy",
-   "ci": 0,
-   "id": "defender",
-   "x": 2,
-   "y": 5,
+   "ci": 4,
+   "id": "geomseon",
+   "x": 3,
+   "y": 3,
    "dir": 2,
-   "uid": 10,
-   "cost": 18
+   "uid": 11,
+   "cost": 19
   },
   {
    "t": 25.033333333333736,
    "k": 751,
    "a": "skill",
+   "ci": 4,
+   "id": "geomseon",
+   "uid": 11
+  },
+  {
+   "t": 33.03333333333402,
+   "k": 991,
+   "a": "deploy",
    "ci": 0,
-   "id": "defender",
-   "uid": 10
-  },
-  {
-   "t": 36.03333333333385,
-   "k": 1081,
-   "a": "deploy",
-   "ci": 2,
-   "id": "geomseon",
-   "x": 3,
-   "y": 3,
+   "id": "guard",
+   "x": 2,
+   "y": 5,
    "dir": 2,
-   "uid": 17,
-   "cost": 19
+   "uid": 16,
+   "cost": 15
   },
   {
-   "t": 41.033333333333566,
-   "k": 1231,
-   "a": "skill",
-   "ci": 2,
-   "id": "geomseon",
-   "uid": 17
-  },
-  {
-   "t": 56.03333333333271,
-   "k": 1681,
+   "t": 46.03333333333328,
+   "k": 1381,
    "a": "deploy",
-   "ci": 3,
-   "id": "skakea2",
+   "ci": 5,
+   "id": "bongeun",
    "x": 4,
    "y": 1,
    "dir": 2,
-   "uid": 21,
-   "cost": 20
+   "uid": 18,
+   "cost": 13
   },
   {
-   "t": 61.79999999999905,
-   "k": 1854,
+   "t": 47.033333333333225,
+   "k": 1411,
    "a": "skill",
-   "ci": 1,
+   "ci": 4,
+   "id": "geomseon",
+   "uid": 11
+  },
+  {
+   "t": 54.03333333333283,
+   "k": 1621,
+   "a": "deploy",
+   "ci": 2,
+   "id": "specialist",
+   "x": 1,
+   "y": 2,
+   "dir": 0,
+   "uid": 22,
+   "cost": 8
+  },
+  {
+   "t": 54.03333333333283,
+   "k": 1621,
+   "a": "skill",
+   "ci": 2,
+   "id": "specialist",
+   "uid": 22
+  },
+  {
+   "t": 63.99999999999893,
+   "k": 1920,
+   "a": "skill",
+   "ci": 3,
    "id": "ker",
    "uid": 1
   },
   {
-   "t": 62.03333333333237,
-   "k": 1861,
-   "a": "skill",
-   "ci": 2,
-   "id": "geomseon",
-   "uid": 17
-  },
-  {
-   "t": 63.466666666665624,
-   "k": 1904,
-   "a": "skill",
-   "ci": 0,
-   "id": "defender",
-   "uid": 10
-  },
-  {
-   "t": 83.03333333333119,
-   "k": 2491,
-   "a": "skill",
-   "ci": 2,
-   "id": "geomseon",
-   "uid": 17
-  },
-  {
-   "t": 101.89999999999678,
-   "k": 3057,
-   "a": "skill",
-   "ci": 0,
-   "id": "defender",
-   "uid": 10
-  },
-  {
-   "t": 104.03333333332999,
-   "k": 3121,
-   "a": "skill",
-   "ci": 2,
-   "id": "geomseon",
-   "uid": 17
-  },
-  {
-   "t": 115.599999999996,
-   "k": 3468,
-   "a": "skill",
+   "t": 65.03333333333221,
+   "k": 1951,
+   "a": "deploy",
    "ci": 1,
+   "id": "sniper",
+   "x": 9,
+   "y": 5,
+   "dir": 0,
+   "uid": 26,
+   "cost": 11
+  },
+  {
+   "t": 66.06666666666548,
+   "k": 1982,
+   "a": "skill",
+   "ci": 2,
+   "id": "specialist",
+   "uid": 22
+  },
+  {
+   "t": 69.03333333333198,
+   "k": 2071,
+   "a": "skill",
+   "ci": 4,
+   "id": "geomseon",
+   "uid": 11
+  },
+  {
+   "t": 78.09999999999813,
+   "k": 2343,
+   "a": "skill",
+   "ci": 2,
+   "id": "specialist",
+   "uid": 22
+  },
+  {
+   "t": 90.13333333333078,
+   "k": 2704,
+   "a": "skill",
+   "ci": 2,
+   "id": "specialist",
+   "uid": 22
+  },
+  {
+   "t": 91.03333333333073,
+   "k": 2731,
+   "a": "skill",
+   "ci": 4,
+   "id": "geomseon",
+   "uid": 11
+  },
+  {
+   "t": 102.16666666666343,
+   "k": 3065,
+   "a": "skill",
+   "ci": 2,
+   "id": "specialist",
+   "uid": 22
+  },
+  {
+   "t": 113.03333333332948,
+   "k": 3391,
+   "a": "skill",
+   "ci": 4,
+   "id": "geomseon",
+   "uid": 11
+  },
+  {
+   "t": 114.19999999999608,
+   "k": 3426,
+   "a": "skill",
+   "ci": 2,
+   "id": "specialist",
+   "uid": 22
+  },
+  {
+   "t": 117.99999999999586,
+   "k": 3540,
+   "a": "skill",
+   "ci": 3,
    "id": "ker",
    "uid": 1
   },
   {
-   "t": 125.0333333333288,
-   "k": 3751,
+   "t": 126.23333333332873,
+   "k": 3787,
    "a": "skill",
    "ci": 2,
-   "id": "geomseon",
-   "uid": 17
+   "id": "specialist",
+   "uid": 22
   },
   {
-   "t": 140.33333333332794,
-   "k": 4210,
+   "t": 135.03333333332824,
+   "k": 4051,
    "a": "skill",
-   "ci": 0,
-   "id": "defender",
-   "uid": 10
+   "ci": 4,
+   "id": "geomseon",
+   "uid": 11
   },
   {
-   "t": 146.03333333332762,
-   "k": 4381,
+   "t": 138.19999999999473,
+   "k": 4146,
+   "a": "deploy",
+   "ci": 1,
+   "id": "sniper",
+   "x": 9,
+   "y": 5,
+   "dir": 0,
+   "uid": 61,
+   "cost": 17
+  },
+  {
+   "t": 138.2666666666614,
+   "k": 4148,
    "a": "skill",
    "ci": 2,
+   "id": "specialist",
+   "uid": 22
+  },
+  {
+   "t": 150.29999999999404,
+   "k": 4509,
+   "a": "skill",
+   "ci": 2,
+   "id": "specialist",
+   "uid": 22
+  },
+  {
+   "t": 157.033333333327,
+   "k": 4711,
+   "a": "skill",
+   "ci": 4,
    "id": "geomseon",
-   "uid": 17
+   "uid": 11
+  },
+  {
+   "t": 162.3333333333267,
+   "k": 4870,
+   "a": "skill",
+   "ci": 2,
+   "id": "specialist",
+   "uid": 22
+  },
+  {
+   "t": 171.9999999999928,
+   "k": 5160,
+   "a": "skill",
+   "ci": 3,
+   "id": "ker",
+   "uid": 1
+  },
+  {
+   "t": 174.36666666665934,
+   "k": 5231,
+   "a": "skill",
+   "ci": 2,
+   "id": "specialist",
+   "uid": 22
+  },
+  {
+   "t": 179.03333333332574,
+   "k": 5371,
+   "a": "skill",
+   "ci": 4,
+   "id": "geomseon",
+   "uid": 11
+  },
+  {
+   "t": 186.399999999992,
+   "k": 5592,
+   "a": "skill",
+   "ci": 2,
+   "id": "specialist",
+   "uid": 22
+  },
+  {
+   "t": 198.43333333332464,
+   "k": 5953,
+   "a": "skill",
+   "ci": 2,
+   "id": "specialist",
+   "uid": 22
+  },
+  {
+   "t": 201.0333333333245,
+   "k": 6031,
+   "a": "skill",
+   "ci": 4,
+   "id": "geomseon",
+   "uid": 11
   }
  ],
  "plan": {
@@ -277,29 +455,41 @@
     "d": 1
    },
    {
-    "id": "defender",
-    "x": 2,
-    "y": 5,
-    "d": 2
-   },
-   {
     "id": "geomseon",
     "x": 3,
     "y": 3,
     "d": 2
    },
    {
-    "id": "skakea2",
+    "id": "guard",
+    "x": 2,
+    "y": 5,
+    "d": 2
+   },
+   {
+    "id": "bongeun",
     "x": 4,
     "y": 1,
     "d": 2
+   },
+   {
+    "id": "specialist",
+    "x": 1,
+    "y": 2,
+    "d": 0
+   },
+   {
+    "id": "sniper",
+    "x": 9,
+    "y": 5,
+    "d": 0
    }
   ],
   "skill": {},
   "skillIdx": {
    "ker": 1,
    "geomseon": 1,
-   "skakea2": 0
+   "bongeun": 0
   },
   "retreats": [],
   "pol": {
@@ -307,6 +497,6 @@
    "melt": 1,
    "lamp": 1
   },
-  "_par": "[[[\"ker\",12,5,1,null,null,null],[\"defender\",2,5,2,null,null,null],[\"geomseon\",3,3,2,null,null,null],[\"skakea2\",4,1,2,null,null,null],[\"yui\",7,3,1,null,null,null]],{},{\"ker\":1,\"geomseon\":1,\"skakea2\":0,\"yui\":1},[],{\"fire\":1,\"melt\":1,\"lamp\":1}]"
+  "_par": "[[[\"ker\",12,5,1,null,null,null],[\"guard\",2,5,2,null,null,null],[\"geomseon\",3,3,2,null,null,null],[\"bongeun\",4,1,2,null,null,null],[\"specialist\",1,2,0,null,null,null],[\"sniper\",9,5,0,null,null,null]],{},{\"ker\":1,\"geomseon\":1,\"bongeun\":0},[],{\"fire\":1,\"melt\":1,\"lamp\":1}]"
  }
 }

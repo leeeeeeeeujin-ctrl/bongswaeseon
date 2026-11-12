@@ -3,7 +3,7 @@
  "source": "s_T5_r0",
  "families": [
   {
-   "id": "IM-07:1rcdy7c",
+   "id": "IM-07:1ovb4a6",
    "T": {
     "slots": [
      {
@@ -19,7 +19,7 @@
        "dmg": "arts",
        "sub": "코어 캐스터"
       },
-      "src": "irins"
+      "src": "skakea2"
      },
      {
       "x": 3,
@@ -34,7 +34,7 @@
        "dmg": "arts",
        "sub": "코어 캐스터"
       },
-      "src": "skakea2"
+      "src": "irins"
      },
      {
       "x": 5,
@@ -62,34 +62,19 @@
        "block": 3,
        "cls": "defender",
        "dmg": "phys",
-       "sub": "가디언"
+       "sub": ""
       },
-      "src": "yui",
+      "src": "defender",
       "from": 25,
       "skill": {
        "m": 2
       }
      },
      {
-      "x": 8,
-      "y": 0,
-      "d": 1,
+      "x": 9,
+      "y": 2,
+      "d": 0,
       "prim": 4,
-      "role": {
-       "tile": "g",
-       "kind": "block",
-       "block": 3,
-       "cls": "defender",
-       "dmg": "phys",
-       "sub": "프로텍터"
-      },
-      "src": "sunae"
-     },
-     {
-      "x": 8,
-      "y": 3,
-      "d": 3,
-      "prim": 5,
       "role": {
        "tile": "h",
        "kind": "phys",
@@ -105,7 +90,7 @@
       "x": 11,
       "y": 3,
       "d": 1,
-      "prim": 6,
+      "prim": 5,
       "role": {
        "tile": "h",
        "kind": "supp",
@@ -120,7 +105,7 @@
       "x": 3,
       "y": 4,
       "d": 3,
-      "prim": 7,
+      "prim": 6,
       "role": {
        "tile": "h",
        "kind": "heal",
@@ -133,10 +118,25 @@
       "from": 22
      },
      {
+      "x": 8,
+      "y": 0,
+      "d": 1,
+      "prim": 7,
+      "role": {
+       "tile": "g",
+       "kind": "block",
+       "block": 3,
+       "cls": "defender",
+       "dmg": "phys",
+       "sub": "프로텍터"
+      },
+      "src": "sunae"
+     },
+     {
       "x": 6,
       "y": 2,
       "d": 2,
-      "prim": 5,
+      "prim": 4,
       "role": {
        "tile": "h",
        "kind": "phys",
@@ -149,9 +149,9 @@
       "from": 18
      },
      {
-      "x": 9,
+      "x": 6,
       "y": 4,
-      "d": 1,
+      "d": 0,
       "prim": 9,
       "role": {
        "tile": "h",
@@ -159,15 +159,371 @@
        "block": 0,
        "cls": "supporter",
        "dmg": "arts",
+       "sub": "감속자"
+      },
+      "src": "teka"
+     },
+     {
+      "x": 3,
+      "y": 4,
+      "d": 2,
+      "prim": 10,
+      "role": {
+       "tile": "h",
+       "kind": "supp",
+       "block": 0,
+       "cls": "supporter",
+       "dmg": "arts",
+       "sub": "약화자"
+      },
+      "src": "silphy"
+     }
+    ],
+    "retreats": [],
+    "pol": {
+     "fire": 1,
+     "melt": 1,
+     "lamp": 1
+    }
+   },
+   "tags": [
+    "forward block",
+    "high-ground focus"
+   ],
+   "q": -2,
+   "rec": {
+    "lvl": "E0L1",
+    "lost": 2,
+    "worstLost": 2,
+    "verified": true,
+    "deck": "T5",
+    "crit": "lost1",
+    "gameHash": "35c22d066cd2",
+    "ops": [
+     "skakea2",
+     "irins",
+     "rabi",
+     "defender",
+     "bongeun",
+     "jayeon",
+     "piania",
+     "sunae",
+     "teka",
+     "silphy"
+    ]
+   },
+   "src": "s_T5_r0",
+   "members": 37
+  },
+  {
+   "id": "IM-07:1ofux8f",
+   "T": {
+    "slots": [
+     {
+      "x": 11,
+      "y": 5,
+      "d": 2,
+      "prim": 0,
+      "role": {
+       "tile": "g",
+       "kind": "block",
+       "block": 1,
+       "cls": "guard",
+       "dmg": "phys",
+       "sub": "파이터"
+      },
+      "src": "rabi"
+     },
+     {
+      "x": 3,
+      "y": 4,
+      "d": 3,
+      "prim": 1,
+      "role": {
+       "tile": "h",
+       "kind": "phys",
+       "block": 0,
+       "cls": "sniper",
+       "dmg": "phys",
+       "sub": "명사수"
+      },
+      "src": "bongeun"
+     },
+     {
+      "x": 11,
+      "y": 1,
+      "d": 2,
+      "prim": 2,
+      "role": {
+       "tile": "g",
+       "kind": "block",
+       "block": 2,
+       "cls": "guard",
+       "dmg": "phys",
+       "sub": "공격수"
+      },
+      "src": "hiro"
+     },
+     {
+      "x": 11,
+      "y": 0,
+      "d": 2,
+      "prim": 3,
+      "role": {
+       "tile": "g",
+       "kind": "block",
+       "block": 2,
+       "cls": "guard",
+       "dmg": "phys",
+       "sub": "로드"
+      },
+      "src": "geomseon"
+     },
+     {
+      "x": 2,
+      "y": 3,
+      "d": 3,
+      "prim": 4,
+      "role": {
+       "tile": "h",
+       "kind": "arts",
+       "block": 0,
+       "cls": "caster",
+       "dmg": "arts",
+       "sub": "코어 캐스터"
+      },
+      "src": "irins"
+     },
+     {
+      "x": 3,
+      "y": 2,
+      "d": 2,
+      "prim": 5,
+      "role": {
+       "tile": "h",
+       "kind": "arts",
+       "block": 0,
+       "cls": "caster",
+       "dmg": "arts",
+       "sub": "코어 캐스터"
+      },
+      "src": "skakea2"
+     },
+     {
+      "x": 9,
+      "y": 2,
+      "d": 2,
+      "prim": 6,
+      "role": {
+       "tile": "h",
+       "kind": "phys",
+       "block": 0,
+       "cls": "sniper",
+       "dmg": "phys",
+       "sub": "저격수"
+      },
+      "src": "nana"
+     },
+     {
+      "x": 11,
+      "y": 3,
+      "d": 1,
+      "prim": 7,
+      "role": {
+       "tile": "h",
+       "kind": "supp",
+       "block": 0,
+       "cls": "supporter",
+       "dmg": "arts",
+       "sub": "감속자"
+      },
+      "src": "jayeon"
+     },
+     {
+      "x": 8,
+      "y": 0,
+      "d": 2,
+      "prim": 8,
+      "role": {
+       "tile": "g",
+       "kind": "block",
+       "block": 3,
+       "cls": "defender",
+       "dmg": "phys",
+       "sub": "가디언"
+      },
+      "src": "yui"
+     }
+    ],
+    "retreats": [],
+    "pol": {
+     "fire": 1,
+     "melt": 1,
+     "lamp": 1
+    }
+   },
+   "tags": [
+    "deep block",
+    "split lanes",
+    "no medic"
+   ],
+   "q": -20,
+   "rec": {
+    "lvl": "E0L20",
+    "lost": 0,
+    "worstLost": 0,
+    "verified": true,
+    "deck": "T5",
+    "crit": "lost1",
+    "gameHash": "35c22d066cd2",
+    "ops": [
+     "rabi",
+     "bongeun",
+     "hiro",
+     "geomseon",
+     "irins",
+     "skakea2",
+     "nana",
+     "jayeon",
+     "yui"
+    ]
+   },
+   "src": "s_T5_r0",
+   "members": 21
+  },
+  {
+   "id": "IM-07:w3zbe1",
+   "T": {
+    "slots": [
+     {
+      "x": 11,
+      "y": 0,
+      "d": 2,
+      "prim": 0,
+      "role": {
+       "tile": "g",
+       "kind": "block",
+       "block": 2,
+       "cls": "guard",
+       "dmg": "phys",
+       "sub": "공격수"
+      },
+      "src": "hiro",
+      "from": 25
+     },
+     {
+      "x": 3,
+      "y": 2,
+      "d": 2,
+      "prim": 1,
+      "role": {
+       "tile": "h",
+       "kind": "arts",
+       "block": 0,
+       "cls": "caster",
+       "dmg": "arts",
        "sub": ""
       },
-      "src": "supporter"
+      "src": "caster"
+     },
+     {
+      "x": 2,
+      "y": 3,
+      "d": 3,
+      "prim": 2,
+      "role": {
+       "tile": "h",
+       "kind": "supp",
+       "block": 0,
+       "cls": "supporter",
+       "dmg": "arts",
+       "sub": "소환사"
+      },
+      "src": "atat"
+     },
+     {
+      "x": 8,
+      "y": 3,
+      "d": 3,
+      "prim": 3,
+      "role": {
+       "tile": "h",
+       "kind": "phys",
+       "block": 0,
+       "cls": "sniper",
+       "dmg": "phys",
+       "sub": ""
+      },
+      "src": "sniper",
+      "from": 18
+     },
+     {
+      "x": 4,
+      "y": 2,
+      "d": 2,
+      "prim": 4,
+      "role": {
+       "tile": "g",
+       "kind": "block",
+       "block": 2,
+       "cls": "guard",
+       "dmg": "phys",
+       "sub": "로드"
+      },
+      "src": "geomseon"
+     },
+     {
+      "x": 3,
+      "y": 4,
+      "d": 2,
+      "prim": 5,
+      "role": {
+       "tile": "h",
+       "kind": "heal",
+       "block": 0,
+       "cls": "medic",
+       "dmg": "heal",
+       "sub": "메딕"
+      },
+      "src": "ayaki",
+      "from": 22
+     },
+     {
+      "x": 9,
+      "y": 2,
+      "d": 0,
+      "prim": 3,
+      "role": {
+       "tile": "h",
+       "kind": "phys",
+       "block": 0,
+       "cls": "sniper",
+       "dmg": "phys",
+       "sub": ""
+      },
+      "src": "sniper",
+      "until": 18
+     },
+     {
+      "x": 11,
+      "y": 3,
+      "d": 1,
+      "prim": 7,
+      "role": {
+       "tile": "h",
+       "kind": "arts",
+       "block": 0,
+       "cls": "caster",
+       "dmg": "arts",
+       "sub": "코어 캐스터"
+      },
+      "src": "irins"
      },
      {
       "x": 6,
       "y": 4,
-      "d": 0,
-      "prim": 10,
+      "d": 2,
+      "prim": 8,
       "role": {
        "tile": "h",
        "kind": "supp",
@@ -190,168 +546,6 @@
     "forward block",
     "high-ground focus"
    ],
-   "q": -4,
-   "rec": {
-    "lvl": "E0L1",
-    "lost": 2,
-    "worstLost": 4,
-    "verified": true,
-    "deck": "T5",
-    "crit": "lost1",
-    "gameHash": "656ff27f0786",
-    "ops": [
-     "irins",
-     "skakea2",
-     "rabi",
-     "yui",
-     "sunae",
-     "bongeun",
-     "jayeon",
-     "piania",
-     "supporter",
-     "teka"
-    ]
-   },
-   "src": "s_T5_r0",
-   "members": 21
-  },
-  {
-   "id": "IM-07:1pgn0du",
-   "T": {
-    "slots": [
-     {
-      "x": 11,
-      "y": 1,
-      "d": 3,
-      "prim": 0,
-      "role": {
-       "tile": "g",
-       "kind": "block",
-       "block": 2,
-       "cls": "vanguard",
-       "dmg": "phys",
-       "sub": ""
-      },
-      "src": "vanguard"
-     },
-     {
-      "x": 11,
-      "y": 0,
-      "d": 2,
-      "prim": 1,
-      "role": {
-       "tile": "g",
-       "kind": "block",
-       "block": 2,
-       "cls": "guard",
-       "dmg": "phys",
-       "sub": "로드"
-      },
-      "src": "geomseon"
-     },
-     {
-      "x": 11,
-      "y": 5,
-      "d": 2,
-      "prim": 2,
-      "role": {
-       "tile": "g",
-       "kind": "block",
-       "block": 1,
-       "cls": "guard",
-       "dmg": "phys",
-       "sub": "파이터"
-      },
-      "src": "rabi"
-     },
-     {
-      "x": 11,
-      "y": 3,
-      "d": 1,
-      "prim": 3,
-      "role": {
-       "tile": "h",
-       "kind": "arts",
-       "block": 0,
-       "cls": "caster",
-       "dmg": "arts",
-       "sub": "코어 캐스터"
-      },
-      "src": "lilith"
-     },
-     {
-      "x": 2,
-      "y": 3,
-      "d": 3,
-      "prim": 4,
-      "role": {
-       "tile": "h",
-       "kind": "arts",
-       "block": 0,
-       "cls": "caster",
-       "dmg": "arts",
-       "sub": ""
-      },
-      "src": "caster"
-     },
-     {
-      "x": 3,
-      "y": 2,
-      "d": 2,
-      "prim": 5,
-      "role": {
-       "tile": "h",
-       "kind": "arts",
-       "block": 0,
-       "cls": "caster",
-       "dmg": "arts",
-       "sub": "코어 캐스터"
-      },
-      "src": "irins"
-     },
-     {
-      "x": 3,
-      "y": 4,
-      "d": 3,
-      "prim": 6,
-      "role": {
-       "tile": "h",
-       "kind": "arts",
-       "block": 0,
-       "cls": "caster",
-       "dmg": "arts",
-       "sub": "코어 캐스터"
-      },
-      "src": "skakea2"
-     },
-     {
-      "x": 8,
-      "y": 0,
-      "d": 2,
-      "prim": 7,
-      "role": {
-       "tile": "g",
-       "kind": "block",
-       "block": 2,
-       "cls": "guard",
-       "dmg": "phys",
-       "sub": "소드마스터"
-      },
-      "src": "lulu"
-     }
-    ],
-    "retreats": [],
-    "pol": {
-     "fire": 1,
-     "melt": 1,
-     "lamp": 1
-    }
-   },
-   "tags": [
-    "deep block",
-    "split lanes",
-    "no medic"
-   ],
    "q": -40,
    "rec": {
     "lvl": "E0L40",
@@ -359,22 +553,21 @@
     "worstLost": 0,
     "verified": true,
     "deck": "T5",
-    "crit": "lost1",
-    "gameHash": "656ff27f0786",
+    "gameHash": "35c22d066cd2",
     "ops": [
-     "vanguard",
-     "geomseon",
-     "rabi",
-     "lilith",
+     "hiro",
      "caster",
+     "atat",
+     "sniper",
+     "geomseon",
+     "ayaki",
      "irins",
-     "skakea2",
-     "lulu"
+     "teka"
     ]
    },
    "src": "s_T5_r0",
-   "members": 14
+   "members": 5
   }
  ],
- "updated": "2026-11-12T08:17:37.321Z"
+ "updated": "2026-11-12T16:02:38.463Z"
 }

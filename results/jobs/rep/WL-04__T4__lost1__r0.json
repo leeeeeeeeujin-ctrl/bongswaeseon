@@ -3,9 +3,9 @@
  "deck": "T4",
  "crit": "lost1",
  "need": 1,
- "gameHash": "f29a41ff4e55",
+ "gameHash": "35c22d066cd2",
  "done": true,
- "finished": "2026-11-12T11:02:13.798Z",
+ "finished": "2026-11-12T17:41:17.467Z",
  "squad": [
   "vanguard",
   "guard",
@@ -36,19 +36,20 @@
   "jayeon"
  ],
  "rep": 0,
- "rngSeed": 3703601776,
+ "rngSeed": 3748410508,
  "famSeed": null,
  "min": "E1L15",
  "cut": false,
  "worstLost": 1,
- "winTime": 196.49999999999142,
+ "winTime": 405.3333333334402,
  "family": {
-  "id": "WL-04:1rto59y",
-  "d": 0.2,
+  "id": "WL-04:xgmely",
+  "d": 0.24,
   "tags": [
-   "forward block",
+   "deep block",
    "split lanes",
-   "no medic"
+   "no medic",
+   "relocate"
   ]
  },
  "plan": {
@@ -60,90 +61,85 @@
     "d": 3
    },
    {
-    "id": "vanguard",
+    "id": "tao",
     "x": 9,
-    "y": 6,
-    "d": 3
-   },
-   {
-    "id": "supporter",
-    "x": 12,
-    "y": 0,
-    "d": 1,
-    "until": 111
-   },
-   {
-    "id": "supporter",
-    "x": 12,
-    "y": 0,
-    "d": 1,
-    "from": 111
-   },
-   {
-    "id": "capy",
-    "x": 9,
-    "y": 3,
-    "d": 0
-   },
-   {
-    "id": "lulu",
-    "x": 4,
     "y": 6,
     "d": 3
    },
    {
     "id": "nana",
-    "x": 0,
-    "y": 6,
-    "d": 0
-   },
-   {
-    "id": "ker",
-    "x": 4,
-    "y": 5,
-    "d": 2
+    "x": 12,
+    "y": 0,
+    "d": 1
    },
    {
     "id": "jayeon",
-    "x": 3,
+    "x": 9,
     "y": 3,
     "d": 1
    },
    {
-    "id": "specialist",
+    "id": "lulu",
+    "x": 4,
+    "y": 2,
+    "d": 0
+   },
+   {
+    "id": "falchion",
     "x": 11,
-    "y": 1,
+    "y": 6,
+    "d": 3
+   },
+   {
+    "id": "ker",
+    "x": 2,
+    "y": 5,
     "d": 2
    },
    {
-    "id": "irins",
-    "x": 0,
+    "id": "lilith",
+    "x": 6,
+    "y": 4,
+    "d": 3
+   },
+   {
+    "id": "ker",
+    "x": 7,
+    "y": 2,
+    "d": 2,
+    "from": 152
+   },
+   {
+    "id": "hiro",
+    "x": 4,
     "y": 1,
     "d": 1
+   },
+   {
+    "id": "sniper",
+    "x": 3,
+    "y": 3,
+    "d": 2
    }
   ],
   "skill": {},
   "skillIdx": {
-   "lulu": 0,
-   "ker": 0,
-   "irins": 1
+   "falchion": 1,
+   "ker": 1,
+   "lulu": 0
   },
   "retreats": [
    {
-    "id": "ker",
-    "t": 27
-   },
-   {
-    "id": "supporter",
-    "t": 111
+    "id": "nana",
+    "t": 159
    }
   ],
   "pol": {
-   "fire": 1,
-   "melt": 1,
-   "lamp": 1
+   "fire": 0,
+   "melt": 0,
+   "lamp": 0
   },
-  "_par": "[[[\"caster\",11,4,3,null,null,null],[\"vanguard\",7,6,3,null,null,null],[\"supporter\",12,0,1,null,111,null],[\"capy\",9,3,0,null,null,null],[\"supporter\",12,0,1,111,null,null],[\"lulu\",4,6,3,null,null,null],[\"nana\",0,6,0,null,null,null],[\"ker\",4,5,2,null,null,null],[\"jayeon\",3,3,1,null,null,null],[\"specialist\",11,1,2,null,null,null],[\"irins\",0,1,1,null,null,null]],{},{\"lulu\":0,\"ker\":0,\"irins\":1},[[\"ker\",27],[\"supporter\",111]],{\"fire\":1,\"melt\":1,\"lamp\":1}]"
+  "_par": "[[[\"caster\",11,4,3,null,null,null],[\"tao\",9,6,3,null,null,null],[\"nana\",12,0,1,null,null,null],[\"jayeon\",9,3,1,null,null,null],[\"lulu\",4,2,0,null,null,null],[\"falchion\",11,6,3,null,null,null],[\"ker\",2,5,2,null,null,null],[\"lilith\",6,4,3,null,null,null],[\"ker\",7,2,2,152,null,null],[\"hiro\",4,1,1,null,null,null],[\"sniper\",3,3,2,null,null,null]],{},{\"falchion\":1,\"ker\":1,\"lulu\":1},[[\"nana\",159]],{\"fire\":0,\"melt\":0,\"lamp\":0}]"
  },
  "actions": [
   {
@@ -170,8 +166,8 @@
    "t": 15.03333333333329,
    "k": 451,
    "a": "deploy",
-   "ci": 0,
-   "id": "vanguard",
+   "ci": 7,
+   "id": "tao",
    "x": 9,
    "y": 6,
    "dir": 3,
@@ -179,16 +175,24 @@
    "cost": 11
   },
   {
-   "t": 27.033333333333836,
-   "k": 811,
+   "t": 30.033333333333985,
+   "k": 901,
+   "a": "skill",
+   "ci": 7,
+   "id": "tao",
+   "uid": 10
+  },
+  {
+   "t": 30.06666666666732,
+   "k": 902,
    "a": "deploy",
-   "ci": 2,
-   "id": "supporter",
+   "ci": 6,
+   "id": "nana",
    "x": 12,
    "y": 0,
    "dir": 1,
    "uid": 15,
-   "cost": 12
+   "cost": 19
   },
   {
    "t": 32.03333333333408,
@@ -199,32 +203,16 @@
    "uid": 7
   },
   {
-   "t": 34.033333333333964,
-   "k": 1021,
-   "a": "skill",
-   "ci": 2,
-   "id": "supporter",
-   "uid": 15
-  },
-  {
-   "t": 37.03333333333379,
-   "k": 1111,
-   "a": "skill",
-   "ci": 0,
-   "id": "vanguard",
-   "uid": 10
-  },
-  {
-   "t": 42.03333333333351,
-   "k": 1261,
+   "t": 38.03333333333374,
+   "k": 1141,
    "a": "deploy",
-   "ci": 7,
-   "id": "capy",
+   "ci": 9,
+   "id": "jayeon",
    "x": 9,
    "y": 3,
-   "dir": 0,
+   "dir": 1,
    "uid": 20,
-   "cost": 23
+   "cost": 12
   },
   {
    "t": 53.033333333332884,
@@ -235,239 +223,343 @@
    "uid": 7
   },
   {
-   "t": 60.06666666666582,
-   "k": 1802,
-   "a": "skill",
-   "ci": 2,
-   "id": "supporter",
-   "uid": 15
-  },
-  {
-   "t": 61.03333333333243,
-   "k": 1831,
+   "t": 57.033333333332656,
+   "k": 1711,
    "a": "deploy",
-   "ci": 4,
+   "ci": 2,
    "id": "lulu",
    "x": 4,
-   "y": 6,
-   "dir": 3,
-   "uid": 27,
+   "y": 2,
+   "dir": 0,
+   "uid": 25,
    "cost": 19
   },
   {
-   "t": 67.0333333333321,
-   "k": 2011,
+   "t": 64.36666666666558,
+   "k": 1931,
    "a": "skill",
-   "ci": 0,
-   "id": "vanguard",
+   "ci": 7,
+   "id": "tao",
    "uid": 10
   },
   {
-   "t": 72.03333333333181,
-   "k": 2161,
+   "t": 64.39999999999891,
+   "k": 1932,
    "a": "deploy",
    "ci": 8,
-   "id": "nana",
-   "x": 0,
+   "id": "falchion",
+   "x": 11,
    "y": 6,
-   "dir": 0,
-   "uid": 32,
-   "cost": 19
+   "dir": 3,
+   "uid": 30,
+   "cost": 11
   },
   {
-   "t": 74.0333333333317,
-   "k": 2221,
-   "a": "skill",
-   "ci": 1,
-   "id": "caster",
-   "uid": 7
-  },
-  {
-   "t": 86.09999999999768,
-   "k": 2583,
-   "a": "skill",
-   "ci": 2,
-   "id": "supporter",
-   "uid": 15
-  },
-  {
-   "t": 91.03333333333073,
-   "k": 2731,
+   "t": 78.03333333333147,
+   "k": 2341,
    "a": "deploy",
-   "ci": 6,
+   "ci": 3,
    "id": "ker",
-   "x": 4,
+   "x": 2,
    "y": 5,
    "dir": 2,
-   "uid": 41,
+   "uid": 37,
    "cost": 19
   },
   {
-   "t": 95.0333333333305,
-   "k": 2851,
+   "t": 90.03333333333079,
+   "k": 2701,
+   "a": "skill",
+   "ci": 3,
+   "id": "ker",
+   "uid": 37
+  },
+  {
+   "t": 93.03333333333062,
+   "k": 2791,
+   "a": "deploy",
+   "ci": 5,
+   "id": "lilith",
+   "x": 6,
+   "y": 4,
+   "dir": 3,
+   "uid": 42,
+   "cost": 18
+  },
+  {
+   "t": 98.69999999999696,
+   "k": 2961,
+   "a": "skill",
+   "ci": 7,
+   "id": "tao",
+   "uid": 10
+  },
+  {
+   "t": 102.0333333333301,
+   "k": 3061,
+   "a": "deploy",
+   "ci": 4,
+   "id": "hiro",
+   "x": 4,
+   "y": 1,
+   "dir": 1,
+   "uid": 47,
+   "cost": 17
+  },
+  {
+   "t": 113.03333333332948,
+   "k": 3391,
+   "a": "deploy",
+   "ci": 0,
+   "id": "sniper",
+   "x": 3,
+   "y": 3,
+   "dir": 2,
+   "uid": 49,
+   "cost": 11
+  },
+  {
+   "t": 139.03333333332802,
+   "k": 4171,
+   "a": "deploy",
+   "ci": 1,
+   "id": "caster",
+   "x": 11,
+   "y": 4,
+   "dir": 3,
+   "uid": 61,
+   "cost": 27
+  },
+  {
+   "t": 144.23333333332772,
+   "k": 4327,
+   "a": "skill",
+   "ci": 3,
+   "id": "ker",
+   "uid": 37
+  },
+  {
+   "t": 146.03333333332762,
+   "k": 4381,
    "a": "skill",
    "ci": 1,
    "id": "caster",
-   "uid": 7
+   "uid": 61
   },
   {
-   "t": 103.03333333333005,
-   "k": 3091,
-   "a": "deploy",
-   "ci": 9,
-   "id": "jayeon",
-   "x": 3,
-   "y": 3,
-   "dir": 1,
-   "uid": 46,
-   "cost": 12
-  },
-  {
-   "t": 111.0333333333296,
-   "k": 3331,
+   "t": 159.03333333332688,
+   "k": 4771,
    "a": "retreat",
-   "ci": 2,
-   "id": "supporter",
+   "ci": 6,
+   "id": "nana",
    "uid": 15,
    "x": 12,
    "y": 0,
    "why": "plan"
   },
   {
-   "t": 111.0333333333296,
-   "k": 3331,
-   "a": "deploy",
-   "ci": 3,
-   "id": "specialist",
-   "x": 11,
-   "y": 1,
-   "dir": 2,
-   "uid": 48,
-   "cost": 8
-  },
-  {
-   "t": 111.0333333333296,
-   "k": 3331,
-   "a": "skill",
-   "ci": 3,
-   "id": "specialist",
-   "uid": 48
-  },
-  {
-   "t": 116.03333333332931,
-   "k": 3481,
+   "t": 167.03333333332642,
+   "k": 5011,
    "a": "skill",
    "ci": 1,
    "id": "caster",
-   "uid": 7
+   "uid": 61
   },
   {
-   "t": 123.06666666666224,
-   "k": 3692,
-   "a": "skill",
-   "ci": 3,
-   "id": "specialist",
-   "uid": 48
-  },
-  {
-   "t": 124.03333333332886,
-   "k": 3721,
+   "t": 172.86666666665943,
+   "k": 5186,
    "a": "deploy",
-   "ci": 5,
-   "id": "irins",
-   "x": 0,
-   "y": 1,
+   "ci": 9,
+   "id": "jayeon",
+   "x": 9,
+   "y": 3,
    "dir": 1,
-   "uid": 51,
-   "cost": 19
+   "uid": 75,
+   "cost": 18
   },
   {
-   "t": 135.0999999999949,
-   "k": 4053,
+   "t": 191.79999999999168,
+   "k": 5754,
+   "a": "deploy",
+   "ci": 7,
+   "id": "tao",
+   "x": 9,
+   "y": 6,
+   "dir": 3,
+   "uid": 76,
+   "cost": 17
+  },
+  {
+   "t": 198.43333333332464,
+   "k": 5953,
    "a": "skill",
    "ci": 3,
-   "id": "specialist",
-   "uid": 48
+   "id": "ker",
+   "uid": 37
   },
   {
-   "t": 136.0333333333282,
-   "k": 4081,
+   "t": 206.79999999999083,
+   "k": 6204,
    "a": "skill",
+   "ci": 7,
+   "id": "tao",
+   "uid": 76
+  },
+  {
+   "t": 208.73333333332405,
+   "k": 6262,
+   "a": "deploy",
    "ci": 5,
-   "id": "irins",
-   "uid": 51
+   "id": "lilith",
+   "x": 6,
+   "y": 4,
+   "dir": 3,
+   "uid": 77,
+   "cost": 27
   },
   {
-   "t": 137.03333333332813,
-   "k": 4111,
+   "t": 241.1333333333222,
+   "k": 7234,
+   "a": "skill",
+   "ci": 7,
+   "id": "tao",
+   "uid": 76
+  },
+  {
+   "t": 252.63333333332156,
+   "k": 7579,
+   "a": "skill",
+   "ci": 3,
+   "id": "ker",
+   "uid": 37
+  },
+  {
+   "t": 264.03333333332773,
+   "k": 7921,
+   "a": "deploy",
+   "ci": 1,
+   "id": "caster",
+   "x": 11,
+   "y": 4,
+   "dir": 3,
+   "uid": 78,
+   "cost": 36
+  },
+  {
+   "t": 271.0333333333333,
+   "k": 8131,
    "a": "skill",
    "ci": 1,
    "id": "caster",
-   "uid": 7
+   "uid": 78
   },
   {
-   "t": 147.13333333332756,
-   "k": 4414,
+   "t": 275.46666666667016,
+   "k": 8264,
    "a": "skill",
-   "ci": 3,
-   "id": "specialist",
-   "uid": 48
+   "ci": 7,
+   "id": "tao",
+   "uid": 76
   },
   {
-   "t": 158.03333333332694,
-   "k": 4741,
-   "a": "skill",
-   "ci": 1,
-   "id": "caster",
-   "uid": 7
-  },
-  {
-   "t": 159.1666666666602,
-   "k": 4775,
-   "a": "skill",
-   "ci": 3,
-   "id": "specialist",
-   "uid": 48
-  },
-  {
-   "t": 171.19999999999285,
-   "k": 5136,
-   "a": "skill",
-   "ci": 3,
-   "id": "specialist",
-   "uid": 48
-  },
-  {
-   "t": 179.03333333332574,
-   "k": 5371,
+   "t": 292.03333333335,
+   "k": 8761,
    "a": "skill",
    "ci": 1,
    "id": "caster",
-   "uid": 7
+   "uid": 78
   },
   {
-   "t": 183.2333333333255,
-   "k": 5497,
+   "t": 306.8333333333618,
+   "k": 9205,
    "a": "skill",
    "ci": 3,
-   "id": "specialist",
-   "uid": 48
+   "id": "ker",
+   "uid": 37
   },
   {
-   "t": 189.46666666665848,
-   "k": 5684,
+   "t": 309.8000000000308,
+   "k": 9294,
    "a": "skill",
-   "ci": 5,
-   "id": "irins",
-   "uid": 51
+   "ci": 7,
+   "id": "tao",
+   "uid": 76
   },
   {
-   "t": 195.26666666665815,
-   "k": 5858,
+   "t": 313.0333333333667,
+   "k": 9391,
+   "a": "skill",
+   "ci": 1,
+   "id": "caster",
+   "uid": 78
+  },
+  {
+   "t": 316.00000000003575,
+   "k": 9480,
+   "a": "deploy",
+   "ci": 6,
+   "id": "nana",
+   "x": 12,
+   "y": 0,
+   "dir": 1,
+   "uid": 79,
+   "cost": 29
+  },
+  {
+   "t": 334.03333333338344,
+   "k": 10021,
+   "a": "skill",
+   "ci": 1,
+   "id": "caster",
+   "uid": 78
+  },
+  {
+   "t": 344.1333333333915,
+   "k": 10324,
+   "a": "skill",
+   "ci": 7,
+   "id": "tao",
+   "uid": 76
+  },
+  {
+   "t": 355.03333333340015,
+   "k": 10651,
+   "a": "skill",
+   "ci": 1,
+   "id": "caster",
+   "uid": 78
+  },
+  {
+   "t": 361.0333333334049,
+   "k": 10831,
    "a": "skill",
    "ci": 3,
-   "id": "specialist",
-   "uid": 48
+   "id": "ker",
+   "uid": 37
+  },
+  {
+   "t": 376.03333333341686,
+   "k": 11281,
+   "a": "skill",
+   "ci": 1,
+   "id": "caster",
+   "uid": 78
+  },
+  {
+   "t": 378.46666666675213,
+   "k": 11354,
+   "a": "skill",
+   "ci": 7,
+   "id": "tao",
+   "uid": 76
+  },
+  {
+   "t": 397.0333333334336,
+   "k": 11911,
+   "a": "skill",
+   "ci": 1,
+   "id": "caster",
+   "uid": 78
   }
  ],
  "lives": [
@@ -483,19 +575,7 @@
    "sk": "S1"
   },
   {
-   "id": "vanguard",
-   "sk": "S1"
-  },
-  {
-   "id": "supporter",
-   "sk": "S1"
-  },
-  {
-   "id": "capy",
-   "sk": "S1"
-  },
-  {
-   "id": "lulu",
+   "id": "tao",
    "sk": "S1"
   },
   {
@@ -503,38 +583,50 @@
    "sk": "S1"
   },
   {
-   "id": "ker",
-   "sk": "S1"
-  },
-  {
    "id": "jayeon",
    "sk": "S1"
   },
   {
-   "id": "specialist",
+   "id": "lulu",
    "sk": "S1"
   },
   {
-   "id": "irins",
+   "id": "falchion",
    "sk": "S2"
+  },
+  {
+   "id": "ker",
+   "sk": "S2"
+  },
+  {
+   "id": "lilith",
+   "sk": "S1"
+  },
+  {
+   "id": "hiro",
+   "sk": "S1"
+  },
+  {
+   "id": "sniper",
+   "sk": "S1"
   }
  ],
  "probes": {
-  "E0L40": {
-   "cleared": false,
-   "wins": 0,
-   "worstLost": null,
-   "family": "WL-04:1a870z0",
-   "evals": 2726,
-   "secs": 191,
+  "E1L15": {
+   "cleared": true,
+   "wins": 5,
+   "worstLost": 1,
+   "family": "WL-04:xgmely",
+   "evals": 1120,
+   "secs": 99,
    "start": {
-    "fills": 16,
+    "fills": 24,
     "bestFill": {
-     "fam": "WL-04:1a870z0",
+     "fam": "WL-04:1x391eb",
      "lost": 2,
      "cdLost": 2
     },
-    "fams": 8,
+    "fams": 12,
     "pruned": []
    }
   },
@@ -542,35 +634,17 @@
    "cleared": false,
    "wins": 5,
    "worstLost": 3,
-   "family": "WL-04:qrmkhr",
-   "evals": 2613,
-   "secs": 175,
+   "family": "WL-04:bf6mn7",
+   "evals": 3250,
+   "secs": 173,
    "start": {
-    "fills": 16,
+    "fills": 24,
     "bestFill": {
-     "fam": "WL-04:1rto59y",
+     "fam": "WL-04:103w00p",
      "lost": 2,
      "cdLost": 2
     },
-    "fams": 8,
-    "pruned": []
-   }
-  },
-  "E1L15": {
-   "cleared": true,
-   "wins": 5,
-   "worstLost": 1,
-   "family": "WL-04:1rto59y",
-   "evals": 2007,
-   "secs": 136,
-   "start": {
-    "fills": 18,
-    "bestFill": {
-     "fam": "WL-04:1a870z0",
-     "lost": 2,
-     "cdLost": 2
-    },
-    "fams": 9,
+    "fams": 12,
     "pruned": []
    }
   }
@@ -604,9 +678,9 @@
   "brick",
   "jayeon"
  ],
- "evals": 7346,
- "secs": 501,
+ "evals": 4370,
+ "secs": 272,
  "replay": "rep/WL-04_T4_lost1_r0.json",
  "replayLost": 1,
- "secsTotal": 502
+ "secsTotal": 273
 }

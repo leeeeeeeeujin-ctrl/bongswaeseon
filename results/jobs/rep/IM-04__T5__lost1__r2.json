@@ -3,9 +3,9 @@
  "deck": "T5",
  "crit": "lost1",
  "need": 1,
- "gameHash": "fca95f6aaf8d",
+ "gameHash": "35c22d066cd2",
  "done": true,
- "finished": "2026-11-12T12:08:27.830Z",
+ "finished": "2026-11-12T14:58:16.723Z",
  "squad": [
   "vanguard",
   "guard",
@@ -45,21 +45,20 @@
   "jayeon"
  ],
  "rep": 2,
- "rngSeed": 3269532328,
+ "rngSeed": 1312630196,
  "famSeed": 2651084411,
- "min": "E1L60",
+ "min": "E1L30",
  "cut": false,
  "worstLost": 0,
- "winTime": 166.0666666666598,
+ "winTime": 206.39999999999085,
  "family": {
-  "id": "new:IM-04:19cht1q",
-  "d": 0.62,
+  "id": "IM-04:19cht1q",
+  "d": 0.3,
   "tags": [
    "deep block",
    "split lanes",
    "no medic"
-  ],
-  "from": "IM-04:1h6us9d"
+  ]
  },
  "plan": {
   "entries": [
@@ -70,29 +69,41 @@
     "d": 1
    },
    {
-    "id": "defender",
-    "x": 2,
-    "y": 5,
-    "d": 2
-   },
-   {
     "id": "geomseon",
     "x": 3,
     "y": 3,
     "d": 2
    },
    {
-    "id": "skakea2",
+    "id": "guard",
+    "x": 2,
+    "y": 5,
+    "d": 2
+   },
+   {
+    "id": "bongeun",
     "x": 4,
     "y": 1,
     "d": 2
+   },
+   {
+    "id": "specialist",
+    "x": 1,
+    "y": 2,
+    "d": 0
+   },
+   {
+    "id": "sniper",
+    "x": 9,
+    "y": 5,
+    "d": 0
    }
   ],
   "skill": {},
   "skillIdx": {
    "ker": 1,
    "geomseon": 1,
-   "skakea2": 0
+   "bongeun": 0
   },
   "retreats": [],
   "pol": {
@@ -100,14 +111,14 @@
    "melt": 1,
    "lamp": 1
   },
-  "_par": "[[[\"ker\",12,5,1,null,null,null],[\"defender\",2,5,2,null,null,null],[\"geomseon\",3,3,2,null,null,null],[\"skakea2\",4,1,2,null,null,null],[\"yui\",7,3,1,null,null,null]],{},{\"ker\":1,\"geomseon\":1,\"skakea2\":0,\"yui\":1},[],{\"fire\":1,\"melt\":1,\"lamp\":1}]"
+  "_par": "[[[\"ker\",12,5,1,null,null,null],[\"guard\",2,5,2,null,null,null],[\"geomseon\",3,3,2,null,null,null],[\"bongeun\",4,1,2,null,null,null],[\"specialist\",1,2,0,null,null,null],[\"sniper\",9,5,0,null,null,null]],{},{\"ker\":1,\"geomseon\":1,\"bongeun\":0},[],{\"fire\":1,\"melt\":1,\"lamp\":1}]"
  },
  "actions": [
   {
    "t": 0,
    "k": 0,
    "a": "deploy",
-   "ci": 1,
+   "ci": 3,
    "id": "ker",
    "x": 12,
    "y": 5,
@@ -116,144 +127,284 @@
    "cost": 19
   },
   {
-   "t": 7.999999999999981,
-   "k": 240,
+   "t": 9.999999999999975,
+   "k": 300,
    "a": "skill",
-   "ci": 1,
+   "ci": 3,
    "id": "ker",
    "uid": 1
   },
   {
-   "t": 17.03333333333334,
-   "k": 511,
+   "t": 18.03333333333339,
+   "k": 541,
    "a": "deploy",
-   "ci": 0,
-   "id": "defender",
-   "x": 2,
-   "y": 5,
+   "ci": 4,
+   "id": "geomseon",
+   "x": 3,
+   "y": 3,
    "dir": 2,
-   "uid": 10,
-   "cost": 18
+   "uid": 11,
+   "cost": 19
   },
   {
    "t": 25.033333333333736,
    "k": 751,
    "a": "skill",
+   "ci": 4,
+   "id": "geomseon",
+   "uid": 11
+  },
+  {
+   "t": 33.03333333333402,
+   "k": 991,
+   "a": "deploy",
    "ci": 0,
-   "id": "defender",
-   "uid": 10
-  },
-  {
-   "t": 36.03333333333385,
-   "k": 1081,
-   "a": "deploy",
-   "ci": 2,
-   "id": "geomseon",
-   "x": 3,
-   "y": 3,
+   "id": "guard",
+   "x": 2,
+   "y": 5,
    "dir": 2,
-   "uid": 17,
-   "cost": 19
+   "uid": 16,
+   "cost": 15
   },
   {
-   "t": 41.033333333333566,
-   "k": 1231,
-   "a": "skill",
-   "ci": 2,
-   "id": "geomseon",
-   "uid": 17
-  },
-  {
-   "t": 56.03333333333271,
-   "k": 1681,
+   "t": 46.03333333333328,
+   "k": 1381,
    "a": "deploy",
-   "ci": 3,
-   "id": "skakea2",
+   "ci": 5,
+   "id": "bongeun",
    "x": 4,
    "y": 1,
    "dir": 2,
-   "uid": 21,
-   "cost": 20
+   "uid": 18,
+   "cost": 13
   },
   {
-   "t": 61.79999999999905,
-   "k": 1854,
+   "t": 47.033333333333225,
+   "k": 1411,
    "a": "skill",
-   "ci": 1,
+   "ci": 4,
+   "id": "geomseon",
+   "uid": 11
+  },
+  {
+   "t": 54.03333333333283,
+   "k": 1621,
+   "a": "deploy",
+   "ci": 2,
+   "id": "specialist",
+   "x": 1,
+   "y": 2,
+   "dir": 0,
+   "uid": 22,
+   "cost": 8
+  },
+  {
+   "t": 54.03333333333283,
+   "k": 1621,
+   "a": "skill",
+   "ci": 2,
+   "id": "specialist",
+   "uid": 22
+  },
+  {
+   "t": 63.99999999999893,
+   "k": 1920,
+   "a": "skill",
+   "ci": 3,
    "id": "ker",
    "uid": 1
   },
   {
-   "t": 62.03333333333237,
-   "k": 1861,
-   "a": "skill",
-   "ci": 2,
-   "id": "geomseon",
-   "uid": 17
-  },
-  {
-   "t": 63.466666666665624,
-   "k": 1904,
-   "a": "skill",
-   "ci": 0,
-   "id": "defender",
-   "uid": 10
-  },
-  {
-   "t": 83.03333333333119,
-   "k": 2491,
-   "a": "skill",
-   "ci": 2,
-   "id": "geomseon",
-   "uid": 17
-  },
-  {
-   "t": 101.89999999999678,
-   "k": 3057,
-   "a": "skill",
-   "ci": 0,
-   "id": "defender",
-   "uid": 10
-  },
-  {
-   "t": 104.03333333332999,
-   "k": 3121,
-   "a": "skill",
-   "ci": 2,
-   "id": "geomseon",
-   "uid": 17
-  },
-  {
-   "t": 115.599999999996,
-   "k": 3468,
-   "a": "skill",
+   "t": 65.03333333333221,
+   "k": 1951,
+   "a": "deploy",
    "ci": 1,
+   "id": "sniper",
+   "x": 9,
+   "y": 5,
+   "dir": 0,
+   "uid": 26,
+   "cost": 11
+  },
+  {
+   "t": 66.06666666666548,
+   "k": 1982,
+   "a": "skill",
+   "ci": 2,
+   "id": "specialist",
+   "uid": 22
+  },
+  {
+   "t": 69.03333333333198,
+   "k": 2071,
+   "a": "skill",
+   "ci": 4,
+   "id": "geomseon",
+   "uid": 11
+  },
+  {
+   "t": 78.09999999999813,
+   "k": 2343,
+   "a": "skill",
+   "ci": 2,
+   "id": "specialist",
+   "uid": 22
+  },
+  {
+   "t": 90.13333333333078,
+   "k": 2704,
+   "a": "skill",
+   "ci": 2,
+   "id": "specialist",
+   "uid": 22
+  },
+  {
+   "t": 91.03333333333073,
+   "k": 2731,
+   "a": "skill",
+   "ci": 4,
+   "id": "geomseon",
+   "uid": 11
+  },
+  {
+   "t": 102.16666666666343,
+   "k": 3065,
+   "a": "skill",
+   "ci": 2,
+   "id": "specialist",
+   "uid": 22
+  },
+  {
+   "t": 113.03333333332948,
+   "k": 3391,
+   "a": "skill",
+   "ci": 4,
+   "id": "geomseon",
+   "uid": 11
+  },
+  {
+   "t": 114.19999999999608,
+   "k": 3426,
+   "a": "skill",
+   "ci": 2,
+   "id": "specialist",
+   "uid": 22
+  },
+  {
+   "t": 117.99999999999586,
+   "k": 3540,
+   "a": "skill",
+   "ci": 3,
    "id": "ker",
    "uid": 1
   },
   {
-   "t": 125.0333333333288,
-   "k": 3751,
+   "t": 126.23333333332873,
+   "k": 3787,
    "a": "skill",
    "ci": 2,
-   "id": "geomseon",
-   "uid": 17
+   "id": "specialist",
+   "uid": 22
   },
   {
-   "t": 140.33333333332794,
-   "k": 4210,
+   "t": 135.03333333332824,
+   "k": 4051,
    "a": "skill",
-   "ci": 0,
-   "id": "defender",
-   "uid": 10
+   "ci": 4,
+   "id": "geomseon",
+   "uid": 11
   },
   {
-   "t": 146.03333333332762,
-   "k": 4381,
+   "t": 138.19999999999473,
+   "k": 4146,
+   "a": "deploy",
+   "ci": 1,
+   "id": "sniper",
+   "x": 9,
+   "y": 5,
+   "dir": 0,
+   "uid": 61,
+   "cost": 17
+  },
+  {
+   "t": 138.2666666666614,
+   "k": 4148,
    "a": "skill",
    "ci": 2,
+   "id": "specialist",
+   "uid": 22
+  },
+  {
+   "t": 150.29999999999404,
+   "k": 4509,
+   "a": "skill",
+   "ci": 2,
+   "id": "specialist",
+   "uid": 22
+  },
+  {
+   "t": 157.033333333327,
+   "k": 4711,
+   "a": "skill",
+   "ci": 4,
    "id": "geomseon",
-   "uid": 17
+   "uid": 11
+  },
+  {
+   "t": 162.3333333333267,
+   "k": 4870,
+   "a": "skill",
+   "ci": 2,
+   "id": "specialist",
+   "uid": 22
+  },
+  {
+   "t": 171.9999999999928,
+   "k": 5160,
+   "a": "skill",
+   "ci": 3,
+   "id": "ker",
+   "uid": 1
+  },
+  {
+   "t": 174.36666666665934,
+   "k": 5231,
+   "a": "skill",
+   "ci": 2,
+   "id": "specialist",
+   "uid": 22
+  },
+  {
+   "t": 179.03333333332574,
+   "k": 5371,
+   "a": "skill",
+   "ci": 4,
+   "id": "geomseon",
+   "uid": 11
+  },
+  {
+   "t": 186.399999999992,
+   "k": 5592,
+   "a": "skill",
+   "ci": 2,
+   "id": "specialist",
+   "uid": 22
+  },
+  {
+   "t": 198.43333333332464,
+   "k": 5953,
+   "a": "skill",
+   "ci": 2,
+   "id": "specialist",
+   "uid": 22
+  },
+  {
+   "t": 201.0333333333245,
+   "k": 6031,
+   "a": "skill",
+   "ci": 4,
+   "id": "geomseon",
+   "uid": 11
   }
  ],
  "lives": [
@@ -269,102 +420,38 @@
    "sk": "S2"
   },
   {
-   "id": "defender",
-   "sk": "S1"
-  },
-  {
    "id": "geomseon",
    "sk": "S2"
   },
   {
-   "id": "skakea2",
+   "id": "guard",
+   "sk": "S1"
+  },
+  {
+   "id": "bongeun",
+   "sk": "S1"
+  },
+  {
+   "id": "specialist",
+   "sk": "S1"
+  },
+  {
+   "id": "sniper",
    "sk": "S1"
   }
  ],
  "probes": {
-  "E0L1": {
-   "cleared": false,
-   "wins": 0,
-   "worstLost": null,
-   "family": "IM-04:o89e7o",
-   "evals": 6523,
-   "secs": 160,
-   "start": {
-    "fills": 6,
-    "bestFill": {
-     "fam": "IM-04:uf2i94",
-     "lost": 2,
-     "cdLost": 2
-    },
-    "fams": 3,
-    "pruned": []
-   }
-  },
-  "E0L20": {
-   "cleared": false,
-   "wins": 0,
-   "worstLost": null,
-   "family": "IM-04:o89e7o",
-   "evals": 4748,
-   "secs": 160,
-   "start": {
-    "fills": 6,
-    "bestFill": {
-     "fam": "IM-04:uf2i94",
-     "lost": 2,
-     "cdLost": 2
-    },
-    "fams": 3,
-    "pruned": []
-   }
-  },
-  "E0L40": {
-   "cleared": false,
-   "wins": 5,
-   "worstLost": 6,
-   "family": "IM-04:1h6us9d",
-   "evals": 4198,
-   "secs": 157,
-   "start": {
-    "fills": 6,
-    "bestFill": {
-     "fam": "IM-04:uf2i94",
-     "lost": 2,
-     "cdLost": 2
-    },
-    "fams": 3,
-    "pruned": []
-   }
-  },
-  "E1L1": {
-   "cleared": false,
-   "wins": 0,
-   "worstLost": null,
-   "family": "new:IM-04:fpaocr",
-   "evals": 4278,
-   "secs": 158,
-   "start": {
-    "fills": 6,
-    "bestFill": {
-     "fam": "IM-04:uf2i94",
-     "lost": 2,
-     "cdLost": 2
-    },
-    "fams": 3,
-    "pruned": []
-   }
-  },
   "E1L15": {
    "cleared": false,
    "wins": 0,
    "worstLost": null,
-   "family": "IM-04:o89e7o",
-   "evals": 4021,
-   "secs": 161,
+   "family": "new:IM-04:a2i6tu",
+   "evals": 3351,
+   "secs": 168,
    "start": {
     "fills": 6,
     "bestFill": {
-     "fam": "IM-04:uf2i94",
+     "fam": "IM-04:19cht1q",
      "lost": 2,
      "cdLost": 2
     },
@@ -373,48 +460,12 @@
    }
   },
   "E1L30": {
-   "cleared": false,
-   "wins": 0,
-   "worstLost": null,
-   "family": "IM-04:o89e7o",
-   "evals": 3786,
-   "secs": 157,
-   "start": {
-    "fills": 6,
-    "bestFill": {
-     "fam": "IM-04:uf2i94",
-     "lost": 2,
-     "cdLost": 2
-    },
-    "fams": 3,
-    "pruned": []
-   }
-  },
-  "E1L45": {
-   "cleared": false,
-   "wins": 5,
-   "worstLost": 5,
-   "family": "IM-04:o89e7o",
-   "evals": 3590,
-   "secs": 160,
-   "start": {
-    "fills": 6,
-    "bestFill": {
-     "fam": "IM-04:uf2i94",
-     "lost": 2,
-     "cdLost": 2
-    },
-    "fams": 3,
-    "pruned": []
-   }
-  },
-  "E1L60": {
    "cleared": true,
    "wins": 5,
    "worstLost": 0,
-   "family": "new:IM-04:19cht1q",
-   "evals": 408,
-   "secs": 42,
+   "family": "IM-04:19cht1q",
+   "evals": 312,
+   "secs": 52,
    "start": {
     "fills": 6,
     "bestFill": {
@@ -465,9 +516,9 @@
   "brick",
   "jayeon"
  ],
- "evals": 31552,
- "secs": 1155,
+ "evals": 3663,
+ "secs": 220,
  "replay": "rep/IM-04_T5_lost1_r2.json",
  "replayLost": 0,
- "secsTotal": 1155
+ "secsTotal": 221
 }

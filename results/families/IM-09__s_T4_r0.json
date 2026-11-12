@@ -3,7 +3,7 @@
  "source": "s_T4_r0",
  "families": [
   {
-   "id": "IM-09:1deg5qo",
+   "id": "IM-09:kq76zt",
    "T": {
     "slots": [
      {
@@ -72,35 +72,19 @@
      {
       "x": 6,
       "y": 4,
-      "d": 3,
+      "d": 1,
       "prim": 4,
       "role": {
        "tile": "g",
        "kind": "block",
        "block": 2,
-       "cls": "specialist",
+       "cls": "guard",
        "dmg": "phys",
-       "sub": "푸쉬마스터"
+       "sub": "공격수"
       },
-      "src": "skakea",
+      "src": "hiro",
       "from": 5,
       "until": 137
-     },
-     {
-      "x": 9,
-      "y": 5,
-      "d": 0,
-      "prim": 5,
-      "role": {
-       "tile": "g",
-       "kind": "block",
-       "block": 3,
-       "cls": "defender",
-       "dmg": "phys",
-       "sub": ""
-      },
-      "src": "defender",
-      "from": 56
      },
      {
       "x": 6,
@@ -111,12 +95,28 @@
        "tile": "g",
        "kind": "block",
        "block": 2,
-       "cls": "specialist",
+       "cls": "guard",
        "dmg": "phys",
-       "sub": "푸쉬마스터"
+       "sub": "공격수"
       },
-      "src": "skakea",
+      "src": "hiro",
       "from": 137
+     },
+     {
+      "x": 9,
+      "y": 5,
+      "d": 0,
+      "prim": 6,
+      "role": {
+       "tile": "g",
+       "kind": "block",
+       "block": 3,
+       "cls": "defender",
+       "dmg": "phys",
+       "sub": ""
+      },
+      "src": "defender",
+      "from": 56
      },
      {
       "x": 5,
@@ -165,6 +165,21 @@
       "src": "irins"
      },
      {
+      "x": 1,
+      "y": 4,
+      "d": 3,
+      "prim": 10,
+      "role": {
+       "tile": "h",
+       "kind": "phys",
+       "block": 0,
+       "cls": "sniper",
+       "dmg": "phys",
+       "sub": ""
+      },
+      "src": "sniper"
+     },
+     {
       "x": 10,
       "y": 4,
       "d": 1,
@@ -187,7 +202,7 @@
       "t": 126
      },
      {
-      "slot": 5,
+      "slot": 6,
       "t": 193
      }
     ],
@@ -203,29 +218,233 @@
     "no medic",
     "relocate"
    ],
-   "q": -23,
+   "q": -21,
    "rec": {
     "lvl": "E0L20",
-    "lost": 1,
-    "worstLost": 3,
+    "lost": 0,
+    "worstLost": 1,
     "verified": true,
     "deck": "T4",
     "crit": "lost1",
-    "gameHash": "656ff27f0786",
+    "gameHash": "35c22d066cd2",
     "ops": [
      "ker",
      "tao",
      "teka",
      "lilith",
-     "skakea",
+     "hiro",
      "defender",
      "jayeon",
      "specialist",
-     "irins"
+     "irins",
+     "sniper"
     ]
    },
    "src": "s_T4_r0",
-   "members": 14
+   "members": 28
+  },
+  {
+   "id": "IM-09:l1kg3u",
+   "T": {
+    "slots": [
+     {
+      "x": 12,
+      "y": 2,
+      "d": 2,
+      "prim": 0,
+      "role": {
+       "tile": "g",
+       "kind": "block",
+       "block": 3,
+       "cls": "defender",
+       "dmg": "phys",
+       "sub": ""
+      },
+      "src": "defender",
+      "skill": {
+       "m": 2
+      }
+     },
+     {
+      "x": 9,
+      "y": 5,
+      "d": 2,
+      "prim": 1,
+      "role": {
+       "tile": "g",
+       "kind": "block",
+       "block": 2,
+       "cls": "vanguard",
+       "dmg": "phys",
+       "sub": ""
+      },
+      "src": "vanguard"
+     },
+     {
+      "x": 3,
+      "y": 2,
+      "d": 0,
+      "prim": 2,
+      "role": {
+       "tile": "g",
+       "kind": "block",
+       "block": 2,
+       "cls": "vanguard",
+       "dmg": "phys",
+       "sub": "척후병"
+      },
+      "src": "tao"
+     },
+     {
+      "x": 2,
+      "y": 6,
+      "d": 0,
+      "prim": 3,
+      "role": {
+       "tile": "h",
+       "kind": "arts",
+       "block": 0,
+       "cls": "caster",
+       "dmg": "arts",
+       "sub": "코어 캐스터"
+      },
+      "src": "irins"
+     },
+     {
+      "x": 10,
+      "y": 4,
+      "d": 3,
+      "prim": 4,
+      "role": {
+       "tile": "g",
+       "kind": "block",
+       "block": 1,
+       "cls": "vanguard",
+       "dmg": "phys",
+       "sub": "돌격수"
+      },
+      "src": "falchion",
+      "from": 56
+     },
+     {
+      "x": 7,
+      "y": 4,
+      "d": 3,
+      "prim": 5,
+      "role": {
+       "tile": "h",
+       "kind": "phys",
+       "block": 0,
+       "cls": "sniper",
+       "dmg": "phys",
+       "sub": "포격사수"
+      },
+      "src": "capy"
+     },
+     {
+      "x": 10,
+      "y": 6,
+      "d": 2,
+      "prim": 6,
+      "role": {
+       "tile": "h",
+       "kind": "supp",
+       "block": 0,
+       "cls": "supporter",
+       "dmg": "arts",
+       "sub": "감속자"
+      },
+      "src": "jayeon"
+     },
+     {
+      "x": 5,
+      "y": 6,
+      "d": 2,
+      "prim": 7,
+      "role": {
+       "tile": "h",
+       "kind": "arts",
+       "block": 0,
+       "cls": "caster",
+       "dmg": "arts",
+       "sub": "코어 캐스터"
+      },
+      "src": "lilith",
+      "from": 27
+     },
+     {
+      "x": 5,
+      "y": 6,
+      "d": 2,
+      "prim": 6,
+      "role": {
+       "tile": "h",
+       "kind": "supp",
+       "block": 0,
+       "cls": "supporter",
+       "dmg": "arts",
+       "sub": "감속자"
+      },
+      "src": "jayeon",
+      "from": 121
+     },
+     {
+      "x": 11,
+      "y": 4,
+      "d": 1,
+      "prim": 9,
+      "role": {
+       "tile": "h",
+       "kind": "supp",
+       "block": 0,
+       "cls": "supporter",
+       "dmg": "arts",
+       "sub": "감속자"
+      },
+      "src": "teka"
+     }
+    ],
+    "retreats": [
+     {
+      "slot": 4,
+      "t": 193
+     }
+    ],
+    "pol": {
+     "fire": 1,
+     "melt": 1,
+     "lamp": 0
+    }
+   },
+   "tags": [
+    "deep block",
+    "split lanes",
+    "no medic",
+    "relocate"
+   ],
+   "q": -40,
+   "rec": {
+    "lvl": "E0L40",
+    "lost": 0,
+    "worstLost": 0,
+    "verified": true,
+    "deck": "T4",
+    "crit": "lost1",
+    "gameHash": "35c22d066cd2",
+    "ops": [
+     "defender",
+     "vanguard",
+     "tao",
+     "irins",
+     "falchion",
+     "capy",
+     "jayeon",
+     "lilith",
+     "teka"
+    ]
+   },
+   "src": "s_T4_r0",
+   "members": 7
   },
   {
    "id": "IM-09:921myq",
@@ -451,5 +670,5 @@
    "members": 14
   }
  ],
- "updated": "2026-11-12T08:26:15.287Z"
+ "updated": "2026-11-12T16:29:32.803Z"
 }

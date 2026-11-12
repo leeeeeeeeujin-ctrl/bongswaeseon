@@ -20,30 +20,11 @@
   0,
   0
  ],
- "family": "WL-02:1wty0aw",
- "gameHash": "58138ed385fb",
+ "family": "new:WL-02:7cm3v5",
+ "gameHash": "35c22d066cd2",
  "rng": "Math.random replaced before `new TD.Game` by im_sim's seed(n): a = n*7919, mulberry32-style step; nothing else draws from it between seeding and the game",
  "stepping": "fixed g.update(1/30) per frame, max 420*30 frames; actions run at the start of a frame, before that frame's update, in log order",
  "squad": [
-  {
-   "id": "guard",
-   "elite": 0,
-   "lvl": 40,
-   "pot": 1,
-   "skillIdx": 0,
-   "skill": "S1",
-   "slv": 4,
-   "sm": [
-    0,
-    0,
-    0
-   ],
-   "mult": {
-    "hp": 0.7598306110102844,
-    "atk": 0.7482185273159145,
-    "def": 0.7872340425531915
-   }
-  },
   {
    "id": "defender",
    "elite": 0,
@@ -83,7 +64,7 @@
    }
   },
   {
-   "id": "belina",
+   "id": "yui",
    "elite": 0,
    "lvl": 40,
    "pot": 1,
@@ -96,9 +77,9 @@
     0
    ],
    "mult": {
-    "hp": 0.48261643118785974,
-    "atk": 0.5588163265306123,
-    "def": 0.5653596715654191
+    "hp": 0.5313463514902363,
+    "atk": 0.5545643407063424,
+    "def": 0.5738065661047028
    }
   },
   {
@@ -121,7 +102,7 @@
    }
   },
   {
-   "id": "falchion",
+   "id": "irins",
    "elite": 0,
    "lvl": 40,
    "pot": 1,
@@ -134,9 +115,104 @@
     0
    ],
    "mult": {
-    "hp": 0.5278886425227889,
-    "atk": 0.6146059571827489,
-    "def": 0.5997150997150997
+    "hp": 0.6019526248399488,
+    "atk": 0.5996803368158429,
+    "def": 0.615495867768595
+   }
+  },
+  {
+   "id": "sunae",
+   "elite": 0,
+   "lvl": 40,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 4,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.509705753184014,
+    "atk": 0.6613316261203586,
+    "def": 0.5188735177865612
+   }
+  },
+  {
+   "id": "teka",
+   "elite": 0,
+   "lvl": 40,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 4,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.6033768467130463,
+    "atk": 0.6004062362758015,
+    "def": 0.6233428030303031
+   }
+  },
+  {
+   "id": "nana",
+   "elite": 0,
+   "lvl": 40,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 4,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.799373040752351,
+    "atk": 0.7580398162327718,
+    "def": 0.8
+   }
+  },
+  {
+   "id": "tao",
+   "elite": 0,
+   "lvl": 40,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 4,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.8,
+    "atk": 0.7204301075268817,
+    "def": 0.7192307692307692
+   }
+  },
+  {
+   "id": "geomseon",
+   "elite": 0,
+   "lvl": 40,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 4,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.563265306122449,
+    "atk": 0.5798897661254283,
+    "def": 0.6157114900754822
    }
   },
   {
@@ -157,44 +233,6 @@
     "atk": 0.6050920368147259,
     "def": 0.6239067055393586
    }
-  },
-  {
-   "id": "bongeun",
-   "elite": 0,
-   "lvl": 40,
-   "pot": 1,
-   "skillIdx": 0,
-   "skill": "S1",
-   "slv": 4,
-   "sm": [
-    0,
-    0,
-    0
-   ],
-   "mult": {
-    "hp": 0.599610633727175,
-    "atk": 0.5180573495220873,
-    "def": 0.536525974025974
-   }
-  },
-  {
-   "id": "skakea2",
-   "elite": 0,
-   "lvl": 40,
-   "pot": 1,
-   "skillIdx": 0,
-   "skill": "S1",
-   "slv": 4,
-   "sm": [
-    0,
-    0,
-    0
-   ],
-   "mult": {
-    "hp": 0.6115830115830115,
-    "atk": 0.5992396958783514,
-    "def": 0.6137628605161073
-   }
   }
  ],
  "squadNote": "card order = squad order (card index ci in actions); Game(stageIdx, squad) receives {id, elite, mult, pot, skillIdx, slv, sm}; skill level and mastery by rung (sim.js skillRank, slv-r1); sm[k] = mastery of skill k",
@@ -204,292 +242,334 @@
   "over": "win",
   "life": 10,
   "lost": 0,
-  "winTime": 176.36666666665923,
-  "frames": 5291,
+  "winTime": 179.36666666665906,
+  "frames": 5381,
   "kills": 51,
   "total": 51
  },
  "actions": [
   {
-   "t": 4.033333333333329,
-   "k": 121,
+   "t": 0,
+   "k": 0,
    "a": "deploy",
-   "ci": 1,
-   "id": "defender",
-   "x": 1,
+   "ci": 8,
+   "id": "tao",
+   "x": 3,
    "y": 2,
    "dir": 2,
    "uid": 1,
-   "cost": 16
-  },
-  {
-   "t": 15.03333333333329,
-   "k": 451,
-   "a": "deploy",
-   "ci": 3,
-   "id": "belina",
-   "x": 8,
-   "y": 5,
-   "dir": 1,
-   "uid": 6,
-   "cost": 11
-  },
-  {
-   "t": 18.03333333333339,
-   "k": 541,
-   "a": "skill",
-   "ci": 1,
-   "id": "defender",
-   "uid": 1
-  },
-  {
-   "t": 26.033333333333786,
-   "k": 781,
-   "a": "deploy",
-   "ci": 7,
-   "id": "bongeun",
-   "x": 7,
-   "y": 3,
-   "dir": 1,
-   "uid": 9,
-   "cost": 11
-  },
-  {
-   "t": 35.03333333333391,
-   "k": 1051,
-   "a": "deploy",
-   "ci": 5,
-   "id": "falchion",
-   "x": 11,
-   "y": 2,
-   "dir": 0,
-   "uid": 11,
    "cost": 9
   },
   {
-   "t": 45.03333333333334,
-   "k": 1351,
-   "a": "deploy",
-   "ci": 2,
-   "id": "supporter",
-   "x": 1,
-   "y": 1,
-   "dir": 0,
-   "uid": 13,
-   "cost": 10
-  },
-  {
-   "t": 54.03333333333283,
-   "k": 1621,
-   "a": "deploy",
-   "ci": 6,
-   "id": "silphy",
-   "x": 3,
-   "y": 3,
-   "dir": 2,
-   "uid": 18,
-   "cost": 10
-  },
-  {
-   "t": 54.03333333333283,
-   "k": 1621,
-   "a": "skill",
-   "ci": 2,
-   "id": "supporter",
-   "uid": 13
-  },
-  {
-   "t": 57.99999999999927,
-   "k": 1740,
+   "t": 13.033333333333298,
+   "k": 391,
    "a": "deploy",
    "ci": 0,
-   "id": "guard",
-   "x": 5,
-   "y": 4,
-   "dir": 2,
-   "uid": 19,
-   "cost": 13
+   "id": "defender",
+   "x": 9,
+   "y": 2,
+   "dir": 1,
+   "uid": 6,
+   "cost": 16
   },
   {
-   "t": 58.26666666666592,
-   "k": 1748,
+   "t": 17.000000000000004,
+   "k": 510,
    "a": "skill",
-   "ci": 1,
-   "id": "defender",
+   "ci": 8,
+   "id": "tao",
    "uid": 1
   },
   {
-   "t": 71.03333333333187,
-   "k": 2131,
+   "t": 22.033333333333587,
+   "k": 661,
    "a": "deploy",
-   "ci": 4,
-   "id": "lulu",
-   "x": 9,
-   "y": 2,
-   "dir": 3,
-   "uid": 25,
+   "ci": 2,
+   "id": "yui",
+   "x": 4,
+   "y": 5,
+   "dir": 0,
+   "uid": 8,
    "cost": 17
   },
   {
-   "t": 80.76666666666465,
-   "k": 2423,
+   "t": 27.033333333333836,
+   "k": 811,
    "a": "skill",
-   "ci": 2,
-   "id": "supporter",
-   "uid": 13
+   "ci": 0,
+   "id": "defender",
+   "uid": 6
   },
   {
-   "t": 98.49999999999697,
-   "k": 2955,
+   "t": 39.03333333333368,
+   "k": 1171,
+   "a": "deploy",
+   "ci": 3,
+   "id": "lulu",
+   "x": 5,
+   "y": 4,
+   "dir": 2,
+   "uid": 11,
+   "cost": 17
+  },
+  {
+   "t": 52.03333333333294,
+   "k": 1561,
+   "a": "skill",
+   "ci": 8,
+   "id": "tao",
+   "uid": 1
+  },
+  {
+   "t": 52.06666666666627,
+   "k": 1562,
+   "a": "deploy",
+   "ci": 9,
+   "id": "geomseon",
+   "x": 8,
+   "y": 4,
+   "dir": 3,
+   "uid": 17,
+   "cost": 17
+  },
+  {
+   "t": 58.0333333333326,
+   "k": 1741,
+   "a": "deploy",
+   "ci": 1,
+   "id": "supporter",
+   "x": 3,
+   "y": 0,
+   "dir": 1,
+   "uid": 19,
+   "cost": 10
+  },
+  {
+   "t": 67.0333333333321,
+   "k": 2011,
    "a": "skill",
    "ci": 1,
+   "id": "supporter",
+   "uid": 19
+  },
+  {
+   "t": 67.26666666666542,
+   "k": 2018,
+   "a": "skill",
+   "ci": 0,
    "id": "defender",
-   "uid": 1
+   "uid": 6
+  },
+  {
+   "t": 75.03333333333164,
+   "k": 2251,
+   "a": "deploy",
+   "ci": 5,
+   "id": "sunae",
+   "x": 5,
+   "y": 5,
+   "dir": 0,
+   "uid": 26,
+   "cost": 17
+  },
+  {
+   "t": 92.03333333333067,
+   "k": 2761,
+   "a": "deploy",
+   "ci": 6,
+   "id": "teka",
+   "x": 10,
+   "y": 5,
+   "dir": 2,
+   "uid": 32,
+   "cost": 12
+  },
+  {
+   "t": 104.03333333332999,
+   "k": 3121,
+   "a": "deploy",
+   "ci": 4,
+   "id": "irins",
+   "x": 8,
+   "y": 7,
+   "dir": 3,
+   "uid": 37,
+   "cost": 17
   },
   {
    "t": 107.49999999999646,
    "k": 3225,
    "a": "skill",
-   "ci": 2,
-   "id": "supporter",
-   "uid": 13
-  },
-  {
-   "t": 134.2333333333283,
-   "k": 4027,
-   "a": "skill",
-   "ci": 2,
-   "id": "supporter",
-   "uid": 13
-  },
-  {
-   "t": 138.73333333332803,
-   "k": 4162,
-   "a": "skill",
-   "ci": 1,
+   "ci": 0,
    "id": "defender",
-   "uid": 1
+   "uid": 6
   },
   {
-   "t": 153.9666666666605,
-   "k": 4619,
+   "t": 114.03333333332942,
+   "k": 3421,
+   "a": "deploy",
+   "ci": 10,
+   "id": "silphy",
+   "x": 3,
+   "y": 3,
+   "dir": 0,
+   "uid": 42,
+   "cost": 10
+  },
+  {
+   "t": 138.03333333332807,
+   "k": 4141,
+   "a": "retreat",
+   "ci": 10,
+   "id": "silphy",
+   "uid": 42,
+   "x": 3,
+   "y": 3,
+   "why": "plan"
+  },
+  {
+   "t": 138.03333333332807,
+   "k": 4141,
    "a": "deploy",
    "ci": 8,
-   "id": "skakea2",
-   "x": 10,
-   "y": 5,
-   "dir": 3,
-   "uid": 57,
-   "cost": 18
+   "id": "tao",
+   "x": 3,
+   "y": 2,
+   "dir": 2,
+   "uid": 53,
+   "cost": 14
   },
   {
-   "t": 160.9666666666601,
-   "k": 4829,
+   "t": 143.23333333332778,
+   "k": 4297,
+   "a": "deploy",
+   "ci": 7,
+   "id": "nana",
+   "x": 11,
+   "y": 5,
+   "dir": 2,
+   "uid": 56,
+   "cost": 17
+  },
+  {
+   "t": 147.73333333332752,
+   "k": 4432,
    "a": "skill",
-   "ci": 2,
+   "ci": 0,
+   "id": "defender",
+   "uid": 6
+  },
+  {
+   "t": 155.0333333333271,
+   "k": 4651,
+   "a": "deploy",
+   "ci": 1,
    "id": "supporter",
-   "uid": 13
+   "x": 3,
+   "y": 0,
+   "dir": 1,
+   "uid": 62,
+   "cost": 15
+  },
+  {
+   "t": 164.0333333333266,
+   "k": 4921,
+   "a": "skill",
+   "ci": 1,
+   "id": "supporter",
+   "uid": 62
   }
  ],
  "plan": {
   "entries": [
    {
-    "id": "defender",
-    "x": 1,
+    "id": "tao",
+    "x": 3,
     "y": 2,
     "d": 2
    },
    {
-    "id": "belina",
-    "x": 8,
-    "y": 5,
-    "d": 1
-   },
-   {
-    "id": "bongeun",
-    "x": 7,
-    "y": 3,
-    "d": 1
-   },
-   {
-    "id": "falchion",
-    "x": 11,
-    "y": 2,
-    "d": 0,
-    "from": 10
-   },
-   {
-    "id": "falchion",
+    "id": "defender",
     "x": 9,
-    "y": 5,
-    "d": 2,
-    "from": 24
+    "y": 2,
+    "d": 1
    },
    {
-    "id": "supporter",
-    "x": 1,
-    "y": 1,
+    "id": "yui",
+    "x": 4,
+    "y": 5,
     "d": 0
    },
    {
-    "id": "silphy",
-    "x": 3,
-    "y": 3,
-    "d": 2
-   },
-   {
-    "id": "guard",
+    "id": "lulu",
     "x": 5,
     "y": 4,
     "d": 2
    },
    {
-    "id": "skakea2",
-    "x": 1,
-    "y": 1,
-    "d": 0,
-    "from": 44
-   },
-   {
-    "id": "lulu",
-    "x": 9,
-    "y": 2,
+    "id": "geomseon",
+    "x": 8,
+    "y": 4,
     "d": 3
    },
    {
-    "id": "lulu",
-    "x": 9,
-    "y": 2,
-    "d": 2,
-    "from": 32
+    "id": "supporter",
+    "x": 3,
+    "y": 0,
+    "d": 1,
+    "from": 36
    },
    {
-    "id": "skakea2",
+    "id": "teka",
     "x": 10,
     "y": 5,
-    "d": 3,
-    "from": 31
+    "d": 2,
+    "from": 92
+   },
+   {
+    "id": "sunae",
+    "x": 5,
+    "y": 5,
+    "d": 0
+   },
+   {
+    "id": "irins",
+    "x": 8,
+    "y": 7,
+    "d": 3
+   },
+   {
+    "id": "silphy",
+    "x": 3,
+    "y": 3,
+    "d": 0,
+    "until": 143
+   },
+   {
+    "id": "nana",
+    "x": 11,
+    "y": 5,
+    "d": 2
    }
   ],
   "skill": {
-   "belina": {
+   "irins": {
     "m": 1,
-    "t": 117
-   },
-   "skakea2": {
-    "m": 3
-   },
-   "bongeun": {
-    "m": 2
+    "t": 130
    }
   },
   "skillIdx": {},
-  "retreats": [],
+  "retreats": [
+   {
+    "id": "silphy",
+    "t": 138
+   }
+  ],
   "pol": {
-   "fire": 1,
+   "fire": 0,
    "melt": 1,
-   "lamp": 0
+   "lamp": 1
   },
-  "_par": "[[[\"defender\",1,2,2,null,null,null],[\"belina\",8,5,1,null,null,null],[\"bongeun\",7,3,1,null,null,null],[\"falchion\",11,2,0,10,null,null],[\"falchion\",9,5,2,null,null,null],[\"supporter\",1,1,0,null,null,null],[\"silphy\",3,3,2,null,null,null],[\"guard\",5,4,2,null,null,null],[\"skakea2\",1,1,0,44,null,null],[\"lulu\",9,2,3,null,null,null],[\"lulu\",9,2,2,32,null,null]],{\"belina\":{\"m\":1,\"t\":117},\"skakea2\":{\"m\":2},\"bongeun\":{\"m\":2}},{},[],{\"fire\":1,\"melt\":1,\"lamp\":0}]"
+  "_par": "[[[\"tao\",3,2,2,null,null,null],[\"defender\",9,2,1,null,null,null],[\"yui\",4,5,0,null,null,null],[\"lulu\",5,4,2,null,null,null],[\"geomseon\",8,4,3,null,null,null],[\"supporter\",3,0,1,36,null,null],[\"ker\",9,2,3,37,null,null],[\"teka\",10,5,2,92,null,null],[\"sunae\",5,5,0,null,null,null],[\"irins\",8,7,3,null,null,null],[\"silphy\",3,3,0,null,143,null],[\"nana\",11,5,2,null,null,null]],{\"irins\":{\"m\":1,\"t\":130}},{},[[\"silphy\",138]],{\"fire\":0,\"melt\":1,\"lamp\":1}]"
  }
 }

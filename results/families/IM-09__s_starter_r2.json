@@ -3,50 +3,32 @@
  "source": "s_starter_r2",
  "families": [
   {
-   "id": "IM-09:1deg5qo",
+   "id": "IM-09:1pctyd",
    "T": {
     "slots": [
-     {
-      "x": 5,
-      "y": 6,
-      "d": 3,
-      "prim": 0,
-      "role": {
-       "tile": "h",
-       "kind": "supp",
-       "block": 0,
-       "cls": "supporter",
-       "dmg": "arts",
-       "sub": "소환사"
-      },
-      "src": "atat",
-      "from": 27,
-      "skIdx": 1
-     },
      {
       "x": 12,
       "y": 2,
       "d": 1,
-      "prim": 1,
+      "prim": 0,
       "role": {
        "tile": "g",
        "kind": "block",
        "block": 3,
        "cls": "defender",
        "dmg": "phys",
-       "sub": "프로텍터"
+       "sub": "가디언"
       },
-      "src": "sunae",
+      "src": "yui",
       "skill": {
        "m": 2
-      },
-      "skIdx": 1
+      }
      },
      {
       "x": 9,
       "y": 5,
       "d": 2,
-      "prim": 2,
+      "prim": 1,
       "role": {
        "tile": "g",
        "kind": "block",
@@ -58,9 +40,25 @@
       "src": "tao"
      },
      {
+      "x": 6,
+      "y": 2,
+      "d": 1,
+      "prim": 2,
+      "role": {
+       "tile": "g",
+       "kind": "gnb",
+       "block": 0,
+       "cls": "vanguard",
+       "dmg": "phys",
+       "sub": "기수"
+      },
+      "src": "hakuren",
+      "from": 137
+     },
+     {
       "x": 11,
       "y": 4,
-      "d": 3,
+      "d": 2,
       "prim": 3,
       "role": {
        "tile": "h",
@@ -70,8 +68,7 @@
        "dmg": "arts",
        "sub": "감속자"
       },
-      "src": "teka",
-      "skIdx": 1
+      "src": "teka"
      },
      {
       "x": 7,
@@ -89,22 +86,19 @@
       "src": "lilith"
      },
      {
-      "x": 6,
-      "y": 4,
+      "x": 5,
+      "y": 6,
       "d": 3,
       "prim": 5,
       "role": {
-       "tile": "g",
-       "kind": "gnb",
+       "tile": "h",
+       "kind": "heal",
        "block": 0,
-       "cls": "vanguard",
-       "dmg": "phys",
-       "sub": "기수"
+       "cls": "medic",
+       "dmg": "heal",
+       "sub": "메딕"
       },
-      "src": "hakuren",
-      "from": 5,
-      "until": 137,
-      "skIdx": 1
+      "src": "ayaki"
      },
      {
       "x": 9,
@@ -117,11 +111,10 @@
        "block": 3,
        "cls": "defender",
        "dmg": "phys",
-       "sub": "가디언"
+       "sub": "프로텍터"
       },
-      "src": "yui",
-      "from": 56,
-      "skIdx": 1
+      "src": "sunae",
+      "from": 56
      },
      {
       "x": 9,
@@ -139,9 +132,9 @@
       "src": "hiro"
      },
      {
-      "x": 10,
+      "x": 5,
       "y": 6,
-      "d": 3,
+      "d": 2,
       "prim": 8,
       "role": {
        "tile": "h",
@@ -151,45 +144,50 @@
        "dmg": "phys",
        "sub": "포격사수"
       },
-      "src": "capy"
+      "src": "capy",
+      "from": 27
      },
      {
-      "x": 6,
-      "y": 4,
-      "d": 1,
-      "prim": 5,
+      "x": 10,
+      "y": 6,
+      "d": 3,
+      "prim": 9,
       "role": {
-       "tile": "g",
-       "kind": "gnb",
+       "tile": "h",
+       "kind": "supp",
        "block": 0,
-       "cls": "vanguard",
-       "dmg": "phys",
-       "sub": "기수"
+       "cls": "supporter",
+       "dmg": "arts",
+       "sub": "소환사"
       },
-      "src": "hakuren",
-      "from": 137
+      "src": "atat",
+      "from": 4
      },
      {
       "x": 3,
       "y": 1,
-      "d": 0,
-      "prim": 7,
+      "d": 2,
+      "prim": 10,
       "role": {
        "tile": "g",
        "kind": "block",
-       "block": 2,
-       "cls": "guard",
+       "block": 1,
+       "cls": "summon",
        "dmg": "phys",
-       "sub": "공격수"
+       "sub": ""
       },
-      "src": "hiro",
-      "from": 148
+      "src": "scribble",
+      "summonOf": 9
      }
     ],
     "retreats": [
      {
-      "slot": 5,
+      "slot": 2,
       "t": 126
+     },
+     {
+      "slot": 6,
+      "t": 193
      }
     ],
     "pol": {
@@ -201,41 +199,42 @@
    "tags": [
     "deep block",
     "split lanes",
-    "no medic",
     "relocate"
    ],
-   "q": -66,
+   "q": -29,
    "rec": {
-    "lvl": "E1L1",
+    "lvl": "E0L20",
     "lost": 1,
-    "worstLost": 6,
+    "worstLost": 9,
     "verified": true,
     "deck": "starter",
     "crit": "lost1",
-    "gameHash": "656ff27f0786",
+    "gameHash": "35c22d066cd2",
     "ops": [
-     "atat",
-     "sunae",
+     "yui",
      "tao",
+     "hakuren",
      "teka",
      "lilith",
-     "hakuren",
-     "yui",
+     "ayaki",
+     "sunae",
      "hiro",
-     "capy"
+     "capy",
+     "atat",
+     "scribble"
     ]
    },
    "src": "s_starter_r2",
-   "members": 7
+   "members": 35
   },
   {
-   "id": "IM-09:b958o1",
+   "id": "IM-09:1i1iq2n",
    "T": {
     "slots": [
      {
       "x": 12,
       "y": 2,
-      "d": 3,
+      "d": 0,
       "prim": 0,
       "role": {
        "tile": "g",
@@ -243,13 +242,12 @@
        "block": 3,
        "cls": "defender",
        "dmg": "phys",
-       "sub": "프로텍터"
+       "sub": "가디언"
       },
-      "src": "sunae",
+      "src": "yui",
       "skill": {
        "m": 2
-      },
-      "skIdx": 1
+      }
      },
      {
       "x": 9,
@@ -267,41 +265,10 @@
       "src": "tao"
      },
      {
-      "x": 7,
-      "y": 6,
+      "x": 3,
+      "y": 2,
       "d": 3,
       "prim": 2,
-      "role": {
-       "tile": "h",
-       "kind": "supp",
-       "block": 0,
-       "cls": "supporter",
-       "dmg": "arts",
-       "sub": "소환사"
-      },
-      "src": "atat",
-      "skIdx": 1
-     },
-     {
-      "x": 10,
-      "y": 6,
-      "d": 3,
-      "prim": 3,
-      "role": {
-       "tile": "h",
-       "kind": "heal",
-       "block": 0,
-       "cls": "medic",
-       "dmg": "heal",
-       "sub": "메딕"
-      },
-      "src": "ayaki"
-     },
-     {
-      "x": 10,
-      "y": 4,
-      "d": 0,
-      "prim": 4,
       "role": {
        "tile": "g",
        "kind": "gnb",
@@ -310,16 +277,13 @@
        "dmg": "phys",
        "sub": "기수"
       },
-      "src": "hakuren",
-      "from": 43,
-      "until": 137,
-      "skIdx": 1
+      "src": "hakuren"
      },
      {
       "x": 7,
-      "y": 6,
-      "d": 0,
-      "prim": 5,
+      "y": 4,
+      "d": 3,
+      "prim": 3,
       "role": {
        "tile": "h",
        "kind": "phys",
@@ -328,63 +292,43 @@
        "dmg": "phys",
        "sub": "포격사수"
       },
-      "src": "capy",
-      "from": 14
+      "src": "capy"
+     },
+     {
+      "x": 2,
+      "y": 6,
+      "d": 0,
+      "prim": 4,
+      "role": {
+       "tile": "h",
+       "kind": "supp",
+       "block": 0,
+       "cls": "supporter",
+       "dmg": "arts",
+       "sub": "소환사"
+      },
+      "src": "atat"
      },
      {
       "x": 3,
       "y": 5,
       "d": 2,
-      "prim": 6,
+      "prim": 5,
       "role": {
        "tile": "g",
        "kind": "block",
        "block": 3,
        "cls": "defender",
        "dmg": "phys",
-       "sub": "가디언"
+       "sub": "프로텍터"
       },
-      "src": "yui",
-      "from": 56,
-      "skIdx": 1
+      "src": "sunae"
      },
      {
-      "x": 5,
+      "x": 10,
       "y": 6,
-      "d": 2,
-      "prim": 7,
-      "role": {
-       "tile": "h",
-       "kind": "arts",
-       "block": 0,
-       "cls": "caster",
-       "dmg": "arts",
-       "sub": "코어 캐스터"
-      },
-      "src": "lilith",
-      "from": 27
-     },
-     {
-      "x": 6,
-      "y": 2,
-      "d": 3,
-      "prim": 4,
-      "role": {
-       "tile": "g",
-       "kind": "gnb",
-       "block": 0,
-       "cls": "vanguard",
-       "dmg": "phys",
-       "sub": "기수"
-      },
-      "src": "hakuren",
-      "from": 137
-     },
-     {
-      "x": 11,
-      "y": 4,
-      "d": 3,
-      "prim": 9,
+      "d": 0,
+      "prim": 6,
       "role": {
        "tile": "h",
        "kind": "supp",
@@ -393,14 +337,13 @@
        "dmg": "arts",
        "sub": "감속자"
       },
-      "src": "teka",
-      "skIdx": 1
+      "src": "teka"
      },
      {
-      "x": 1,
-      "y": 0,
-      "d": 0,
-      "prim": 10,
+      "x": 5,
+      "y": 6,
+      "d": 2,
+      "prim": 7,
       "role": {
        "tile": "h",
        "kind": "phys",
@@ -410,31 +353,57 @@
        "sub": "명사수"
       },
       "src": "alpha",
-      "skIdx": 1
+      "from": 27
      },
      {
-      "x": 6,
-      "y": 2,
-      "d": 3,
-      "prim": 11,
+      "x": 1,
+      "y": 0,
+      "d": 0,
+      "prim": 6,
+      "role": {
+       "tile": "h",
+       "kind": "supp",
+       "block": 0,
+       "cls": "supporter",
+       "dmg": "arts",
+       "sub": "감속자"
+      },
+      "src": "teka",
+      "from": 121
+     },
+     {
+      "x": 9,
+      "y": 1,
+      "d": 2,
+      "prim": 9,
       "role": {
        "tile": "g",
        "kind": "block",
-       "block": 2,
-       "cls": "guard",
+       "block": 1,
+       "cls": "summon",
        "dmg": "phys",
-       "sub": "공격수"
+       "sub": ""
       },
-      "src": "hiro",
-      "from": 42
-     }
-    ],
-    "retreats": [
+      "src": "scribble",
+      "summonOf": 4
+     },
      {
-      "slot": 4,
-      "t": 126
+      "x": 11,
+      "y": 4,
+      "d": 1,
+      "prim": 10,
+      "role": {
+       "tile": "h",
+       "kind": "arts",
+       "block": 0,
+       "cls": "caster",
+       "dmg": "arts",
+       "sub": "코어 캐스터"
+      },
+      "src": "lilith"
      }
     ],
+    "retreats": [],
     "pol": {
      "fire": 1,
      "melt": 1,
@@ -444,34 +413,33 @@
    "tags": [
     "deep block",
     "split lanes",
-    "relocate"
+    "no medic"
    ],
-   "q": -80,
+   "q": -40,
    "rec": {
-    "lvl": "E1L15",
+    "lvl": "E0L40",
     "lost": 0,
     "worstLost": 0,
     "verified": true,
     "deck": "starter",
     "crit": "lost1",
-    "gameHash": "656ff27f0786",
+    "gameHash": "35c22d066cd2",
     "ops": [
-     "sunae",
+     "yui",
      "tao",
-     "atat",
-     "ayaki",
      "hakuren",
      "capy",
-     "yui",
-     "lilith",
+     "atat",
+     "sunae",
      "teka",
      "alpha",
-     "hiro"
+     "scribble",
+     "lilith"
     ]
    },
    "src": "s_starter_r2",
-   "members": 14
+   "members": 7
   }
  ],
- "updated": "2026-11-12T08:22:33.123Z"
+ "updated": "2026-11-12T16:27:19.106Z"
 }

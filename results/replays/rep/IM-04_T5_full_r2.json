@@ -1,7 +1,7 @@
 {
  "stage": "IM-04",
  "name": "밤의 연병장",
- "level": "E1L60",
+ "level": "E1L45",
  "lost": 0,
  "seed": 1,
  "K": 1,
@@ -20,15 +20,15 @@
   0,
   0
  ],
- "family": "IM-04:19cht1q",
- "gameHash": "fca95f6aaf8d",
+ "family": "new:IM-04:1rd8ps6",
+ "gameHash": "35c22d066cd2",
  "rng": "Math.random replaced before `new TD.Game` by im_sim's seed(n): a = n*7919, mulberry32-style step; nothing else draws from it between seeding and the game",
  "stepping": "fixed g.update(1/30) per frame, max 420*30 frames; actions run at the start of a frame, before that frame's update, in log order",
  "squad": [
   {
-   "id": "defender",
+   "id": "sniper",
    "elite": 1,
-   "lvl": 55,
+   "lvl": 45,
    "pot": 1,
    "skillIdx": 0,
    "skill": "S1",
@@ -39,37 +39,18 @@
     0
    ],
    "mult": {
-    "hp": 1,
-    "atk": 1,
-    "def": 1
-   }
-  },
-  {
-   "id": "caster",
-   "elite": 1,
-   "lvl": 55,
-   "pot": 1,
-   "skillIdx": 0,
-   "skill": "S1",
-   "slv": 7,
-   "sm": [
-    0,
-    0,
-    0
-   ],
-   "mult": {
-    "hp": 1,
-    "atk": 1,
-    "def": 1
+    "hp": 0.9591194968553459,
+    "atk": 0.9422222222222222,
+    "def": 0.9441504997060552
    }
   },
   {
    "id": "ker",
    "elite": 1,
-   "lvl": 60,
+   "lvl": 45,
    "pot": 1,
-   "skillIdx": 0,
-   "skill": "S1",
+   "skillIdx": 1,
+   "skill": "S2",
    "slv": 7,
    "sm": [
     0,
@@ -77,15 +58,53 @@
     0
    ],
    "mult": {
-    "hp": 0.6998389694041868,
-    "atk": 0.850632911392405,
-    "def": 0.7289855072463768
+    "hp": 0.655296269002975,
+    "atk": 0.8075091182149754,
+    "def": 0.6807172684844018
+   }
+  },
+  {
+   "id": "rabi",
+   "elite": 1,
+   "lvl": 45,
+   "pot": 1,
+   "skillIdx": 1,
+   "skill": "S2",
+   "slv": 7,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.7544820182501342,
+    "atk": 0.7346171205054911,
+    "def": 0.7602898550724637
+   }
+  },
+  {
+   "id": "falchion",
+   "elite": 1,
+   "lvl": 45,
+   "pot": 1,
+   "skillIdx": 1,
+   "skill": "S2",
+   "slv": 7,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.6604565706674016,
+    "atk": 0.7866894197952219,
+    "def": 0.7676855473465642
    }
   },
   {
    "id": "geomseon",
    "elite": 1,
-   "lvl": 60,
+   "lvl": 45,
    "pot": 1,
    "skillIdx": 0,
    "skill": "S1",
@@ -96,9 +115,9 @@
     0
    ],
    "mult": {
-    "hp": 0.762281837804502,
-    "atk": 0.7816777742515604,
-    "def": 0.8019853087155053
+    "hp": 0.7210237434474253,
+    "atk": 0.7410557494975141,
+    "def": 0.7638673813778043
    }
   }
  ],
@@ -109,8 +128,8 @@
   "over": "win",
   "life": 10,
   "lost": 0,
-  "winTime": 171.39999999999284,
-  "frames": 5142,
+  "winTime": 303.4333333333591,
+  "frames": 9103,
   "kills": 54,
   "total": 54
  },
@@ -119,133 +138,143 @@
    "t": 0,
    "k": 0,
    "a": "deploy",
-   "ci": 2,
+   "ci": 0,
+   "id": "sniper",
+   "x": 4,
+   "y": 1,
+   "dir": 2,
+   "uid": 1,
+   "cost": 11
+  },
+  {
+   "t": 10.033333333333308,
+   "k": 301,
+   "a": "deploy",
+   "ci": 1,
    "id": "ker",
    "x": 12,
    "y": 5,
    "dir": 1,
-   "uid": 1,
+   "uid": 9,
    "cost": 19
   },
   {
    "t": 18.03333333333339,
    "k": 541,
+   "a": "skill",
+   "ci": 1,
+   "id": "ker",
+   "uid": 9
+  },
+  {
+   "t": 20.033333333333488,
+   "k": 601,
+   "a": "deploy",
+   "ci": 2,
+   "id": "rabi",
+   "x": 7,
+   "y": 3,
+   "dir": 0,
+   "uid": 12,
+   "cost": 10
+  },
+  {
+   "t": 31.033333333334035,
+   "k": 931,
    "a": "deploy",
    "ci": 3,
+   "id": "falchion",
+   "x": 1,
+   "y": 2,
+   "dir": 1,
+   "uid": 16,
+   "cost": 11
+  },
+  {
+   "t": 49.03333333333311,
+   "k": 1471,
+   "a": "deploy",
+   "ci": 4,
    "id": "geomseon",
    "x": 3,
    "y": 3,
    "dir": 2,
-   "uid": 11,
+   "uid": 20,
    "cost": 19
   },
   {
-   "t": 36.03333333333385,
-   "k": 1081,
+   "t": 71.83333333333182,
+   "k": 2155,
+   "a": "skill",
+   "ci": 1,
+   "id": "ker",
+   "uid": 9
+  },
+  {
+   "t": 97.999999999997,
+   "k": 2940,
    "a": "deploy",
-   "ci": 0,
-   "id": "defender",
-   "x": 2,
-   "y": 5,
-   "dir": 2,
-   "uid": 17,
-   "cost": 18
+   "ci": 2,
+   "id": "rabi",
+   "x": 7,
+   "y": 3,
+   "dir": 0,
+   "uid": 35,
+   "cost": 15
   },
   {
-   "t": 44.033333333333395,
-   "k": 1321,
+   "t": 125.63333333332876,
+   "k": 3769,
    "a": "skill",
-   "ci": 0,
-   "id": "defender",
-   "uid": 17
+   "ci": 1,
+   "id": "ker",
+   "uid": 9
   },
   {
-   "t": 54.03333333333283,
-   "k": 1621,
+   "t": 178.3666666666591,
+   "k": 5351,
    "a": "deploy",
-   "ci": 1,
-   "id": "caster",
-   "x": 4,
-   "y": 1,
-   "dir": 2,
-   "uid": 21,
-   "cost": 18
+   "ci": 2,
+   "id": "rabi",
+   "x": 7,
+   "y": 3,
+   "dir": 0,
+   "uid": 61,
+   "cost": 20
   },
   {
-   "t": 58.0333333333326,
-   "k": 1741,
+   "t": 179.43333333332572,
+   "k": 5383,
    "a": "skill",
    "ci": 1,
-   "id": "caster",
-   "uid": 21
+   "id": "ker",
+   "uid": 9
   },
   {
-   "t": 78.03333333333147,
-   "k": 2341,
+   "t": 233.23333333332266,
+   "k": 6997,
    "a": "skill",
    "ci": 1,
-   "id": "caster",
-   "uid": 21
+   "id": "ker",
+   "uid": 9
   },
   {
-   "t": 82.46666666666455,
-   "k": 2474,
-   "a": "skill",
-   "ci": 0,
-   "id": "defender",
-   "uid": 17
-  },
-  {
-   "t": 98.03333333333033,
-   "k": 2941,
+   "t": 287.03333333334604,
+   "k": 8611,
    "a": "skill",
    "ci": 1,
-   "id": "caster",
-   "uid": 21
-  },
-  {
-   "t": 118.0333333333292,
-   "k": 3541,
-   "a": "skill",
-   "ci": 1,
-   "id": "caster",
-   "uid": 21
-  },
-  {
-   "t": 120.8999999999957,
-   "k": 3627,
-   "a": "skill",
-   "ci": 0,
-   "id": "defender",
-   "uid": 17
-  },
-  {
-   "t": 138.03333333332807,
-   "k": 4141,
-   "a": "skill",
-   "ci": 1,
-   "id": "caster",
-   "uid": 21
-  },
-  {
-   "t": 158.03333333332694,
-   "k": 4741,
-   "a": "skill",
-   "ci": 1,
-   "id": "caster",
-   "uid": 21
-  },
-  {
-   "t": 159.33333333332686,
-   "k": 4780,
-   "a": "skill",
-   "ci": 0,
-   "id": "defender",
-   "uid": 17
+   "id": "ker",
+   "uid": 9
   }
  ],
  "plan": {
   "entries": [
+   {
+    "id": "sniper",
+    "x": 4,
+    "y": 1,
+    "d": 2
+   },
    {
     "id": "ker",
     "x": 12,
@@ -253,28 +282,30 @@
     "d": 1
    },
    {
+    "id": "rabi",
+    "x": 7,
+    "y": 3,
+    "d": 0
+   },
+   {
+    "id": "falchion",
+    "x": 1,
+    "y": 2,
+    "d": 1
+   },
+   {
     "id": "geomseon",
     "x": 3,
     "y": 3,
-    "d": 2
-   },
-   {
-    "id": "defender",
-    "x": 2,
-    "y": 5,
-    "d": 2
-   },
-   {
-    "id": "caster",
-    "x": 4,
-    "y": 1,
     "d": 2
    }
   ],
   "skill": {},
   "skillIdx": {
-   "ker": 0,
-   "geomseon": 0
+   "ker": 1,
+   "falchion": 1,
+   "geomseon": 0,
+   "rabi": 1
   },
   "retreats": [],
   "pol": {
@@ -282,6 +313,6 @@
    "melt": 1,
    "lamp": 1
   },
-  "_par": "[[[\"ker\",12,5,1,null,null,null],[\"defender\",2,5,2,null,null,null],[\"geomseon\",3,3,2,null,null,null],[\"caster\",4,1,2,null,null,null]],{},{\"ker\":0,\"geomseon\":0},[],{\"fire\":1,\"melt\":1,\"lamp\":1}]"
+  "_par": "[[[\"bongeun\",4,1,2,null,null,null],[\"ker\",12,5,1,null,null,null],[\"rabi\",7,3,0,null,null,null],[\"falchion\",1,2,1,null,null,null],[\"geomseon\",3,3,2,null,null,null]],{},{\"ker\":1,\"falchion\":1,\"geomseon\":0,\"bongeun\":0,\"rabi\":1},[],{\"fire\":1,\"melt\":1,\"lamp\":1}]"
  }
 }
