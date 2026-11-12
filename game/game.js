@@ -471,6 +471,9 @@
     armour: { name: "빈 갑주", info: ["아무도 들어 있지 않은 옛 갑옷. 느리고 단단하다.", "어둠 속에서 쓰러지면 5초 뒤 다시 일어난다(한 번)."],
       hp: 4200, atk: 420, def: 480, res: 10, speed: 0.6, interval: 2.4, weight: 1, mass: 3, life: 1, revive: { pct: 0.5, delay: 5, n: 1 } },
     // A cuirassier left on foot where a charge has passed (WL-08). A charge volley with "leave" sets him down at the far end of its line.
+    // the gun retaker (chapter 3): a Guard grenadier with the gunners' facings, sent to win back a gun we have taken (def.retake: retakeStep)
+    gunretaker: { name: "포 되찾는 자", info: ["포병 견장을 단 근위 척탄병. 빼앗긴 포를 되찾으러 온다.", "우리 손에 넘어간 포의 포구 앞 칸으로 곧장 간다. 그 칸이 비어 있으면 닿는 즉시 포가 적의 것으로 돌아가고(남아 있던 시간과 상관없이), 그 자리에 보초로 선다. 누가 서 있으면 평범하게 싸운다. 우리 포가 없으면 보병처럼 걷는다."],
+      hp: 2600, atk: 250, def: 200, res: 20, speed: 0.7, interval: 2.2, weight: 1, mass: 2, life: 1, retake: true },
     cuirassier: { name: "말에서 내린 흉갑기병", info: ["돌격이 지나간 자리에 남은 기병. 흉갑을 입어 단단하다.", "돌격이 여러 번 지나간 뒤부터, 줄의 먼 쪽 끝에 남는다."],
       hp: 4800, atk: 520, def: 380, res: 10, speed: 0.7, interval: 2.4, weight: 2, mass: 3, life: 1 },
     kingarmour: { name: "빈 왕좌의 갑주", info: ["대관식용 갑주. 관은 얹혀 있는데 머리가 없다. 셋 몫으로 저지된다. 그가 닿으면, 막고 있던 적을 놓고 그를 붙든다.", "어둠 속에서 쓰러뜨리면 5초 뒤 체력 절반으로 다시 일어난다(두 번까지). 등불 아래에서 끝내야 한다. 둘레 2.2칸의 빈 갑주들은 빨라지고 세진다."],
@@ -495,24 +498,24 @@
     // chapter 2's Chouan from IM-02 on: the same man, but he does what his card says — nobody holding him, he stops and lets fly with the fowling piece at short range (IM-01 and TR-03 keep the plain one)
     chouang: { name: "슈앙 게릴라", info: ["엽총을 든 왕당파 게릴라. 오래 걸어온 단단한 보병.", "사거리 1.6칸. 고지의 가사인격도 쏜다."],
       hp: 3300, atk: 330, def: 150, res: 20, speed: 0.93, interval: 2.0, weight: 1, mass: 2, life: 1, ranged: 1.6, phys: true },
-    frostgun: { name: "서리 사수", info: ["총신을 얼음으로 감싼 황제군 사수. 얼음 탄을 쏘아 마법 피해를 준다. 사거리 2.6칸.", "맞으면 동상이 쌓인다. 두 번 쌓이면 얼어붙는다. 눈보라 속에서도 느려지지 않는다."],
+    frostgun: { name: "서리 사수", info: ["총신을 얼음으로 감싼 황제군 사수. 얼음 탄을 쏘아 마법 피해를 준다. 사거리 2.6칸.", "맞으면 동상이 쌓인다. 두 번 쌓이면 얼어붙는다. 불 곁의 가사인격에게는 동상이 쌓이지 않는다. 눈보라 속에서도 느려지지 않는다."],
       hp: 1200, atk: 240, def: 100, res: 40, speed: 0.8, interval: 2.4, weight: 1, mass: 2, life: 1, ranged: 2.6, frost: 1, snowproof: true, rscale: true },
-    iceguard: { name: "빙갑 근위병", info: ["얼음을 갑옷처럼 두른 근위대의 망령. 방어력과 마법 저항이 모두 매우 높고, 몹시 느리다.", "한 번에 셋을 저지해야 멈춘다. 오래 붙잡아 두고 깎아 내야 한다. 눈보라 속에서도 느려지지 않는다."],
-      hp: 18000, atk: 820, def: 1000, res: 60, speed: 0.25, interval: 3.2, weight: 3, mass: 4, life: 2, elite: true, snowproof: true },
+    iceguard: { name: "빙갑 근위병", info: ["얼음을 갑옷처럼 두른 근위대의 망령. 방어력과 마법 저항이 모두 매우 높고, 몹시 느리다.", "한 번에 셋을 저지해야 멈춘다. 오래 붙잡아 두고 깎아 내야 한다. 눈보라 속에서도 느려지지 않는다. 불 곁의 가사인격에게 막혀 있으면 얼음이 녹아 방어력과 마법 저항이 크게 떨어진다."],
+      hp: 18000, atk: 820, def: 1000, res: 60, speed: 0.25, interval: 3.2, weight: 3, mass: 4, life: 2, elite: true, snowproof: true, thaw: { def: 0.35, res: 0.5 } },
     molotov: { name: "슈앙 화염병 투척병", info: ["독한 술병에 불을 붙여 던지는 반란군. 저지를 무시하고 2.5칸 안으로 던지며, 터진 자리와 바로 옆 칸에 마법 피해를 준다. 던지기 전 1초 동안 목표 위에 불꽃 표시가 뜬다.", "얼어붙은 가사인격을 먼저 노린다. 얼어 있는 상대가 맞으면 얼음이 녹으며 0.8초 동안 4번, 매번 최대 체력의 20%만큼 고정 피해를 입는다."],
       hp: 950, atk: 300, def: 60, res: 10, speed: 0.85, interval: 7, weight: 1, mass: 1, life: 1, ranged: 2.5, aim: 1.0, splash: 1.0, melt: { n: 4, pct: 0.2, gap: 0.2 }, rscale: true },
     chxelite: { name: "슈앙 명사수", info: ["오래 싸워 온 왕당파 명사수. 처음부터 길목을 차지하고 버틴다. 웬만한 선봉은 맞붙어도 이긴다.", "물리 피해. 사거리 2.4칸. 근위나 중장으로 붙거나, 둘 이상이 함께 덤벼야 한다."],
       hp: 2000, atk: 560, def: 120, res: 30, speed: 0.85, interval: 2.4, weight: 1, mass: 2, life: 1, ranged: 2.4, phys: true, elite: true, noMul: true },
     chxbow: { name: "슈앙 엽총수", info: ["왕당파 엽총수. 길을 걸으며 가사인격부터 쏜다.", "물리 피해. 사거리 2.4칸."],
       hp: 1300, atk: 420, def: 110, res: 20, speed: 0.85, interval: 2.3, weight: 1, mass: 2, life: 1, ranged: 2.4, phys: true, rscale: true },
-    yshield: { name: "설원 중장병", info: ["얼음을 덧댄 큰 방패를 든 중장병. 느리지만 아주 단단하다.", "눈보라가 부는 동안에는 얼음 갑주가 두꺼워져 방어력이 1.5배가 된다."],
-      hp: 7000, atk: 520, def: 900, res: 30, speed: 0.5, interval: 2.6, weight: 1, mass: 3, life: 1, iceArmor: 1.5, snowproof: true },
+    yshield: { name: "설원 중장병", info: ["얼음을 덧댄 큰 방패를 든 중장병. 느리지만 아주 단단하다.", "눈보라가 부는 동안에는 얼음 갑주가 두꺼워져 방어력이 1.5배가 된다. 불 곁의 가사인격에게 막혀 있으면 얼음 갑주가 녹아 방어력이 크게 떨어진다."],
+      hp: 7000, atk: 520, def: 900, res: 30, speed: 0.5, interval: 2.6, weight: 1, mass: 3, life: 1, iceArmor: 1.5, snowproof: true, thaw: { def: 0.4 } },
     // the winter's own: frost that sticks, the white that hides, the cold that maddens, and bombs of ice from the air
     frosthound: { name: "서리 사냥개", info: ["얼음 송곳니를 가진 사냥개. 물리면 몸이 굳는다(동상).", "동상은 공격 속도를 늦추고, 두 번 쌓이면 얼어붙어 잠시 아무것도 못 하게 된다. 얼어붙은 상대는 더 깊이 문다(피해 1.5배).", "눈보라 속에서도 느려지지 않는다."], hp: 950, atk: 200, def: 30, res: 20, speed: 1.6, interval: 1.4, weight: 1, mass: 1, life: 1, frost: 1 , vsFrozen: 1.5, snowproof: true },
     frostmage: { name: "서리 술사", info: ["냉기를 쏘는 망령 술사. 마법 피해를 준다.", "맞으면 동상이 쌓인다. 두 번 쌓이면 얼어붙는다."], hp: 1300, atk: 210, def: 60, res: 40, speed: 0.6, interval: 2.6, weight: 1, mass: 2, life: 1, ranged: 2.2, frost: 1 , snowproof: true },
     icestalker: { name: "설원 척후병", info: ["흰 망토를 두른 척후병. 얼음 위에 서 있으면 보이지 않는다.", "얼음 위에 숨어 있는 동안에는 막고 있는 가사인격만 공격할 수 있다. 얼음을 벗어나면 드러난다."], hp: 1500, atk: 260, def: 120, res: 10, speed: 0.8, interval: 1.6, weight: 1, mass: 2, life: 1, iceHide: true , snowproof: true },
-    berserk: { name: "동상 광인", info: ["추위에 미쳐 버린 병사. 체력이 계속 줄어든다.", "대신 시간이 갈수록 공격력과 공격 속도가 미쳐 날뛴다. 오래 붙잡아 두지 말자."], hp: 3600, atk: 260, def: 80, res: 0, speed: 0.75, interval: 1.6, weight: 1, mass: 2, life: 1, frenzy: { drain: 0.025, rate: 0.06, cap: 1.5 } },
-    bomber: { name: "얼음폭탄 드론", info: ["얼음 폭탄을 매단 드론(명일방주의 밤테일 기준). 근거리 가사인격은 막을 수 없다. 천천히 날아온다.", "가사인격이 사거리(2칸) 안에 들어오면 폭탄을 한 번 던진다. 폭탄은 목표와 주변 0.8칸 안의 모두에게 공격력 100%의 물리 피해를 주고 동상을 쌓는다. 던지고 나면 이동 속도가 두 배가 된다. 던지기 전에 떨어뜨리자."],
+    berserk: { name: "동상 광인", info: ["추위에 미쳐 버린 병사. 체력이 계속 줄어든다.", "대신 시간이 갈수록 공격력과 공격 속도가 미쳐 날뛴다. 눈보라를 맞는 동안에는 세 배로 빨리, 더 높이 미쳐 오른다. 불 곁의 가사인격에게 막히면 가라앉는다(광기도, 체력이 줄어드는 것도 멈춘다)."], hp: 3600, atk: 260, def: 80, res: 0, speed: 0.75, interval: 1.6, weight: 1, mass: 2, life: 1, frenzy: { drain: 0.025, rate: 0.06, cap: 1.5, wind: { rate: 3, cap: 2.5 } } },
+    bomber: { name: "얼음폭탄 드론", info: ["얼음 폭탄을 매단 드론(명일방주의 밤테일 기준). 근거리 가사인격은 막을 수 없다. 천천히 날아온다.", "가사인격이 사거리(2칸) 안에 들어오면 폭탄을 한 번 던진다. 폭탄은 목표와 주변 0.8칸 안의 모두에게 공격력 100%의 물리 피해를 주고 동상을 쌓는다. 던지고 나면 이동 속도가 두 배가 된다. 던지기 전에 떨어뜨리자.", "켜진 화로가 사거리 안에 있으면 가사인격보다 먼저 화로에 던진다. 화로는 꺼지고 둘레의 가사인격에게 동상이 쌓인다. 꺼진 화로는 그 옆에 새로 세운 가사인격이 6초 버티면 다시 붙는다."],
       hp: 4000, atk: 800, def: 150, res: 30, speed: 0.51, interval: 99, weight: 1, mass: 0, life: 1, flying: true,
       bomber: { range: 2, r: 0.8, mul: 1, frost: 1, fall: 0.9, arm: 0.6, dash: 2 } },
     // the infernal machine (rue Saint-Nicaise, 1800): a cart with a barrel of powder, rolled on until it bursts — over everyone near it
@@ -787,7 +790,7 @@
       "#######W,.,,,S",
       "#h.,.,.h,,.h,#",
       "#,,h,.,W,h,,.#",
-      "B,,##,,,,,.,,#",
+      "B,,#F,,,,,.,,#",
       "#,h#..,W,h,,.#",
       "#,.,.,.h,,.h,#",
       "#######W,.,,,S",
@@ -1393,19 +1396,21 @@
     { code: "IM-ST1", name: "불 꺼진 밤", map: MAP_C2.shadow, bg: null, hz: 0.5, ep: 2, story: true, startCost: 10, mul: { hp: 1, atk: 1, def: 1 }, waves: [],
       boss: ["", ""], desc: "갈림길의 반란군은 거의 남지 않았다. 검문소를 앞둔 밤, 불을 피우지 못한 채 모여 앉은 사람들.", lose: "" },
     { code: "IM-08", name: "황제가 죽었다", map: MAP_C2.barrier, bg: null, hz: 0.5, ep: 2, startCost: 10, mul: { hp: 0.41, atk: 0.67, def: 0.76 },
+      wind: { dir: 2, first: 52, every: 46, dur: 12 },   /* from the east, through the gap: the barrier (W) takes it on rows 2 and 4, the two round roads (1, 5) and the gap row (3) take all of it */
+      lamps: { r: 1, fire: true },   /* the checkpoint brazier (4,3): it can be put out (a drone), and only someone set down beside it afterwards lights it again */
       // gates: 0 the north-east road (the gendarmes: hounds, pikemen, frost gunners, the drones), 1 the south-east road (the Emperor's column). Everything comes through the one gap (7,3);
       // the gendarmes then go round the checkpoint house by the north (vias), the column by the south. Two frost gunners stand on the wall either side of the gap until late.
       // The maddened are let loose from just behind the gap (MAD), so they reach us at the height of their frenzy. Three surges: 5-42, 55-110, 122-178
-      vias: { 0: [[6, 1]] },
-      waves: (() => { const POST = (x, y) => ({ at: [x, y], until: 130 }), MAD = (x, y, t, via) => ({ at: [x, y], wait: t + 1, via }), N = [[6, 1]], HOV_N = { air: [[9, 2, 4], [3, 2, 7], [0, 3]] }, HOV_S = { air: [[9, 4, 4], [2, 4, 7], [0, 3]] };
+      vias: { 0: [[5, 2]], 1: [[5, 4]] },   /* the mouths: each column comes out of the gap past a square by the checkpoint brazier */
+      waves: (() => { const POST = (x, y) => ({ at: [x, y], until: 130 }), MAD = (x, y, t, via) => ({ at: [x, y], wait: t + 1, via, hp: 2.5 }), N = [[5, 2]], S = [[5, 4]], HOV_N = { air: [[9, 2, 4], [3, 2, 7], [0, 3]] }, HOV_S = { air: [[9, 4, 4], [2, 4, 7], [0, 3]] };
         return W1([[0.5, "frostgun", 0, 1, 0, POST(7, 1)], [0.5, "frostgun", 1, 1, 0, POST(7, 5)],
         [7, "yfang", 0, 2, 1.5], [12, "soldier", 1, 3, 2], [22, "lancer", 0, 1], [30, "yfang", 1, 3, 1.3], [36, "soldier", 0, 2, 2], [41, "frostgun", 0, 1],
-        [55, "berserk", 1, 1, 0, MAD(8, 3, 55)], [60, "bomber", 0, 1, 0, HOV_N], [66, "lancer", 1, 2, 2], [74, "strag", 1, 5, 0.8], [76, "frostgun", 0, 1], [84, "yshield", 0, 1], [86, "soldier", 1, 3, 1.4], [91, "frostgun", 1, 1],
-        [94, "berserk", 0, 1, 0, MAD(8, 2, 94, N)], [94, "berserk", 1, 1, 0, MAD(8, 4, 94)], [100, "yfang", 0, 4, 1], [102, "bomber", 1, 1, 0, HOV_S],
-        [122, "iceguard", 1, 1, 0, MAD(8, 3, 122)], [126, "lancer", 0, 3, 1.5], [134, "soldier", 1, 4, 1.3], [140, "frostgun", 1, 1], [136, "yrazor", 0, 1], [144, "berserk", 0, 1, 0, MAD(8, 2, 144, N)], [144, "berserk", 1, 1, 0, MAD(8, 4, 144)], [146, "bomber", 0, 2, 5, HOV_N],
+        [55, "berserk", 1, 1, 0, MAD(8, 3, 55, S)], [60, "bomber", 0, 1, 0, HOV_N], [66, "lancer", 1, 2, 2], [74, "strag", 1, 5, 0.8], [76, "frostgun", 0, 1], [84, "yshield", 0, 1], [86, "soldier", 1, 3, 1.4], [91, "frostgun", 1, 1],
+        [97, "berserk", 0, 1, 0, MAD(8, 2, 97, N)], [97, "berserk", 1, 1, 0, MAD(8, 4, 97, S)], [100, "yfang", 0, 4, 1], [102, "bomber", 1, 1, 0, HOV_S],
+        [122, "iceguard", 1, 1, 0, { at: [8, 3], wait: 123, via: S }], [126, "lancer", 0, 3, 1.5], [134, "soldier", 1, 4, 1.3], [140, "frostgun", 1, 1], [136, "yrazor", 0, 1], [144, "berserk", 0, 1, 0, MAD(8, 2, 144, N)], [144, "berserk", 1, 1, 0, MAD(8, 4, 144, S)], [146, "bomber", 0, 2, 5, HOV_N],
         [154, "yfang", 1, 4, 1], [156, "frostgun", 0, 1], [164, "lancer", 1, 3, 1.5], [166, "soldier", 0, 3, 1.3], [170, "frostgun", 0, 1], [172, "yrazor", 1, 1]]); })(),
-      boss: ["", ""], desc: "세관 성벽 앞의 검문소. \"황제가 죽었다\"는 소문에 헌병대가 길을 막았습니다. 차단벽에 난 틈 하나(7,3)로 두 길의 적이 모두 빠져나온 뒤, 검문소 건물을 북쪽이나 남쪽으로 돌아 방어 지점으로 옵니다. 헌병대(북동쪽)는 북쪽으로, 황제군 종대(남동쪽)는 남쪽으로 돕니다. 틈 양옆 성벽 위에는 서리 사수 둘이 올라서서 틈 앞뒤를 겨누다가, 130초가 지나면 내려와 걸어옵니다. 창병은 몇 초마다 창을 낮추고 내달리며, 그 뒤 첫 일격이 두 배로 들어갑니다. 동상 광인은 틈 바로 뒤에서 풀려나 금세 미쳐 날뜁니다. 체력은 저절로 줄지만 오래 둘수록 감당할 수 없습니다. 얼음폭탄 드론은 벽을 넘어 우리 고지 위에 잠시 떠 있습니다.",
-      lose: "성벽 위 사수는 바로 옆 칸 (6,1)·(6,5)에 근거리 가사인격을 세워 쓰러뜨릴 수 있습니다. 사수가 사라지면 벽 너머 마당을 보는 고지 (9,2)·(9,4)도 쓸 수 있습니다. 방어 지점 바로 앞에는 설 자리가 없으니, 북쪽과 남쪽 우회로를 각각 막아야 합니다. 동상 광인은 막자마자 화력을 모으세요." },
+      boss: ["", ""], desc: "세관 성벽 앞의 검문소. \"황제가 죽었다\"는 소문에 헌병대가 길을 막았습니다. 차단벽에 난 틈 하나(7,3)로 두 길의 적이 모두 빠져나온 뒤, 검문소 화로 곁 (5,2)·(5,4)를 지나 검문소 건물을 북쪽이나 남쪽으로 돌아 방어 지점으로 옵니다. 헌병대(북동쪽)는 북쪽으로, 황제군 종대(남동쪽)는 남쪽으로 돕니다. 52초부터 46초마다 동쪽, 틈 너머에서 눈보라가 불어옵니다. 차단벽이 화로 곁 두 줄을 가려 주고, 두 우회로와 틈의 줄로는 그대로 들이칩니다. 화로(F) 둘레 여덟 칸은 얼지 않습니다. 틈 양옆 성벽 위에는 서리 사수 둘이 올라서서 틈 앞뒤를 겨누다가, 130초가 지나면 내려와 걸어옵니다. 창병은 몇 초마다 창을 낮추고 내달리며, 그 뒤 첫 일격이 두 배로 들어갑니다. 동상 광인은 돌풍과 함께 틈 바로 뒤에서 풀려납니다. 눈보라를 맞는 동안에는 세 배로 빨리, 더 높이 미쳐 오르고, 불 곁의 가사인격에게 막히면 가라앉습니다. 얼음폭탄 드론은 벽을 넘어 우리 고지 위에 잠시 떠 있고, 켜진 화로가 가까우면 화로부터 끕니다. 꺼진 화로는 바로 아래 (4,4)에 새로 세운 가사인격이 6초 버티면 다시 붙습니다.",
+      lose: "성벽 위 사수는 바로 옆 칸 (6,1)·(6,5)에 근거리 가사인격을 세워 쓰러뜨릴 수 있습니다. 사수가 사라지면 벽 너머 마당을 보는 고지 (9,2)·(9,4)도 쓸 수 있습니다. 동상 광인은 우회로 끝에서 받지 말고, 검문소 화로 곁 (5,2)·(5,4)에서 붙잡으세요. 차단벽이 바람을 막아 주고, 불 곁에서 막힌 광인은 가라앉습니다. 화로를 끄러 오는 드론은 던지기 전에 떨어뜨리고, 꺼지면 (4,4)에 새로 세워 다시 붙이세요. 빙갑 근위병도 불 곁에서 막아야 얼음이 녹습니다." },
     { code: "IM-09", name: "세관 성벽", map: MAP_C2.wall, bg: null, hz: 0.5, ep: 2, startCost: 12, mul: { hp: 0.61, atk: 0.51, def: 0.78 }, rmul: { hp: 0.85, atk: 0.8 },
       wind: { dir: 1, first: 30, every: 32, dur: 12 },   // from the north: the wall takes it, but it pours down the gate column and the corner column
       // gates: 0 the boulevard outside (the slow and the armoured turn in at the toll gate, the hounds and the maddened run on round the corner), 1 the road inside (the Guard, and its carts:
@@ -1549,18 +1554,18 @@
       volleys: [{ kind: "charge", first: 30, every: 32, warn: 5, dmg: 1100, pct: 0.6, tiles: [1, 2, 3, 4, 5, 6].map((y) => [2, y]) },
                 { kind: "charge", first: 46, every: 32, warn: 5, dmg: 1100, pct: 0.6, tiles: [1, 2, 3, 4, 5, 6].map((y) => [11, y]) },
                 { first: 62, every: 32, warn: 4, dmg: 700, pct: 0.22, foe: 0.3, mine: 1.7, mineEvery: 13, minePct: 0.2, pack: 1.6, capture: 8, linger: 20, muzzle: [12, 5], gun: [13, 5], tiles: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((x) => [x, 5]) }],   // the gun on the cross road from 62 on: a packed square takes more of it
-      shifts: [{ t: 100, warn: 12, set: [[6, 1, ","], [7, 1, ","]], banner: ["농장 문이 부서졌다", "THE GATE IS DOWN"] }],   // the farm's north gate breaks at 100 s
+      shifts: [{ when: { volley: 2, shots: 2 }, warn: 4, set: [[6, 1, ","], [7, 1, ","]], banner: ["농장 문이 부서졌다", "THE GATE IS DOWN"] }],   /* the farm's north gate breaks under the cross-road gun's second shot while it is theirs (62, 94 s); a gun of ours does not fire on it */
       // gates: 0 the west lane's head (3,0), 1 the farm gate (6,0), 2 the east lane's head (10,0), 3 the east side (13,2). Points: the foot of each lane. POST: the gun's picket.
       // Three movements: the two lanes in turn (5-50); the gun and the cross road (60-94); the gate falls at 100 and the yard is the main road (102-176)
       waves: (() => { const WA = { via: [[2, 1], [2, 6], [3, 7]] }, WB = { via: [[2, 1], [2, 2], [3, 3], [3, 6], [3, 7]] }, EA = { via: [[11, 1], [11, 6], [10, 7]] }, EB = { via: [[11, 1], [11, 2], [10, 3], [10, 6], [10, 7]] }, EG = { via: [[11, 2], [11, 6], [10, 7]] },
-        WX = { via: [[2, 1], [2, 2], [3, 3], [3, 5], [9, 5], [10, 6], [10, 7]] }, MW = { via: [[6, 1], [6, 2], [6, 4], [6, 5], [3, 5], [3, 6], [3, 7]] }, ME = { via: [[6, 1], [6, 2], [7, 3], [7, 4], [7, 5], [10, 5], [10, 6], [10, 7]] }, POST = (x, y) => ({ at: [x, y], until: 150 });
+        WX = { via: [[2, 1], [2, 2], [3, 3], [3, 5], [9, 5], [10, 6], [10, 7]] }, MW = { via: [[6, 1], [6, 2], [6, 4], [6, 5], [3, 5], [3, 6], [3, 7]], shut: { s: 0, via: [[2, 1], [2, 2], [3, 3], [3, 6], [3, 7]] } }, ME = { via: [[6, 1], [6, 2], [7, 3], [7, 4], [7, 5], [10, 5], [10, 6], [10, 7]], shut: { s: 2, via: [[11, 1], [11, 2], [10, 3], [10, 6], [10, 7]] } },   /* while the gate holds, the yard columns wait behind it a moment, then come down the lanes */ POST = (x, y) => ({ at: [x, y], until: 150 });
         return W1([[0.5, "soldier", 3, 1, 0, Object.assign(POST(12, 5), { hp: 2, atk: 1.3 })],   // the gun's picket is a picked man
         [10, "soldier", 0, 2, 2, WB], [18, "soldier", 0, 2, 2, WA], [26, "lancer", 0, 1, 0, WB], [34, "soldier", 2, 2, 2, EB], [44, "soldier", 3, 2, 2, EG], [50, "chasseur", 2, 1, 0, EA],
         [60, "soldier", 2, 2, 1.5, EB], [63, "chasseur", 2, 1, 0, EB], [64, "grenadier", 0, 1, 0, WB], [70, "lancer", 3, 1, 0, EG], [76, "soldier", 0, 2, 1.5, WX], [84, "soldier", 2, 2, 1.5, EA], [86, "drummer", 2, 1, 0, EB], [94, "chasseur", 0, 1, 0, WA],
-        [102, "soldier", 1, 3, 1.4, MW], [104, "soldier", 1, 2, 1.4, ME], [108, "lancer", 1, 2, 2, ME], [114, "mouchard", 3, 1, 0, EG], [118, "grenadier", 1, 1, 0, MW], [122, "soldier", 0, 2, 1.4, WB], [125, "chasseur", 0, 1, 0, WB], [128, "soldier", 2, 3, 1.4, EA], [134, "soldier", 1, 2, 1.4, ME], [137, "chasseur", 1, 1, 0, ME], [138, "lancer", 0, 1, 0, WA],
-        [144, "chasseur", 1, 1, 0, MW], [146, "lancer", 1, 2, 2, MW], [150, "grenadier", 1, 1, 0, ME], [152, "drummer", 1, 1, 0, MW], [156, "soldier", 1, 3, 1.4, MW], [160, "lancer", 2, 2, 2, EB], [164, "soldier", 0, 2, 1.5, WX], [168, "grenadier", 2, 1, 0, EA], [172, "soldier", 1, 2, 1.3, ME], [175, "chasseur", 1, 1, 0, ME], [176, "lancer", 1, 1, 0, MW]]); })(),
-      boss: ["", ""], desc: "능선 한가운데의 농장. 적은 북쪽에서 두 길로 내려오고, 방어 지점은 두 길의 끝, 둘입니다. 두 길의 바깥 줄에는 기병 돌격, 방어 지점 앞을 가로지르는 길에는 포도탄이 옵니다(붙어 선 가사인격은 1.6배). 가운데 농장은 우리 고지입니다. 100초에 농장의 북쪽 문이 부서지면, 안뜰이 세 번째 길이 되어 가로지르는 길 한복판으로 이어집니다.",
-      lose: "동쪽 끝 고지에서 보초를 쓰러뜨리고, 포가 처음 쏘기 전(62초)에 포구 앞 칸을 8초 지켜 포를 빼앗으세요. 서쪽은 안쪽 칸(문 쪽)부터 세우세요. 두 길의 적은 바깥 줄로 내려오다 (2,2)·(11,2)에서 갈라지고, 문이 부서진 뒤 안뜰의 적은 모두 (6,2)를 지납니다. 이 세 칸이 길목입니다. (2,2)·(11,2)는 돌격이 지나는 줄이니 바로 아래 칸에 한 명을 더 세워 방진을 만드세요. 그다음 두 방어 지점 앞, 가로지르는 길 위에 둘씩 세우면 세 길이 모두 그 앞을 지납니다. 빼앗은 포는 13초마다 그 길 위의 적을 최대 체력의 20%씩 깎습니다." },
+        [102, "soldier", 1, 3, 1.4, MW], [104, "soldier", 1, 2, 1.4, ME], [108, "lancer", 1, 2, 2, ME], [112, "gunretaker", 3, 1, 0, EG], [114, "mouchard", 3, 1, 0, EG], [118, "grenadier", 1, 1, 0, MW], [122, "soldier", 0, 2, 1.4, WB], [125, "chasseur", 0, 1, 0, WB], [128, "soldier", 2, 3, 1.4, EA], [134, "soldier", 1, 2, 1.4, ME], [137, "chasseur", 1, 1, 0, ME], [138, "lancer", 0, 1, 0, WA],
+        [144, "chasseur", 1, 1, 0, MW], [146, "lancer", 1, 2, 2, MW], [150, "grenadier", 1, 1, 0, ME], [150, "gunretaker", 3, 1, 0, EG], [152, "drummer", 1, 1, 0, MW], [156, "soldier", 1, 3, 1.4, MW], [160, "lancer", 2, 2, 2, EB], [164, "soldier", 0, 2, 1.5, WX], [168, "grenadier", 2, 1, 0, EA], [172, "soldier", 1, 2, 1.3, ME], [175, "chasseur", 1, 1, 0, ME], [176, "lancer", 1, 1, 0, MW]]); })(),
+      boss: ["", ""], desc: "능선 한가운데의 농장. 적은 북쪽에서 두 길로 내려오고, 방어 지점은 두 길의 끝, 둘입니다. 두 길의 바깥 줄에는 기병 돌격, 방어 지점 앞을 가로지르는 길에는 포도탄이 옵니다(붙어 선 가사인격은 1.6배). 가운데 농장은 우리 고지입니다. 가로지르는 길의 포가 적의 손에 있는 채로 두 발을 쏘면(62초부터 32초마다) 그 포격에 농장의 북쪽 문이 부서지고, 안뜰이 세 번째 길이 되어 가로지르는 길 한복판으로 이어집니다. 포를 빼앗아 두면 문은 버티고, 안뜰로 오던 종대는 두 길로 돌아옵니다. 112초와 150초에는 포 되찾는 자가 동쪽에서 와서, 비어 있는 포구 앞 칸에 닿는 즉시 포를 되찾습니다.",
+      lose: "동쪽 끝 고지에서 보초를 쓰러뜨리고, 포가 처음 쏘기 전(62초)에 포구 앞 칸을 8초 지켜 포를 빼앗으세요. 서쪽은 안쪽 칸(문 쪽)부터 세우세요. 두 길의 적은 바깥 줄로 내려오다 (2,2)·(11,2)에서 갈라지고, 문이 부서진 뒤 안뜰의 적은 모두 (6,2)를 지납니다. 이 세 칸이 길목입니다. (2,2)·(11,2)는 돌격이 지나는 줄이니 바로 아래 칸에 한 명을 더 세워 방진을 만드세요. 그다음 두 방어 지점 앞, 가로지르는 길 위에 둘씩 세우면 세 길이 모두 그 앞을 지납니다. 빼앗은 포는 13초마다 그 길 위의 적을 최대 체력의 20%씩 깎습니다. 문을 살리려면 포구 앞 칸을 끝까지 비우지 마세요. 문을 내주고 (6,2)에서 받는 것도 한 가지 답입니다." },
     { code: "WL-08", name: "몽생장 능선", map: MAP_C3.ridge, bg: null, hz: 0.5, ep: 3, startCost: 12, mul: { hp: 2.38, atk: 1.39, def: 0.85 }, rmul: { hp: 1, atk: 0.9 }, crest: 4,
       volleys: [{ kind: "charge", first: 34, every: 34, warn: 5, dmg: 1100, pct: 0.6, tiles: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((x) => [x, 1]) },
                 { kind: "charge", first: 51, every: 34, warn: 5, dmg: 1100, pct: 0.6, tiles: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((x) => [x, 6]) },
@@ -1814,7 +1819,7 @@
       this.waves = this.stage.waves;
       // board shifts (a wall that opens at a set time): such a stage plays on its own copy of the rows, so the stage's map stays as written and a new game starts shut again
       this.rows = this.stage.shifts && this.stage.map ? this.stage.map.slice() : null;
-      this.shifts = (this.stage.shifts || []).map((q) => ({ t: q.t, warn: q.warn || 0, set: q.set, banner: q.banner, tiles: q.set.map(([x, y]) => [x, y]), warned: false, done: false }));
+      this.shifts = (this.stage.shifts || []).map((q) => ({ t: q.when ? Infinity : q.t, when: q.when, warn: q.warn || 0, set: q.set, banner: q.banner, tiles: q.set.map(([x, y]) => [x, y]), warned: false, done: false }));
       setMap(this.rows || this.stage.map || MAP0);
       this.costRate = this.stage.costRate !== undefined ? this.stage.costRate : CFG.costPerSec;
       if (this.stage.startCost) this.cost = this.stage.startCost;
@@ -2240,11 +2245,11 @@
       if (this.t >= c.next) { c.until = this.t + c.dur; c.next += c.every; c.warned = false; this.fx.push({ k: "calling", x: c.at[0], y: c.at[1], t: 0, life: c.dur }); } }
     lampLit(x, y) { return tileAt(x, y) === "F" && !this.lampOff.has(y * 100 + x); }
     lampGuarded(x, y) { return this.units.some((u) => Math.abs(u.x - x) + Math.abs(u.y - y) === 1); }   // someone stands right by it (above, below, left or right): nobody puts it out
-    darkAt(x, y) { const L = this.stage.lamps; if (!L) return false; const r = L.r || 1; for (let dy = -r; dy <= r; dy++) for (let dx = -r; dx <= r; dx++) if (this.lampLit(x + dx, y + dy)) return false; return true; }
+    darkAt(x, y) { const L = this.stage.lamps; if (!L || L.fire) return false; const r = L.r || 1; for (let dy = -r; dy <= r; dy++) for (let dx = -r; dx <= r; dx++) if (this.lampLit(x + dx, y + dy)) return false; return true; }
     // force: put it out even if somebody stands by it. The time it went out is kept. A lamp put out by a lamp-breaker (by.def.snuff === "force") is broken:
     // only someone deployed after that can light it again
-    snuff(x, y, by, force) { if (!this.lampLit(x, y) || (!force && this.lampGuarded(x, y))) return false; const k = y * 100 + x; this.lampOff.add(k); this.lampOffT.set(k, this.t);
-      if (by && by.def && by.def.snuff === "force") this.lampBroken.add(k); else this.lampBroken.delete(k);
+    snuff(x, y, by, force) { const fire = !!(this.stage.lamps && this.stage.lamps.fire); if (!this.lampLit(x, y) || (!force && !fire && this.lampGuarded(x, y))) return false; const k = y * 100 + x; this.lampOff.add(k); this.lampOffT.set(k, this.t);
+      if ((by && by.def && by.def.snuff === "force") || fire) this.lampBroken.add(k); else this.lampBroken.delete(k);   /* a brazier put out (chapter 2): only someone set down beside it after that lights it again */
       this.relightAt.delete(k); this.freshAt.delete(k); this.fx.push({ k: "snuff", x, y, t: 0, life: 0.9 }); return true; }
     relight(x, y) { if (tileAt(x, y) !== "F" || !this.lampOff.delete(y * 100 + x)) return false; this.lampOffT.delete(y * 100 + x); this.relightAt.delete(y * 100 + x); this.freshAt.delete(y * 100 + x); this.lampBroken.delete(y * 100 + x); this.fx.push({ k: "relight", x, y, t: 0, life: 0.9 });
       const r = (this.stage.lamps && this.stage.lamps.r) || 1; for (const e of this.enemies) if (e.ally && e.waiting && !e.dead && Math.max(Math.abs(e.x - x), Math.abs(e.y - y)) <= r) this.wake(e);   // the light finds whoever was left tied up in the dark: they are loose, and on our side
@@ -2276,6 +2281,10 @@
     // routes are worked out again. Only a wall opening onto road is allowed, and nobody may stand on the square. Those already walking keep the way they were given
     shiftStep() {
       for (const sh of this.shifts) {
+        if (sh.when && !sh.done) { const v = this.volleys[sh.when.volley]; if (v) { const n = v.nShot || 0;   /* the gun's shots while it is theirs are counted (a gun of ours does not count) */
+          if (!sh.warned && n >= sh.when.shots - 1 && v.st === 1 && !v.ours) { sh.warned = true; this.fx.push({ k: "shiftwarn", tiles: sh.tiles, t: 0, life: Math.max(0.5, v.next - this.t) }); }
+          else if (sh.warned && n < sh.when.shots && (v.st !== 1 || v.ours)) sh.warned = false;
+          if (n >= sh.when.shots) sh.t = this.t; } }
         if (!sh.warned && this.t >= sh.t - sh.warn) { sh.warned = true; this.fx.push({ k: "shiftwarn", tiles: sh.tiles, t: 0, life: sh.warn }); }
         if (sh.done || this.t < sh.t || !this.rows) continue;
         sh.done = true;
@@ -2323,6 +2332,15 @@
           if (v.kind === "charge" && v.leave && (v.nCharge = (v.nCharge || 0) + 1) >= v.leave.from) this.leaveRiders(v); }
       }
     }
+    // the gun retaker (def.retake): checked once a second while nobody holds him
+    retakeStep(e) { e.retakeAt = this.t + 1; const ex = Math.round(e.x), ey = Math.round(e.y);
+      if (e.retaking && !e.retaking.ours) { e.retaking = null; e.aimHold = false; const p = bfsPath([ex, ey], BASE); if (p) { e.path = [[e.x, e.y]].concat(p.length > 1 ? p.slice(1) : [[ex, ey]]); e.seg = 0; e.segT = 0; this.advance(e, 0); e.remain = segLen(e.path); } return; }   /* the gun is theirs again (by someone else): back to the march */
+      if (e.retaking) { const v = e.retaking, [mx, my] = v.muzzle; if (Math.hypot(e.x - mx, e.y - my) < 0.2 && !this.units.some((u) => u.x === mx && u.y === my)) {
+          v.ours = false; v.lingerUntil = undefined; v.heldBy = null; v.st = 0; v.next = Math.max(v.next, this.t + (v.warn || 3) + 2); this.fx.push({ k: "gunlost", x: mx, y: my, t: 0, life: 1.2 });
+          e.retook = true; e.x = mx; e.y = my; e.path = [[mx, my], [mx, my]]; e.seg = 0; e.segT = 0; e.postUntil = 1e9; e.aimHold = true; } return; }
+      let best = null, bd = 1e9; for (const v of this.volleys) if (v.ours && v.muzzle) { const p = bfsPath([ex, ey], v.muzzle); if (p && p.length < bd) { bd = p.length; best = { v, p }; } }
+      if (!best) return;
+      e.retaking = best.v; e.aimHold = true; e.path = [[e.x, e.y]].concat(best.p.length > 1 ? best.p.slice(1) : [best.v.muzzle.slice()]); e.seg = 0; e.segT = 0; e.waitedAt = undefined; this.advance(e, 0); e.remain = segLen(e.path); }
     // a charge with "leave": from its v.leave.from-th pass on, it leaves v.leave.n men of v.leave.type behind on the square of its line furthest from every point
     leaveRiders(v) { const L = v.leave, far = (p) => { const q = bfsPath(p, BASE); return q ? q.length : -1; };
       const at = v.tiles.filter(([x, y]) => walkable(tileAt(x, y))).map((p) => [p, far(p)]).filter((q) => q[1] > 0).sort((a, b) => b[1] - a[1])[0];
@@ -2343,7 +2361,15 @@
         this.fx.push({ k: "grape", tiles: sh.tiles, from: sh.tiles[0], t: 0, life: 0.5 }); }
       this.shells = this.shells.filter((q) => !q.done); }
     blizzardOn() { return !!(this.wind && this.wind.blowing); }
-    warmAt(x, y) { for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) if (tileAt(x + dx, y + dy) === "F") return true; return false; }   // beside a brazier (F) nobody freezes
+    // the blizzard is blowing down this square's line and nothing stands between the square and the side it blows from: no raised wall, none of ours, none of our rebels
+    windHits(x, y) { const w = this.wind; if (!w || !w.blowing) return false; const [dx, dy] = [[1, 0], [0, 1], [-1, 0], [0, -1]][w.dir], X = Math.round(x), Y = Math.round(y);
+      if (X < 0 || Y < 0 || X >= W || Y >= H) return false;
+      for (let cx = dx > 0 ? 0 : dx < 0 ? W - 1 : X, cy = dy > 0 ? 0 : dy < 0 ? H - 1 : Y; cx !== X || cy !== Y; cx += dx, cy += dy) {
+        if (tileAt(cx, cy) === "W" || this.unitAt(cx, cy) || this.enemies.some((q) => q.ally && !q.dead && !q.def.flying && Math.round(q.x) === cx && Math.round(q.y) === cy)) return false; }
+      return true; }
+    // held by one of ours who stands beside a lit brazier: the ice on it thaws (def.thaw)
+    thawed(e) { return !!(e && e.def.thaw && e.blockedBy && this.units.includes(e.blockedBy) && this.warmAt(e.blockedBy.x, e.blockedBy.y)); }
+    warmAt(x, y) { if (this.stage.lamps && !this.stage.lamps.fire) return false; for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) if (tileAt(x + dx, y + dy) === "F" && !this.lampOff.has((y + dy) * 100 + x + dx)) return true; return false; }   // beside a brazier (F) nobody freezes
     // 동상: one more stack; two make an operator freeze solid for a while
     frostHit(u, n) {
       if (!u || u.isEnemy || !this.units.includes(u) || u.frozenT > 0 || (u.frostImm || 0) > this.t) return;
@@ -2518,14 +2544,14 @@
       if (target.mask && !target.judged) return 0;   // lab L3 (LAB-04): nor harmed by a blast   // a boss between his two stages, or an armour still lying where it fell: nothing harms them
       if (fromEnemy && !target.isEnemy && target.markT > this.t) raw *= target.markAmp || 1;   // pointed out by an informer
       if (fromEnemy && fromEnemy.def.vsFrozen && !target.isEnemy && target.frozenT > 0) raw *= fromEnemy.def.vsFrozen;   // fangs into the frozen
-      if (fromEnemy && fromEnemy.def.frost && !target.isEnemy && raw > 0) this.frostHit(target, fromEnemy.def.frost);
+      if (fromEnemy && fromEnemy.def.frost && !target.isEnemy && raw > 0 && !this.warmAt(target.x, target.y)) this.frostHit(target, fromEnemy.def.frost);   /* by a lit brazier the frost does not stick */
       if (target.isEnemy && target.waiting && !target.ally) this.wake(target);   // (those tied up on our side are loosed by the light, not by a blow)
       let dmg;
       if (type === "true") dmg = raw;
-      else if (type === "arts") dmg = raw * (1 - Math.max(0, (target.res !== undefined ? target.res : (target.def.res || 0)) - (target.erodeT > 0 ? ERODE.resDown : 0)) / 100);   // 침식 eats into magic resistance
+      else if (type === "arts") dmg = raw * (1 - Math.max(0, (target.res !== undefined ? target.res : (target.def.res || 0)) * (target.isEnemy && target.def.thaw && target.def.thaw.res && this.thawed(target) ? target.def.thaw.res : 1) - (target.erodeT > 0 ? ERODE.resDown : 0)) / 100);   // 침식 eats into magic resistance
       else {
         let def = target.isEnemy ? target.defv : this.stat(target, "def");
-        if (target.isEnemy && target.def.iceArmor && this.wind && this.wind.blowing) def *= target.def.iceArmor;
+        const thaw = target.isEnemy && this.thawed(target); if (target.isEnemy && target.def.iceArmor && this.wind && this.wind.blowing && !thaw) def *= target.def.iceArmor; if (thaw && target.def.thaw.def) def *= target.def.thaw.def;   /* held by one of ours beside a lit brazier, the ice on it thaws */
         if (target.isEnemy && target.def.falter && target.def.falter.bare && target.falterT > this.t) def = 0;   // while he falters his guard is down   // the ice on the shield thickens in the white-out
         if (fromUnit && fromUnit.def.pierce && target.isEnemy) def *= 1 - fromUnit.def.pierce;   // 대물 저격탄: armor is no excuse
         if (target.isEnemy && target.blockedBy && target.blockedBy.egSee) def *= 0.7;   // 절대적 직관: the weak point, seen at once
@@ -3479,6 +3505,7 @@
       for (const b of this.bombs) if ((b.t -= dt) <= 0 && !b.done) {   // a frost bomb lands: a burst of ice over everyone close by
         b.done = true;
         for (const u of this.units.slice()) if (Math.hypot(u.x - b.x, u.y - b.y) <= b.r + 0.01) { this.damage(u, b.dmg, b.type || "arts", null); this.frostHit(u, b.frost); }
+        if (b.fire) { this.snuff(b.fire[0], b.fire[1], null, true); for (const u of this.units.slice()) if (Math.max(Math.abs(u.x - b.fire[0]), Math.abs(u.y - b.fire[1])) <= 1) this.frostHit(u, b.frost); }   /* the brazier is out, and the cold takes those round it */
         this.fx.push({ k: "frostboom", x: b.x, y: b.y, r: b.r, t: 0, life: 0.8 }); this.snd("boom");
       }
       if (this.bombs.length) this.bombs = this.bombs.filter((b) => !b.done);
@@ -3489,11 +3516,13 @@
       // spawns
       while (this.waveIdx < this.waves.length && this.waves[this.waveIdx][0] <= this.t) {
         const [, type, s, o] = this.waves[this.waveIdx++];
-        if (!this.routeReady(type, s, o)) { (this.waitSpawn || (this.waitSpawn = [])).push({ type, s, o, next: this.t + 1 }); continue; }   // its way is still shut: it waits behind the gate
+        if (!this.routeReady(type, s, o)) { (this.waitSpawn || (this.waitSpawn = [])).push({ type, s, o, next: this.t + 1, since: this.t }); continue; }   // its way is still shut: it waits behind the gate
         this.spawn(type, s, o);
       }
       if (this.waitSpawn && this.waitSpawn.length) for (const w of this.waitSpawn.slice()) if (this.t >= w.next) {   // tried again every second; it comes in the moment its way is open
-        if (this.routeReady(w.type, w.s, w.o)) { this.waitSpawn.splice(this.waitSpawn.indexOf(w), 1); this.spawn(w.type, w.s, w.o); } else w.next = this.t + 1; }
+        if (this.routeReady(w.type, w.s, w.o)) { this.waitSpawn.splice(this.waitSpawn.indexOf(w), 1); this.spawn(w.type, w.s, w.o); }
+        else if (w.o && w.o.shut && this.t >= (w.since || 0) + (w.o.shut.after || 4)) { this.waitSpawn.splice(this.waitSpawn.indexOf(w), 1); this.spawn(w.type, w.o.shut.s, w.o.shut); }   /* the gate holds: round by the other way */
+        else w.next = this.t + 1; }
       if (this.extra) while (this.extra.length && this.extra[0][0] <= this.t) { const [, type, s] = this.extra.shift(); this.spawn(type, s); }
       if (this.loopDef) this.loopStep();   // lab: waves without end
       if (this.vip) this.vipStep(dt);   // lab: the ally who walks
@@ -3526,20 +3555,26 @@
         }
         if (e.hold && e.holdUntil !== undefined && this.t >= e.holdUntil) { e.hold = false; e.holdUntil = undefined; if (e.waiting) { e.waiting = false; this.fx.push({ k: "wake", e, x: e.x, y: e.y, t: 0, life: 0.9 }); } }
         if (e.hold) continue;   // held in place by a script (the tutorial) or standing where the stage set it
-        if (e.def.frenzy) { const F = e.def.frenzy; e.frenzyM = 1 + Math.min(F.cap, F.rate * (this.t - e.born)); e.hp -= e.maxHp * F.drain * dt; }   // the cold eats it as it rages
+        if (e.def.frenzy) { const F = e.def.frenzy;   /* the cold eats it as it rages */
+          if (F.wind) { const calm = !!(e.blockedBy && this.warmAt(e.blockedBy.x, e.blockedBy.y)), gust = !calm && this.windHits(e.x, e.y); e.calm = calm; e.gusted = gust;   /* held by one of ours beside a lit brazier: calmed (no frenzy, no more drain); out in the blizzard: it rises three times as fast, and higher */
+            if (!calm) { e.frenzyAcc = Math.min(F.wind.cap, (e.frenzyAcc || 0) + F.rate * (gust ? F.wind.rate : 1) * dt); e.hp -= e.maxHp * F.drain * dt; } e.frenzyM = calm ? 1 : 1 + Math.min(gust ? F.wind.cap : F.cap, e.frenzyAcc || 0); }
+          else { e.frenzyM = 1 + Math.min(F.cap, F.rate * (this.t - e.born)); e.hp -= e.maxHp * F.drain * dt; } }
         if (e.def.snowcloak) { const on = !!(this.wind && this.wind.blowing); if (on !== !!e.stealth) { e.stealth = on; if (!on) { e.revealT = this.t; this.fx.push({ k: "icereveal", x: e.x, y: e.y, t: 0, life: 0.6 }); } } }   // white in the white-out
-        if (this.stage.lamps && !e.def.flying && !e.def.boss && !e.ally && !e.def.lantern) { const dk = this.darkAt(Math.round(e.x), Math.round(e.y)), on = dk && !e.blockedBy && !this.units.some((u) => Math.max(Math.abs(u.x - e.x), Math.abs(u.y - e.y)) <= 1.2); e.dim = dk && !on; if (on !== !!e.stealth) { e.stealth = on; if (!on) { e.revealT = this.t; } } }   // out of the lamplight: unseen — unless someone holds it or it stands right beside one of ours, and then only those beside it can strike
+        if (this.stage.lamps && !this.stage.lamps.fire && !e.def.flying && !e.def.boss && !e.ally && !e.def.lantern) { const dk = this.darkAt(Math.round(e.x), Math.round(e.y)), on = dk && !e.blockedBy && !this.units.some((u) => Math.max(Math.abs(u.x - e.x), Math.abs(u.y - e.y)) <= 1.2); e.dim = dk && !on; if (on !== !!e.stealth) { e.stealth = on; if (!on) { e.revealT = this.t; } } }   // out of the lamplight: unseen — unless someone holds it or it stands right beside one of ours, and then only those beside it can strike
         if (e.def.snuff) for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) this.snuff(Math.round(e.x) + dx, Math.round(e.y) + dy, e, e.def.snuff === "force");   // the snuffer: every lamp he passes that nobody stands by goes out (the lamp-breaker breaks it even so)
         if (e.def.mark) { const M = e.def.mark; if (e.markCD === undefined) e.markCD = M.every * 0.4;   // the informer: he points someone out, and for a while they are hit harder and shot at first
           if ((e.markCD -= dt) <= 0) { let tg = null; for (const high of [true, false]) { for (const u of this.units) if ((tileAt(u.x, u.y) === "h") === high && Math.hypot(u.x - e.x, u.y - e.y) <= M.r && (!tg || this.stat(u, "atk") > this.stat(tg, "atk"))) tg = u; if (tg) break; }   // an operator up on high ground first
             if (tg) { e.markCD = M.every; tg.markT = this.t + M.dur; tg.markAmp = M.amp; this.fx.push({ k: "marked", e, u: tg, x: tg.x, y: tg.y, t: 0, life: M.dur }); } else e.markCD = 0.5; } }
+        if (e.def.retake && !e.retook && !e.blockedBy && this.t >= (e.retakeAt || 0)) this.retakeStep(e);
         if (e.unsmoke && this.smoke.size) for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) this.clearSmoke(Math.round(e.x) + dx, Math.round(e.y) + dy, e.unsmoke);   // it beats the smoke away as it passes
         if (e.def.iceHide) { const c = tileAt(Math.round(e.x), Math.round(e.y)), on = c === "=" || c === "-"; if (on !== !!e.stealth) { e.stealth = on; if (!on) this.fx.push({ k: "icereveal", x: e.x, y: e.y, t: 0, life: 0.6 }); } }   // white on white
         if (e.def.bomber && !e.dropped) {   // drifting in slowly: the moment someone is below and in reach, the one frost bomb goes, and it bolts
           const B = e.def.bomber; if (e.bombT === undefined) e.bombT = B.arm;
           if ((e.bombT -= dt) <= 0) {
             let tg = null, bd = B.range; for (const u of this.units) { const d0 = Math.hypot(u.x - e.x, u.y - e.y); if (d0 <= bd) { bd = d0; tg = u; } }
-            if (tg) { this.bombs.push({ x: tg.x, y: tg.y, t: B.fall, r: B.r, dmg: e.def.atk * B.mul * (e.atkMul || 1), frost: B.frost, type: "phys" }); this.fx.push({ k: "bombdrop", x0: e.x, y0: e.y, x1: tg.x, y1: tg.y, t: 0, life: B.fall }); e.dropped = true; }
+            let fz = null; if (this.stage.lamps && this.stage.lamps.fire && this.stage.lamps.drones !== false) { let fd = B.range; for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) if (this.lampLit(x, y)) { const d0 = Math.hypot(x - e.x, y - e.y); if (d0 <= fd) { fd = d0; fz = [x, y]; } } }
+            if (fz) { this.bombs.push({ x: fz[0], y: fz[1], t: B.fall, r: B.r, dmg: e.def.atk * B.mul * (e.atkMul || 1), frost: B.frost, type: "phys", fire: fz }); this.fx.push({ k: "bombdrop", x0: e.x, y0: e.y, x1: fz[0], y1: fz[1], t: 0, life: B.fall }); e.dropped = true; }   /* a lit brazier in reach comes first */
+            else if (tg) { this.bombs.push({ x: tg.x, y: tg.y, t: B.fall, r: B.r, dmg: e.def.atk * B.mul * (e.atkMul || 1), frost: B.frost, type: "phys" }); this.fx.push({ k: "bombdrop", x0: e.x, y0: e.y, x1: tg.x, y1: tg.y, t: 0, life: B.fall }); e.dropped = true; }
             else e.bombT = 0.15;
           }
         }
