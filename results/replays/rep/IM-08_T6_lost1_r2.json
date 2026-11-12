@@ -1,0 +1,424 @@
+{
+ "stage": "IM-08",
+ "name": "황제가 죽었다",
+ "level": "E0L40",
+ "lost": 0,
+ "seed": 1,
+ "K": 1,
+ "variant": "none",
+ "stageMul": {
+  "hp": 0.52,
+  "atk": 0.64,
+  "def": 0.76
+ },
+ "deck": "T6",
+ "criterion": "lost<=1",
+ "fiveSeedLost": [
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "family": "IM-08:1e58ofn",
+ "gameHash": "656ff27f0786",
+ "rng": "Math.random replaced before `new TD.Game` by im_sim's seed(n): a = n*7919, mulberry32-style step; nothing else draws from it between seeding and the game",
+ "stepping": "fixed g.update(1/30) per frame, max 420*30 frames; actions run at the start of a frame, before that frame's update, in log order",
+ "squad": [
+  {
+   "id": "sniper",
+   "elite": 0,
+   "lvl": 40,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 4,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.779245283018868,
+    "atk": 0.688,
+    "def": 0.6984126984126984
+   }
+  },
+  {
+   "id": "lulu",
+   "elite": 0,
+   "lvl": 40,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 4,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.5669376959247648,
+    "atk": 0.5710796489485014,
+    "def": 0.6060139860139859
+   }
+  },
+  {
+   "id": "ker",
+   "elite": 0,
+   "lvl": 40,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 4,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.509705753184014,
+    "atk": 0.6637514384349827,
+    "def": 0.5188735177865612
+   }
+  },
+  {
+   "id": "teka",
+   "elite": 0,
+   "lvl": 40,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 4,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.6033768467130463,
+    "atk": 0.6004062362758015,
+    "def": 0.6233428030303031
+   }
+  },
+  {
+   "id": "tao",
+   "elite": 0,
+   "lvl": 40,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 4,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.8,
+    "atk": 0.7204301075268817,
+    "def": 0.7192307692307692
+   }
+  },
+  {
+   "id": "veil",
+   "elite": 0,
+   "lvl": 40,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 4,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.563249362244898,
+    "atk": 0.5802068093336971,
+    "def": 0.6164087801367398
+   }
+  },
+  {
+   "id": "bongeun",
+   "elite": 0,
+   "lvl": 40,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 4,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.599610633727175,
+    "atk": 0.5180573495220873,
+    "def": 0.536525974025974
+   }
+  },
+  {
+   "id": "skakea2",
+   "elite": 0,
+   "lvl": 40,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 4,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.6115830115830115,
+    "atk": 0.5992396958783514,
+    "def": 0.6137628605161073
+   }
+  }
+ ],
+ "squadNote": "card order = squad order (card index ci in actions); Game(stageIdx, squad) receives {id, elite, mult, pot, skillIdx, slv, sm}; skill level and mastery by rung (sim.js skillRank, slv-r1); sm[k] = mastery of skill k",
+ "expected": {
+  "win": true,
+  "rwin": true,
+  "over": "win",
+  "life": 10,
+  "lost": 0,
+  "winTime": 257.9333333333229,
+  "frames": 7738,
+  "kills": 63,
+  "total": 63
+ },
+ "actions": [
+  {
+   "t": 0,
+   "k": 0,
+   "a": "deploy",
+   "ci": 4,
+   "id": "tao",
+   "x": 2,
+   "y": 1,
+   "dir": 2,
+   "uid": 1,
+   "cost": 9
+  },
+  {
+   "t": 16.03333333333329,
+   "k": 481,
+   "a": "deploy",
+   "ci": 1,
+   "id": "lulu",
+   "x": 6,
+   "y": 5,
+   "dir": 0,
+   "uid": 9,
+   "cost": 17
+  },
+  {
+   "t": 17.000000000000004,
+   "k": 510,
+   "a": "skill",
+   "ci": 4,
+   "id": "tao",
+   "uid": 1
+  },
+  {
+   "t": 20.033333333333488,
+   "k": 601,
+   "a": "deploy",
+   "ci": 3,
+   "id": "teka",
+   "x": 2,
+   "y": 4,
+   "dir": 3,
+   "uid": 10,
+   "cost": 12
+  },
+  {
+   "t": 31.033333333334035,
+   "k": 931,
+   "a": "deploy",
+   "ci": 6,
+   "id": "bongeun",
+   "x": 3,
+   "y": 2,
+   "dir": 0,
+   "uid": 13,
+   "cost": 11
+  },
+  {
+   "t": 48.03333333333317,
+   "k": 1441,
+   "a": "deploy",
+   "ci": 2,
+   "id": "ker",
+   "x": 2,
+   "y": 5,
+   "dir": 0,
+   "uid": 19,
+   "cost": 17
+  },
+  {
+   "t": 52.03333333333294,
+   "k": 1561,
+   "a": "skill",
+   "ci": 4,
+   "id": "tao",
+   "uid": 1
+  },
+  {
+   "t": 58.0333333333326,
+   "k": 1741,
+   "a": "deploy",
+   "ci": 5,
+   "id": "veil",
+   "x": 4,
+   "y": 5,
+   "dir": 0,
+   "uid": 21,
+   "cost": 18
+  },
+  {
+   "t": 67.0333333333321,
+   "k": 2011,
+   "a": "deploy",
+   "ci": 0,
+   "id": "sniper",
+   "x": 1,
+   "y": 1,
+   "dir": 1,
+   "uid": 24,
+   "cost": 9
+  },
+  {
+   "t": 85.03333333333107,
+   "k": 2551,
+   "a": "deploy",
+   "ci": 7,
+   "id": "skakea2",
+   "x": 11,
+   "y": 1,
+   "dir": 0,
+   "uid": 33,
+   "cost": 18
+  },
+  {
+   "t": 87.06666666666429,
+   "k": 2612,
+   "a": "skill",
+   "ci": 4,
+   "id": "tao",
+   "uid": 1
+  },
+  {
+   "t": 122.09999999999563,
+   "k": 3663,
+   "a": "skill",
+   "ci": 4,
+   "id": "tao",
+   "uid": 1
+  },
+  {
+   "t": 195.16666666665816,
+   "k": 5855,
+   "a": "deploy",
+   "ci": 4,
+   "id": "tao",
+   "x": 2,
+   "y": 1,
+   "dir": 2,
+   "uid": 72,
+   "cost": 14
+  },
+  {
+   "t": 212.1666666666572,
+   "k": 6365,
+   "a": "skill",
+   "ci": 4,
+   "id": "tao",
+   "uid": 72
+  },
+  {
+   "t": 227.233333333323,
+   "k": 6817,
+   "a": "deploy",
+   "ci": 7,
+   "id": "skakea2",
+   "x": 11,
+   "y": 1,
+   "dir": 0,
+   "uid": 73,
+   "cost": 27
+  },
+  {
+   "t": 247.19999999998853,
+   "k": 7416,
+   "a": "skill",
+   "ci": 4,
+   "id": "tao",
+   "uid": 72
+  }
+ ],
+ "plan": {
+  "entries": [
+   {
+    "id": "tao",
+    "x": 2,
+    "y": 1,
+    "d": 2
+   },
+   {
+    "id": "lulu",
+    "x": 6,
+    "y": 5,
+    "d": 0
+   },
+   {
+    "id": "teka",
+    "x": 2,
+    "y": 4,
+    "d": 3,
+    "from": 5
+   },
+   {
+    "id": "bongeun",
+    "x": 3,
+    "y": 2,
+    "d": 0
+   },
+   {
+    "id": "ker",
+    "x": 2,
+    "y": 5,
+    "d": 0
+   },
+   {
+    "id": "veil",
+    "x": 4,
+    "y": 5,
+    "d": 0
+   },
+   {
+    "id": "sniper",
+    "x": 1,
+    "y": 1,
+    "d": 1
+   },
+   {
+    "id": "skakea2",
+    "x": 11,
+    "y": 1,
+    "d": 0
+   }
+  ],
+  "skill": {},
+  "skillIdx": {},
+  "retreats": [],
+  "pol": {
+   "fire": 1,
+   "melt": 1,
+   "lamp": 1
+  }
+ }
+}

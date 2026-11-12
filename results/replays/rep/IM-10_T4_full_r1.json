@@ -1,0 +1,684 @@
+{
+ "stage": "IM-10",
+ "name": "지옥 기계",
+ "level": "E1L15",
+ "lost": 0,
+ "seed": 1,
+ "K": 1,
+ "variant": "none",
+ "stageMul": {
+  "hp": 0.46,
+  "atk": 0.46,
+  "def": 0.8
+ },
+ "deck": "T4",
+ "criterion": "lost<=0 (full block)",
+ "fiveSeedLost": [
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "family": "IM-10:1f5inwi",
+ "gameHash": "656ff27f0786",
+ "rng": "Math.random replaced before `new TD.Game` by im_sim's seed(n): a = n*7919, mulberry32-style step; nothing else draws from it between seeding and the game",
+ "stepping": "fixed g.update(1/30) per frame, max 420*30 frames; actions run at the start of a frame, before that frame's update, in log order",
+ "squad": [
+  {
+   "id": "vanguard",
+   "elite": 1,
+   "lvl": 15,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 5,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.8518518518518519,
+    "atk": 0.7945041816009558,
+    "def": 0.792022792022792
+   }
+  },
+  {
+   "id": "caster",
+   "elite": 1,
+   "lvl": 15,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 5,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.8296296296296296,
+    "atk": 0.8219070133963751,
+    "def": 0.7942386831275721
+   }
+  },
+  {
+   "id": "supporter",
+   "elite": 1,
+   "lvl": 15,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 5,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.8439294909883146,
+    "atk": 0.8141510686313553,
+    "def": 0.8304328424810352
+   }
+  },
+  {
+   "id": "specialist",
+   "elite": 1,
+   "lvl": 15,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 5,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.8514503663555154,
+    "atk": 0.7979797979797979,
+    "def": 0.8286542770528535
+   }
+  },
+  {
+   "id": "lulu",
+   "elite": 1,
+   "lvl": 15,
+   "pot": 1,
+   "skillIdx": 1,
+   "skill": "S2",
+   "slv": 5,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.6264392168322618,
+    "atk": 0.6339106541940663,
+    "def": 0.6729595827900913
+   }
+  },
+  {
+   "id": "lilith",
+   "elite": 1,
+   "lvl": 15,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 5,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.8296296296296296,
+    "atk": 0.8219070133963751,
+    "def": 0.7942386831275721
+   }
+  },
+  {
+   "id": "ayaki",
+   "elite": 1,
+   "lvl": 15,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 5,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.8511992168379834,
+    "atk": 0.7838494231936854,
+    "def": 0.8097179748555896
+   }
+  },
+  {
+   "id": "nana",
+   "elite": 1,
+   "lvl": 15,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 5,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.8513874375943342,
+    "atk": 0.8207702342464976,
+    "def": 0.8518518518518519
+   }
+  },
+  {
+   "id": "falchion",
+   "elite": 1,
+   "lvl": 15,
+   "pot": 1,
+   "skillIdx": 1,
+   "skill": "S2",
+   "slv": 5,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.581911717422259,
+    "atk": 0.6843003412969283,
+    "def": 0.6677290067120576
+   }
+  },
+  {
+   "id": "jayeon",
+   "elite": 1,
+   "lvl": 15,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 5,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.8439294909883146,
+    "atk": 0.8136501281155369,
+    "def": 0.8304328424810352
+   }
+  }
+ ],
+ "squadNote": "card order = squad order (card index ci in actions); Game(stageIdx, squad) receives {id, elite, mult, pot, skillIdx, slv, sm}; skill level and mastery by rung (sim.js skillRank, slv-r1); sm[k] = mastery of skill k",
+ "expected": {
+  "win": true,
+  "rwin": true,
+  "over": "win",
+  "life": 10,
+  "lost": 0,
+  "winTime": 202.5333333333244,
+  "frames": 6076,
+  "kills": 72,
+  "total": 72
+ },
+ "actions": [
+  {
+   "t": 0,
+   "k": 0,
+   "a": "deploy",
+   "ci": 8,
+   "id": "falchion",
+   "x": 2,
+   "y": 4,
+   "dir": 3,
+   "uid": 1,
+   "cost": 11
+  },
+  {
+   "t": 18.03333333333339,
+   "k": 541,
+   "a": "deploy",
+   "ci": 4,
+   "id": "lulu",
+   "x": 6,
+   "y": 1,
+   "dir": 1,
+   "uid": 9,
+   "cost": 19
+  },
+  {
+   "t": 26.033333333333786,
+   "k": 781,
+   "a": "deploy",
+   "ci": 0,
+   "id": "vanguard",
+   "x": 2,
+   "y": 2,
+   "dir": 3,
+   "uid": 11,
+   "cost": 11
+  },
+  {
+   "t": 33.03333333333402,
+   "k": 991,
+   "a": "deploy",
+   "ci": 3,
+   "id": "specialist",
+   "x": 4,
+   "y": 4,
+   "dir": 0,
+   "uid": 15,
+   "cost": 8
+  },
+  {
+   "t": 33.03333333333402,
+   "k": 991,
+   "a": "skill",
+   "ci": 3,
+   "id": "specialist",
+   "uid": 15
+  },
+  {
+   "t": 45.06666666666667,
+   "k": 1352,
+   "a": "skill",
+   "ci": 3,
+   "id": "specialist",
+   "uid": 15
+  },
+  {
+   "t": 48.03333333333317,
+   "k": 1441,
+   "a": "deploy",
+   "ci": 6,
+   "id": "ayaki",
+   "x": 6,
+   "y": 3,
+   "dir": 2,
+   "uid": 20,
+   "cost": 17
+  },
+  {
+   "t": 48.03333333333317,
+   "k": 1441,
+   "a": "skill",
+   "ci": 0,
+   "id": "vanguard",
+   "uid": 11
+  },
+  {
+   "t": 52.03333333333294,
+   "k": 1561,
+   "a": "deploy",
+   "ci": 9,
+   "id": "jayeon",
+   "x": 8,
+   "y": 3,
+   "dir": 1,
+   "uid": 21,
+   "cost": 12
+  },
+  {
+   "t": 58.93333333333255,
+   "k": 1768,
+   "a": "skill",
+   "ci": 3,
+   "id": "specialist",
+   "uid": 15
+  },
+  {
+   "t": 67.0333333333321,
+   "k": 2011,
+   "a": "deploy",
+   "ci": 1,
+   "id": "caster",
+   "x": 3,
+   "y": 3,
+   "dir": 2,
+   "uid": 26,
+   "cost": 18
+  },
+  {
+   "t": 70.9666666666652,
+   "k": 2129,
+   "a": "skill",
+   "ci": 3,
+   "id": "specialist",
+   "uid": 15
+  },
+  {
+   "t": 74.0333333333317,
+   "k": 2221,
+   "a": "skill",
+   "ci": 1,
+   "id": "caster",
+   "uid": 26
+  },
+  {
+   "t": 78.03333333333147,
+   "k": 2341,
+   "a": "skill",
+   "ci": 0,
+   "id": "vanguard",
+   "uid": 11
+  },
+  {
+   "t": 78.0666666666648,
+   "k": 2342,
+   "a": "deploy",
+   "ci": 7,
+   "id": "nana",
+   "x": 1,
+   "y": 1,
+   "dir": 1,
+   "uid": 29,
+   "cost": 19
+  },
+  {
+   "t": 84.83333333333108,
+   "k": 2545,
+   "a": "skill",
+   "ci": 3,
+   "id": "specialist",
+   "uid": 15
+  },
+  {
+   "t": 89.03333333333084,
+   "k": 2671,
+   "a": "deploy",
+   "ci": 2,
+   "id": "supporter",
+   "x": 1,
+   "y": 5,
+   "dir": 3,
+   "uid": 33,
+   "cost": 12
+  },
+  {
+   "t": 95.0333333333305,
+   "k": 2851,
+   "a": "skill",
+   "ci": 1,
+   "id": "caster",
+   "uid": 26
+  },
+  {
+   "t": 96.03333333333045,
+   "k": 2881,
+   "a": "skill",
+   "ci": 2,
+   "id": "supporter",
+   "uid": 33
+  },
+  {
+   "t": 96.86666666666373,
+   "k": 2906,
+   "a": "skill",
+   "ci": 3,
+   "id": "specialist",
+   "uid": 15
+  },
+  {
+   "t": 106.03333333332988,
+   "k": 3181,
+   "a": "deploy",
+   "ci": 5,
+   "id": "lilith",
+   "x": 5,
+   "y": 3,
+   "dir": 2,
+   "uid": 43,
+   "cost": 18
+  },
+  {
+   "t": 108.89999999999638,
+   "k": 3267,
+   "a": "skill",
+   "ci": 3,
+   "id": "specialist",
+   "uid": 15
+  },
+  {
+   "t": 113.1666666666628,
+   "k": 3395,
+   "a": "skill",
+   "ci": 4,
+   "id": "lulu",
+   "uid": 9
+  },
+  {
+   "t": 116.03333333332931,
+   "k": 3481,
+   "a": "skill",
+   "ci": 1,
+   "id": "caster",
+   "uid": 26
+  },
+  {
+   "t": 122.0666666666623,
+   "k": 3662,
+   "a": "skill",
+   "ci": 2,
+   "id": "supporter",
+   "uid": 33
+  },
+  {
+   "t": 122.76666666666226,
+   "k": 3683,
+   "a": "skill",
+   "ci": 3,
+   "id": "specialist",
+   "uid": 15
+  },
+  {
+   "t": 134.79999999999492,
+   "k": 4044,
+   "a": "skill",
+   "ci": 3,
+   "id": "specialist",
+   "uid": 15
+  },
+  {
+   "t": 137.03333333332813,
+   "k": 4111,
+   "a": "skill",
+   "ci": 1,
+   "id": "caster",
+   "uid": 26
+  },
+  {
+   "t": 146.83333333332757,
+   "k": 4405,
+   "a": "skill",
+   "ci": 3,
+   "id": "specialist",
+   "uid": 15
+  },
+  {
+   "t": 148.09999999999417,
+   "k": 4443,
+   "a": "skill",
+   "ci": 2,
+   "id": "supporter",
+   "uid": 33
+  },
+  {
+   "t": 158.03333333332694,
+   "k": 4741,
+   "a": "skill",
+   "ci": 1,
+   "id": "caster",
+   "uid": 26
+  },
+  {
+   "t": 160.69999999999345,
+   "k": 4821,
+   "a": "skill",
+   "ci": 3,
+   "id": "specialist",
+   "uid": 15
+  },
+  {
+   "t": 172.7333333333261,
+   "k": 5182,
+   "a": "skill",
+   "ci": 3,
+   "id": "specialist",
+   "uid": 15
+  },
+  {
+   "t": 174.13333333332602,
+   "k": 5224,
+   "a": "skill",
+   "ci": 2,
+   "id": "supporter",
+   "uid": 33
+  },
+  {
+   "t": 179.03333333332574,
+   "k": 5371,
+   "a": "skill",
+   "ci": 1,
+   "id": "caster",
+   "uid": 26
+  },
+  {
+   "t": 184.76666666665875,
+   "k": 5543,
+   "a": "skill",
+   "ci": 3,
+   "id": "specialist",
+   "uid": 15
+  },
+  {
+   "t": 188.56666666665853,
+   "k": 5657,
+   "a": "skill",
+   "ci": 4,
+   "id": "lulu",
+   "uid": 9
+  },
+  {
+   "t": 198.63333333332463,
+   "k": 5959,
+   "a": "skill",
+   "ci": 3,
+   "id": "specialist",
+   "uid": 15
+  },
+  {
+   "t": 200.03333333332455,
+   "k": 6001,
+   "a": "skill",
+   "ci": 1,
+   "id": "caster",
+   "uid": 26
+  },
+  {
+   "t": 200.16666666665787,
+   "k": 6005,
+   "a": "skill",
+   "ci": 2,
+   "id": "supporter",
+   "uid": 33
+  }
+ ],
+ "plan": {
+  "entries": [
+   {
+    "id": "falchion",
+    "x": 2,
+    "y": 4,
+    "d": 3
+   },
+   {
+    "id": "lulu",
+    "x": 6,
+    "y": 1,
+    "d": 1,
+    "from": 5
+   },
+   {
+    "id": "vanguard",
+    "x": 2,
+    "y": 2,
+    "d": 3
+   },
+   {
+    "id": "specialist",
+    "x": 4,
+    "y": 4,
+    "d": 0
+   },
+   {
+    "id": "ayaki",
+    "x": 6,
+    "y": 3,
+    "d": 2
+   },
+   {
+    "id": "jayeon",
+    "x": 8,
+    "y": 3,
+    "d": 1,
+    "from": 48,
+    "until": 136
+   },
+   {
+    "id": "jayeon",
+    "x": 1,
+    "y": 1,
+    "d": 1,
+    "from": 136
+   },
+   {
+    "id": "caster",
+    "x": 3,
+    "y": 3,
+    "d": 2
+   },
+   {
+    "id": "nana",
+    "x": 1,
+    "y": 1,
+    "d": 1
+   },
+   {
+    "id": "supporter",
+    "x": 1,
+    "y": 5,
+    "d": 3
+   },
+   {
+    "id": "lilith",
+    "x": 5,
+    "y": 3,
+    "d": 2
+   }
+  ],
+  "skill": {},
+  "skillIdx": {
+   "falchion": 1,
+   "lulu": 1
+  },
+  "retreats": [
+   {
+    "id": "jayeon",
+    "t": 136
+   }
+  ],
+  "pol": {
+   "fire": 1,
+   "melt": 1,
+   "lamp": 0
+  },
+  "_par": "[[[\"falchion\",2,4,3,null,null,null],[\"lulu\",6,1,1,5,null,null],[\"vanguard\",2,2,3,null,null,null],[\"specialist\",4,4,0,null,null,null],[\"ayaki\",6,3,2,null,null,null],[\"jayeon\",8,3,1,48,136,null],[\"jayeon\",1,1,1,136,null,null],[\"irins\",3,3,2,null,null,null],[\"nana\",1,1,1,null,null,null],[\"supporter\",1,5,3,null,null,null],[\"lilith\",5,3,2,null,null,null]],{},{\"falchion\":1,\"lulu\":1,\"irins\":0},[[\"jayeon\",136]],{\"fire\":1,\"melt\":1,\"lamp\":0}]"
+ }
+}

@@ -1,0 +1,491 @@
+{
+ "stage": "IM-10",
+ "name": "지옥 기계",
+ "level": "E1L15",
+ "lost": 0,
+ "seed": 1,
+ "K": 1,
+ "variant": "none",
+ "stageMul": {
+  "hp": 0.46,
+  "atk": 0.46,
+  "def": 0.8
+ },
+ "deck": "T5",
+ "criterion": "lost<=0 (full block)",
+ "fiveSeedLost": [
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "family": "IM-10:ilxxvy",
+ "gameHash": "656ff27f0786",
+ "rng": "Math.random replaced before `new TD.Game` by im_sim's seed(n): a = n*7919, mulberry32-style step; nothing else draws from it between seeding and the game",
+ "stepping": "fixed g.update(1/30) per frame, max 420*30 frames; actions run at the start of a frame, before that frame's update, in log order",
+ "squad": [
+  {
+   "id": "hakuren",
+   "elite": 1,
+   "lvl": 15,
+   "pot": 1,
+   "skillIdx": 1,
+   "skill": "S2",
+   "slv": 5,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.6127470623273948,
+    "atk": 1,
+    "def": 0.6923728813559322
+   }
+  },
+  {
+   "id": "irins",
+   "elite": 1,
+   "lvl": 15,
+   "pot": 1,
+   "skillIdx": 1,
+   "skill": "S2",
+   "slv": 5,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.6675220816423968,
+    "atk": 0.6701747245399309,
+    "def": 0.703697996918336
+   }
+  },
+  {
+   "id": "teka",
+   "elite": 1,
+   "lvl": 15,
+   "pot": 1,
+   "skillIdx": 1,
+   "skill": "S2",
+   "slv": 5,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.664558345599487,
+    "atk": 0.6724801441087367,
+    "def": 0.6903248587570622
+   }
+  },
+  {
+   "id": "hiro",
+   "elite": 1,
+   "lvl": 15,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 5,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.8369413547023881,
+    "atk": 0.8077824660103141,
+    "def": 0.8065003779289494
+   }
+  },
+  {
+   "id": "lilith",
+   "elite": 1,
+   "lvl": 15,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 5,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.8296296296296296,
+    "atk": 0.8219070133963751,
+    "def": 0.7942386831275721
+   }
+  },
+  {
+   "id": "falchion",
+   "elite": 1,
+   "lvl": 15,
+   "pot": 1,
+   "skillIdx": 1,
+   "skill": "S2",
+   "slv": 5,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.581911717422259,
+    "atk": 0.6843003412969283,
+    "def": 0.6677290067120576
+   }
+  },
+  {
+   "id": "alpha2",
+   "elite": 1,
+   "lvl": 15,
+   "pot": 1,
+   "skillIdx": 1,
+   "skill": "S2",
+   "slv": 5,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.6549376474553421,
+    "atk": 0.6113130725607097,
+    "def": 0.6820232267971974
+   }
+  },
+  {
+   "id": "skakea2",
+   "elite": 1,
+   "lvl": 15,
+   "pot": 1,
+   "skillIdx": 1,
+   "skill": "S2",
+   "slv": 5,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.6801997649823737,
+    "atk": 0.6783650658330965,
+    "def": 0.7180500658761528
+   }
+  }
+ ],
+ "squadNote": "card order = squad order (card index ci in actions); Game(stageIdx, squad) receives {id, elite, mult, pot, skillIdx, slv, sm}; skill level and mastery by rung (sim.js skillRank, slv-r1); sm[k] = mastery of skill k",
+ "expected": {
+  "win": true,
+  "rwin": true,
+  "over": "win",
+  "life": 10,
+  "lost": 0,
+  "winTime": 204.56666666665762,
+  "frames": 6137,
+  "kills": 72,
+  "total": 72
+ },
+ "actions": [
+  {
+   "t": 0,
+   "k": 0,
+   "a": "deploy",
+   "ci": 5,
+   "id": "falchion",
+   "x": 2,
+   "y": 4,
+   "dir": 3,
+   "uid": 1,
+   "cost": 11
+  },
+  {
+   "t": 9.033333333333312,
+   "k": 271,
+   "a": "deploy",
+   "ci": 0,
+   "id": "hakuren",
+   "x": 4,
+   "y": 2,
+   "dir": 0,
+   "uid": 6,
+   "cost": 10
+  },
+  {
+   "t": 17.03333333333334,
+   "k": 511,
+   "a": "skill",
+   "ci": 0,
+   "id": "hakuren",
+   "uid": 6
+  },
+  {
+   "t": 18.03333333333339,
+   "k": 541,
+   "a": "deploy",
+   "ci": 6,
+   "id": "alpha2",
+   "x": 4,
+   "y": 4,
+   "dir": 0,
+   "uid": 10,
+   "cost": 9
+  },
+  {
+   "t": 29.033333333333935,
+   "k": 871,
+   "a": "deploy",
+   "ci": 1,
+   "id": "irins",
+   "x": 1,
+   "y": 5,
+   "dir": 3,
+   "uid": 12,
+   "cost": 19
+  },
+  {
+   "t": 38.56666666666704,
+   "k": 1157,
+   "a": "deploy",
+   "ci": 2,
+   "id": "teka",
+   "x": 5,
+   "y": 3,
+   "dir": 3,
+   "uid": 17,
+   "cost": 14
+  },
+  {
+   "t": 41.033333333333566,
+   "k": 1231,
+   "a": "skill",
+   "ci": 1,
+   "id": "irins",
+   "uid": 12
+  },
+  {
+   "t": 51.5666666666663,
+   "k": 1547,
+   "a": "skill",
+   "ci": 2,
+   "id": "teka",
+   "uid": 17
+  },
+  {
+   "t": 55.03333333333277,
+   "k": 1651,
+   "a": "deploy",
+   "ci": 4,
+   "id": "lilith",
+   "x": 1,
+   "y": 1,
+   "dir": 1,
+   "uid": 21,
+   "cost": 18
+  },
+  {
+   "t": 65.46666666666552,
+   "k": 1964,
+   "a": "skill",
+   "ci": 0,
+   "id": "hakuren",
+   "uid": 6
+  },
+  {
+   "t": 72.03333333333181,
+   "k": 2161,
+   "a": "deploy",
+   "ci": 7,
+   "id": "skakea2",
+   "x": 3,
+   "y": 3,
+   "dir": 0,
+   "uid": 27,
+   "cost": 20
+  },
+  {
+   "t": 82.23333333333123,
+   "k": 2467,
+   "a": "deploy",
+   "ci": 3,
+   "id": "hiro",
+   "x": 3,
+   "y": 1,
+   "dir": 1,
+   "uid": 31,
+   "cost": 17
+  },
+  {
+   "t": 84.03333333333113,
+   "k": 2521,
+   "a": "skill",
+   "ci": 7,
+   "id": "skakea2",
+   "uid": 27
+  },
+  {
+   "t": 94.46666666666387,
+   "k": 2834,
+   "a": "skill",
+   "ci": 1,
+   "id": "irins",
+   "uid": 12
+  },
+  {
+   "t": 112.06666666666287,
+   "k": 3362,
+   "a": "skill",
+   "ci": 0,
+   "id": "hakuren",
+   "uid": 6
+  },
+  {
+   "t": 132.4333333333284,
+   "k": 3973,
+   "a": "skill",
+   "ci": 7,
+   "id": "skakea2",
+   "uid": 27
+  },
+  {
+   "t": 137.69999999999476,
+   "k": 4131,
+   "a": "deploy",
+   "ci": 6,
+   "id": "alpha2",
+   "x": 4,
+   "y": 4,
+   "dir": 0,
+   "uid": 52,
+   "cost": 14
+  },
+  {
+   "t": 147.89999999999418,
+   "k": 4437,
+   "a": "skill",
+   "ci": 1,
+   "id": "irins",
+   "uid": 12
+  },
+  {
+   "t": 163.03333333332665,
+   "k": 4891,
+   "a": "deploy",
+   "ci": 6,
+   "id": "alpha2",
+   "x": 4,
+   "y": 4,
+   "dir": 0,
+   "uid": 67,
+   "cost": 18
+  },
+  {
+   "t": 168.33333333332635,
+   "k": 5050,
+   "a": "deploy",
+   "ci": 2,
+   "id": "teka",
+   "x": 5,
+   "y": 3,
+   "dir": 3,
+   "uid": 71,
+   "cost": 21
+  },
+  {
+   "t": 180.83333333332564,
+   "k": 5425,
+   "a": "skill",
+   "ci": 7,
+   "id": "skakea2",
+   "uid": 27
+  },
+  {
+   "t": 184.33333333332544,
+   "k": 5530,
+   "a": "skill",
+   "ci": 2,
+   "id": "teka",
+   "uid": 71
+  },
+  {
+   "t": 201.33333333332448,
+   "k": 6040,
+   "a": "skill",
+   "ci": 1,
+   "id": "irins",
+   "uid": 12
+  }
+ ],
+ "plan": {
+  "entries": [
+   {
+    "id": "falchion",
+    "x": 2,
+    "y": 4,
+    "d": 3
+   },
+   {
+    "id": "hakuren",
+    "x": 4,
+    "y": 2,
+    "d": 0
+   },
+   {
+    "id": "alpha2",
+    "x": 4,
+    "y": 4,
+    "d": 0
+   },
+   {
+    "id": "irins",
+    "x": 1,
+    "y": 5,
+    "d": 3
+   },
+   {
+    "id": "teka",
+    "x": 5,
+    "y": 3,
+    "d": 3
+   },
+   {
+    "id": "lilith",
+    "x": 1,
+    "y": 1,
+    "d": 1
+   },
+   {
+    "id": "skakea2",
+    "x": 3,
+    "y": 3,
+    "d": 0
+   },
+   {
+    "id": "hiro",
+    "x": 3,
+    "y": 1,
+    "d": 1
+   }
+  ],
+  "skill": {},
+  "skillIdx": {
+   "falchion": 1,
+   "hakuren": 1,
+   "alpha2": 1,
+   "irins": 1,
+   "teka": 1,
+   "skakea2": 1
+  },
+  "retreats": [],
+  "pol": {
+   "fire": 1,
+   "melt": 1,
+   "lamp": 1
+  },
+  "_par": "[[[\"falchion\",2,4,3,null,null,null],[\"hakuren\",10,4,1,null,null,null],[\"alpha2\",4,4,0,null,null,null],[\"irins\",1,5,3,null,null,null],[\"teka\",5,3,3,null,null,null],[\"specialist\",4,2,0,null,null,null],[\"lilith\",1,1,1,null,null,null],[\"hiro\",3,1,1,null,null,null],[\"skakea2\",3,3,0,null,null,null]],{},{\"falchion\":1,\"hakuren\":1,\"alpha2\":1,\"irins\":1,\"teka\":1,\"skakea2\":1},[],{\"fire\":1,\"melt\":1,\"lamp\":1}]"
+ }
+}

@@ -5,7 +5,7 @@
  "need": 0,
  "gameHash": "656ff27f0786",
  "done": true,
- "finished": "2026-11-12T06:22:08.111Z",
+ "finished": "2026-11-12T08:23:42.656Z",
  "squad": [
   "yui",
   "hiro",
@@ -19,13 +19,16 @@
   "atat",
   "teka"
  ],
+ "rep": 0,
+ "rngSeed": 1596918530,
+ "famSeed": null,
  "min": "E1L15",
  "cut": false,
  "worstLost": 0,
- "winTime": 216.79999999999026,
+ "winTime": 215.26666666665702,
  "family": {
   "id": "IM-09:jmlyxz",
-  "d": 0.27,
+  "d": 0.2,
   "tags": [
    "deep block",
    "split lanes",
@@ -44,22 +47,28 @@
     "id": "tao",
     "x": 9,
     "y": 5,
-    "d": 2,
-    "from": 4
+    "d": 2
    },
    {
     "id": "atat",
     "x": 7,
     "y": 6,
-    "d": 3
+    "d": 0
    },
    {
-    "id": "scribble",
-    "x": 9,
-    "y": 5,
-    "d": 2,
+    "id": "hakuren",
+    "x": 10,
+    "y": 4,
+    "d": 1,
     "from": 43,
     "until": 137
+   },
+   {
+    "id": "lilith",
+    "x": 5,
+    "y": 6,
+    "d": 2,
+    "from": 27
    },
    {
     "id": "capy",
@@ -72,11 +81,11 @@
     "id": "yui",
     "x": 3,
     "y": 5,
-    "d": 0,
+    "d": 2,
     "from": 56
    },
    {
-    "id": "scribble",
+    "id": "hakuren",
     "x": 6,
     "y": 2,
     "d": 3,
@@ -92,21 +101,13 @@
     "id": "teka",
     "x": 11,
     "y": 4,
-    "d": 2
-   },
-   {
-    "id": "lilith",
-    "x": 5,
-    "y": 6,
-    "d": 2,
-    "from": 22
+    "d": 3
    },
    {
     "id": "alpha",
     "x": 1,
     "y": 0,
-    "d": 0,
-    "from": 11
+    "d": 0
    },
    {
     "id": "hiro",
@@ -124,18 +125,19 @@
   "skillIdx": {
    "sunae": 1,
    "atat": 1,
+   "hakuren": 1,
    "yui": 1,
    "teka": 1,
    "alpha": 1
   },
   "retreats": [
    {
-    "id": "scribble",
-    "t": 146
+    "id": "hakuren",
+    "t": 126
    },
    {
-    "id": "atat",
-    "t": 92
+    "id": "yui",
+    "t": 61
    }
   ],
   "pol": {
@@ -143,7 +145,7 @@
    "melt": 1,
    "lamp": 0
   },
-  "_par": "[[[\"sunae\",12,2,3,null,null,null],[\"tao\",9,5,2,4,null,null],[\"atat\",7,6,3,null,null,null],[\"scribble\",9,5,2,43,137,null],[\"capy\",7,6,0,14,null,null],[\"yui\",3,5,0,56,null,null],[\"scribble\",6,2,3,137,null,null],[\"ayaki\",10,6,3,null,null,null],[\"teka\",11,4,2,null,null,null],[\"lilith\",5,6,2,22,null,null],[\"alpha\",1,0,0,11,null,null],[\"hiro\",6,2,3,42,null,null]],{\"sunae\":{\"m\":2}},{\"sunae\":1,\"atat\":1,\"yui\":1,\"teka\":1,\"alpha\":1},[[\"scribble\",146],[\"atat\",104]],{\"fire\":1,\"melt\":1,\"lamp\":0}]"
+  "_par": "[[[\"sunae\",12,2,3,null,null,null],[\"tao\",9,5,2,null,null,null],[\"atat\",7,6,0,null,null,null],[\"hakuren\",10,4,1,43,137,null],[\"lilith\",5,6,2,27,null,null],[\"capy\",7,6,0,14,null,null],[\"yui\",9,5,0,56,null,null],[\"hakuren\",6,2,3,137,null,null],[\"ayaki\",10,6,3,null,null,null],[\"teka\",11,4,3,null,null,null],[\"alpha\",1,0,0,null,null,null],[\"hiro\",6,2,3,42,null,null]],{\"sunae\":{\"m\":2}},{\"sunae\":1,\"atat\":1,\"hakuren\":1,\"yui\":1,\"teka\":1,\"alpha\":1},[[\"hakuren\",126]],{\"fire\":1,\"melt\":1,\"lamp\":0}]"
  },
  "actions": [
   {
@@ -186,7 +188,7 @@
    "id": "atat",
    "x": 7,
    "y": 6,
-   "dir": 3,
+   "dir": 0,
    "uid": 16,
    "cost": 10
   },
@@ -199,36 +201,48 @@
    "uid": 12
   },
   {
-   "t": 37.03333333333379,
-   "k": 1111,
+   "t": 38.03333333333374,
+   "k": 1141,
    "a": "deploy",
-   "ci": 5,
-   "id": "ayaki",
-   "x": 10,
+   "ci": 2,
+   "id": "lilith",
+   "x": 5,
    "y": 6,
-   "dir": 3,
-   "uid": 17,
-   "cost": 17
-  },
-  {
-   "t": 51.033333333333,
-   "k": 1531,
-   "a": "deploy",
-   "ci": 10,
-   "id": "teka",
-   "x": 11,
-   "y": 4,
    "dir": 2,
-   "uid": 18,
-   "cost": 14
+   "uid": 17,
+   "cost": 18
   },
   {
-   "t": 64.03333333333227,
-   "k": 1921,
+   "t": 48.03333333333317,
+   "k": 1441,
+   "a": "deploy",
+   "ci": 6,
+   "id": "hakuren",
+   "x": 10,
+   "y": 4,
+   "dir": 1,
+   "uid": 18,
+   "cost": 10
+  },
+  {
+   "t": 56.03333333333271,
+   "k": 1681,
    "a": "skill",
-   "ci": 10,
-   "id": "teka",
+   "ci": 6,
+   "id": "hakuren",
    "uid": 18
+  },
+  {
+   "t": 63.499999999998956,
+   "k": 1905,
+   "a": "deploy",
+   "ci": 0,
+   "id": "yui",
+   "x": 3,
+   "y": 5,
+   "dir": 2,
+   "uid": 23,
+   "cost": 19
   },
   {
    "t": 67.36666666666541,
@@ -239,24 +253,24 @@
    "uid": 12
   },
   {
-   "t": 67.39999999999874,
-   "k": 2022,
+   "t": 69.06666666666531,
+   "k": 2072,
    "a": "deploy",
-   "ci": 0,
-   "id": "yui",
-   "x": 3,
-   "y": 5,
-   "dir": 0,
-   "uid": 24,
-   "cost": 19
+   "ci": 5,
+   "id": "ayaki",
+   "x": 10,
+   "y": 6,
+   "dir": 3,
+   "uid": 25,
+   "cost": 17
   },
   {
-   "t": 75.39999999999829,
-   "k": 2262,
+   "t": 71.49999999999851,
+   "k": 2145,
    "a": "skill",
    "ci": 0,
    "id": "yui",
-   "uid": 24
+   "uid": 23
   },
   {
    "t": 79.06666666666474,
@@ -270,36 +284,21 @@
    "t": 80.03333333333136,
    "k": 2401,
    "a": "deploy",
-   "ci": 2,
-   "id": "lilith",
-   "x": 5,
-   "y": 6,
-   "dir": 2,
-   "uid": 30,
-   "cost": 18
+   "ci": 10,
+   "id": "teka",
+   "x": 11,
+   "y": 4,
+   "dir": 3,
+   "uid": 31,
+   "cost": 14
   },
   {
-   "t": 92.03333333333067,
-   "k": 2761,
-   "a": "retreat",
-   "ci": 9,
-   "id": "atat",
-   "uid": 16,
-   "x": 7,
-   "y": 6,
-   "why": "plan"
-  },
-  {
-   "t": 98.03333333333033,
-   "k": 2941,
-   "a": "deploy",
-   "ci": 4,
-   "id": "capy",
-   "x": 7,
-   "y": 6,
-   "dir": 0,
-   "uid": 35,
-   "cost": 23
+   "t": 93.03333333333062,
+   "k": 2791,
+   "a": "skill",
+   "ci": 10,
+   "id": "teka",
+   "uid": 31
   },
   {
    "t": 101.69999999999679,
@@ -310,32 +309,20 @@
    "uid": 12
   },
   {
-   "t": 107.03333333332982,
-   "k": 3211,
-   "a": "deploy",
-   "ci": 1,
-   "id": "hiro",
-   "x": 6,
-   "y": 2,
-   "dir": 3,
-   "uid": 46,
-   "cost": 17
-  },
-  {
-   "t": 108.43333333332974,
-   "k": 3253,
+   "t": 102.63333333333007,
+   "k": 3079,
    "a": "skill",
-   "ci": 10,
-   "id": "teka",
+   "ci": 6,
+   "id": "hakuren",
    "uid": 18
   },
   {
-   "t": 119.79999999999576,
-   "k": 3594,
+   "t": 115.89999999999598,
+   "k": 3477,
    "a": "skill",
    "ci": 0,
    "id": "yui",
-   "uid": 24
+   "uid": 23
   },
   {
    "t": 123.46666666666222,
@@ -346,6 +333,29 @@
    "uid": 6
   },
   {
+   "t": 126.03333333332874,
+   "k": 3781,
+   "a": "retreat",
+   "ci": 6,
+   "id": "hakuren",
+   "uid": 18,
+   "x": 10,
+   "y": 4,
+   "why": "plan"
+  },
+  {
+   "t": 126.03333333332874,
+   "k": 3781,
+   "a": "deploy",
+   "ci": 1,
+   "id": "hiro",
+   "x": 6,
+   "y": 2,
+   "dir": 3,
+   "uid": 48,
+   "cost": 17
+  },
+  {
    "t": 136.0333333333282,
    "k": 4081,
    "a": "skill",
@@ -354,20 +364,20 @@
    "uid": 12
   },
   {
-   "t": 152.83333333332723,
-   "k": 4585,
+   "t": 137.4333333333281,
+   "k": 4123,
    "a": "skill",
    "ci": 10,
    "id": "teka",
-   "uid": 18
+   "uid": 31
   },
   {
-   "t": 164.19999999999325,
-   "k": 4926,
+   "t": 160.29999999999347,
+   "k": 4809,
    "a": "skill",
    "ci": 0,
    "id": "yui",
-   "uid": 24
+   "uid": 23
   },
   {
    "t": 167.8666666666597,
@@ -386,24 +396,12 @@
    "uid": 12
   },
   {
-   "t": 187.53333333332526,
-   "k": 5626,
-   "a": "deploy",
-   "ci": 9,
-   "id": "atat",
-   "x": 7,
-   "y": 6,
-   "dir": 3,
-   "uid": 79,
-   "cost": 15
-  },
-  {
-   "t": 197.2333333333247,
-   "k": 5917,
+   "t": 181.83333333332558,
+   "k": 5455,
    "a": "skill",
    "ci": 10,
    "id": "teka",
-   "uid": 18
+   "uid": 31
   },
   {
    "t": 204.69999999999095,
@@ -414,12 +412,12 @@
    "uid": 12
   },
   {
-   "t": 208.59999999999073,
-   "k": 6258,
+   "t": 204.69999999999095,
+   "k": 6141,
    "a": "skill",
    "ci": 0,
    "id": "yui",
-   "uid": 24
+   "uid": 23
   }
  ],
  "lives": [
@@ -443,8 +441,12 @@
    "sk": "S2"
   },
   {
-   "id": "scribble",
-   "sk": ""
+   "id": "hakuren",
+   "sk": "S2"
+  },
+  {
+   "id": "lilith",
+   "sk": "S1"
   },
   {
    "id": "capy",
@@ -463,10 +465,6 @@
    "sk": "S2"
   },
   {
-   "id": "lilith",
-   "sk": "S1"
-  },
-  {
    "id": "alpha",
    "sk": "S2"
   },
@@ -481,14 +479,14 @@
    "wins": 5,
    "worstLost": 0,
    "family": "IM-09:jmlyxz",
-   "evals": 1546,
+   "evals": 1526,
    "secs": 152,
    "start": {
     "fills": 16,
     "bestFill": {
-     "fam": "IM-09:186a6i",
+     "fam": "IM-09:13ueudb",
      "lost": 1,
-     "cdLost": 2
+     "cdLost": 1
     },
     "fams": 8,
     "pruned": []
@@ -508,158 +506,42 @@
   "atat",
   "teka"
  ],
- "evals": 1546,
+ "evals": 1526,
  "secs": 152,
- "keyOps": [
-  {
-   "id": "sunae",
-   "name": "순애기사",
-   "cls": "defender",
-   "rarity": 4,
-   "role": "block",
-   "key": true,
-   "replacedBy": null,
-   "worstLost": 4,
-   "family": "IM-09:u9htmi",
-   "evals": 1030,
-   "secs": 70
-  },
-  {
-   "id": "tao",
-   "name": "타오",
-   "cls": "vanguard",
-   "rarity": 3,
-   "role": "block",
-   "key": true,
-   "replacedBy": null,
-   "worstLost": 5,
-   "family": "IM-09:13ueudb",
-   "evals": 863,
-   "secs": 75
-  },
-  {
-   "id": "atat",
-   "name": "@@@",
-   "cls": "supporter",
-   "rarity": 4,
-   "role": "supp",
-   "key": true,
-   "replacedBy": null,
-   "worstLost": 5,
-   "family": "IM-09:186a6i",
-   "evals": 1079,
-   "secs": 70
-  },
-  {
-   "id": "capy",
-   "name": "마이웨이 카피바라",
-   "cls": "sniper",
-   "rarity": 3,
-   "role": "phys",
-   "key": true,
-   "replacedBy": null,
-   "worstLost": 3,
-   "family": "IM-09:u9htmi",
-   "evals": 547,
-   "secs": 65
-  },
-  {
-   "id": "yui",
-   "name": "서브테러",
-   "cls": "defender",
-   "rarity": 5,
-   "role": "block",
-   "key": true,
-   "replacedBy": null,
-   "worstLost": 4,
-   "family": "IM-09:186a6i",
-   "evals": 754,
-   "secs": 71
-  },
-  {
-   "id": "ayaki",
-   "name": "아야키",
-   "cls": "medic",
-   "rarity": 3,
-   "role": "heal",
-   "key": true,
-   "replacedBy": null,
-   "worstLost": 2,
-   "family": "IM-09:186a6i",
-   "evals": 767,
-   "secs": 73
-  },
-  {
-   "id": "teka",
-   "name": "테카",
-   "cls": "supporter",
-   "rarity": 4,
-   "role": "supp",
-   "key": true,
-   "replacedBy": null,
-   "worstLost": 2,
-   "family": "IM-09:13ueudb",
-   "evals": 903,
-   "secs": 70
-  },
-  {
-   "id": "lilith",
-   "name": "리리스",
-   "cls": "caster",
-   "rarity": 3,
-   "role": "arts",
-   "key": false,
-   "replacedBy": "atat",
-   "worstLost": 0,
-   "family": "IM-09:186a6i",
-   "evals": 401,
-   "secs": 44
-  },
-  {
-   "id": "alpha",
-   "name": "알파",
-   "cls": "sniper",
-   "rarity": 4,
-   "role": "phys",
-   "key": true,
-   "replacedBy": null,
-   "worstLost": null,
-   "family": "IM-09:13ueudb",
-   "evals": 778,
-   "secs": 75
-  },
-  {
-   "id": "hiro",
-   "name": "히로",
-   "cls": "guard",
-   "rarity": 3,
-   "role": "block",
-   "key": true,
-   "replacedBy": null,
-   "worstLost": 3,
-   "family": "IM-09:13ueudb",
-   "evals": 847,
-   "secs": 70
-  }
- ],
- "keySecs": 682,
- "replay": "IM-09_starter_full.json",
+ "replay": "rep/IM-09_starter_full_r0.json",
  "replayLost": 0,
- "secsTotal": 835,
- "rep": "c",
+ "secsTotal": 152,
  "robust": {
-  "tag": "run_43178733591",
+  "tag": "run_43179246716",
   "value": "E1L15",
-  "source": "rep c",
+  "source": "rep 0",
   "reps": [
+   {
+    "rep": "0",
+    "min": "E1L15",
+    "worstLost": 0,
+    "family": "IM-09:jmlyxz"
+   },
+   {
+    "rep": "2",
+    "min": "E1L15",
+    "worstLost": 0,
+    "family": "IM-09:jmlyxz"
+   },
    {
     "rep": "c",
     "min": "E1L15",
     "worstLost": 0,
     "family": "IM-09:jmlyxz"
+   },
+   {
+    "rep": "1",
+    "min": "E1L30",
+    "worstLost": 0,
+    "family": "IM-09:jmlyxz"
    }
   ],
-  "spread": 0,
+  "spread": 1,
   "fullFromLost1": "E1L15"
  }
 }

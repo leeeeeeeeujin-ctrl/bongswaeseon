@@ -1,0 +1,476 @@
+{
+ "stage": "IM-08",
+ "name": "황제가 죽었다",
+ "level": "E0L40",
+ "lost": 1,
+ "seed": 1,
+ "K": 1,
+ "variant": "none",
+ "stageMul": {
+  "hp": 0.52,
+  "atk": 0.64,
+  "def": 0.76
+ },
+ "deck": "T6",
+ "criterion": "lost<=1",
+ "fiveSeedLost": [
+  1,
+  1,
+  1,
+  1,
+  1
+ ],
+ "family": "IM-08:1e58ofn",
+ "gameHash": "656ff27f0786",
+ "rng": "Math.random replaced before `new TD.Game` by im_sim's seed(n): a = n*7919, mulberry32-style step; nothing else draws from it between seeding and the game",
+ "stepping": "fixed g.update(1/30) per frame, max 420*30 frames; actions run at the start of a frame, before that frame's update, in log order",
+ "squad": [
+  {
+   "id": "defender",
+   "elite": 0,
+   "lvl": 40,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 4,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.7498771498771499,
+    "atk": 0.8,
+    "def": 0.7387755102040816
+   }
+  },
+  {
+   "id": "sniper",
+   "elite": 0,
+   "lvl": 40,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 4,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.779245283018868,
+    "atk": 0.688,
+    "def": 0.6984126984126984
+   }
+  },
+  {
+   "id": "caster",
+   "elite": 0,
+   "lvl": 40,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 4,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.77,
+    "atk": 0.7595744680851064,
+    "def": 0.7222222222222222
+   }
+  },
+  {
+   "id": "lulu",
+   "elite": 0,
+   "lvl": 40,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 4,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.5669376959247648,
+    "atk": 0.5710796489485014,
+    "def": 0.6060139860139859
+   }
+  },
+  {
+   "id": "teka",
+   "elite": 0,
+   "lvl": 40,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 4,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.6033768467130463,
+    "atk": 0.6004062362758015,
+    "def": 0.6233428030303031
+   }
+  },
+  {
+   "id": "rabi",
+   "elite": 0,
+   "lvl": 40,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 4,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.605402394876079,
+    "atk": 0.5659911023232822,
+    "def": 0.5815160349854227
+   }
+  },
+  {
+   "id": "geomseon",
+   "elite": 0,
+   "lvl": 40,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 4,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.563265306122449,
+    "atk": 0.5798897661254283,
+    "def": 0.6157114900754822
+   }
+  },
+  {
+   "id": "bongeun",
+   "elite": 0,
+   "lvl": 40,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 4,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.599610633727175,
+    "atk": 0.5180573495220873,
+    "def": 0.536525974025974
+   }
+  }
+ ],
+ "squadNote": "card order = squad order (card index ci in actions); Game(stageIdx, squad) receives {id, elite, mult, pot, skillIdx, slv, sm}; skill level and mastery by rung (sim.js skillRank, slv-r1); sm[k] = mastery of skill k",
+ "expected": {
+  "win": true,
+  "rwin": true,
+  "over": "win",
+  "life": 9,
+  "lost": 1,
+  "winTime": 235.3999999999892,
+  "frames": 7062,
+  "kills": 62,
+  "total": 63
+ },
+ "actions": [
+  {
+   "t": 0,
+   "k": 0,
+   "a": "deploy",
+   "ci": 5,
+   "id": "rabi",
+   "x": 2,
+   "y": 1,
+   "dir": 2,
+   "uid": 1,
+   "cost": 8
+  },
+  {
+   "t": 15.03333333333329,
+   "k": 451,
+   "a": "deploy",
+   "ci": 6,
+   "id": "geomseon",
+   "x": 6,
+   "y": 5,
+   "dir": 0,
+   "uid": 8,
+   "cost": 17
+  },
+  {
+   "t": 27.033333333333836,
+   "k": 811,
+   "a": "deploy",
+   "ci": 4,
+   "id": "teka",
+   "x": 2,
+   "y": 4,
+   "dir": 3,
+   "uid": 11,
+   "cost": 12
+  },
+  {
+   "t": 38.03333333333374,
+   "k": 1141,
+   "a": "deploy",
+   "ci": 7,
+   "id": "bongeun",
+   "x": 3,
+   "y": 2,
+   "dir": 0,
+   "uid": 17,
+   "cost": 11
+  },
+  {
+   "t": 54.03333333333283,
+   "k": 1621,
+   "a": "deploy",
+   "ci": 0,
+   "id": "defender",
+   "x": 2,
+   "y": 5,
+   "dir": 0,
+   "uid": 19,
+   "cost": 16
+  },
+  {
+   "t": 68.03333333333204,
+   "k": 2041,
+   "a": "skill",
+   "ci": 0,
+   "id": "defender",
+   "uid": 19
+  },
+  {
+   "t": 71.03333333333187,
+   "k": 2131,
+   "a": "deploy",
+   "ci": 3,
+   "id": "lulu",
+   "x": 4,
+   "y": 5,
+   "dir": 0,
+   "uid": 24,
+   "cost": 17
+  },
+  {
+   "t": 87.03333333333096,
+   "k": 2611,
+   "a": "deploy",
+   "ci": 2,
+   "id": "caster",
+   "x": 1,
+   "y": 1,
+   "dir": 1,
+   "uid": 33,
+   "cost": 16
+  },
+  {
+   "t": 96.03333333333045,
+   "k": 2881,
+   "a": "deploy",
+   "ci": 1,
+   "id": "sniper",
+   "x": 11,
+   "y": 1,
+   "dir": 0,
+   "uid": 39,
+   "cost": 9
+  },
+  {
+   "t": 96.03333333333045,
+   "k": 2881,
+   "a": "skill",
+   "ci": 2,
+   "id": "caster",
+   "uid": 33
+  },
+  {
+   "t": 108.26666666666308,
+   "k": 3248,
+   "a": "skill",
+   "ci": 0,
+   "id": "defender",
+   "uid": 19
+  },
+  {
+   "t": 118.0333333333292,
+   "k": 3541,
+   "a": "skill",
+   "ci": 2,
+   "id": "caster",
+   "uid": 33
+  },
+  {
+   "t": 140.03333333332796,
+   "k": 4201,
+   "a": "skill",
+   "ci": 2,
+   "id": "caster",
+   "uid": 33
+  },
+  {
+   "t": 148.49999999999415,
+   "k": 4455,
+   "a": "skill",
+   "ci": 0,
+   "id": "defender",
+   "uid": 19
+  },
+  {
+   "t": 149.56666666666075,
+   "k": 4487,
+   "a": "deploy",
+   "ci": 6,
+   "id": "geomseon",
+   "x": 6,
+   "y": 5,
+   "dir": 0,
+   "uid": 58,
+   "cost": 26
+  },
+  {
+   "t": 162.0333333333267,
+   "k": 4861,
+   "a": "skill",
+   "ci": 2,
+   "id": "caster",
+   "uid": 33
+  },
+  {
+   "t": 184.03333333332546,
+   "k": 5521,
+   "a": "skill",
+   "ci": 2,
+   "id": "caster",
+   "uid": 33
+  },
+  {
+   "t": 188.7333333333252,
+   "k": 5662,
+   "a": "skill",
+   "ci": 0,
+   "id": "defender",
+   "uid": 19
+  },
+  {
+   "t": 206.0333333333242,
+   "k": 6181,
+   "a": "skill",
+   "ci": 2,
+   "id": "caster",
+   "uid": 33
+  },
+  {
+   "t": 212.56666666665717,
+   "k": 6377,
+   "a": "deploy",
+   "ci": 5,
+   "id": "rabi",
+   "x": 2,
+   "y": 1,
+   "dir": 2,
+   "uid": 73,
+   "cost": 12
+  },
+  {
+   "t": 222.59999999998993,
+   "k": 6678,
+   "a": "deploy",
+   "ci": 1,
+   "id": "sniper",
+   "x": 11,
+   "y": 1,
+   "dir": 0,
+   "uid": 74,
+   "cost": 14
+  },
+  {
+   "t": 228.03333333332296,
+   "k": 6841,
+   "a": "skill",
+   "ci": 2,
+   "id": "caster",
+   "uid": 33
+  }
+ ],
+ "plan": {
+  "entries": [
+   {
+    "id": "rabi",
+    "x": 2,
+    "y": 1,
+    "d": 2
+   },
+   {
+    "id": "geomseon",
+    "x": 6,
+    "y": 5,
+    "d": 0
+   },
+   {
+    "id": "teka",
+    "x": 2,
+    "y": 4,
+    "d": 3,
+    "from": 5
+   },
+   {
+    "id": "bongeun",
+    "x": 3,
+    "y": 2,
+    "d": 0
+   },
+   {
+    "id": "defender",
+    "x": 2,
+    "y": 5,
+    "d": 0
+   },
+   {
+    "id": "lulu",
+    "x": 4,
+    "y": 5,
+    "d": 0
+   },
+   {
+    "id": "caster",
+    "x": 1,
+    "y": 1,
+    "d": 1
+   },
+   {
+    "id": "sniper",
+    "x": 11,
+    "y": 1,
+    "d": 0
+   }
+  ],
+  "skill": {},
+  "skillIdx": {},
+  "retreats": [],
+  "pol": {
+   "fire": 1,
+   "melt": 1,
+   "lamp": 1
+  }
+ }
+}
