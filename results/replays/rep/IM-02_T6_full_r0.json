@@ -1,0 +1,352 @@
+{
+ "stage": "IM-02",
+ "name": "생울타리",
+ "level": "E0L20",
+ "lost": 0,
+ "seed": 1,
+ "K": 1,
+ "variant": "none",
+ "stageMul": {
+  "hp": 0.336,
+  "atk": 0.416,
+  "def": 0.8
+ },
+ "deck": "T6",
+ "criterion": "lost<=0 (full block)",
+ "fiveSeedLost": [
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "family": "IM-02:1y84ih1",
+ "gameHash": "fca95f6aaf8d",
+ "rng": "Math.random replaced before `new TD.Game` by im_sim's seed(n): a = n*7919, mulberry32-style step; nothing else draws from it between seeding and the game",
+ "stepping": "fixed g.update(1/30) per frame, max 420*30 frames; actions run at the start of a frame, before that frame's update, in log order",
+ "squad": [
+  {
+   "id": "defender",
+   "elite": 0,
+   "lvl": 20,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 2,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.6536130536130537,
+    "atk": 0.7096045197740113,
+    "def": 0.6131868131868131
+   }
+  },
+  {
+   "id": "eungyeol",
+   "elite": 0,
+   "lvl": 20,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 2,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.47925412527536476,
+    "atk": 0.4830034888388033,
+    "def": 0.456403823988067
+   }
+  },
+  {
+   "id": "lilith",
+   "elite": 0,
+   "lvl": 20,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 2,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.6511188811188812,
+    "atk": 0.6417348608837972,
+    "def": 0.5683760683760684
+   }
+  },
+  {
+   "id": "rabi6",
+   "elite": 0,
+   "lvl": 20,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 2,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.4518304906503664,
+    "atk": 0.5058237929318068,
+    "def": 0.5219040495779463
+   }
+  },
+  {
+   "id": "veil",
+   "elite": 0,
+   "lvl": 20,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 2,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.4897480867346939,
+    "atk": 0.49639199543730006,
+    "def": 0.5444404462036704
+   }
+  },
+  {
+   "id": "skakea2",
+   "elite": 0,
+   "lvl": 20,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 2,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.5401544401544401,
+    "atk": 0.5232092837134854,
+    "def": 0.5024456063417103
+   }
+  },
+  {
+   "id": "brick",
+   "elite": 0,
+   "lvl": 20,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 2,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.6536130536130537,
+    "atk": 0.7099731663685152,
+    "def": 0.6131868131868131
+   }
+  }
+ ],
+ "squadNote": "card order = squad order (card index ci in actions); Game(stageIdx, squad) receives {id, elite, mult, pot, skillIdx, slv, sm}; skill level and mastery by rung (sim.js skillRank, slv-r1); sm[k] = mastery of skill k",
+ "expected": {
+  "win": true,
+  "rwin": true,
+  "over": "win",
+  "life": 10,
+  "lost": 0,
+  "winTime": 146.73333333332758,
+  "frames": 4402,
+  "kills": 53,
+  "total": 53
+ },
+ "actions": [
+  {
+   "t": 0,
+   "k": 0,
+   "a": "deploy",
+   "ci": 0,
+   "id": "defender",
+   "x": 11,
+   "y": 2,
+   "dir": 0,
+   "uid": 1,
+   "cost": 16
+  },
+  {
+   "t": 18.000000000000053,
+   "k": 540,
+   "a": "skill",
+   "ci": 0,
+   "id": "defender",
+   "uid": 1
+  },
+  {
+   "t": 18.03333333333339,
+   "k": 541,
+   "a": "deploy",
+   "ci": 4,
+   "id": "veil",
+   "x": 12,
+   "y": 2,
+   "dir": 2,
+   "uid": 17,
+   "cost": 18
+  },
+  {
+   "t": 48.03333333333317,
+   "k": 1441,
+   "a": "deploy",
+   "ci": 1,
+   "id": "eungyeol",
+   "x": 11,
+   "y": 5,
+   "dir": 2,
+   "uid": 25,
+   "cost": 30
+  },
+  {
+   "t": 59.43333333333252,
+   "k": 1783,
+   "a": "skill",
+   "ci": 0,
+   "id": "defender",
+   "uid": 1
+  },
+  {
+   "t": 69.56666666666528,
+   "k": 2087,
+   "a": "deploy",
+   "ci": 5,
+   "id": "skakea2",
+   "x": 6,
+   "y": 2,
+   "dir": 3,
+   "uid": 31,
+   "cost": 18
+  },
+  {
+   "t": 77.03333333333153,
+   "k": 2311,
+   "a": "deploy",
+   "ci": 3,
+   "id": "rabi6",
+   "x": 12,
+   "y": 3,
+   "dir": 2,
+   "uid": 43,
+   "cost": 11
+  },
+  {
+   "t": 100.8666666666635,
+   "k": 3026,
+   "a": "skill",
+   "ci": 0,
+   "id": "defender",
+   "uid": 1
+  },
+  {
+   "t": 101.56666666666347,
+   "k": 3047,
+   "a": "deploy",
+   "ci": 6,
+   "id": "brick",
+   "x": 5,
+   "y": 3,
+   "dir": 2,
+   "uid": 46,
+   "cost": 16
+  },
+  {
+   "t": 108.03333333332976,
+   "k": 3241,
+   "a": "deploy",
+   "ci": 2,
+   "id": "lilith",
+   "x": 7,
+   "y": 2,
+   "dir": 1,
+   "uid": 53,
+   "cost": 16
+  },
+  {
+   "t": 142.2999999999945,
+   "k": 4269,
+   "a": "skill",
+   "ci": 0,
+   "id": "defender",
+   "uid": 1
+  }
+ ],
+ "plan": {
+  "entries": [
+   {
+    "id": "defender",
+    "x": 11,
+    "y": 2,
+    "d": 0
+   },
+   {
+    "id": "veil",
+    "x": 12,
+    "y": 2,
+    "d": 2
+   },
+   {
+    "id": "eungyeol",
+    "x": 11,
+    "y": 5,
+    "d": 2
+   },
+   {
+    "id": "skakea2",
+    "x": 6,
+    "y": 2,
+    "d": 3
+   },
+   {
+    "id": "rabi6",
+    "x": 12,
+    "y": 3,
+    "d": 2
+   },
+   {
+    "id": "brick",
+    "x": 5,
+    "y": 3,
+    "d": 2
+   },
+   {
+    "id": "lilith",
+    "x": 7,
+    "y": 2,
+    "d": 1,
+    "from": 5
+   }
+  ],
+  "skill": {
+   "brick": {
+    "m": 2
+   }
+  },
+  "skillIdx": {},
+  "retreats": [],
+  "pol": {
+   "fire": 1,
+   "melt": 0,
+   "lamp": 1
+  },
+  "_par": "[[[\"defender\",11,2,0,null,null,null],[\"veil\",12,2,2,null,null,null],[\"eungyeol\",11,5,2,null,null,null],[\"skakea2\",6,2,3,null,null,null],[\"rabi6\",12,3,2,null,null,null],[\"yui\",5,3,2,null,null,null],[\"lilith\",7,2,1,5,null,null]],{\"yui\":{\"m\":2}},{},[],{\"fire\":1,\"melt\":0,\"lamp\":1}]"
+ }
+}

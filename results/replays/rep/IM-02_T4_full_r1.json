@@ -1,0 +1,358 @@
+{
+ "stage": "IM-02",
+ "name": "생울타리",
+ "level": "E0L40",
+ "lost": 0,
+ "seed": 1,
+ "K": 1,
+ "variant": "none",
+ "stageMul": {
+  "hp": 0.336,
+  "atk": 0.416,
+  "def": 0.8
+ },
+ "deck": "T4",
+ "criterion": "lost<=0 (full block)",
+ "fiveSeedLost": [
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "family": "IM-02:1kw7a62",
+ "gameHash": "fca95f6aaf8d",
+ "rng": "Math.random replaced before `new TD.Game` by im_sim's seed(n): a = n*7919, mulberry32-style step; nothing else draws from it between seeding and the game",
+ "stepping": "fixed g.update(1/30) per frame, max 420*30 frames; actions run at the start of a frame, before that frame's update, in log order",
+ "squad": [
+  {
+   "id": "defender",
+   "elite": 0,
+   "lvl": 40,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 4,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.7498771498771499,
+    "atk": 0.8,
+    "def": 0.7387755102040816
+   }
+  },
+  {
+   "id": "lulu",
+   "elite": 0,
+   "lvl": 40,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 4,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.5669376959247648,
+    "atk": 0.5710796489485014,
+    "def": 0.6060139860139859
+   }
+  },
+  {
+   "id": "ker",
+   "elite": 0,
+   "lvl": 40,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 4,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.509705753184014,
+    "atk": 0.6637514384349827,
+    "def": 0.5188735177865612
+   }
+  },
+  {
+   "id": "capy",
+   "elite": 0,
+   "lvl": 40,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 4,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.8,
+    "atk": 0.7888307155322862,
+    "def": 0.788235294117647
+   }
+  },
+  {
+   "id": "hiro",
+   "elite": 0,
+   "lvl": 40,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 4,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.7798708288482239,
+    "atk": 0.740506329113924,
+    "def": 0.7387755102040816
+   }
+  },
+  {
+   "id": "nana",
+   "elite": 0,
+   "lvl": 40,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 4,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.799373040752351,
+    "atk": 0.7580398162327718,
+    "def": 0.8
+   }
+  },
+  {
+   "id": "brick",
+   "elite": 0,
+   "lvl": 40,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 4,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.7498771498771499,
+    "atk": 0.7994186046511628,
+    "def": 0.7387755102040816
+   }
+  }
+ ],
+ "squadNote": "card order = squad order (card index ci in actions); Game(stageIdx, squad) receives {id, elite, mult, pot, skillIdx, slv, sm}; skill level and mastery by rung (sim.js skillRank, slv-r1); sm[k] = mastery of skill k",
+ "expected": {
+  "win": true,
+  "rwin": true,
+  "over": "win",
+  "life": 10,
+  "lost": 0,
+  "winTime": 149.03333333332745,
+  "frames": 4471,
+  "kills": 53,
+  "total": 53
+ },
+ "actions": [
+  {
+   "t": 0,
+   "k": 0,
+   "a": "deploy",
+   "ci": 0,
+   "id": "defender",
+   "x": 11,
+   "y": 2,
+   "dir": 0,
+   "uid": 1,
+   "cost": 16
+  },
+  {
+   "t": 13.999999999999961,
+   "k": 420,
+   "a": "skill",
+   "ci": 0,
+   "id": "defender",
+   "uid": 1
+  },
+  {
+   "t": 16.03333333333329,
+   "k": 481,
+   "a": "deploy",
+   "ci": 6,
+   "id": "brick",
+   "x": 12,
+   "y": 2,
+   "dir": 0,
+   "uid": 17,
+   "cost": 16
+  },
+  {
+   "t": 33.03333333333402,
+   "k": 991,
+   "a": "deploy",
+   "ci": 1,
+   "id": "lulu",
+   "x": 11,
+   "y": 5,
+   "dir": 2,
+   "uid": 22,
+   "cost": 17
+  },
+  {
+   "t": 41.53333333333354,
+   "k": 1246,
+   "a": "skill",
+   "ci": 6,
+   "id": "brick",
+   "uid": 17
+  },
+  {
+   "t": 48.03333333333317,
+   "k": 1441,
+   "a": "deploy",
+   "ci": 4,
+   "id": "hiro",
+   "x": 10,
+   "y": 2,
+   "dir": 2,
+   "uid": 26,
+   "cost": 15
+  },
+  {
+   "t": 54.233333333332816,
+   "k": 1627,
+   "a": "skill",
+   "ci": 0,
+   "id": "defender",
+   "uid": 1
+  },
+  {
+   "t": 69.03333333333198,
+   "k": 2071,
+   "a": "deploy",
+   "ci": 3,
+   "id": "capy",
+   "x": 11,
+   "y": 1,
+   "dir": 1,
+   "uid": 32,
+   "cost": 21
+  },
+  {
+   "t": 86.03333333333102,
+   "k": 2581,
+   "a": "deploy",
+   "ci": 2,
+   "id": "ker",
+   "x": 7,
+   "y": 3,
+   "dir": 0,
+   "uid": 44,
+   "cost": 17
+  },
+  {
+   "t": 103.03333333333005,
+   "k": 3091,
+   "a": "deploy",
+   "ci": 5,
+   "id": "nana",
+   "x": 11,
+   "y": 4,
+   "dir": 2,
+   "uid": 49,
+   "cost": 17
+  },
+  {
+   "t": 103.69999999999668,
+   "k": 3111,
+   "a": "skill",
+   "ci": 6,
+   "id": "brick",
+   "uid": 17
+  },
+  {
+   "t": 124.46666666666216,
+   "k": 3734,
+   "a": "skill",
+   "ci": 0,
+   "id": "defender",
+   "uid": 1
+  }
+ ],
+ "plan": {
+  "entries": [
+   {
+    "id": "defender",
+    "x": 11,
+    "y": 2,
+    "d": 0
+   },
+   {
+    "id": "brick",
+    "x": 12,
+    "y": 2,
+    "d": 0
+   },
+   {
+    "id": "lulu",
+    "x": 11,
+    "y": 5,
+    "d": 2
+   },
+   {
+    "id": "hiro",
+    "x": 10,
+    "y": 2,
+    "d": 2
+   },
+   {
+    "id": "capy",
+    "x": 11,
+    "y": 1,
+    "d": 1
+   },
+   {
+    "id": "ker",
+    "x": 7,
+    "y": 3,
+    "d": 0
+   },
+   {
+    "id": "nana",
+    "x": 11,
+    "y": 4,
+    "d": 2
+   }
+  ],
+  "skill": {
+   "defender": {
+    "m": 2
+   }
+  },
+  "skillIdx": {},
+  "retreats": [],
+  "pol": {
+   "fire": 1,
+   "melt": 1,
+   "lamp": 1
+  }
+ }
+}

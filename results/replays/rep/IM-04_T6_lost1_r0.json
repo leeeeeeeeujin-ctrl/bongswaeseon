@@ -1,0 +1,253 @@
+{
+ "stage": "IM-04",
+ "name": "밤의 연병장",
+ "level": "E1L15",
+ "lost": 0,
+ "seed": 1,
+ "K": 1,
+ "variant": "none",
+ "stageMul": {
+  "hp": 0.187,
+  "atk": 0.245,
+  "def": 0.7
+ },
+ "deck": "T6",
+ "criterion": "lost<=1",
+ "fiveSeedLost": [
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "family": "new:IM-04:jv7nwe",
+ "gameHash": "fca95f6aaf8d",
+ "rng": "Math.random replaced before `new TD.Game` by im_sim's seed(n): a = n*7919, mulberry32-style step; nothing else draws from it between seeding and the game",
+ "stepping": "fixed g.update(1/30) per frame, max 420*30 frames; actions run at the start of a frame, before that frame's update, in log order",
+ "squad": [
+  {
+   "id": "hakuren",
+   "elite": 1,
+   "lvl": 15,
+   "pot": 1,
+   "skillIdx": 1,
+   "skill": "S2",
+   "slv": 5,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.6127470623273948,
+    "atk": 1,
+    "def": 0.6923728813559322
+   }
+  },
+  {
+   "id": "eungyeol",
+   "elite": 1,
+   "lvl": 15,
+   "pot": 1,
+   "skillIdx": 1,
+   "skill": "S2",
+   "slv": 5,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.591640026811725,
+    "atk": 0.6185488040751451,
+    "def": 0.6105597375835822
+   }
+  },
+  {
+   "id": "veil",
+   "elite": 1,
+   "lvl": 15,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 5,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.6336431962025316,
+    "atk": 0.6552747742898012,
+    "def": 0.6836399579121896
+   }
+  },
+  {
+   "id": "bongeun",
+   "elite": 1,
+   "lvl": 15,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 5,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.6755244088482074,
+    "atk": 0.6164373509447808,
+    "def": 0.6371047430830039
+   }
+  }
+ ],
+ "squadNote": "card order = squad order (card index ci in actions); Game(stageIdx, squad) receives {id, elite, mult, pot, skillIdx, slv, sm}; skill level and mastery by rung (sim.js skillRank, slv-r1); sm[k] = mastery of skill k",
+ "expected": {
+  "win": true,
+  "rwin": true,
+  "over": "win",
+  "life": 10,
+  "lost": 0,
+  "winTime": 181.7333333333256,
+  "frames": 5452,
+  "kills": 54,
+  "total": 54
+ },
+ "actions": [
+  {
+   "t": 0,
+   "k": 0,
+   "a": "deploy",
+   "ci": 3,
+   "id": "bongeun",
+   "x": 4,
+   "y": 1,
+   "dir": 2,
+   "uid": 1,
+   "cost": 13
+  },
+  {
+   "t": 13.033333333333298,
+   "k": 391,
+   "a": "deploy",
+   "ci": 2,
+   "id": "veil",
+   "x": 1,
+   "y": 2,
+   "dir": 1,
+   "uid": 9,
+   "cost": 20
+  },
+  {
+   "t": 45.03333333333334,
+   "k": 1351,
+   "a": "deploy",
+   "ci": 1,
+   "id": "eungyeol",
+   "x": 12,
+   "y": 5,
+   "dir": 3,
+   "uid": 17,
+   "cost": 32
+  },
+  {
+   "t": 55.03333333333277,
+   "k": 1651,
+   "a": "deploy",
+   "ci": 0,
+   "id": "hakuren",
+   "x": 10,
+   "y": 3,
+   "dir": 0,
+   "uid": 21,
+   "cost": 10
+  },
+  {
+   "t": 57.033333333332656,
+   "k": 1711,
+   "a": "skill",
+   "ci": 1,
+   "id": "eungyeol",
+   "uid": 17
+  },
+  {
+   "t": 111.23333333332958,
+   "k": 3337,
+   "a": "skill",
+   "ci": 1,
+   "id": "eungyeol",
+   "uid": 17
+  },
+  {
+   "t": 130.59999999999516,
+   "k": 3918,
+   "a": "deploy",
+   "ci": 0,
+   "id": "hakuren",
+   "x": 10,
+   "y": 3,
+   "dir": 0,
+   "uid": 54,
+   "cost": 15
+  },
+  {
+   "t": 138.5999999999947,
+   "k": 4158,
+   "a": "skill",
+   "ci": 0,
+   "id": "hakuren",
+   "uid": 54
+  },
+  {
+   "t": 165.43333333332652,
+   "k": 4963,
+   "a": "skill",
+   "ci": 1,
+   "id": "eungyeol",
+   "uid": 17
+  }
+ ],
+ "plan": {
+  "entries": [
+   {
+    "id": "bongeun",
+    "x": 4,
+    "y": 1,
+    "d": 2
+   },
+   {
+    "id": "veil",
+    "x": 1,
+    "y": 2,
+    "d": 1
+   },
+   {
+    "id": "eungyeol",
+    "x": 12,
+    "y": 5,
+    "d": 3
+   },
+   {
+    "id": "hakuren",
+    "x": 10,
+    "y": 3,
+    "d": 0
+   }
+  ],
+  "skill": {},
+  "skillIdx": {
+   "bongeun": 0,
+   "veil": 0,
+   "eungyeol": 1,
+   "hakuren": 1
+  },
+  "retreats": [],
+  "pol": {
+   "fire": 1,
+   "melt": 1,
+   "lamp": 1
+  },
+  "_par": "[[[\"atat\",9,5,3,null,null,null],[\"bongeun\",4,1,2,null,null,null],[\"veil\",1,2,1,null,null,null],[\"eungyeol\",12,5,3,null,null,null],[\"hakuren\",10,3,0,null,null,null]],{},{\"bongeun\":0,\"veil\":0,\"atat\":1,\"eungyeol\":1,\"hakuren\":1},[],{\"fire\":1,\"melt\":1,\"lamp\":1}]"
+ }
+}

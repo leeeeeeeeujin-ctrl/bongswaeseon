@@ -1,0 +1,353 @@
+{
+ "stage": "IM-04",
+ "name": "밤의 연병장",
+ "level": "E1L45",
+ "lost": 0,
+ "seed": 1,
+ "K": 1,
+ "variant": "none",
+ "stageMul": {
+  "hp": 0.187,
+  "atk": 0.245,
+  "def": 0.7
+ },
+ "deck": "T4",
+ "criterion": "lost<=1",
+ "fiveSeedLost": [
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "family": "IM-04:1h6us9d",
+ "gameHash": "fca95f6aaf8d",
+ "rng": "Math.random replaced before `new TD.Game` by im_sim's seed(n): a = n*7919, mulberry32-style step; nothing else draws from it between seeding and the game",
+ "stepping": "fixed g.update(1/30) per frame, max 420*30 frames; actions run at the start of a frame, before that frame's update, in log order",
+ "squad": [
+  {
+   "id": "sniper",
+   "elite": 1,
+   "lvl": 45,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 7,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.9591194968553459,
+    "atk": 0.9422222222222222,
+    "def": 0.9441504997060552
+   }
+  },
+  {
+   "id": "skakea",
+   "elite": 1,
+   "lvl": 45,
+   "pot": 1,
+   "skillIdx": 1,
+   "skill": "S2",
+   "slv": 7,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.7380999857570147,
+    "atk": 0.756896551724138,
+    "def": 0.776549802646854
+   }
+  },
+  {
+   "id": "ker",
+   "elite": 1,
+   "lvl": 45,
+   "pot": 1,
+   "skillIdx": 1,
+   "skill": "S2",
+   "slv": 7,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.655296269002975,
+    "atk": 0.8075091182149754,
+    "def": 0.6807172684844018
+   }
+  },
+  {
+   "id": "sunae",
+   "elite": 1,
+   "lvl": 45,
+   "pot": 1,
+   "skillIdx": 1,
+   "skill": "S2",
+   "slv": 7,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.655296269002975,
+    "atk": 0.8061987745683139,
+    "def": 0.6807172684844018
+   }
+  },
+  {
+   "id": "nana",
+   "elite": 1,
+   "lvl": 45,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 7,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.9628468593985835,
+    "atk": 0.9551925585616244,
+    "def": 0.962962962962963
+   }
+  }
+ ],
+ "squadNote": "card order = squad order (card index ci in actions); Game(stageIdx, squad) receives {id, elite, mult, pot, skillIdx, slv, sm}; skill level and mastery by rung (sim.js skillRank, slv-r1); sm[k] = mastery of skill k",
+ "expected": {
+  "win": true,
+  "rwin": true,
+  "over": "win",
+  "life": 10,
+  "lost": 0,
+  "winTime": 182.56666666665888,
+  "frames": 5477,
+  "kills": 54,
+  "total": 54
+ },
+ "actions": [
+  {
+   "t": 0,
+   "k": 0,
+   "a": "deploy",
+   "ci": 1,
+   "id": "skakea",
+   "x": 1,
+   "y": 4,
+   "dir": 1,
+   "uid": 1,
+   "cost": 19
+  },
+  {
+   "t": 2.033333333333336,
+   "k": 61,
+   "a": "skill",
+   "ci": 1,
+   "id": "skakea",
+   "uid": 1
+  },
+  {
+   "t": 10.033333333333308,
+   "k": 301,
+   "a": "deploy",
+   "ci": 0,
+   "id": "sniper",
+   "x": 4,
+   "y": 1,
+   "dir": 2,
+   "uid": 9,
+   "cost": 11
+  },
+  {
+   "t": 29.033333333333935,
+   "k": 871,
+   "a": "deploy",
+   "ci": 4,
+   "id": "nana",
+   "x": 3,
+   "y": 5,
+   "dir": 0,
+   "uid": 15,
+   "cost": 19
+  },
+  {
+   "t": 48.03333333333317,
+   "k": 1441,
+   "a": "deploy",
+   "ci": 3,
+   "id": "sunae",
+   "x": 1,
+   "y": 2,
+   "dir": 1,
+   "uid": 19,
+   "cost": 19
+  },
+  {
+   "t": 55.03333333333277,
+   "k": 1651,
+   "a": "skill",
+   "ci": 3,
+   "id": "sunae",
+   "uid": 19
+  },
+  {
+   "t": 67.0333333333321,
+   "k": 2011,
+   "a": "deploy",
+   "ci": 2,
+   "id": "ker",
+   "x": 12,
+   "y": 5,
+   "dir": 1,
+   "uid": 25,
+   "cost": 19
+  },
+  {
+   "t": 75.03333333333164,
+   "k": 2251,
+   "a": "skill",
+   "ci": 2,
+   "id": "ker",
+   "uid": 25
+  },
+  {
+   "t": 96.03333333333045,
+   "k": 2881,
+   "a": "deploy",
+   "ci": 1,
+   "id": "skakea",
+   "x": 1,
+   "y": 4,
+   "dir": 1,
+   "uid": 35,
+   "cost": 29
+  },
+  {
+   "t": 98.06666666666366,
+   "k": 2942,
+   "a": "skill",
+   "ci": 1,
+   "id": "skakea",
+   "uid": 35
+  },
+  {
+   "t": 98.6333333333303,
+   "k": 2959,
+   "a": "skill",
+   "ci": 3,
+   "id": "sunae",
+   "uid": 19
+  },
+  {
+   "t": 114.09999999999609,
+   "k": 3423,
+   "a": "skill",
+   "ci": 1,
+   "id": "skakea",
+   "uid": 35
+  },
+  {
+   "t": 130.13333333332852,
+   "k": 3904,
+   "a": "skill",
+   "ci": 1,
+   "id": "skakea",
+   "uid": 35
+  },
+  {
+   "t": 131.83333333332843,
+   "k": 3955,
+   "a": "skill",
+   "ci": 2,
+   "id": "ker",
+   "uid": 25
+  },
+  {
+   "t": 142.23333333332783,
+   "k": 4267,
+   "a": "skill",
+   "ci": 3,
+   "id": "sunae",
+   "uid": 19
+  },
+  {
+   "t": 146.16666666666094,
+   "k": 4385,
+   "a": "skill",
+   "ci": 1,
+   "id": "skakea",
+   "uid": 35
+  },
+  {
+   "t": 162.19999999999337,
+   "k": 4866,
+   "a": "skill",
+   "ci": 1,
+   "id": "skakea",
+   "uid": 35
+  },
+  {
+   "t": 178.2333333333258,
+   "k": 5347,
+   "a": "skill",
+   "ci": 1,
+   "id": "skakea",
+   "uid": 35
+  }
+ ],
+ "plan": {
+  "entries": [
+   {
+    "id": "skakea",
+    "x": 1,
+    "y": 4,
+    "d": 1
+   },
+   {
+    "id": "sniper",
+    "x": 4,
+    "y": 1,
+    "d": 2
+   },
+   {
+    "id": "nana",
+    "x": 3,
+    "y": 5,
+    "d": 0
+   },
+   {
+    "id": "sunae",
+    "x": 1,
+    "y": 2,
+    "d": 1
+   },
+   {
+    "id": "ker",
+    "x": 12,
+    "y": 5,
+    "d": 1
+   }
+  ],
+  "skill": {},
+  "skillIdx": {
+   "ker": 1,
+   "sunae": 1,
+   "skakea": 1
+  },
+  "retreats": [],
+  "pol": {
+   "fire": 1,
+   "melt": 1,
+   "lamp": 1
+  },
+  "_par": "[[[\"skakea\",1,4,1,null,null,null],[\"ker\",12,5,1,null,null,null],[\"sniper\",4,1,2,null,null,null],[\"nana\",3,5,0,null,null,null],[\"sunae\",1,2,1,null,null,null],[\"defender\",2,5,0,null,null,null]],{},{\"ker\":1,\"sunae\":1,\"skakea\":1},[],{\"fire\":1,\"melt\":1,\"lamp\":1}]"
+ }
+}

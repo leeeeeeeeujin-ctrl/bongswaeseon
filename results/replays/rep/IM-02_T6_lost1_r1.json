@@ -1,0 +1,241 @@
+{
+ "stage": "IM-02",
+ "name": "생울타리",
+ "level": "E0L1",
+ "lost": 0,
+ "seed": 1,
+ "K": 1,
+ "variant": "none",
+ "stageMul": {
+  "hp": 0.336,
+  "atk": 0.416,
+  "def": 0.8
+ },
+ "deck": "T6",
+ "criterion": "lost<=1",
+ "fiveSeedLost": [
+  0,
+  0,
+  0,
+  0,
+  0
+ ],
+ "family": "IM-02:1y84ih1",
+ "gameHash": "fca95f6aaf8d",
+ "rng": "Math.random replaced before `new TD.Game` by im_sim's seed(n): a = n*7919, mulberry32-style step; nothing else draws from it between seeding and the game",
+ "stepping": "fixed g.update(1/30) per frame, max 420*30 frames; actions run at the start of a frame, before that frame's update, in log order",
+ "squad": [
+  {
+   "id": "guard",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.5317604355716878,
+    "atk": 0.505938242280285,
+    "def": 0.574468085106383
+   }
+  },
+  {
+   "id": "ker",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.3932367149758454,
+    "atk": 0.529113924050633,
+    "def": 0.36086956521739133
+   }
+  },
+  {
+   "id": "eungyeol",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.4269348268839104,
+    "atk": 0.41906202723146746,
+    "def": 0.3803986710963455
+   }
+  },
+  {
+   "id": "capy",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.64,
+    "atk": 0.5514834205933682,
+    "def": 0.6
+   }
+  },
+  {
+   "id": "rabi6",
+   "elite": 0,
+   "lvl": 1,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 1,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.392512077294686,
+    "atk": 0.4276422764227642,
+    "def": 0.45287958115183247
+   }
+  }
+ ],
+ "squadNote": "card order = squad order (card index ci in actions); Game(stageIdx, squad) receives {id, elite, mult, pot, skillIdx, slv, sm}; skill level and mastery by rung (sim.js skillRank, slv-r1); sm[k] = mastery of skill k",
+ "expected": {
+  "win": true,
+  "rwin": true,
+  "over": "win",
+  "life": 10,
+  "lost": 0,
+  "winTime": 138.09999999999474,
+  "frames": 4143,
+  "kills": 53,
+  "total": 53
+ },
+ "actions": [
+  {
+   "t": 0,
+   "k": 0,
+   "a": "deploy",
+   "ci": 4,
+   "id": "rabi6",
+   "x": 11,
+   "y": 2,
+   "dir": 1,
+   "uid": 1,
+   "cost": 11
+  },
+  {
+   "t": 8.033333333333315,
+   "k": 241,
+   "a": "deploy",
+   "ci": 0,
+   "id": "guard",
+   "x": 12,
+   "y": 2,
+   "dir": 2,
+   "uid": 14,
+   "cost": 13
+  },
+  {
+   "t": 22.033333333333587,
+   "k": 661,
+   "a": "deploy",
+   "ci": 1,
+   "id": "ker",
+   "x": 12,
+   "y": 3,
+   "dir": 1,
+   "uid": 18,
+   "cost": 17
+  },
+  {
+   "t": 49.03333333333311,
+   "k": 1471,
+   "a": "deploy",
+   "ci": 2,
+   "id": "eungyeol",
+   "x": 11,
+   "y": 5,
+   "dir": 2,
+   "uid": 26,
+   "cost": 30
+  },
+  {
+   "t": 69.03333333333198,
+   "k": 2071,
+   "a": "deploy",
+   "ci": 3,
+   "id": "capy",
+   "x": 11,
+   "y": 1,
+   "dir": 1,
+   "uid": 32,
+   "cost": 21
+  }
+ ],
+ "plan": {
+  "entries": [
+   {
+    "id": "rabi6",
+    "x": 11,
+    "y": 2,
+    "d": 1
+   },
+   {
+    "id": "guard",
+    "x": 12,
+    "y": 2,
+    "d": 2
+   },
+   {
+    "id": "ker",
+    "x": 12,
+    "y": 3,
+    "d": 1
+   },
+   {
+    "id": "eungyeol",
+    "x": 11,
+    "y": 5,
+    "d": 2
+   },
+   {
+    "id": "capy",
+    "x": 11,
+    "y": 1,
+    "d": 1
+   }
+  ],
+  "skill": {},
+  "skillIdx": {},
+  "retreats": [],
+  "pol": {
+   "fire": 1,
+   "melt": 1,
+   "lamp": 1
+  },
+  "_par": "[[[\"rabi6\",11,2,1,null,null,null],[\"guard\",12,2,2,null,null,null],[\"eungyeol\",11,5,2,null,null,null],[\"brick\",12,3,1,null,null,null],[\"capy\",11,1,1,null,null,null]],{},{},[],{\"fire\":1,\"melt\":1,\"lamp\":1}]"
+ }
+}

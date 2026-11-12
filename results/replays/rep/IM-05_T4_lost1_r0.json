@@ -2,7 +2,7 @@
  "stage": "IM-05",
  "name": "목 없는 장군",
  "level": "E0L40",
- "lost": 0,
+ "lost": 1,
  "seed": 1,
  "K": 1,
  "variant": "none",
@@ -14,14 +14,14 @@
  "deck": "T4",
  "criterion": "lost<=1",
  "fiveSeedLost": [
-  0,
-  0,
-  0,
-  0,
-  0
+  1,
+  1,
+  1,
+  1,
+  1
  ],
- "family": "IM-05:dretal",
- "gameHash": "5b7205f38c7f",
+ "family": "IM-05:1d12r1m",
+ "gameHash": "fca95f6aaf8d",
  "rng": "Math.random replaced before `new TD.Game` by im_sim's seed(n): a = n*7919, mulberry32-style step; nothing else draws from it between seeding and the game",
  "stepping": "fixed g.update(1/30) per frame, max 420*30 frames; actions run at the start of a frame, before that frame's update, in log order",
  "squad": [
@@ -64,7 +64,7 @@
    }
   },
   {
-   "id": "caster",
+   "id": "sniper",
    "elite": 0,
    "lvl": 40,
    "pot": 1,
@@ -77,28 +77,9 @@
     0
    ],
    "mult": {
-    "hp": 0.77,
-    "atk": 0.7595744680851064,
-    "def": 0.7222222222222222
-   }
-  },
-  {
-   "id": "medic",
-   "elite": 0,
-   "lvl": 40,
-   "pot": 1,
-   "skillIdx": 0,
-   "skill": "S1",
-   "slv": 4,
-   "sm": [
-    0,
-    0,
-    0
-   ],
-   "mult": {
-    "hp": 0.7991189427312775,
-    "atk": 0.7096774193548387,
-    "def": 0.7431192660550459
+    "hp": 0.779245283018868,
+    "atk": 0.688,
+    "def": 0.6984126984126984
    }
   },
   {
@@ -178,6 +159,25 @@
    }
   },
   {
+   "id": "teka",
+   "elite": 0,
+   "lvl": 40,
+   "pot": 1,
+   "skillIdx": 0,
+   "skill": "S1",
+   "slv": 4,
+   "sm": [
+    0,
+    0,
+    0
+   ],
+   "mult": {
+    "hp": 0.6033768467130463,
+    "atk": 0.6004062362758015,
+    "def": 0.6233428030303031
+   }
+  },
+  {
    "id": "hiro",
    "elite": 0,
    "lvl": 40,
@@ -221,11 +221,11 @@
   "win": true,
   "rwin": true,
   "over": "win",
-  "life": 10,
-  "lost": 0,
-  "winTime": 230.66666666665614,
-  "frames": 6920,
-  "kills": 61,
+  "life": 9,
+  "lost": 1,
+  "winTime": 236.39999999998915,
+  "frames": 7092,
+  "kills": 60,
   "total": 61
  },
  "actions": [
@@ -269,7 +269,7 @@
    "id": "guard",
    "x": 12,
    "y": 1,
-   "dir": 2,
+   "dir": 1,
    "uid": 17,
    "cost": 13
   },
@@ -297,10 +297,10 @@
    "t": 50.033333333333054,
    "k": 1501,
    "a": "deploy",
-   "ci": 7,
+   "ci": 6,
    "id": "ker",
-   "x": 2,
-   "y": 3,
+   "x": 1,
+   "y": 2,
    "dir": 3,
    "uid": 25,
    "cost": 17
@@ -325,45 +325,49 @@
    "t": 65.09999999999887,
    "k": 1953,
    "a": "deploy",
-   "ci": 2,
-   "id": "caster",
+   "ci": 4,
+   "id": "irins",
    "x": 11,
    "y": 0,
    "dir": 2,
    "uid": 30,
-   "cost": 16
+   "cost": 17
   },
   {
-   "t": 74.09999999999836,
-   "k": 2223,
-   "a": "skill",
-   "ci": 2,
-   "id": "caster",
-   "uid": 30
-  },
-  {
-   "t": 75.03333333333164,
-   "k": 2251,
+   "t": 76.03333333333158,
+   "k": 2281,
    "a": "deploy",
-   "ci": 4,
+   "ci": 3,
    "id": "lulu",
    "x": 12,
    "y": 6,
-   "dir": 3,
+   "dir": 1,
    "uid": 34,
    "cost": 17
   },
   {
-   "t": 90.03333333333079,
-   "k": 2701,
+   "t": 88.0333333333309,
+   "k": 2641,
    "a": "deploy",
-   "ci": 3,
-   "id": "medic",
+   "ci": 7,
+   "id": "teka",
    "x": 8,
-   "y": 2,
-   "dir": 2,
+   "y": 0,
+   "dir": 1,
    "uid": 39,
-   "cost": 15
+   "cost": 12
+  },
+  {
+   "t": 98.03333333333033,
+   "k": 2941,
+   "a": "deploy",
+   "ci": 5,
+   "id": "alpha",
+   "x": 5,
+   "y": 0,
+   "dir": 1,
+   "uid": 43,
+   "cost": 10
   },
   {
    "t": 98.49999999999697,
@@ -374,24 +378,24 @@
    "uid": 9
   },
   {
-   "t": 100.03333333333022,
-   "k": 3001,
-   "a": "deploy",
-   "ci": 6,
-   "id": "alpha",
-   "x": 5,
-   "y": 2,
-   "dir": 1,
-   "uid": 43,
-   "cost": 10
-  },
-  {
    "t": 100.09999999999688,
    "k": 3003,
    "a": "skill",
    "ci": 9,
    "id": "tao",
    "uid": 12
+  },
+  {
+   "t": 119.89999999999576,
+   "k": 3597,
+   "a": "deploy",
+   "ci": 2,
+   "id": "sniper",
+   "x": 3,
+   "y": 3,
+   "dir": 3,
+   "uid": 48,
+   "cost": 9
   },
   {
    "t": 135.13333333332824,
@@ -410,39 +414,16 @@
    "uid": 9
   },
   {
-   "t": 169.0333333333263,
-   "k": 5071,
-   "a": "retreat",
-   "ci": 1,
-   "id": "defender",
-   "uid": 9,
-   "x": 12,
-   "y": 5,
-   "why": "plan"
-  },
-  {
-   "t": 169.0333333333263,
-   "k": 5071,
+   "t": 157.133333333327,
+   "k": 4714,
    "a": "deploy",
-   "ci": 2,
-   "id": "caster",
+   "ci": 4,
+   "id": "irins",
    "x": 11,
    "y": 0,
    "dir": 2,
-   "uid": 67,
-   "cost": 24
-  },
-  {
-   "t": 169.1333333333263,
-   "k": 5074,
-   "a": "deploy",
-   "ci": 5,
-   "id": "irins",
-   "x": 3,
-   "y": 3,
-   "dir": 3,
-   "uid": 68,
-   "cost": 17
+   "uid": 63,
+   "cost": 26
   },
   {
    "t": 170.16666666665958,
@@ -453,20 +434,24 @@
    "uid": 12
   },
   {
-   "t": 178.0333333333258,
-   "k": 5341,
+   "t": 178.96666666665908,
+   "k": 5369,
    "a": "skill",
-   "ci": 2,
-   "id": "caster",
-   "uid": 67
+   "ci": 1,
+   "id": "defender",
+   "uid": 9
   },
   {
-   "t": 200.03333333332455,
-   "k": 6001,
-   "a": "skill",
-   "ci": 2,
-   "id": "caster",
-   "uid": 67
+   "t": 189.93333333332512,
+   "k": 5698,
+   "a": "deploy",
+   "ci": 5,
+   "id": "alpha",
+   "x": 5,
+   "y": 0,
+   "dir": 1,
+   "uid": 71,
+   "cost": 15
   },
   {
    "t": 205.19999999999092,
@@ -477,12 +462,12 @@
    "uid": 12
   },
   {
-   "t": 222.0333333333233,
-   "k": 6661,
+   "t": 219.19999999999013,
+   "k": 6576,
    "a": "skill",
-   "ci": 2,
-   "id": "caster",
-   "uid": 67
+   "ci": 1,
+   "id": "defender",
+   "uid": 9
   }
  ],
  "plan": {
@@ -503,7 +488,7 @@
     "id": "guard",
     "x": 12,
     "y": 1,
-    "d": 2
+    "d": 1
    },
    {
     "id": "hiro",
@@ -513,12 +498,12 @@
    },
    {
     "id": "ker",
-    "x": 2,
-    "y": 3,
+    "x": 1,
+    "y": 2,
     "d": 3
    },
    {
-    "id": "caster",
+    "id": "irins",
     "x": 11,
     "y": 0,
     "d": 2
@@ -527,29 +512,22 @@
     "id": "lulu",
     "x": 12,
     "y": 6,
-    "d": 3
+    "d": 1
    },
    {
-    "id": "medic",
+    "id": "teka",
     "x": 8,
-    "y": 2,
-    "d": 2
-   },
-   {
-    "id": "defender",
-    "x": 1,
-    "y": 2,
-    "d": 0,
-    "from": 113
+    "y": 0,
+    "d": 1
    },
    {
     "id": "alpha",
     "x": 5,
-    "y": 2,
+    "y": 0,
     "d": 1
    },
    {
-    "id": "irins",
+    "id": "sniper",
     "x": 3,
     "y": 3,
     "d": 3
@@ -557,17 +535,12 @@
   ],
   "skill": {},
   "skillIdx": {},
-  "retreats": [
-   {
-    "id": "defender",
-    "t": 169
-   }
-  ],
+  "retreats": [],
   "pol": {
    "fire": 1,
    "melt": 1,
    "lamp": 1
   },
-  "_par": "[[[\"defender\",12,5,3,null,null,null],[\"tao\",12,2,3,null,null,null],[\"guard\",12,1,2,null,null,null],[\"hiro\",11,4,2,null,null,null],[\"ker\",2,3,3,null,null,null],[\"caster\",11,0,2,null,null,null],[\"lulu\",12,6,3,null,null,null],[\"miho\",8,2,2,null,null,null],[\"defender\",1,2,0,113,null,null],[\"alpha\",5,2,1,null,null,null],[\"irins\",3,3,3,null,null,null]],{},{},[[\"defender\",169]],{\"fire\":1,\"melt\":1,\"lamp\":1}]"
+  "_par": "[[[\"defender\",12,5,3,null,null,null],[\"tao\",12,2,3,null,null,null],[\"guard\",12,1,1,null,null,null],[\"hiro\",11,4,2,null,null,null],[\"ker\",1,2,3,null,null,null],[\"irins\",11,0,2,null,null,null],[\"lulu\",12,6,1,null,null,null],[\"teka\",8,0,1,null,null,null],[\"defender\",2,4,1,113,null,null],[\"alpha\",5,0,1,null,null,null],[\"sniper\",3,3,3,null,null,null]],{},{},[[\"defender\",169]],{\"fire\":1,\"melt\":1,\"lamp\":1}]"
  }
 }
