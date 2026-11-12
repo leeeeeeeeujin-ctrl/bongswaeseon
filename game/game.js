@@ -415,10 +415,10 @@
     scout:   { name: "목 없는 척후기병", info: ["목 없는 척후기병. 아주 빠르다.", "놓치면 그대로 방어 포인트까지 달려간다."], hp: 620, atk: 120, def: 0, res: 0, speed: 1.45, interval: 1.1, weight: 1, mass: 1, life: 1 },
     // the headless general: a boss at his own scale (noMul), fought in three movements — the stand under the blade, the horn that rouses the whole camp (and brings his
     // riders up behind him), and from half his strength the charge that breaks through whoever holds him and carries him a square past them
-    cadoudal:{ name: "조르주 카두달", info: ["목 없는 장군. 단두대 아래에 한참 섰다가 언덕을 돌아 아래쪽 길로 온다. 팔이 길어, 막는 이가 없으면 바로 옆 칸(고지 포함)의 가사인격을 벤다. 세 번째 공격마다 둘레 한 칸을 모두 휩쓴다(고지 포함, 1초 전 붉은 원).", "막히지 않았을 때는 2칸 안 고지의 가사인격에게 갈고리를 던져 끌어내린다(1.5초 전 표시, 맞으면 퇴각). 체력 2/3·1/3에 호각으로 진지 전체를 깨우고 게릴라 둘을 곁에 불러내며(모두 방어 지점으로 곧장 달려온다), 절반 아래부터는 성심 깃발을 올려 둘레의 반란군을 빠르고 세게 만들며 돌격으로 저지를 뚫는다."],
+    cadoudal:{ name: "조르주 카두달", info: ["목 없는 장군. 단두대 아래에 한참 섰다가 언덕을 돌아 아래쪽 길로 온다. 팔이 길어, 막는 이가 없으면 바로 옆 칸(고지 포함)의 가사인격을 벤다. 세 번째 공격마다 둘레 한 칸을 모두 휩쓴다(고지 포함, 1초 전 붉은 원). 목에서 푸른 불이 타, 그가 1.5칸 안에 있는 화로는 온기를 잃는다.", "막히지 않았을 때는 2칸 안 고지의 가사인격에게 갈고리를 던져 끌어내린다(1.5초 전 표시, 맞으면 퇴각). 체력 2/3·1/3에 호각으로 진지 전체를 깨우고 게릴라 둘을 곁에 불러내며(모두 방어 지점으로 곧장 달려온다), 절반 아래부터는 성심 깃발을 올려 둘레의 반란군을 빠르고 세게 만들며 돌격으로 저지를 뚫는다."],
       hp: 9000, atk: 460, def: 180, res: 20, speed: 0.5, interval: 2.4, weight: 2, mass: 4, life: 3, boss: true, noMul: true,
       reachHigh: 1, sweep: { every: 3, r: 1, mul: 0.65, wind: 1.0 }, hook: { every: 15, r: 2.3, wind: 1.5, dmg: 300 }, rally: { at: 0.5, r: 2.2, speed: 1.3, atk: 1.2 },
-      charge: { every: 9, dur: 1.6, mult: 2.6, hit: 2, breach: { at: 0.5, push: 1.1 } }, call: { at: [0.66, 0.33], type: "chouang", n: 2, rouse: true, direct: true, dash: 1.4 } },   // direct: whoever he calls or rouses takes the shortest way to the point; dash: at a run
+      charge: { every: 9, dur: 1.6, mult: 2.6, hit: 2, breach: { at: 0.5, push: 1.1 } }, call: { at: [0.66, 0.33], type: "chouang", n: 2, rouse: true, direct: true, dash: 1.4 }, coldfire: 1.5 },   // direct: whoever he calls or rouses takes the shortest way to the point; dash: at a run
     // ---- the second half of the chapter: the Emperor's line and the Guard (figures borrowed from the roster, recoloured — see EN_POSED in the page) ----
     grenadier: { name: "근위 척탄병", info: ["곰가죽 모자의 노근위대 척탄병. 단단하고 느리며, 둘 몫으로 저지된다.", "물리 피해. 방어력이 높으니 마법이나 수레의 폭발로 깎자."],
       hp: 5200, atk: 430, def: 440, res: 20, speed: 0.6, interval: 2.4, weight: 2, mass: 3, life: 1 },
@@ -471,6 +471,9 @@
     armour: { name: "빈 갑주", info: ["아무도 들어 있지 않은 옛 갑옷. 느리고 단단하다.", "어둠 속에서 쓰러지면 5초 뒤 다시 일어난다(한 번)."],
       hp: 4200, atk: 420, def: 480, res: 10, speed: 0.6, interval: 2.4, weight: 1, mass: 3, life: 1, revive: { pct: 0.5, delay: 5, n: 1 } },
     // A cuirassier left on foot where a charge has passed (WL-08). A charge volley with "leave" sets him down at the far end of its line.
+    // the night blade (chapter 3): it chooses the dark, and the dark it walks goes into its next blow (def.darkblade); its outline shows even in the dark (lantern: never hidden)
+    nightblade: { name: "어둠 칼잡이", info: ["어둠을 골라 걷는 자객. 칼 한 자루로 싸운다. 어둠 속에서도 윤곽은 보인다.", "등불 밖 어둠 속을 걷는 동안 다음 일격이 1초마다 12%씩 세진다(최대 3배). 등불 안에 들어오면 5초에 걸쳐 풀린다."],
+      hp: 1800, atk: 260, def: 100, res: 10, speed: 0.95, interval: 1.8, weight: 1, mass: 2, life: 1, lantern: true, darkblade: { rate: 0.12, cap: 2, fade: 5 } },
     // the gun retaker (chapter 3): a Guard grenadier with the gunners' facings, sent to win back a gun we have taken (def.retake: retakeStep)
     gunretaker: { name: "포 되찾는 자", info: ["포병 견장을 단 근위 척탄병. 빼앗긴 포를 되찾으러 온다.", "우리 손에 넘어간 포의 포구 앞 칸으로 곧장 간다. 그 칸이 비어 있으면 닿는 즉시 포가 적의 것으로 돌아가고(남아 있던 시간과 상관없이), 그 자리에 보초로 선다. 누가 서 있으면 평범하게 싸운다. 우리 포가 없으면 보병처럼 걷는다."],
       hp: 2600, atk: 250, def: 200, res: 20, speed: 0.7, interval: 2.2, weight: 1, mass: 2, life: 1, retake: true },
@@ -519,7 +522,7 @@
       hp: 4000, atk: 800, def: 150, res: 30, speed: 0.51, interval: 99, weight: 1, mass: 0, life: 1, flying: true,
       bomber: { range: 2, r: 0.8, mul: 1, frost: 1, fall: 0.9, arm: 0.6, dash: 2 } },
     // the infernal machine (rue Saint-Nicaise, 1800): a cart with a barrel of powder, rolled on until it bursts — over everyone near it
-    cart:    { name: "지옥 기계", info: ["화약통을 실은 수레. 공격하지 않고 그저 굴러온다.", "부서지거나, 막힌 채 도화선이 다 타면 터진다. 주위의 적과 아군을 가리지 않는다. 적에게는 훨씬 큰 피해를 준다."], hp: 2600, atk: 0, def: 300, res: 60, speed: 0.36, interval: 99, weight: 2, mass: 4, life: 1, bomb: { r: 1.45, dmg: 1100, fuse: 3.5, foe: 2.4 } },   // foe: packed for the column it was meant for — their own men take it far worse than ours
+    cart:    { name: "지옥 기계", info: ["화약통을 실은 수레. 공격하지 않고 그저 굴러온다. 덮개를 씌워, 한 번 막히기 전까지는 고지에서 쏘는 공격에 30%만 다친다.", "부서지거나, 막힌 채 도화선이 다 타면 터진다. 주위의 적과 아군을 가리지 않는다. 적에게는 훨씬 큰 피해를 준다. 눈보라가 부는 동안에는 도화선이 타지 않는다. 터지면 2칸 안의 꺼진 화로가 다시 붙는다."], hp: 2600, atk: 0, def: 300, res: 60, speed: 0.36, interval: 99, weight: 2, mass: 4, life: 1, bomb: { r: 1.45, dmg: 1100, fuse: 3.5, foe: 2.4, windStop: true, relight: 2.0 }, cover: 0.3 },   // foe: packed for the column it was meant for — their own men take it far worse than ours
     // Marshal Ney: the sniper who never misses. Unseen on his perch at first, then down the road shooting as he walks;
     // every third round is a heavy one, and each time he is cut down a third he sweeps the field and puts three rounds into whoever stands furthest forward
     ney:     { name: "미셸 네", hp: 26000, atk: 600, def: 380, res: 30, speed: 0.34, interval: 2.6, weight: 2, mass: 4, life: 3, boss: true,
@@ -756,10 +759,10 @@
                // far (3,x), middle (9,x), near (12,x) — and the camp sleeps on the far and middle ones; the fowlers posted at (4,2)/(4,5) cover the whole western half
       "#####hWWh##h##",
       "S,,.,,S,,.,,.#",
-      "#.,,.h,,h.,,.#",
+      "#.,F.h,,h.,,.#",
       "#,.h######h.,B",
       "#,.h######h.,#",
-      "#.,,.h,,h.,,.#",
+      "#.,F.h,,h.,,.#",
       "S,,.,,,,,.,,.#",
       "###########h##",   // (11,0)/(11,7): two rises that see the last squares before the point from two squares off — out of the general's reach
     ],
@@ -776,7 +779,7 @@
     shadow: [  // IM-07: the crossroads (the two parallel roads of the original's annihilation maps, with a spine of high ground between them). The north road (y=1-2) and the south
                // road (y=4-5) run east to the defence point; the wall lane along the top (y=0) is the hounds' way round. Our rebels hold the two road mouths at the west end and stand in
                // the wind from the west; the white snipers lie on the two westernmost rises (1,2)/(1,4) and cover the mouths. The central spine (y=3) sees both roads and the wall lane
-      "###,,.,,.,,.,#",
+      "##W,,.,,.,,.,#",
       "S,.,,.,,.,,.,#",
       "#h,h.,h.,h,.,#",
       "##h##h##h##h,B",
@@ -1353,18 +1356,20 @@
       // when it is hit, or when the general sounds his horn. POST: three fowlers, two holding the western half until late and the third on the east rise (10,4) over the point. bossFlee: switch `on` to make him quit the field at that share
       // of his strength instead of falling (the designer has not decided yet: off)
       bossFlee: { on: false, at: 0.3, text: ["카두달 퇴각", "언덕 너머로 물러났습니다"] },
+      wind: { dir: 0, first: 44, every: 38, dur: 10 },   /* from the west, down every row: 44, 82, 120, 158 */
+      volleys: [{ kind: "blade", muzzle: [5, 0], tiles: [[6, 1], [7, 1]], gate: 1, capture: 8, rearm: 14, delay: 1, pct: 0.4, bossPct: 0.15, cancelCall: true }],   /* the guillotine: its rope on the rise (5,0) */
       vias: { 0: [[3, 1]], 2: [[3, 6]] },   // the mouths: each side road files past its far camp fire
       waves: (() => { const SLEEP = (x, y) => ({ at: [x, y], wait: 150 }), POST = (x, y) => ({ at: [x, y], until: 150 }),   // whoever the horn has not roused is up by 150 anyway
         ROW2 = { via: [[3, 1], [9, 2]] }, ROW5 = { via: [[3, 6], [9, 5]] }, UP = { via: [[9, 1]] }, DOWN = { via: [[3, 1], [2, 4], [3, 6], [9, 6]] },
-        BOSS = { via: [[6, 1, 10], [3, 1], [1, 2], [2, 4], [3, 6], [9, 6]] };   // under the blade a long moment, then west about the hill and in along the bottom side (only those he calls or rouses run straight for the point)
+        BOSS = { via: [[6, 1, 12], [3, 1], [1, 2], [2, 4], [3, 6], [9, 6]] };   // under the blade a long moment, then west about the hill and in along the bottom side (only those he calls or rouses run straight for the point)
         return W1([[0, "chouang", 1, 1, 0, SLEEP(3, 1)], [0, "chouang", 1, 1, 0, SLEEP(9, 1)], [0, "chouang", 1, 1, 0, SLEEP(3, 6)], [0, "chouang", 1, 1, 0, SLEEP(9, 6)], [0, "vicar", 1, 1, 0, SLEEP(9, 2)],
         [0.5, "chxbow", 0, 1, 0, POST(4, 2)], [0.5, "chxbow", 2, 1, 0, POST(4, 5)], [0.5, "chxbow", 1, 1, 0, POST(10, 4)],
         [8, "yfang", 2, 2, 1.6], [14, "chouang", 0, 2, 2], [24, "yfang", 2, 3, 1.3, ROW5], [30, "chouang", 0, 2, 2, ROW2],
-        [48, "chouang", 0, 2, 2], [50, "chxbow", 0, 1], [56, "yrazor", 2, 1], [57, "yfang", 2, 3, 1.2], [66, "cadoudal", 1, 1, 0, BOSS], [72, "molotov", 0, 2, 2], [84, "chouang", 2, 3, 1.5], [86, "vicar", 2, 1], [92, "yfang", 0, 3, 1],
-        [112, "chouang", 0, 2, 1.5], [118, "yfang", 2, 4, 1], [128, "chouang", 1, 2, 1.2, UP], [129, "chouang", 1, 2, 1.2, DOWN], [138, "molotov", 2, 1], [140, "yrazor", 2, 1],
+        [48, "chouang", 0, 2, 2], [50, "chxbow", 0, 1], [56, "yrazor", 2, 1], [57, "yfang", 2, 3, 1.2], [66, "cadoudal", 1, 1, 0, BOSS], [74, "molotov", 0, 2, 2], [84, "chouang", 2, 3, 1.5], [86, "vicar", 2, 1], [92, "yfang", 0, 3, 1],
+        [112, "chouang", 0, 2, 1.5], [118, "yfang", 2, 4, 1], [128, "chouang", 1, 2, 1.2, UP], [129, "chouang", 1, 2, 1.2, DOWN], [146, "molotov", 2, 1], [140, "yrazor", 2, 1],
         [148, "chxbow", 0, 1], [150, "chouang", 0, 2, 1.3, ROW2], [152, "vicar", 0, 1, 0, ROW2], [158, "chouang", 2, 2, 1.5], [160, "yfang", 0, 2, 1], [168, "yrazor", 2, 1], [172, "chouang", 1, 2, 1.2, DOWN]]); })(),
-      boss: ["경고: 목 없는 장군", "조르주 카두달 · WARNING"], desc: "처형장 언덕의 반란군 진지. 언덕을 두 칸 폭의 길이 한 바퀴 두르고, 단두대 바로 아래가 진지의 출입구입니다. 서쪽 움푹한 길로는 슈앙 종대가 위쪽 길을, 남서쪽 골짜기로는 사냥개 무리가 아래쪽 길을 타고 동쪽 방어 지점으로 옵니다. 길 위의 설 자리는 양쪽 모두 먼 곳·가운데·방어 지점 앞, 세 군데입니다. 두 길의 적은 모두 먼 곳의 모닥불 자리 (3,1)·(3,6)을 지나갑니다. 먼 곳과 가운데 자리에는 반란군이 모닥불 곁에서 자고 있고, 옆에 가사인격을 세우거나 공격하면 깨어납니다. 서쪽 절반은 엽총수 둘이 지키고, 방어 지점을 내려다보는 동쪽 고지 (10,4)에도 엽총수 하나가 먼저 올라가 있습니다. 카두달은 단두대 아래에 한참 서 있다가 언덕을 서쪽으로 돌아 아래쪽 길로 옵니다. 그가 부르거나 깨운 반란군은 돌지 않고 방어 지점으로 곧장 달려옵니다. 막는 이가 없으면 옆 칸 고지의 가사인격까지 베고, 세 번째 공격마다 둘레 한 칸을 휩쓸며, 2칸 안 고지에 갈고리를 던져 끌어내립니다. 체력이 줄 때마다 호각을 불어 진지 전체를 깨우고, 절반 아래부터는 깃발을 올려 둘레의 반란군을 북돋우며 돌격으로 저지를 뚫고 지나갑니다.",
-      lose: "처음에는 방어 지점 앞 (12,2)·(12,5)에서 받고(그 바로 앞 (12,1)·(12,6)에 한 겹을 더 세울 수 있습니다), 잠든 반란군은 준비가 됐을 때 하나씩 깨워 정리하세요. 호각이 울리면 남은 진지가 한꺼번에 일어납니다. 카두달은 한 겹으로는 못 막습니다. 아래쪽 길 가운데 (9,6)과 방어 지점 앞 (12,6)·(12,5)에 겹쳐 서세요. 막혀 있는 동안에는 갈고리를 던지지 못합니다. 붉은 원이 뜨면 옆 고지의 가사인격을 잠깐 물리거나 치료를 붙이세요. 사제는 곁의 반란군을 계속 치료하니 먼저 쓰러뜨리세요. 동쪽 고지 (10,4)의 엽총수는 바로 옆 (11,4)에 근거리 가사인격을 세우면 쓰러뜨릴 수 있습니다. 먼 곳의 모닥불 자리 (3,1)·(3,6)은 두 길의 길목입니다. 자는 반란군을 깨워 쓰러뜨리고 그 칸에 서면 길 하나를 언덕 서쪽에서 통째로 받을 수 있습니다. 다만 엽총수 (4,2)·(4,5)의 사거리 안이고, 카두달도 두 칸을 모두 지나갑니다." },
+      boss: ["경고: 목 없는 장군", "조르주 카두달 · WARNING"], desc: "처형장 언덕의 반란군 진지. 언덕을 두 칸 폭의 길이 한 바퀴 두르고, 단두대 바로 아래가 진지의 출입구입니다. 서쪽 움푹한 길로는 슈앙 종대가 위쪽 길을, 남서쪽 골짜기로는 사냥개 무리가 아래쪽 길을 타고 동쪽 방어 지점으로 옵니다. 길 위의 설 자리는 양쪽 모두 먼 곳·가운데·방어 지점 앞, 세 군데입니다. 두 길의 적은 모두 먼 곳의 모닥불 자리 (3,1)·(3,6)을 지나갑니다. 먼 곳과 가운데 자리에는 반란군이 모닥불 곁에서 자고 있고, 옆에 가사인격을 세우거나 공격하면 깨어납니다. 서쪽 절반은 엽총수 둘이 지키고, 방어 지점을 내려다보는 동쪽 고지 (10,4)에도 엽총수 하나가 먼저 올라가 있습니다. 카두달은 단두대 아래에 한참 서 있다가 언덕을 서쪽으로 돌아 아래쪽 길로 옵니다. 그가 부르거나 깨운 반란군은 돌지 않고 방어 지점으로 곧장 달려옵니다. 44초부터 38초마다 서쪽에서 눈보라가 불어와 동쪽으로 번집니다. 줄마다 맨 서쪽에 선 가사인격이 그 줄의 동쪽을 가려 줍니다. 먼 곳의 모닥불 (3,2)·(3,5)는 화로처럼 둘레 여덟 칸을 덥힙니다(얼지 않습니다). 다만 카두달이 1.5칸 안에 있는 동안에는 그의 목에서 타는 푸른 불이 온기를 지웁니다. 단두대 옆 고지 (5,0)이 밧줄 칸입니다. 8초를 서 있으면 칼날이 올라가고, 진지 문 (6,1)·(7,1)로 나오는 첫 적 위로 떨어집니다(최대 체력의 40%, 카두달은 15%와 함께 다음 호각 한 번이 끊깁니다). 떨어진 뒤 다시 올리려면 14초가 걸립니다. 막는 이가 없으면 옆 칸 고지의 가사인격까지 베고, 세 번째 공격마다 둘레 한 칸을 휩쓸며, 2칸 안 고지에 갈고리를 던져 끌어내립니다. 체력이 줄 때마다 호각을 불어 진지 전체를 깨우고, 절반 아래부터는 깃발을 올려 둘레의 반란군을 북돋우며 돌격으로 저지를 뚫고 지나갑니다.",
+      lose: "방어 지점 앞 여섯 칸은 줄이 모두 달라, 거기에만 서면 눈보라마다 모두 얼어붙습니다. 호각보다 먼저 먼 모닥불 하나의 반란군을 깨워 쓰러뜨리고 그 불 곁 칸에 서세요. 불 곁의 한 명은 얼지 않고 그 줄 전체의 바람을 막습니다. 66초 전에 (5,0)에서 칼날을 올려 두면 카두달이 진지 문을 나올 때 한 번 맞습니다. 잠든 반란군은 준비가 됐을 때 하나씩 깨워 정리하세요. 호각이 울리면 남은 진지가 한꺼번에 일어납니다. 카두달은 한 겹으로는 못 막습니다. 아래쪽 길 가운데 (9,6)과 방어 지점 앞 (12,6)·(12,5)에 겹쳐 서세요. 막혀 있는 동안에는 갈고리를 던지지 못합니다. 붉은 원이 뜨면 옆 고지의 가사인격을 잠깐 물리거나 치료를 붙이세요. 사제는 곁의 반란군을 계속 치료하니 먼저 쓰러뜨리세요. 동쪽 고지 (10,4)의 엽총수는 바로 옆 (11,4)에 근거리 가사인격을 세우면 쓰러뜨릴 수 있습니다. 먼 곳의 모닥불 자리 (3,1)·(3,6)은 두 길의 길목입니다. 자는 반란군을 깨워 쓰러뜨리고 그 칸에 서면 길 하나를 언덕 서쪽에서 통째로 받을 수 있습니다. 다만 엽총수 (4,2)·(4,5)의 사거리 안이고, 카두달도 두 칸을 모두 지나갑니다." },
     { code: "IM-06", name: "생니카즈 거리", map: MAP_C2.street, bg: null, hz: 0.5, ep: 2, startCost: 10, mul: { hp: 0.66, atk: 0.93, def: 0.74 }, rmul: { hp: 0.95, atk: 0.9 },
       // gates: 0 the carts' alley from the north (into the square), 1 the street from the east gate (the escort), 2 the back alley from the south. Three surges: one cart alone to be
       // learnt on (5-40), carts with their escorts (52-108: each cart leaves a few seconds before the men who will bunch up behind it), carts against the shield-bearers, with the drones
@@ -1373,11 +1378,11 @@
         HOV_W = { air: [[11, 4, 4], [4, 4, 6], [1, 1, 4], [0, 3]] }, HOV_E = { air: [[12, 1, 5], [8, 4, 6], [0, 3]] };
         return W1([[0, "chouang", 0, 1, 0, SLEEP(6, 1, 112)], [0, "chxbow", 0, 1, 0, SLEEP(10, 1, 126)], [0.5, "chxbow", 2, 1, 0, { at: [4, 4], until: 112 }],
         [5, "soldier", 1, 3, 2.2], [16, "cart", 0], [26, "soldier", 1, 2, 2], [34, "chouang", 0, 2, 1.5, STEPS],
-        [52, "cart", 0, 1, 0, EAST], [55, "soldier", 1, 3, 1.5], [62, "molotov", 2, 1], [70, "frostgun", 1, 1], [78, "cart", 0], [81, "chouang", 0, 3, 1.5, STEPS], [90, "soldier", 1, 4, 1.4, DOOR], [96, "bomber", 1, 1, 0, HOV_E], [100, "yfang", 2, 3, 1.2],
+        [52, "cart", 0, 1, 0, EAST], [55, "soldier", 1, 3, 1.5], [57, "yshield", 1, 1], [62, "molotov", 2, 1], [70, "frostgun", 1, 1], [78, "cart", 0], [81, "chouang", 0, 3, 1.5, STEPS], [90, "soldier", 1, 4, 1.4, DOOR], [96, "bomber", 1, 1, 0, HOV_E], [100, "yfang", 2, 3, 1.2],
         [120, "yshield", 1, 1], [122, "cart", 0, 1, 0, EAST], [128, "molotov", 2, 2, 2], [136, "soldier", 1, 4, 1.4], [142, "cart", 0], [144, "chouang", 0, 3, 1.4, STEPS], [150, "frostgun", 1, 2, 2.5], [152, "bomber", 1, 1, 0, HOV_W],
         [158, "yshield", 1, 1], [160, "cart", 2], [166, "yfang", 2, 4, 1], [170, "soldier", 1, 3, 1.3]]); })(),
-      boss: ["", ""], desc: "생니카즈 거리. 발코니(고지)가 내려다보는 골목이 동쪽 성문에서 서쪽 우리 자리까지 이어집니다. 차도 위쪽으로는 문간 한 줄이 나란히 붙어 있습니다. 광장에서 내려온 반란군은 이 문간 줄을 따라 걷고, 호위 보병과 수레는 차도로 옵니다. 북쪽 분수 광장으로 반란군이 화약 수레(지옥 기계)를 굴려 내려보내고, 수레는 분수를 서쪽이나 동쪽으로 돌아 골목에 들어섭니다. 동쪽에서는 호위 보병이 골목을 따라 오고, 남쪽 뒷골목은 골목 한가운데로 이어집니다. 수레는 부서지거나, 막힌 채 도화선이 다 타면 터져 둘레의 적과 아군을 가리지 않습니다. 광장에는 폭탄꾼 둘이 쉬고 있습니다. 우리 자리 바로 앞 남쪽 발코니 (4,4)에는 엽총수 하나가 먼저 올라가 있다가, 112초가 지나면 내려와 걸어옵니다. 나중에는 방패를 든 중장병이 오는데, 수레의 폭발은 방어력을 무시합니다.",
-      lose: "수레는 광장에서 원거리로 미리 부수거나, 호위 보병이나 중장병 한가운데서 터지게 하세요. 수레를 막아 세울 칸의 바로 옆 발코니는 비워 두는 편이 안전합니다. 광장을 내려다보는 발코니 (3,1)·(12,1)이 수레를 일찍 잡기 좋습니다. 차도와 문간 줄을 한 칸으로 다 막을 수는 없습니다. 우리 자리 앞 (2,3)과 (1,2)에 나눠 서거나, 광장 출구 (6,1)·동쪽 (9,3)·뒷골목 (6,4)에서 길마다 따로 받으세요." },
+      boss: ["", ""], desc: "생니카즈 거리. 발코니(고지)가 내려다보는 골목이 동쪽 성문에서 서쪽 우리 자리까지 이어집니다. 차도 위쪽으로는 문간 한 줄이 나란히 붙어 있습니다. 광장에서 내려온 반란군은 이 문간 줄을 따라 걷고, 호위 보병과 수레는 차도로 옵니다. 북쪽 분수 광장으로 반란군이 화약 수레(지옥 기계)를 굴려 내려보내고, 수레는 분수를 서쪽이나 동쪽으로 돌아 골목에 들어섭니다. 동쪽에서는 호위 보병이 골목을 따라 오고, 남쪽 뒷골목은 골목 한가운데로 이어집니다. 수레는 부서지거나, 막힌 채 도화선이 다 타면 터져 둘레의 적과 아군을 가리지 않습니다. 광장에는 폭탄꾼 둘이 쉬고 있습니다. 우리 자리 바로 앞 남쪽 발코니 (4,4)에는 엽총수 하나가 먼저 올라가 있다가, 112초가 지나면 내려와 걸어옵니다. 둘째 물결부터 방패를 든 중장병이 오는데, 수레의 폭발은 방어력을 무시합니다. 덮개를 씌운 수레는 한 번 막히기 전까지 고지에서 쏘는 공격에 30%만 다칩니다.",
+      lose: "덮개를 씌운 수레는 멀리서 쏴도 잘 부서지지 않습니다. 막아 세우면 덮개가 벗겨지고 도화선이 탑니다. 호위가 뒤에 뭉쳤을 때 앞쪽 칸에서 막아 세우고, 터지기 전에 물리세요. 폭발이 방패 든 중장병을 대신 잡아 줍니다. 수레를 막아 세울 칸의 바로 옆 발코니는 비워 두는 편이 안전합니다. 차도와 문간 줄을 한 칸으로 다 막을 수는 없습니다. 우리 자리 앞 (2,3)과 (1,2)에 나눠 서거나, 광장 출구 (6,1)·동쪽 (9,3)·뒷골목 (6,4)에서 길마다 따로 받으세요." },
     { code: "IM-07", name: "반란의 그늘", map: MAP_C2.shadow, bg: null, hz: 0.5, ep: 2, startCost: 10, mul: { hp: 0.67, atk: 0.74, def: 0.75 },
       wind: { dir: 0, first: 40, every: 34, dur: 12 },
       // gates: 0 the north road, 1 the south road; WALL: the hounds' way round by the wall lane along the top. Our rebels (white rings) hold both road mouths and stand in the wind.
@@ -1386,12 +1391,12 @@
       waves: (() => { const ALLY = (x, y) => ({ at: [x, y], ally: true }), ALLYK = (x, y) => ({ at: [x, y], ally: true, hp: 0.73, atk: 0.86 }), WALL = { via: [[3, 0], [8, 0]] }, ROW2 = { via: [[4, 2], [11, 2]] }, ROW4 = { via: [[4, 4], [11, 4]] };
         return W1([[0, "chouang", 0, 1, 0, ALLYK(1, 1)], [0, "chouang", 0, 1, 0, ALLYK(2, 1)], [0, "chxbow", 0, 1, 0, ALLY(3, 1)], [0, "chouang", 1, 1, 0, ALLYK(1, 5)], [0, "chouang", 1, 1, 0, ALLYK(2, 5)], [0, "chxbow", 1, 1, 0, ALLY(3, 5)],
         [0.5, "snowsniper", 0, 1, 0, { at: [1, 2], until: 80 }], [0.5, "snowsniper", 1, 1, 0, { at: [1, 4], until: 80 }],
-        [5, "soldier", 0, 3, 2.5], [12, "strag", 1, 4, 1.5], [22, "soldier", 1, 2, 2.5], [30, "yfang", 0, 2, 1.4, WALL], [36, "soldier", 0, 2, 2, ROW2],
-        [58, "soldier", 0, 4, 1.2], [60, "drummer", 0, 1], [66, "frostgun", 1, 1], [74, "yfang", 0, 3, 1.2, WALL], [82, "soldier", 1, 2, 1.3, ROW4], [85, "frostgun", 1, 1, 0, ROW4], [84, "drummer", 1, 1, 0, ROW4], [90, "yshield", 0, 1], [96, "strag", 1, 6, 0.9], [104, "frostgun", 0, 2, 3, ROW2], [106, "yfang", 0, 2, 1.2, WALL], [110, "iceguard", 1, 1, 0, { hp: 0.55 }],
-        [124, "yrazor", 0, 1, 0, WALL], [125, "yfang", 0, 4, 1, WALL], [130, "soldier", 0, 5, 1.2], [133, "drummer", 0, 1], [138, "soldier", 1, 2, 1.4, ROW4], [141, "frostgun", 1, 1, 0, ROW4], [146, "frostgun", 0, 1], [148, "strag", 1, 6, 0.8],
-        [156, "yfang", 0, 3, 1, WALL], [158, "soldier", 0, 3, 1.3, ROW2], [162, "frostgun", 0, 1, 0, ROW2], [166, "soldier", 1, 5, 1.2], [168, "drummer", 1, 1], [174, "yrazor", 0, 1, 0, WALL]]); })(),
-      boss: ["", ""], desc: "갈림길. 북쪽 길과 남쪽 길이 나란히 동쪽 방어 지점으로 이어지고, 두 길 사이에는 양쪽을 다 내려다보는 고지가 줄지어 있습니다. 맨 위 담벼락 길은 아무도 지키지 않는 사냥개의 우회로입니다. 흰 고리를 두른 반란군이 서쪽 두 길목을 붙잡고 황제군을 막아섭니다. 이번 작전 동안 우리 편이고, 서쪽에서 번져 오는 눈보라도 몸으로 막아 그 줄의 뒤쪽을 지켜 줍니다. 그들이 쓰러지면 그 뒤부터 눈에 덮입니다. 서쪽 끝 두 고지에는 설원 저격수가 엎드려 길목 근처를 겨누다가, 80초가 지나면 일어나 걸어옵니다. 북을 치는 고수가 오면 둘레의 적이 빨라지고 세지며, 눈보라에도 느려지지 않습니다.",
-      lose: "반란군이 버티는 동안 뒤에서 화력을 보태세요. 가운데 줄 고지는 맨 서쪽 (2,3)에 누가 서 있어야 눈보라를 피합니다. 길목이 뚫리면 (4,2)·(4,4)나 (2,1)·(2,5)에 가사인격을 세워 바람막이 겸 저지선으로 쓰세요. 고수는 대열 한가운데에서 걸어옵니다. 먼저 쏘세요. 담벼락 길의 사냥개는 (5,0)·(8,0)·(11,0)에서 막습니다. 반란군 바로 뒤 (5,0)·(5,1)과 남쪽 길 (5,5)에 서면 세 길을 모두 앞에서 받습니다." },
+        [5, "soldier", 0, 3, 2.5], [12, "strag", 1, 4, 1.5], [22, "soldier", 1, 2, 2.5], [42, "yfang", 0, 2, 1.4, WALL], [36, "soldier", 0, 2, 2, ROW2],
+        [58, "soldier", 0, 4, 1.2], [60, "drummer", 0, 1], [66, "frostgun", 1, 1], [76, "yfang", 0, 3, 1.2, WALL], [82, "soldier", 1, 2, 1.3, ROW4], [85, "frostgun", 1, 1, 0, ROW4], [84, "drummer", 1, 1, 0, ROW4], [90, "yshield", 0, 1], [96, "strag", 1, 6, 0.9], [104, "frostgun", 0, 2, 3, ROW2], [110, "yfang", 0, 3, 1.2, WALL], [110, "iceguard", 1, 1, 0, { hp: 0.55 }],
+        [144, "yrazor", 0, 1, 0, WALL], [145, "yfang", 0, 4, 1, WALL], [130, "soldier", 0, 5, 1.2], [133, "drummer", 0, 1], [138, "soldier", 1, 2, 1.4, ROW4], [141, "frostgun", 1, 1, 0, ROW4], [146, "frostgun", 0, 1], [148, "strag", 1, 6, 0.8],
+        [158, "soldier", 0, 3, 1.3, ROW2], [162, "frostgun", 0, 1, 0, ROW2], [166, "soldier", 1, 5, 1.2], [168, "drummer", 1, 1], [177, "yrazor", 0, 1, 0, WALL]]); })(),
+      boss: ["", ""], desc: "갈림길. 북쪽 길과 남쪽 길이 나란히 동쪽 방어 지점으로 이어지고, 두 길 사이에는 양쪽을 다 내려다보는 고지가 줄지어 있습니다. 맨 위 담벼락 길은 아무도 지키지 않는 사냥개의 우회로입니다. 서쪽 끝 담벼락 (2,0)이 바람을 막아 그 길은 눈보라에 얼지 않고, 사냥개 무리는 돌풍에 맞춰 그 길로 옵니다. 흰 고리를 두른 반란군이 서쪽 두 길목을 붙잡고 황제군을 막아섭니다. 이번 작전 동안 우리 편이고, 서쪽에서 번져 오는 눈보라도 몸으로 막아 그 줄의 뒤쪽을 지켜 줍니다. 그들이 쓰러지면 그 뒤부터 눈에 덮입니다. 서쪽 끝 두 고지에는 설원 저격수가 엎드려 길목 근처를 겨누다가, 80초가 지나면 일어나 걸어옵니다. 북을 치는 고수가 오면 둘레의 적이 빨라지고 세지며, 눈보라에도 느려지지 않습니다.",
+      lose: "반란군이 버티는 동안 뒤에서 화력을 보태세요. 가운데 줄 고지는 맨 서쪽 (2,3)에 누가 서 있어야 눈보라를 피합니다. 길목이 뚫리면 (4,2)·(4,4)나 (2,1)·(2,5)에 가사인격을 세워 바람막이 겸 저지선으로 쓰세요. 고수는 대열 한가운데에서 걸어옵니다. 먼저 쏘세요. 담벼락 길의 사냥개는 (5,0)·(8,0)·(11,0)에서 막습니다. 그 길은 얼지 않습니다. 반란군은 언젠가 쓰러집니다. 그다음 바람막이를 미리 세워 두세요. 반란군 바로 뒤 (5,1)·(5,5)와 담벼락 길 (5,0)에 둘째 줄을 세우면 세 길을 모두 앞에서 받습니다. 방어 지점 쪽에만 모여 있으면 돌풍과 함께 오는 사냥개 무리에 언 채로 뚫립니다." },
     // a story-only entry between the crossroads and the checkpoint: no battle, no cost (the board is only here so the stage list stays one shape)
     { code: "IM-ST1", name: "불 꺼진 밤", map: MAP_C2.shadow, bg: null, hz: 0.5, ep: 2, story: true, startCost: 10, mul: { hp: 1, atk: 1, def: 1 }, waves: [],
       boss: ["", ""], desc: "갈림길의 반란군은 거의 남지 않았다. 검문소를 앞둔 밤, 불을 피우지 못한 채 모여 앉은 사람들.", lose: "" },
@@ -1472,11 +1477,11 @@
         NE = { via: [[9, 3], [8, 5]] }, NW = { via: [[9, 1], [5, 1], [5, 5]] }, NS = { via: [[9, 3], [9, 6]] };
         return W1([[5, "soldier", 1, 2, 2, W2], [10, "soldier", 2, 2, 2, E2], [18, "snuffer", 1, 1, 0, WS], [26, "dog", 0, 2, 1.4, NE],
         [44, "snuffer", 2, 1, 0, ES], [46, "soldier", 2, 3, 1.5, E2], [52, "chasseur", 1, 1, 0, W2], [58, "dog", 0, 3, 1.2, NW], [64, "grenadier", 1, 1, 0, WS], [70, "soldier", 1, 2, 1.5, W2], [73, "chasseur", 1, 1, 0, W2],
-        [84, "snuffer", 1, 1, 0, WS], [85, "snuffer", 0, 1, 0, NS], [88, "soldier", 2, 4, 1.4, ES], [94, "lancer", 1, 2, 2, W2], [100, "chasseur", 2, 1, 0, E2], [106, "dog", 0, 3, 1.1, NE], [110, "grenadier", 2, 1, 0, E2],
-        [124, "snuffer", 1, 1, 0, WS], [125, "snuffer", 2, 1, 0, ES], [128, "grenadier", 1, 1, 0, W2], [132, "soldier", 2, 3, 1.3, E2], [136, "chasseur", 2, 1, 0, E2], [136, "dog", 0, 3, 1, NW], [140, "chasseur", 1, 1, 0, WS], [142, "chasseur", 2, 1, 0, ES],
+        [84, "snuffer", 1, 1, 0, WS], [85, "snuffer", 0, 1, 0, NS], [88, "soldier", 2, 4, 1.4, ES], [94, "lancer", 1, 2, 2, W2], [100, "chasseur", 2, 1, 0, E2], [100, "nightblade", 0, 1, 0, NE], [110, "grenadier", 2, 1, 0, E2],
+        [124, "snuffer", 1, 1, 0, WS], [125, "snuffer", 2, 1, 0, ES], [128, "grenadier", 1, 1, 0, W2], [132, "soldier", 2, 3, 1.3, E2], [136, "chasseur", 2, 1, 0, E2], [136, "nightblade", 0, 2, 2, NW], [140, "chasseur", 1, 1, 0, WS], [142, "chasseur", 2, 1, 0, ES],
         [146, "soldier", 1, 3, 1.3, W2], [150, "drummer", 2, 1, 0, E2], [154, "lancer", 2, 2, 2, E2], [158, "grenadier", 0, 1, 0, NE]]); })(),
-      boss: ["", ""], desc: "빵집 앞. 방어 지점은 아래쪽 한가운데의 두 짝 문입니다. 소등부가 큰길의 등부터 문 옆 등까지 돌며, 옆 칸에 아무도 없는 등을 전부 끕니다. 꺼진 등은, 꺼진 뒤 옆 칸에 새로 배치된 가사인격이 6초 서 있으면 다시 켜집니다.",
-      lose: "문 옆 등 둘은 그 곁의 고지에서만 지킬 수 있습니다. 여덟 자리로 다섯 등을 다 지킬 수는 없습니다. 소등부를 먼저 쓰러뜨려도 됩니다." },
+      boss: ["", ""], desc: "빵집 앞. 방어 지점은 아래쪽 한가운데의 두 짝 문입니다. 소등부가 큰길의 등부터 문 옆 등까지 돌며, 옆 칸에 아무도 없는 등을 전부 끕니다. 꺼진 등은, 꺼진 뒤 옆 칸에 새로 배치된 가사인격이 6초 서 있으면 다시 켜집니다. 100초와 136초에는 어둠 칼잡이가 북쪽 골목에서 소등부가 남긴 어둠을 따라 옵니다. 어둠 속을 걸은 만큼 첫 일격이 세집니다(최대 3배).",
+      lose: "문 옆 등 둘은 그 곁의 고지에서만 지킬 수 있습니다. 여덟 자리로 다섯 등을 다 지킬 수는 없습니다. 소등부를 먼저 쓰러뜨려도 됩니다. 큰길의 등은 내주더라도 문 옆 등은 끝까지 켜 두세요. 어둠 칼잡이는 등불 안의 저지선에서 받아야 칼이 무뎌집니다." },
     { code: "WL-03", name: "경찰청 뒷마당", map: MAP_C3.lamps3, bg: null, hz: 0.5, ep: 3, startCost: 12, mul: { hp: 1.39, atk: 1.24, def: 0.85 }, rmul: { hp: 1, atk: 0.9 },
       lamps: { r: 2, off: [[4, 2], [7, 2]], relight: 4 },   // here a fresh keeper lights a lamp in 4 s
       // gates: 0 the north gate, 1 the main gate (east). Points: the cell door (0,3) and the wagon gate (7,6). POST: the Guard's marksmen in the dark, one over each point.
@@ -1554,7 +1559,7 @@
       volleys: [{ kind: "charge", first: 30, every: 32, warn: 5, dmg: 1100, pct: 0.6, tiles: [1, 2, 3, 4, 5, 6].map((y) => [2, y]) },
                 { kind: "charge", first: 46, every: 32, warn: 5, dmg: 1100, pct: 0.6, tiles: [1, 2, 3, 4, 5, 6].map((y) => [11, y]) },
                 { first: 62, every: 32, warn: 4, dmg: 700, pct: 0.22, foe: 0.3, mine: 1.7, mineEvery: 13, minePct: 0.2, pack: 1.6, capture: 8, linger: 20, muzzle: [12, 5], gun: [13, 5], tiles: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((x) => [x, 5]) }],   // the gun on the cross road from 62 on: a packed square takes more of it
-      shifts: [{ when: { volley: 2, shots: 2 }, warn: 4, set: [[6, 1, ","], [7, 1, ","]], banner: ["농장 문이 부서졌다", "THE GATE IS DOWN"] }],   /* the farm's north gate breaks under the cross-road gun's second shot while it is theirs (62, 94 s); a gun of ours does not fire on it */
+      shifts: [{ when: { volley: 2, shots: 2 }, t: 94, warn: 4, set: [[6, 1, ","], [7, 1, ","]], banner: ["농장 문이 부서졌다", "THE GATE IS DOWN"] }],   /* the farm's north gate breaks under the cross-road gun's second shot while it is theirs (62, 94 s); a gun of ours does not fire on it */
       // gates: 0 the west lane's head (3,0), 1 the farm gate (6,0), 2 the east lane's head (10,0), 3 the east side (13,2). Points: the foot of each lane. POST: the gun's picket.
       // Three movements: the two lanes in turn (5-50); the gun and the cross road (60-94); the gate falls at 100 and the yard is the main road (102-176)
       waves: (() => { const WA = { via: [[2, 1], [2, 6], [3, 7]] }, WB = { via: [[2, 1], [2, 2], [3, 3], [3, 6], [3, 7]] }, EA = { via: [[11, 1], [11, 6], [10, 7]] }, EB = { via: [[11, 1], [11, 2], [10, 3], [10, 6], [10, 7]] }, EG = { via: [[11, 2], [11, 6], [10, 7]] },
@@ -2301,6 +2306,7 @@
     volleyStep() {
       const locked = this.enemies.some((e) => !e.dead && e.def.gunner && !e.ally && (e.pauseT > 0 || e.postUntil > this.t));   // their gunnery officer stands at his post: nobody takes a gun from under him
       for (const v of this.volleys) {
+        if (v.kind === "blade") { this.bladeStep(v); continue; }
         if (v.until !== undefined && this.t > v.until) continue;
         const holder = v.muzzle && !locked ? this.units.find((u) => u.x === v.muzzle[0] && u.y === v.muzzle[1]) : null;
         if (holder) { if (v.heldBy !== holder) { v.heldBy = holder; v.heldAt = this.t; } v.lingerUntil = undefined; }
@@ -2332,13 +2338,23 @@
           if (v.kind === "charge" && v.leave && (v.nCharge = (v.nCharge || 0) + 1) >= v.leave.from) this.leaveRiders(v); }
       }
     }
+    bladeStep(v) { const [rx, ry] = v.muzzle, holder = this.units.find((u) => u.x === rx && u.y === ry);
+      if (holder) { if (v.heldBy !== holder) { v.heldBy = holder; v.heldAt = this.t; } } else v.heldBy = null;
+      if (!v.ours) { const need = v.n ? v.rearm || v.capture : v.capture, since = Math.max(v.heldAt || 0, v.dropT === undefined ? -1e9 : v.dropT);
+        v.capT = holder ? (this.t - since) / need : 0; if (v.capT >= 1) { v.ours = true; v.capT = 0; this.fx.push({ k: "gunours", blade: true, x: rx, y: ry, t: 0, life: 1.6 }); } }
+      if (v.ours && v.dropAt === undefined) { const e = this.enemies.find((q) => !q.dead && !q.ally && !q.def.flying && q.hp > 0 && (v.gate === undefined || q.gate === v.gate) && v.tiles.some(([a, b]) => a === Math.round(q.x) && b === Math.round(q.y)));
+        if (e) { v.dropAt = this.t + (v.delay || 1); v.dropOn = e; v.dropSq = [Math.round(e.x), Math.round(e.y)]; this.fx.push({ k: "firewarn", tiles: [v.dropSq], grape: true, t: 0, life: v.delay || 1 }); } }
+      if (v.dropAt !== undefined && this.t >= v.dropAt) { const e = v.dropOn, [sx, sy] = v.dropSq; v.dropAt = undefined; v.dropOn = null; v.ours = false; v.n = (v.n || 0) + 1; v.dropT = this.t; this.snd("boom");
+        if (e && !e.dead && this.enemies.includes(e) && Math.hypot(e.x - sx, e.y - sy) <= 0.75) { this.damage(e, e.maxHp * (e.def.boss ? v.bossPct || v.pct : v.pct), "true", null); e.flash = 0.3;
+          if (e.def.boss && v.cancelCall && e.def.call) { const cl = e.def.call; for (let i = 0; i < cl.at.length; i++) if (!((e.called || 0) & (1 << i))) { e.called = (e.called || 0) | (1 << i); e.callCut = (e.callCut || 0) + 1; this.fx.push({ k: "callcut", x: e.x, y: e.y, t: 0, life: 1.2 }); break; } } }   /* his next horn is cut short */
+        this.fx.push({ k: "grape", tiles: [[sx, sy]], from: [sx, sy], t: 0, life: 0.5 }); } }
     // the gun retaker (def.retake): checked once a second while nobody holds him
     retakeStep(e) { e.retakeAt = this.t + 1; const ex = Math.round(e.x), ey = Math.round(e.y);
       if (e.retaking && !e.retaking.ours) { e.retaking = null; e.aimHold = false; const p = bfsPath([ex, ey], BASE); if (p) { e.path = [[e.x, e.y]].concat(p.length > 1 ? p.slice(1) : [[ex, ey]]); e.seg = 0; e.segT = 0; this.advance(e, 0); e.remain = segLen(e.path); } return; }   /* the gun is theirs again (by someone else): back to the march */
       if (e.retaking) { const v = e.retaking, [mx, my] = v.muzzle; if (Math.hypot(e.x - mx, e.y - my) < 0.2 && !this.units.some((u) => u.x === mx && u.y === my)) {
           v.ours = false; v.lingerUntil = undefined; v.heldBy = null; v.st = 0; v.next = Math.max(v.next, this.t + (v.warn || 3) + 2); this.fx.push({ k: "gunlost", x: mx, y: my, t: 0, life: 1.2 });
           e.retook = true; e.x = mx; e.y = my; e.path = [[mx, my], [mx, my]]; e.seg = 0; e.segT = 0; e.postUntil = 1e9; e.aimHold = true; } return; }
-      let best = null, bd = 1e9; for (const v of this.volleys) if (v.ours && v.muzzle) { const p = bfsPath([ex, ey], v.muzzle); if (p && p.length < bd) { bd = p.length; best = { v, p }; } }
+      let best = null, bd = 1e9; for (const v of this.volleys) if (v.ours && v.muzzle && v.kind !== "blade") { const p = bfsPath([ex, ey], v.muzzle); if (p && p.length < bd) { bd = p.length; best = { v, p }; } }
       if (!best) return;
       e.retaking = best.v; e.aimHold = true; e.path = [[e.x, e.y]].concat(best.p.length > 1 ? best.p.slice(1) : [best.v.muzzle.slice()]); e.seg = 0; e.segT = 0; e.waitedAt = undefined; this.advance(e, 0); e.remain = segLen(e.path); }
     // a charge with "leave": from its v.leave.from-th pass on, it leaves v.leave.n men of v.leave.type behind on the square of its line furthest from every point
@@ -2369,7 +2385,9 @@
       return true; }
     // held by one of ours who stands beside a lit brazier: the ice on it thaws (def.thaw)
     thawed(e) { return !!(e && e.def.thaw && e.blockedBy && this.units.includes(e.blockedBy) && this.warmAt(e.blockedBy.x, e.blockedBy.y)); }
-    warmAt(x, y) { if (this.stage.lamps && !this.stage.lamps.fire) return false; for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) if (tileAt(x + dx, y + dy) === "F" && !this.lampOff.has((y + dy) * 100 + x + dx)) return true; return false; }   // beside a brazier (F) nobody freezes
+    warmAt(x, y) { if (this.stage.lamps && !this.stage.lamps.fire) return false; for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) if (tileAt(x + dx, y + dy) === "F" && !this.lampOff.has((y + dy) * 100 + x + dx) && !this.coldFire(x + dx, y + dy)) return true; return false; }
+    // the blue fire at the general's neck: a brazier he stands near (def.coldfire squares) gives no warmth while he is there
+    coldFire(x, y) { for (const e of this.enemies) if (e.def.coldfire && !e.dead && !e.ally && e.hp > 0 && Math.hypot(e.x - x, e.y - y) <= e.def.coldfire) return true; return false; }   // beside a brazier (F) nobody freezes
     // 동상: one more stack; two make an operator freeze solid for a while
     frostHit(u, n) {
       if (!u || u.isEnemy || !this.units.includes(u) || u.frozenT > 0 || (u.frostImm || 0) > this.t) return;
@@ -2393,6 +2411,7 @@
       for (const u of this.units.slice()) if (Math.hypot(u.x - e.x, u.y - e.y) <= b.r) this.damage(u, dmg, "true", null, e);
       for (const q of this.enemies) if (q !== e && !q.dead && !q.def.flying && Math.hypot(q.x - e.x, q.y - e.y) <= b.r) { this.damage(q, dmg * (q.def.bomb ? 1 : b.foe || 1), "true", null); q.flash = 0.25; }
       this.fx.push({ k: "boom", x: e.x, y: e.y, r: b.r, t: 0, life: 0.9 }); this.snd("boom");
+      if (b.relight && this.lampOff.size && this.stage.lamps && this.stage.lamps.fire) for (const k of [...this.lampOff]) { const x = k % 100, y = (k / 100) | 0; if (tileAt(x, y) === "F" && Math.hypot(x - e.x, y - e.y) <= b.relight) this.relight(x, y); }   /* the blast lights the braziers near it again */
     }
     get deployed() { return this.units.filter((u) => !u.clone).length; }   // a drawn summon takes a place too; only a skill's short-lived double does not
     unitAt(x, y) { return this.units.find((u) => u.x === x && u.y === y); }
@@ -2545,6 +2564,7 @@
       if (fromEnemy && !target.isEnemy && target.markT > this.t) raw *= target.markAmp || 1;   // pointed out by an informer
       if (fromEnemy && fromEnemy.def.vsFrozen && !target.isEnemy && target.frozenT > 0) raw *= fromEnemy.def.vsFrozen;   // fangs into the frozen
       if (fromEnemy && fromEnemy.def.frost && !target.isEnemy && raw > 0 && !this.warmAt(target.x, target.y)) this.frostHit(target, fromEnemy.def.frost);   /* by a lit brazier the frost does not stick */
+      if (target.isEnemy && target.def.cover && !target.uncovered && fromUnit && fromUnit.def && fromUnit.def.tile === "h") raw *= target.def.cover;   /* the cart's cover: shots from the high ground glance off until it has been held */
       if (target.isEnemy && target.waiting && !target.ally) this.wake(target);   // (those tied up on our side are loosed by the light, not by a blow)
       let dmg;
       if (type === "true") dmg = raw;
@@ -2923,7 +2943,7 @@
       if (o && o.ally && o.wait && this.stage.lamps) { const r = this.stage.lamps.r || 1, ex = Math.round(e.x), ey = Math.round(e.y); let lit = false;   // tied up on our side but already in reach of a lit lamp: loose at once
         for (let dy = -r; dy <= r; dy++) for (let dx = -r; dx <= r; dx++) if (this.lampLit(ex + dx, ey + dy)) lit = true;
         if (lit) this.wake(e); }
-      e.born = this.t;
+      e.born = this.t; if (!(o && (o.at || o.land || o.drops))) e.gate = s;   /* the gate it came in by, if it came in by one (the guillotine falls only on those out of the camp gate) */
       if (o && o.at && o.fallen && d.revive) {   // already down on its square, as if it had just fallen in the dark with a rising left: it gets up after o.fallen seconds and that rising is spent
         e.rose = (e.rose || 0) + 1; e.hp = e.downHp = Math.round(e.maxHp * d.revive.pct); e.downUntil = this.t + o.fallen; e.stunT = Math.max(e.stunT || 0, o.fallen);
         this.fx.push({ k: "rise", e, x: e.x, y: e.y, t: 0, life: o.fallen }); }
@@ -3561,6 +3581,7 @@
           else { e.frenzyM = 1 + Math.min(F.cap, F.rate * (this.t - e.born)); e.hp -= e.maxHp * F.drain * dt; } }
         if (e.def.snowcloak) { const on = !!(this.wind && this.wind.blowing); if (on !== !!e.stealth) { e.stealth = on; if (!on) { e.revealT = this.t; this.fx.push({ k: "icereveal", x: e.x, y: e.y, t: 0, life: 0.6 }); } } }   // white in the white-out
         if (this.stage.lamps && !this.stage.lamps.fire && !e.def.flying && !e.def.boss && !e.ally && !e.def.lantern) { const dk = this.darkAt(Math.round(e.x), Math.round(e.y)), on = dk && !e.blockedBy && !this.units.some((u) => Math.max(Math.abs(u.x - e.x), Math.abs(u.y - e.y)) <= 1.2); e.dim = dk && !on; if (on !== !!e.stealth) { e.stealth = on; if (!on) { e.revealT = this.t; } } }   // out of the lamplight: unseen — unless someone holds it or it stands right beside one of ours, and then only those beside it can strike
+        if (e.def.darkblade) { const D = e.def.darkblade, dk = !e.blockedBy && this.darkAt(Math.round(e.x), Math.round(e.y)); e.darkAcc = dk ? Math.min(D.cap, (e.darkAcc || 0) + D.rate * dt) : this.darkAt(Math.round(e.x), Math.round(e.y)) ? e.darkAcc || 0 : Math.max(0, (e.darkAcc || 0) - D.cap / D.fade * dt); }   /* the dark it walks is gathered into its next blow */
         if (e.def.snuff) for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) this.snuff(Math.round(e.x) + dx, Math.round(e.y) + dy, e, e.def.snuff === "force");   // the snuffer: every lamp he passes that nobody stands by goes out (the lamp-breaker breaks it even so)
         if (e.def.mark) { const M = e.def.mark; if (e.markCD === undefined) e.markCD = M.every * 0.4;   // the informer: he points someone out, and for a while they are hit harder and shot at first
           if ((e.markCD -= dt) <= 0) { let tg = null; for (const high of [true, false]) { for (const u of this.units) if ((tileAt(u.x, u.y) === "h") === high && Math.hypot(u.x - e.x, u.y - e.y) <= M.r && (!tg || this.stat(u, "atk") > this.stat(tg, "atk"))) tg = u; if (tg) break; }   // an operator up on high ground first
@@ -3663,7 +3684,8 @@
         const slow = Math.max(field, mud, bliz, e.slowT > 0 ? e.slowAmt : 0);
         if (e.def.bomb && e.blockedBy) {   // held up: the fuse is lit, and it burns down
           if (e.fuseT === undefined) e.fuseT = e.def.bomb.fuse;
-          if ((e.fuseT -= dt) <= 0) e.hp = 0;
+          if (e.def.cover && !e.uncovered) e.uncovered = true;   /* held: the cover is off */
+          if (!(e.def.bomb.windStop && this.wind && this.wind.blowing) && (e.fuseT -= dt) <= 0) e.hp = 0;   /* the fuse does not burn in the blizzard */
         }
         // a ranged foe keeps walking between shots; when the next one is due it stops, shoulders the gun and takes aim, then walks on
         if (e.def.ranged && (e.def.melt || (!e.blockedBy && !e.heldBy))) {   // the firebottle man takes aim even when someone has hold of him
@@ -3755,7 +3777,8 @@
           else if (target) {
             e.atkT = e.def.interval / (e.frenzyM || 1);
             const reach = e.reachHit; e.reachHit = false;   // a cut in passing at someone he is not held by: lighter, and it does not spend the charge
-            const hit = reach ? 0.7 : (e.charged && !e.def.ranged ? e.def.charge.hit : 1) * (e.frenzyM || 1) * (e.rallyT > this.t ? e.rallyBy.atk : 1);
+            const hit = reach ? 0.7 : (e.charged && !e.def.ranged ? e.def.charge.hit : 1) * (e.frenzyM || 1) * (e.rallyT > this.t ? e.rallyBy.atk : 1) * (e.def.darkblade && e.darkAcc > 0 ? 1 + e.darkAcc : 1);
+            if (e.def.darkblade && e.darkAcc > 0) { if (e.darkAcc > 0.3) this.fx.push({ k: "trample", x: target.x, y: target.y, t: 0, life: 0.6 }); e.darkAcc = 0; }   /* the night blade spends what it gathered in one blow */
             const br = !reach && e.charged && e.def.charge && e.def.charge.breach, breach = br && this.phaseOn(e, br) && target === e.blockedBy && !target.isEnemy && e.hp <= e.maxHp * br.at ? br : null;   // the charge that carries him through the line
             if (e.charged && !reach) { e.charged = false; if (hit > 1) this.fx.push({ k: "trample", x: target.x, y: target.y, t: 0, life: 0.6 }); }
             if (e.def.melt) this.throwBottle(e, target);
