@@ -4,28 +4,28 @@
 
 | op | name | class | ★ | used | key | key share | skills used | rung range | stages | flags |
 |---|---|---|---|---|---|---|---|---|---|---|
-| lilith | 리리스 | caster/코어 캐스터 | 3 | 102 | 1 | 0.5 | S1×102 | E0L1–E2L40 | 23 | everywhere |
+| lilith | 리리스 | caster/코어 캐스터 | 3 | 103 | 1 | 0.5 | S1×103 | E0L1–E2L40 | 23 | everywhere |
 | tao | 타오 | vanguard/척후병 | 3 | 74 | 1 | 1 | S1×74 | E0L1–E2L40 | 23 |  |
 | ker | 케르 | defender/프로텍터 | 4 | 69 | 1 | 1 | S1×53 S2×16 | E0L1–E1L30 | 16 |  |
-| ayaki | 아야키 | medic/메딕 | 3 | 38 | 1 | 0.5 | S1×38 | E0L1–E2L40 | 16 |  |
+| ayaki | 아야키 | medic/메딕 | 3 | 38 | 1 | 0.5 | S1×38 | E0L1–E2L40 | 17 |  |
 | skakea | 스카케아 | specialist/푸쉬마스터 | 4 | 21 | 1 | 1 | S1×21 | E0L1–E1L30 | 11 | S2 unused |
-| hiro | 히로 | guard/공격수 | 3 | 88 | 0 | 0 | S1×88 | E0L1–E2L40 | 23 |  |
-| teka | 테카 | supporter/감속자 | 4 | 84 | 0 | - | S1×70 S2×14 | E0L1–E2L40 | 23 |  |
-| sunae | 순애기사 | defender/프로텍터 | 4 | 79 | 0 | 0 | S1×49 S2×30 | E0L1–E2L40 | 24 |  |
+| hiro | 히로 | guard/공격수 | 3 | 87 | 0 | 0 | S1×87 | E0L1–E2L40 | 23 |  |
+| teka | 테카 | supporter/감속자 | 4 | 84 | 0 | - | S1×67 S2×17 | E0L1–E2L40 | 23 |  |
+| sunae | 순애기사 | defender/프로텍터 | 4 | 79 | 0 | 0 | S1×44 S2×35 | E0L1–E2L40 | 24 |  |
+| capy | 마이웨이 카피바라 | sniper/포격사수 | 3 | 74 | 0 | 0 | S1×74 | E0L1–E2L40 | 23 |  |
 | lulu | 루루 | guard/소드마스터 | 4 | 73 | 0 | 0 | S1×71 S2×2 | E0L1–E1L30 | 18 |  |
-| capy | 마이웨이 카피바라 | sniper/포격사수 | 3 | 73 | 0 | 0 | S1×73 | E0L1–E2L40 | 23 |  |
 | jayeon | 자연 | supporter/감속자 | 3 | 67 | 0 | 0 | S1×67 | E0L1–E1L30 | 18 |  |
-| yui | 서브테러 | defender/가디언 | 5 | 61 | 0 | - | S1×54 S2×7 | E0L1–E2L40 | 21 | S3 unused |
+| yui | 서브테러 | defender/가디언 | 5 | 62 | 0 | - | S1×50 S2×10 S3×2 | E0L1–E2L40 | 21 |  |
 | defender | 브람 | defender/- | 3 | 59 | 0 | 0 | S1×59 | E0L1–E1L30 | 16 |  |
 | irins | 아이린스 | caster/코어 캐스터 | 4 | 57 | 0 | 0 | S1×44 S2×13 | E0L1–E1L30 | 18 |  |
-| atat | @@@ | supporter/소환사 | 4 | 55 | 0 | 0 | S1×37 S2×18 | E0L1–E2L40 | 22 |  |
+| atat | @@@ | supporter/소환사 | 4 | 54 | 0 | 0 | S1×33 S2×21 | E0L1–E2L40 | 22 |  |
 | vanguard | 로완 | vanguard/- | 3 | 46 | 0 | 0 | S1×46 | E0L1–E1L30 | 15 |  |
-| alpha | 알파 | sniper/명사수 | 4 | 46 | 0 | - | S1×33 S2×13 | E0L1–E2L40 | 21 |  |
+| alpha | 알파 | sniper/명사수 | 4 | 45 | 0 | - | S1×29 S2×16 | E0L1–E2L40 | 20 |  |
 | brick | 벽돌 | defender/프로텍터 | 3 | 42 | 0 | - | S1×42 | E0L1–E1L30 | 14 |  |
 | sniper | 세라 | sniper/- | 3 | 36 | 0 | 0 | S1×36 | E0L1–E1L30 | 15 |  |
+| hakuren | 하쿠렌 | vanguard/기수 | 4 | 36 | 0 | - | S1×22 S2×14 | E0L40–E2L40 | 14 |  |
 | falchion | 팔시온 | vanguard/돌격수 | 4 | 36 | 0 | 0 | S1×23 S2×13 | E0L1–E1L30 | 16 |  |
 | nana | 나나 | sniper/저격수 | 3 | 34 | 0 | - | S1×34 | E0L1–E1L30 | 14 |  |
-| hakuren | 하쿠렌 | vanguard/기수 | 4 | 32 | 0 | - | S1×21 S2×11 | E0L40–E2L40 | 12 |  |
 | specialist | 제트 | specialist/- | 3 | 27 | 0 | 0 | S1×27 | E0L1–E1L30 | 12 |  |
 | bongeun | 박봉은 | sniper/명사수 | 5 | 26 | 0 | - | S1×25 S2×1 | E0L1–E1L15 | 13 |  |
 | skakea2 | 스카케아 | caster/코어 캐스터 | 5 | 25 | 0 | - | S1×17 S2×8 | E0L1–E1L30 | 15 |  |
