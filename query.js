@@ -15,7 +15,9 @@ const { S, TD } = R;
 
 const argv = process.argv.slice(2); const A = { _: [] }; for (let i = 0; i < argv.length; i++) { const s = argv[i]; if (s.startsWith("--")) { const n = argv[i + 1]; if (n === undefined || n.startsWith("--")) A[s.slice(2)] = true; else { A[s.slice(2)] = n; i++; } } else A._.push(s); }
 const T0 = Date.now();
-const DECKS = () => ({ starter: S.starterParty(), T4: R.ALL.filter((id) => S.def(id).rarity <= 4), T5: R.ALL.filter((id) => S.def(id).rarity <= 5), T6: R.ALL.slice() });
+const OURS = () => R.ALL.filter((id) => !S.def(id).akop);   // AKOPS loaded: the AK operators (akop) never join our decks
+const DECKS = () => Object.assign({ starter: S.starterParty(), T4: OURS().filter((id) => S.def(id).rarity <= 4), T5: OURS().filter((id) => S.def(id).rarity <= 5), T6: OURS() },
+  S.TD.__akops ? { AK4: S.TD.__akops.decks.AK4.slice(), AKstart: S.TD.__akops.decks.AKstart.slice() } : {});
 
 // ---- squad specs ----
 function parseOwned(file) {

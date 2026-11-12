@@ -169,18 +169,30 @@ jobs:
         env:
           STAGE: ${{ matrix.stage }}
           DECK: ${{ matrix.deck }}
+          REP: ${{ matrix.rep }}
           LABEL: ${{ matrix.label }}
           CRIT: ${{ needs.plan.outputs.crit }}
           HOURS: ${{ needs.plan.outputs.hours }}
           EXTRA: ${{ needs.plan.outputs.extra }}
         run: |
-          AK="$RUNNER_TEMP/ak"; mkdir -p "$AK" out/akbench
-          node akbench.js fetch --out "$AK/raw" --stages "$STAGE"
-          node akbench.js convert --raw "$AK/raw" --out "$AK/stages.json" --stages "$STAGE"
-          export AKBENCH_STAGES="$AK/stages.json" SOLVER_RESULTS="$AK/res" SOLVER_MAXT=900
-          node akbench.js validate --file "$AK/stages.json" --quiet || echo "validation reported a problem (details stay in the runner)"
+          AK="$RUNNER_TEMP/ak"; mkdir -p "$AK/res/surrogate" out/akbench
+          cp results/surrogate/model.json "$AK/res/surrogate/" 2>/dev/null || true
+          if node -e "process.exit(require('./akbench.js').BENCH.some((b)=>b[0]===process.argv[1])?0:1)" "$STAGE"; then
+            # an AK stage: level files + enemy tables fetched and converted here (private, $RUNNER_TEMP only)
+            node akbench.js fetch --out "$AK/raw" --stages "$STAGE"
+            node akbench.js convert --raw "$AK/raw" --out "$AK/stages.json" --stages "$STAGE"
+            export AKBENCH_STAGES="$AK/stages.json" SOLVER_MAXT=900; CODE="AK$STAGE"
+            node akbench.js validate --file "$AK/stages.json" --quiet || echo "validation reported a problem (details stay in the runner)"
+          else
+            # one of our own stages (an AK-operator deck on it): our stored strategy families, as the starter / T4 searches have
+            CODE="$STAGE"; cp -a results/families "$AK/res/" 2>/dev/null || true
+          fi
+          case "$DECK" in AK*)   # the AK-operator decks: AK operator tables fetched and converted here (private, $RUNNER_TEMP only)
+            node akops.js fetch --out "$AK/ops" && node akops.js convert --raw "$AK/ops/en_US/gamedata/excel" --out "$AK/akops.json"; export AKOPS="$AK/akops.json" ;;
+          esac
+          export SOLVER_RESULTS="$AK/res"
           T0=$(date +%s)
-          node search.js run --stages "AK$STAGE" --decks "$DECK" --crit "$CRIT" --hours "$HOURS" --workers "$(nproc)" --nokeyops $EXTRA > "$AK/search.log" 2>&1 || echo "search exited with $?"
+          node search.js run --stages "$CODE" --decks "$DECK" --crit "$CRIT" --hours "$HOURS" --workers "$(nproc)" --nokeyops ${REP:+--rep "$REP"} $EXTRA > "$AK/search.log" 2>&1 || echo "search exited with $?"
           echo "search: $(grep -c ' DONE ' "$AK/search.log" || true) jobs done in $(( $(date +%s) - T0 )) s; $(grep -c 'FATAL' "$AK/search.log" || true) fatal"
           node akbench.js summarize --results "$AK/res" --stages "$STAGE" --out "out/akbench/$LABEL.json"
           node -e "const o=require('./out/akbench/$LABEL.json');o.run='${{ github.run_id }}';o.label='$LABEL';o.cpus=require('os').cpus().length;require('fs').writeFileSync('out/akbench/$LABEL.json',JSON.stringify(o,null,1))"
@@ -211,7 +223,7 @@ jobs:
             for(const f of fs.existsSync(dir)?fs.readdirSync(dir).filter(f=>f.endsWith('.json')):[]){const o=JSON.parse(fs.readFileSync(p.join(dir,f),'utf8'));for(const r of o.rows||[])rows.push(Object.assign({run:o.run},r));}
             fs.writeFileSync('results/akbench/run_${{ github.run_id }}.json',JSON.stringify({run:'${{ github.run_id }}',made:new Date().toISOString(),note:'derived numbers only',rows},null,1));
             const L='results/akbench/latest.json';let cur={rows:[]};try{cur=JSON.parse(fs.readFileSync(L,'utf8'));}catch(e){}
-            const k=r=>r.stage+'|'+r.deck+'|'+r.crit;const m=new Map(cur.rows.map(r=>[k(r),r]));for(const r of rows){const o=m.get(k(r));if(!o||!o.done||r.done)m.set(k(r),r);}
+            const k=r=>r.stage+'|'+r.deck+'|'+r.crit+'|'+(r.rep===undefined?'':r.rep);const m=new Map(cur.rows.map(r=>[k(r),r]));for(const r of rows){const o=m.get(k(r));if(!o||!o.done||r.done)m.set(k(r),r);}
             fs.writeFileSync(L,JSON.stringify({made:new Date().toISOString(),note:'derived numbers only',rows:[...m.values()].sort((a,b)=>k(a)<k(b)?-1:1)},null,1));
             console.log(rows.length+' rows merged');"
       - name: commit numbers

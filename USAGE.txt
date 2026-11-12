@@ -35,3 +35,7 @@ AKBENCH (PRIVATE Arknights benchmark; AK data and anything converted from it nev
   AKBENCH_STAGES=FILE SOLVER_MAXT=900 SOLVER_RESULTS=<private dir> node search.js run --stages AK1-7,AK4-2 ...   (akload.js adds the stages in memory)
   node akbench.js summarize --results <dir> --out F         numbers only (min rung, life lost, win time)
   ./ci.sh run mode=akbench stages=1-7,4-2 decks=starter,T4,T5,T6 crit=lost1,full split=stage-deck hours=2   -> results/akbench/{latest,run_<id>}.json (numbers only)
+AKBENCH CONTROL: AK OPERATORS (PRIVATE; same rules: the AK tables and the converted operators never leave the machine / runner, numbers only)
+  node akops.js fetch --out DIR ; node akops.js convert --raw DIR/en_US/gamedata/excel --out FILE     AK 3★/4★ operators -> FILE (decks AK4, AKstart); akops.js documents the mapping
+  AKOPS=FILE node search.js run --stages AK1-7,IM-02 --decks AKstart,AK4 ...        (sim.js adds the operators in memory; our decks never include them; cache under results/cache_akops)
+  ./ci.sh run mode=akbench stages=1-7,IM-02..IM-05 decks=starter,T4,AKstart,AK4 crit=lost1,full split=stage-deck-rep reps=3 hours=2   (AK stages and/or ours; numbers only)

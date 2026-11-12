@@ -30,7 +30,7 @@ const jf = (st, d, c) => path.join(JOBS, jid(st, d, c) + RSUF + ".json"), pf = (
 const cjf = (st, d, c) => path.join(JOBS0, jid(st, d, c) + ".json");   // the canonical (aggregated) answer
 const slimProbe = (r) => { const { harvest, ...x } = r; return x; };
 const stages = E.stageRange(A.stages), decks = (A.decks || "starter,T4,T5,T6").split(","), crits = (A.crit || "lost1,full").split(",");
-const SUBSETS = { starter: [], T4: [], T5: ["starter", "T4"], T6: ["T5", "T4", "starter"] };   // a bigger deck's minimum is at most a contained deck's (a guess for where to start)
+const SUBSETS = { starter: [], T4: [], T5: ["starter", "T4"], T6: ["T5", "T4", "starter"], AKstart: [], AK4: ["AKstart"] };   // a bigger deck's minimum is at most a contained deck's (a guess for where to start)
 
 async function runJob(pool, st, deck, crit, deadline, memo) {
   const done = R.readJSON(jf(st, deck, crit), null); if (done && done.done && done.gameHash === R.GAMEHASH && !A.force) return "stored";

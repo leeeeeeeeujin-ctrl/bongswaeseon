@@ -104,15 +104,18 @@ const segLen = (p) => { let L = 0; for (let i = 1; i < p.length; i++) L += Math.
 // ---- numbers only, from a solver results dir ----
 function summarize(dir, list) {
   const out = []; const jobs = path.join(dir, "jobs");
-  for (const f of fs.existsSync(jobs) ? fs.readdirSync(jobs) : []) {
-    const m = /^AK(.+)__(\w+)__(lost1|full)(\.partial)?\.json$/.exec(f); if (!m) continue; if (list && !list.includes(m[1])) continue;
-    let x; try { x = JSON.parse(fs.readFileSync(path.join(jobs, f), "utf8")); } catch (e) { continue; }
-    if (m[4]) { out.push({ stage: m[1], deck: m[2], crit: m[3], partial: true, probes: Object.fromEntries(Object.entries(x.probes || {}).map(([lv, r]) => [lv, { cleared: !!r.cleared, worstLost: r.worstLost ?? null }])) }); continue; }
-    out.push({ stage: m[1], deck: m[2], crit: m[3], done: !!x.done, min: x.min || null, worstLost: x.worstLost ?? null, winTime: x.winTime ?? null, lost5: x.lost5 || null, evals: x.evals ?? null, secs: x.secsTotal ?? null, gameHash: x.gameHash,
+  // AK stages: AK<code>__deck__crit[__rK].json -> stage "<code>"; our own stages (AK-operator decks on them): <code>__deck__crit[__rK].json -> stage "<code>", ours: true
+  const files = []; for (const sub of ["", "rep"]) { const d = path.join(jobs, sub); for (const f of fs.existsSync(d) ? fs.readdirSync(d) : []) if (f.endsWith(".json")) files.push([d, f]); }
+  for (const [d, f] of files) {
+    const m = /^(AK)?(.+?)__(\w+)__(lost1|full)(?:__r(\w+))?(\.partial)?\.json$/.exec(f); if (!m) continue; const st = m[2]; if (list && !list.includes(st)) continue;
+    const rep = m[5] === undefined ? undefined : m[5], extra = Object.assign(m[1] ? {} : { ours: true }, rep === undefined ? {} : { rep });
+    let x; try { x = JSON.parse(fs.readFileSync(path.join(d, f), "utf8")); } catch (e) { continue; }
+    if (m[6]) { out.push(Object.assign({ stage: st, deck: m[3], crit: m[4], partial: true }, extra, { probes: Object.fromEntries(Object.entries(x.probes || {}).map(([lv, r]) => [lv, { cleared: !!r.cleared, worstLost: r.worstLost ?? null }])) })); continue; }
+    out.push({ stage: st, deck: m[3], crit: m[4], ...extra, done: !!x.done, min: x.min || null, worstLost: x.worstLost ?? null, winTime: x.winTime ?? null, lost5: x.lost5 || null, evals: x.evals ?? null, secs: x.secsTotal ?? null, gameHash: x.gameHash,
       probes: x.probes ? Object.fromEntries(Object.entries(x.probes).map(([lv, r]) => [lv, { cleared: !!r.cleared, worstLost: r.worstLost ?? null }])) : undefined });
   }
   // a finished job supersedes its partial file
-  const key = (r) => `${r.stage}|${r.deck}|${r.crit}`; const done = new Set(out.filter((r) => !r.partial).map(key));
+  const key = (r) => `${r.stage}|${r.deck}|${r.crit}|${r.rep ?? ""}`; const done = new Set(out.filter((r) => !r.partial).map(key));
   return out.filter((r) => !r.partial || !done.has(key(r))).sort((a, b) => key(a) < key(b) ? -1 : 1);
 }
 
@@ -126,7 +129,7 @@ async function main() {
     if (A.quiet) { console.log(`validate: ${rows.filter((r) => r.ok).length}/${rows.length} stages ran clean`); if (rows.some((r) => !r.ok)) process.exitCode = 2; return; }   // CI: no map or wave numbers in the log
     for (const r of rows) console.log(`${r.code.padEnd(5)} ${r.ok ? (r.warn ? "WARN" : "ok  ") : "FAIL"} t ${String(r.t).padStart(4)} foes ${r.leaked}/${r.total}${r.akHostile !== undefined ? " (AK " + r.akHostile + ")" : ""} first leak ${r.firstLeak}s${r.akClock !== undefined ? " (AK " + r.akClock + "s)" : ""} paths ${r.paths.differ}/${r.paths.n} differ from BFS${r.paths.worst ? " (worst overlap " + r.paths.worst.overlap + ", AK " + r.paths.worst.akLen + " vs BFS " + r.paths.worst.bfsLen + ")" : ""}${r.errors.length ? " | " + r.errors.join("; ") : ""}`);
     return; }
-  if (cmd === "summarize") { const rows = summarize(A.results, A.stages ? pick(A.stages).map((b) => b[0]) : null); const o = { made: new Date().toISOString(), note: "derived numbers only", rows }; if (A.out) { fs.mkdirSync(path.dirname(path.resolve(A.out)), { recursive: true }); fs.writeFileSync(A.out, JSON.stringify(o, null, 1)); }
+  if (cmd === "summarize") { const rows = summarize(A.results, A.stages ? A.stages.split(",").map((s) => s.trim().replace(/^AK/, "")) : null); const o = { made: new Date().toISOString(), note: "derived numbers only", rows }; if (A.out) { fs.mkdirSync(path.dirname(path.resolve(A.out)), { recursive: true }); fs.writeFileSync(A.out, JSON.stringify(o, null, 1)); }
     console.log(`${rows.length} result rows`); return; }
   throw new Error("unknown command " + cmd);
 }

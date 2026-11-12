@@ -6,7 +6,7 @@
 //   node ci_matrix.js --github <event>                 -> GITHUB_OUTPUT lines (matrix + every input), the inputs taken from the dispatch (env INPUTS)
 //                                                         or, on a push, from ci/request.json
 "use strict";
-const STAGES = ["IM-02", "IM-03", "IM-04", "IM-05", "IM-06", "IM-07", "IM-08", "IM-09", "IM-10", "WL-01", "WL-02", "WL-03", "WL-04", "WL-05", "WL-06", "WL-07", "WL-08", "WL-09"];
+const STAGES = ["BL-01", "BL-02", "BL-03", "BL-04", "BL-05", "BL-06", "BL-07", "IM-01", "IM-02", "IM-03", "IM-04", "IM-05", "IM-06", "IM-07", "IM-08", "IM-09", "IM-10", "WL-01", "WL-02", "WL-03", "WL-04", "WL-05", "WL-06", "WL-07", "WL-08", "WL-09"];
 const range = (s) => { const out = []; for (const part of (s || "IM-02..WL-09").split(",")) { const m = /^(.+)\.\.(.+)$/.exec(part.trim()); if (m) { for (let i = STAGES.indexOf(m[1]); i >= 0 && i <= STAGES.indexOf(m[2]); i++) out.push(STAGES[i]); } else if (part.trim()) out.push(part.trim()); } return [...new Set(out)]; };
 const DEF = { mode: "search", stages: "IM-02..WL-09", decks: "starter,T4,T5,T6", crit: "lost1,full", squad: "", name: "", hours: "5.4", split: "stage", extra: "", reps: "", gamedir: "" };   // gamedir (request.json only): a game copy in the branch (variants/<name>); its results go to results/var/<name>
 const repList = (s) => { s = String(s || "3").trim(); let m; if ((m = /^(\d+)-(\d+)$/.exec(s))) { const o = []; for (let k = +m[1]; k <= +m[2]; k++) o.push(k); return o; } if (s.includes(",")) return s.split(",").map((x) => +x); return [...Array(Math.max(1, +s || 3)).keys()]; };
@@ -21,8 +21,11 @@ const st = mode === "akbench" || mode === "recover" ? [] : range(stages), dk = (
 let inc;
 if (mode === "none" || mode === "recover") inc = [{ stage: mode, deck: "none", label: mode, rep: "" }];
 else if (mode === "akbench") {   // the private AK benchmark: one job per AK stage (x deck with split=stage-deck); codes from akbench.js (stage codes only, no AK data)
-  const AK = require("./akbench.js"), list = (!stages || stages === DEF.stages ? AK.BENCH.map((b) => b[0]) : AK.pick(stages).map((b) => b[0]));
-  inc = split === "stage-deck" ? list.flatMap((s) => dk.map((d) => ({ stage: s, deck: d, label: `ak-${s}-${d}` }))) : list.map((s) => ({ stage: s, deck: dk.join(","), label: `ak-${s}` }));
+  // stage codes: AK benchmark codes (1-7, 4-2, ...) and/or our own stages (IM-02, IM-02..WL-09: an AK-operator deck on our stages; numbers only, like the AK ones)
+  const AK = require("./akbench.js"), isAK = (s) => AK.BENCH.some((b) => b[0] === s.replace(/^AK/, ""));
+  const list = !stages || stages === DEF.stages ? AK.BENCH.map((b) => b[0]) : stages.split(",").flatMap((p) => isAK(p.trim()) ? [p.trim().replace(/^AK/, "")] : range(p.trim()));
+  inc = split === "stage-deck-rep" ? list.flatMap((s) => dk.flatMap((d) => repList(reps).map((k) => ({ stage: s, deck: d, rep: String(k), label: `ak-${s}-${d}-r${k}` }))))
+    : split === "stage-deck" ? list.flatMap((s) => dk.map((d) => ({ stage: s, deck: d, label: `ak-${s}-${d}` }))) : list.map((s) => ({ stage: s, deck: dk.join(","), label: `ak-${s}` }));
 }
 else if (mode === "trace") inc = [{ stage: "all", deck: "all", label: "trace" }];
 else if (mode === "search" && split === "stage-deck-rep") inc = st.flatMap((s) => dk.flatMap((d) => repList(reps).map((k) => ({ stage: s, deck: d, rep: String(k), label: `${s}-${d}-r${k}` }))));

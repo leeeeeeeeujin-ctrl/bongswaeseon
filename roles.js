@@ -10,7 +10,7 @@ const { TD } = S;
 
 const ROOT = __dirname;
 const RESULTS = process.env.SOLVER_RESULTS || path.join(ROOT, "results");
-const CACHE = path.join(RESULTS, "cache");
+const CACHE = path.join(RESULTS, process.env.AKOPS ? "cache_akops" : "cache");   // with AK operators loaded the stage contexts hold more units: their own cache
 const md5 = (s) => crypto.createHash("md5").update(s).digest("hex");
 const GAMEHASH = md5(fs.readFileSync(path.join(S.GAME_DIR, "game.js")) + "" + fs.readFileSync(path.join(S.GAME_DIR, "econ.js")) + (S.SLV_RULE || "slv1")).slice(0, 12);   // same formula as v1 run_queue
 const readJSON = (f, d) => { try { return JSON.parse(fs.readFileSync(f, "utf8")); } catch (e) { return d; } };

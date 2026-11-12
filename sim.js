@@ -11,6 +11,7 @@ require(path.join(GAME_DIR, "econ.js"));
 require(path.join(GAME_DIR, "game.js"));
 const TD = global.TD;
 if (process.env.AKBENCH_STAGES) require("./akload.js").install(TD, process.env.AKBENCH_STAGES);   // akbench (private benchmark): converted stages added in memory; unset = no change
+if (process.env.AKOPS) require("./akops.js").install(TD, process.env.AKOPS);   // akbench control: converted AK 3★/4★ operators (ids ak_*) added to TD.UNITS in memory; unset = no change
 
 const MAXLV = { 3: [40, 55], 4: [45, 60, 70], 5: [50, 70, 80], 6: [50, 80, 90] };   // same table as im_sim / meta
 const FPS = 30, MAXT = +(process.env.SOLVER_MAXT || 420);   // SOLVER_MAXT: a longer clock for long stages (akbench); unset = 420 s
