@@ -4725,20 +4725,18 @@ window.BGM = (() => {
       // reaches them, and the fowlers from gate 2 walk right past that rise (and then past the other, on the strip) shooting at it. The long road's men come five ways, taught in this order:
       // RIGHT column (met on (5,2) and (6,6)), LEFT column (met on (4,4) and (6,6)), T2 (left column, then under (6,6): met only on (4,4)), T1 (under the block: met only on (6,6)), TT (both tunnels: met nowhere, struck in passing)
       tunnels: [{ a: [4, 1], b: [5, 3], t: 3 }, { a: [5, 5], b: [7, 7], t: 3 }, { a: [12, 6], b: [2, 6], t: 5 }, { a: [0, 4], b: [9, 6], t: 5 }],
-      bossFlee: { on: true, at: 0.5, text: ["카두달 퇴각", "언덕 너머로 물러났습니다"] },   /* on this board there is nowhere to fight him out: held on the road until half his strength is gone, he quits the field (his breach never comes) */
-      waves: (() => { const RIFLE = (x, y, until) => ({ at: [x, y], until }), LEFT = { via: [[4, 4]] }, T2 = { via: [[4, 4]], tun: true }, T1 = { via: [[6, 6]], tun: true }, TT = { tun: true }, R = { tun: true },
-        BOSS = { via: [[3, 2, 8], [4, 4]] };   /* a long moment at the head of the road, then down the left column on foot */
+      waves: (() => { const RIFLE = (x, y, until) => ({ at: [x, y], until }), LEFT = { via: [[4, 4]] }, T2 = { via: [[4, 4]], tun: true }, T1 = { via: [[6, 6]], tun: true }, TT = { tun: true }, R = { tun: true };
         return W1([[0.5, "chxlong", 0, 1, 0, RIFLE(9, 6, 80)], [0.5, "chxlong", 0, 1, 0, RIFLE(8, 6, 105)], [0.5, "chxlong", 0, 1, 0, RIFLE(8, 5, 130)],
         /* the opening (0-48): nothing comes up by the point yet. The fowlers start at once; the road shows its right column, then its left, then the short road; one hound alone under (6,6) */
         [8, "chxbow", 2, 1, 0, R], [12, "chouang", 0, 1], [20, "chouang", 0, 1, 0, LEFT], [22, "chxbow", 2, 1, 0, R], [30, "chouang", 0, 2, 2], [34, "chouang", 1, 1], [38, "chxbow", 2, 2, 2.5, R], [44, "yfang", 0, 1, 0, T2],
         /* the tunnels (50-96): the dogs run both tunnels and can only be struck in passing; hounds under the block are met on (6,6); the first rifle gets up at 80 */
         [52, "chouang", 0, 2, 2, LEFT], [56, "dog", 0, 2, 1.6, TT], [64, "chxbow", 2, 2, 2.5, R], [70, "dog", 0, 2, 1.6, TT], [74, "chouang", 1, 2, 6], [80, "yfang", 0, 2, 1.4, T1], [86, "chouang", 0, 2, 2], [92, "chxbow", 2, 2, 2.5, R],
-        /* the general (96-135): he comes down the left column on foot while the tunnels run; the second rifle at 105, the third at 130 */
-        [96, "cadoudal", 0, 1, 0, BOSS], [102, "dog", 0, 2, 1.6, TT], [106, "chouang", 0, 2, 2], [110, "chouang", 1, 1], [116, "yrazor", 0, 1, 0, T1], [120, "chxbow", 2, 2, 2.5, R], [126, "dog", 0, 2, 1.6, TT], [130, "chouang", 0, 1],
+        /* the press (96-135): no general on this board (the designer, 2026-11-13). The road's left column and the tunnels run together; the second rifle at 105, the third at 130 */
+        [98, "chouang", 0, 2, 2, LEFT], [102, "dog", 0, 2, 1.6, TT], [106, "chouang", 0, 2, 2], [110, "chouang", 1, 1], [116, "yrazor", 0, 1, 0, T1], [120, "chxbow", 2, 2, 2.5, R], [126, "dog", 0, 2, 1.6, TT], [130, "chouang", 0, 1],
         /* the last of it (135-170) */
         [138, "chouang", 1, 2, 6], [144, "chxbow", 2, 2, 2.5, R], [150, "yfang", 0, 1, 0, T2], [154, "dog", 0, 3, 1.6, TT], [158, "chouang", 0, 1], [164, "yrazor", 0, 1, 0, T1]]); })(),
-      boss: ["경고: 목 없는 장군", "조르주 카두달 · WARNING"], desc: "처형장 언덕. 길이 네 토막으로 끊겨 있고, 토막 사이는 땅굴로만 이어집니다. 방어 지점 바로 앞 세 칸에는 슈앙 장총수 셋이 처음부터 자리를 잡고, 지상에 선 가사인격을 언덕 건너편까지 쏩니다(가장 나중에 선 쪽부터). 장총수는 80초, 105초, 130초에 뒤쪽부터 하나씩 일어나 방어 지점으로 걸어 들어갑니다. 장총수에게 닿는 자리는 동쪽 고지 (11,5)뿐입니다. 오른쪽 길의 엽총수는 그 고지 곁을 지나 땅굴로 들어갔다가 왼쪽 아래 띠로 올라와, 고지 (1,5) 곁을 걸어 다시 땅굴로 들어가고, 방어 지점 세 칸 앞 (9,6)으로 나옵니다. 왼쪽 길의 적은 걸어서 오기도 하고, 땅굴 (4,1)→(5,3)이나 (5,5)→(7,7)을 타기도 합니다. 땅굴을 탄 적은 그 사이의 배치 칸을 건너뜁니다. 어느 길로 올지는 경로 미리보기에 보입니다. 카두달은 96초에 왼쪽 길 머리에 나타나 잠시 서 있다가 왼쪽 줄 (4,4)를 지나 걸어서 내려옵니다. 길 위에서 붙잡아 체력을 절반까지 깎으면 물러납니다.",
-      lose: "동쪽 고지 (11,5)에 가장 센 원거리 가사인격을 서쪽을 보게 세워 장총수부터 지우세요. 그 고지를 쏘는 엽총수는 바로 옆 (12,5)에서 막습니다. 땅굴 둘을 다 타는 사냥개는 막을 칸이 없습니다. (5,2)에서 아래를, (4,4)에서 오른쪽을, (6,6)에서 오른쪽을 보면 지나가는 것을 칩니다. 장총수는 가장 나중에 선 지상 가사인격부터 노리니, 맞아도 되는 쪽을 마지막에 세우세요." },
+      boss: ["", ""], desc: "처형장 언덕. 길이 네 토막으로 끊겨 있고, 토막 사이는 땅굴로만 이어집니다. 땅굴을 탄 적은 그 사이의 배치 칸을 건너뜁니다. 방어 지점 바로 앞 세 칸에는 슈앙 장총수 셋이 처음부터 서서 지상의 가사인격을 쏘고(고지는 못 겨눕니다), 80초, 105초, 130초에 뒤쪽부터 하나씩 걸어 들어옵니다. 오른쪽 길의 엽총수는 두 고지 곁을 차례로 지나며 고지를 쏩니다.",
+      lose: "동쪽 고지 (11,5)에서 서쪽을 보면 장총수에 닿습니다. 그 고지를 쏘는 엽총수는 바로 옆 (12,5)에서 막으세요. 땅굴 둘을 다 타는 사냥개는 막을 칸이 없으니, (5,2)·(4,4)·(6,6)에서 지나가는 것을 치세요." },
     { code: "IM-06", name: "생니카즈 거리", map: MAP_C2.street, bg: null, hz: 0.5, ep: 2, startCost: 10, mul: { hp: 0.66, atk: 0.93, def: 0.74 }, rmul: { hp: 0.95, atk: 0.9 },
       // gates: 0 the carts' alley from the north (into the square), 1 the street from the east gate (the escort), 2 the back alley from the south. Three surges: one cart alone to be
       // learnt on (5-40), carts with their escorts (52-108: each cart leaves a few seconds before the men who will bunch up behind it), carts against the shield-bearers, with the drones
@@ -15817,11 +15815,7 @@ window.BGM = (() => {
     ],
     "IM-05": [
       { wait: 1.2 },
-      { focusFoe: "chxlong", who: "alpha", say: "방어 지점 코앞에 장총 셋. 땅에 선 건 언덕 건너까지 맞아. 고지는 못 겨눠.", tap: true, at: "bottom" },
-      { focusFoe: "chxlong", who: "yui", say: "80초부터 뒤쪽 사수가 하나씩 일어나 걸어 들어옵니다. 닿는 자리는 동쪽 고지뿐입니다.", tap: true, at: "bottom" },
-      { waitFoe: "cadoudal" }, { wait: 1.5 },
-      { focusFoe: "cadoudal", who: "alpha", say: "저게 대장이야. 머리는 정말 없네.", tap: true, at: "bottom" },
-      { focusFoe: "cadoudal", who: "yui", say: "팔이 깁니다. 옆 칸 고지까지 베고, 붉은 원이 뜨면 둘레를 휩씁니다. 막히지 않았을 때는 고지로 갈고리를 던집니다. 저지로 묶어 두십시오.", tap: true, at: "bottom" },
+      { who: "alpha", say: "땅굴이야. 번호가 같은 구멍끼리 이어져. 들어간 놈은 그 사이 칸을 건너뛰고 나와.", tap: true },
     ],
     "IM-06": [
       { waitFoe: "cart" }, { wait: 1.5 },
