@@ -415,10 +415,10 @@
     scout:   { name: "목 없는 척후기병", info: ["목 없는 척후기병. 아주 빠르다.", "놓치면 그대로 방어 포인트까지 달려간다."], hp: 620, atk: 120, def: 0, res: 0, speed: 1.45, interval: 1.1, weight: 1, mass: 1, life: 1 },
     // the headless general: a boss at his own scale (noMul), fought in three movements — the stand under the blade, the horn that rouses the whole camp (and brings his
     // riders up behind him), and from half his strength the charge that breaks through whoever holds him and carries him a square past them
-    cadoudal:{ name: "조르주 카두달", info: ["목 없는 장군. 단두대 아래에 한참 섰다가 언덕을 돌아 아래쪽 길로 온다. 팔이 길어, 막는 이가 없으면 바로 옆 칸(고지 포함)의 가사인격을 벤다. 세 번째 공격마다 둘레 한 칸을 모두 휩쓴다(고지 포함, 1초 전 붉은 원).", "막히지 않았을 때는 2칸 안 고지의 가사인격에게 갈고리를 던져 끌어내린다(1.5초 전 표시, 맞으면 퇴각). 체력 2/3·1/3에 호각으로 진지 전체를 깨우고 게릴라 둘을 곁에 불러내며(모두 방어 지점으로 곧장 달려온다), 절반 아래부터는 성심 깃발을 올려 둘레의 반란군을 빠르고 세게 만들며 돌격으로 저지를 뚫는다."],
+    cadoudal:{ name: "조르주 카두달", info: ["목 없는 장군. 단두대 아래에 한참 섰다가 언덕을 돌아 아래쪽 길로 온다. 팔이 길어, 막는 이가 없으면 바로 옆 칸(고지 포함)의 가사인격을 벤다. 세 번째 공격마다 둘레 한 칸을 모두 휩쓴다(고지 포함, 1초 전 붉은 원). 목에서 푸른 불이 타, 그가 1.5칸 안에 있는 화로는 불기운을 잃는다.", "막히지 않았을 때는 2칸 안 고지의 가사인격에게 갈고리를 던져 끌어내린다(1.5초 전 표시, 맞으면 퇴각). 체력 2/3·1/3에 호각으로 진지 전체를 깨우고 게릴라 둘을 곁에 불러내며(모두 방어 지점으로 곧장 달려온다), 절반 아래부터는 성심 깃발을 올려 둘레의 반란군을 빠르고 세게 만들며 돌격으로 저지를 뚫는다."],
       hp: 9000, atk: 460, def: 180, res: 20, speed: 0.5, interval: 2.4, weight: 2, mass: 4, life: 3, boss: true, noMul: true,
       reachHigh: 1, sweep: { every: 3, r: 1, mul: 0.65, wind: 1.0 }, hook: { every: 15, r: 2.3, wind: 1.5, dmg: 300 }, rally: { at: 0.5, r: 2.2, speed: 1.3, atk: 1.2 },
-      charge: { every: 9, dur: 1.6, mult: 2.6, hit: 2, breach: { at: 0.5, push: 1.1 } }, call: { at: [0.66, 0.33], type: "chouang", n: 2, rouse: true, direct: true, dash: 1.4 } },   // direct: whoever he calls or rouses takes the shortest way to the point; dash: at a run
+      charge: { every: 9, dur: 1.6, mult: 2.6, hit: 2, breach: { at: 0.5, push: 1.1 } }, call: { at: [0.66, 0.33], type: "chouang", n: 2, rouse: true, direct: true, dash: 1.4 }, coldfire: 1.5 },   /* coldfire: a brazier within 1.5 of him gives no warmth */   // direct: whoever he calls or rouses takes the shortest way to the point; dash: at a run
     // ---- the second half of the chapter: the Emperor's line and the Guard (figures borrowed from the roster, recoloured — see EN_POSED in the page) ----
     grenadier: { name: "근위 척탄병", info: ["곰가죽 모자의 노근위대 척탄병. 단단하고 느리며, 둘 몫으로 저지된다.", "물리 피해. 방어력이 높으니 마법이나 수레의 폭발로 깎자."],
       hp: 5200, atk: 430, def: 440, res: 20, speed: 0.6, interval: 2.4, weight: 2, mass: 3, life: 1 },
@@ -433,6 +433,39 @@
       hp: 1500, atk: 460, def: 130, res: 20, speed: 0.85, interval: 2.3, weight: 1, mass: 2, life: 1, ranged: 2.4, phys: true, rscale: true },
     snuffer: { name: "소등부", info: ["긴 소등 막대를 든 야경꾼. 지나가는 길의 가로등을 끈다.", "바로 옆 칸에 가사인격이 선 등은 못 끈다. 어둠 속에서도 보인다. 꺼진 등은 옆 칸에 서 있으면 다시 켜진다(새로 배치된 이는 6초, 서 있던 이는 14초)."],
       hp: 1900, atk: 160, def: 90, res: 10, speed: 0.75, interval: 2.2, weight: 1, mass: 2, life: 1, snuff: true, lantern: true },
+    // ---- chapter 3, the lamps and the wall: ladders, ramparts and what uses the dark (figures borrowed, recoloured) ----
+    escalader: { name: "사다리병", info: ["사다리를 타고 담장 위로 올라와 담장을 따라 걷는다. 담장 위의 가사인격만 막을 수 있다."],
+      hp: 1900, atk: 280, def: 100, res: 0, speed: 0.9, interval: 1.9, weight: 1, mass: 2, life: 1, climb: true },
+    wallgunner: { name: "담장 엽병", info: ["담장 위에 오르면 사거리가 한 칸 늘어난다."],
+      hp: 1500, atk: 460, def: 130, res: 20, speed: 0.85, interval: 2.3, weight: 1, mass: 2, life: 1, ranged: 2.4, phys: true, rscale: true, climb: true },
+    sapper: { name: "공병", info: ["담장 위에 선 가사인격부터 노린다."],
+      hp: 2600, atk: 420, def: 180, res: 10, speed: 0.7, interval: 2.4, weight: 1, mass: 2, life: 1, ranged: 2.2, phys: true, wallFirst: true },
+    staker: { name: "말뚝병", info: ["담장 위 빈 칸에 말뚝을 박아 자리를 빼앗는다. 말뚝은 부술 수 있다."],
+      hp: 1700, atk: 200, def: 120, res: 0, speed: 0.85, interval: 2.0, weight: 1, mass: 2, life: 1, climb: true, stake: { hp: 2500 } },
+    nightblade: { name: "야습병", info: ["어둠 속에 있는 동안 공격력이 계속 오른다. 빛 속에서는 가라앉는다."],
+      hp: 2000, atk: 260, def: 90, res: 0, speed: 0.9, interval: 1.8, weight: 1, mass: 2, life: 1, darkGrow: { rate: 0.06, cap: 1.2 } },
+    // ---- chapter 3, second pass: the rest of the line-up for the lamps and the wall (figures borrowed, recoloured) ----
+    gloomrunner: { name: "그늘 달음꾼", info: ["어둠 속에서는 훨씬 빨리 달린다."],
+      hp: 1300, atk: 240, def: 150, res: 20, speed: 1.0, interval: 1.7, weight: 1, mass: 1, life: 1, darkRun: 1.6 },   /* darkRun: its speed times this on a dark square */
+    nightfowler: { name: "어둠의 엽병", info: ["어둠 속에서 쏘면 마법 피해가 된다."],
+      hp: 2200, atk: 300, def: 100, res: 0, speed: 0.9, interval: 2.4, weight: 1, mass: 2, life: 1, ranged: 2.0, phys: true, darkArts: true },   /* darkArts: shots fired from a dark square are arts */
+    lanternist: { name: "초롱 술사", info: ["숨어 있다가, 힘을 모으는 동안만 모습을 드러낸다. 다 모으면 한 명과 그 둘레를 함께 태운다."],
+      hp: 4200, atk: 380, def: 220, res: 50, speed: 0.7, interval: 6, weight: 1, mass: 2, life: 1, ranged: 2.2, aim: 3, burn: { time: 3, splash: 1.2, mult: 2.6 } },   /* burn: unseen but while it charges (its aim, burn.time); the shot is arts x mult on the target and all of ours within splash of it */
+    longrifle3: { name: "청금 저격수", info: ["판 어디든 쏜다. 불빛 속에 선 가사인격만 겨눌 수 있다. 네 발째는 두 배로 아프다."],
+      hp: 5000, atk: 360, def: 150, res: 30, speed: 0.8, interval: 3.6, weight: 1, mass: 2, life: 1, ranged: 20, phys: true, elite: true, litOnly: true, fourth: 2 },   /* litOnly: aims only at ours on a lit square (or spotted by the balloon); fourth: every fourth shot times this */
+    nightmare: { name: "악몽 추종자", info: ["등 뒤 칸이 어두운 가사인격을 모두 함께 친다."],
+      hp: 9000, atk: 900, def: 600, res: 20, speed: 0.7, interval: 3.2, weight: 2, mass: 3, life: 2, elite: true, fearBehind: true },   /* fearBehind: each blow also strikes every one of ours whose square behind them is dark */
+    crawler: { name: "기는 것", info: ["막을 수 없다. 지나가는 동안 쓰러뜨려야 한다."],
+      hp: 1500, atk: 0, def: 100, res: 30, speed: 1.2, interval: 99, weight: 1, mass: 1, life: 1, unblockable: true },
+    ambusher3: { name: "매복병", info: ["숨어서 온다. 모습을 드러내는 첫 일격이 아주 아프다."],
+      hp: 3600, atk: 520, def: 200, res: 20, speed: 1.0, interval: 2.2, weight: 1, mass: 2, life: 1, ambush: true, firstBlow: 2.5, climb: true },   /* unseen until its first blow, which is times firstBlow (the key "ambusher" is chapter 1's hedge fowler) */
+    seer: { name: "조준 술사", info: ["한 명을 오래 겨눈 뒤 크게 친다. 겨눔은 그 칸의 불빛이 꺼지면 풀린다."],
+      hp: 5200, atk: 420, def: 180, res: 40, speed: 0.8, interval: 1.6, weight: 1, mass: 2, life: 1, ranged: 4, litOnly: true, lock: { time: 6, mult: 4, dur: 6, every: 1.6, rest: 4 } },   /* lock: see seerStep (rest: it walks on that long after a volley before it locks again) */
+    wagon: { name: "수송 수레", info: ["저지 수가 넷은 되어야 세울 수 있다. 곁의 적 넷까지 태워 간다."],
+      hp: 14000, atk: 0, def: 900, res: 10, speed: 0.3, interval: 99, weight: 4, mass: 4, life: 2, carry: 4, noClimb: true },   /* carry: see wagonStep; noClimb: it keeps to the ground even where every foe climbs */
+    balloon: { name: "관측 기구", info: ["방어 지점으로 오지 않는다. 판 위를 돌며 아래에 선 가사인격에게 표식을 찍고, 저격수와 술사는 표식부터 노린다. 담장 위나 고지의 원거리만 닿는다."],
+      hp: 6000, atk: 0, def: 100, res: 20, speed: 0.35, interval: 99, weight: 0, mass: 0, life: 0, flying: true, highOnly: true, spot: { every: 5, r: 1.5, dur: 8 } },   /* flies the wave's loop for the whole stage; see the spot step */
+    stake: { name: "말뚝", hp: 2500, atk: 0, def: 0, res: 0, speed: 0, interval: 99, weight: 0, mass: 99, life: 0, noMul: true, noFight: true },   /* planted by the staker (plantStake); never sent in a wave */
     // the lab (L1): the chimney sweep, drawn as the snuffer in soot grey. He makes for the nearest stopped chimney, and five seconds beside it clear it
     sweep: { name: "굴뚝 청소부", info: ["검댕투성이 굴뚝 청소부. 막아 둔 굴뚝을 뚫으러 온다.", "막힌 굴뚝 옆에 5초 서 있으면 연기 다리가 바로 돌아오고, 그 굴뚝은 20초 동안 막을 수 없다."],
       hp: 2200, atk: 120, def: 90, res: 10, speed: 0.8, interval: 2.2, weight: 1, mass: 2, life: 1, sweeper: { dur: 5, block: 20 } },
@@ -481,31 +514,47 @@
       call: { at: [0.5], darkNear: true } },   // at half his strength the lamp nearest him goes out, once; he calls nobody
     // the eagle-bearer: the Guard's standard, at his own scale (noMul). He plants the eagle in the square and the Guard forms on it: everyone round him marches faster and hits
     // harder; at two thirds and one third of his strength he raises it again — three of the line fall in behind him, and the blizzard blows out of the gate on his signal
-    eagle:   { name: "독수리 기수", info: ["근위대의 독수리 군기를 든 거구. 셋 몫으로 저지된다.", "군기 둘레 2.4칸의 적은 북소리처럼 빨라지고 세진다. 체력이 2/3, 1/3로 줄 때마다 군기를 치켜들어 뒤따르던 보병 셋을 불러 세우고, 성문에서 눈보라가 불어온다."],
+    eagle:   { name: "독수리 기수", info: ["근위대의 독수리 군기를 든 거구. 셋 몫으로 저지된다.", "군기의 서리: 받는 피해가 절반이다. 따뜻한 칸의 가사인격에게 막혀 있는 동안에는 풀린다. 군기 둘레 2.4칸의 적은 북소리처럼 빨라지고 세진다. 체력이 2/3, 1/3로 줄 때마다 군기를 치켜들어 뒤따르던 보병 셋을 불러 세우고, 바람이 거꾸로 돌아 눈보라가 불어온다."],
       hp: 13000, atk: 620, def: 400, res: 30, speed: 0.4, interval: 2.2, weight: 3, mass: 4, life: 3, boss: true, noMul: true,
-      rally: { r: 2.4, speed: 1.25, atk: 1.2 }, call: { at: [0.66, 0.33], type: "soldier", n: 3, gust: true } },
+      rally: { r: 2.4, speed: 1.25, atk: 1.2 }, call: { at: [0.66, 0.33], type: "soldier", n: 3, gust: true }, frostGuard: 0.5, patterns: true },   /* the standard raised brings a gust (and, on a stage with wind.flip, turns the wind about); his frost halves what he takes unless one of ours on a warm square holds him; patterns: at each gust he reads the braziers (patternStart) */
     // the bocage: a fowler down in the hedge, unseen until the muzzle flash gives him away
     ambusher:{ name: "매복 엽총수", info: ["생울타리에 숨은 엽총수. 첫 발을 쏘기 전까지는 보이지 않는다.", "총성이 나면 그제야 모습을 드러낸다. 숨어 있는 동안에는 막고 있는 가사인격만 공격할 수 있다."], hp: 900, atk: 230, def: 40, res: 0, speed: 0.55, interval: 2.8, weight: 1, mass: 1, life: 1, ranged: 2.4, ambush: true },
     // ---- chapter 2's own roster, modelled on the original's winter (Yeti Squadron) and Ursus guerrilla foes, at their scale ----
     snowsniper: { name: "설원 저격수", info: ["흰 외투를 두른 저격수. 멀리서 쏘고, 마법에도 잘 버틴다. 얼어붙은 상대를 먼저 노리고, 두 배의 피해를 준다.", "눈보라가 부는 동안에는 모습을 감춘다. 숨어 있는 동안에는 막고 있는 가사인격만 공격할 수 있다."],
       hp: 1500, atk: 480, def: 150, res: 50, speed: 0.8, interval: 2.7, weight: 1, mass: 2, life: 1, ranged: 3.0, phys: true, snowcloak: true, vsFrozen: 2, snowproof: true, rscale: true },   // the ranged rank and file fight at their own scale (rscale: the stage's rmul, not its mul): at full scale any of them is a match for a lone vanguard
-    yfang: { name: "설원 사냥개", info: ["눈 위를 달리는 굶주린 개. 아주 빠르다.", "얼어붙은 상대를 물면 공격력이 1.5배가 된다. 눈보라 속에서도 느려지지 않는다."],
-      hp: 3150, atk: 350, def: 0, res: 30, speed: 1.6, interval: 1.4, weight: 1, mass: 1, life: 1, vsFrozen: 1.5, snowproof: true },
-    yrazor: { name: "설원 사냥개 우두머리", info: ["무리를 이끄는 큰 개. 빠르고 질기다.", "얼어붙은 상대를 물면 공격력이 1.5배가 된다. 눈보라 속에서도 느려지지 않는다."],
-      hp: 4650, atk: 430, def: 0, res: 30, speed: 1.6, interval: 1.4, weight: 1, mass: 2, life: 1, vsFrozen: 1.5, snowproof: true, elite: true },
+    yfang: { name: "설원 사냥개", info: ["눈 위를 달리는 굶주린 개. 아주 빠르다.", "얼어붙은 상대를 물면 공격력이 1.5배가 된다. 눈보라 속에서도 느려지지 않고, 바람을 등지고 달릴 때는 1.4배 빨라진다."],
+      hp: 3150, atk: 350, def: 0, res: 30, speed: 1.6, interval: 1.4, weight: 1, mass: 1, life: 1, vsFrozen: 1.5, snowproof: true, tail: 1.4 },
+    yrazor: { name: "설원 사냥개 우두머리", info: ["무리를 이끄는 큰 개. 빠르고 질기다.", "얼어붙은 상대를 물면 공격력이 1.5배가 된다. 눈보라 속에서도 느려지지 않고, 바람을 등지고 달릴 때는 1.4배 빨라진다."],
+      hp: 4650, atk: 430, def: 0, res: 30, speed: 1.6, interval: 1.4, weight: 1, mass: 2, life: 1, vsFrozen: 1.5, snowproof: true, elite: true, tail: 1.4 },
     chouan: { name: "슈앙 게릴라", info: ["왕당파 게릴라. 덤불과 눈 속을 오래 걸어온 단단한 보병.", "막는 이가 없으면 짧은 사거리의 엽총으로 쏜다."],
       hp: 3300, atk: 330, def: 150, res: 20, speed: 0.93, interval: 2.0, weight: 1, mass: 2, life: 1 },
     // chapter 2's Chouan from IM-02 on: the same man, but he does what his card says — nobody holding him, he stops and lets fly with the fowling piece at short range (IM-01 and TR-03 keep the plain one)
     chouang: { name: "슈앙 게릴라", info: ["엽총을 든 왕당파 게릴라. 오래 걸어온 단단한 보병.", "사거리 1.6칸. 고지의 가사인격도 쏜다."],
       hp: 3300, atk: 330, def: 150, res: 20, speed: 0.93, interval: 2.0, weight: 1, mass: 2, life: 1, ranged: 1.6, phys: true },
-    frostgun: { name: "서리 사수", info: ["총신을 얼음으로 감싼 황제군 사수. 얼음 탄을 쏘아 마법 피해를 준다. 사거리 2.6칸.", "맞으면 동상이 쌓인다. 두 번 쌓이면 얼어붙는다. 불 곁의 가사인격에게는 동상이 쌓이지 않는다. 눈보라 속에서도 느려지지 않는다."],
+    frostgun: { name: "서리 사수", info: ["총신을 얼음으로 감싼 황제군 사수. 얼음 탄을 쏘아 마법 피해를 준다. 사거리 2.6칸.", "맞으면 동상이 쌓인다. 두 번 쌓이면 얼어붙는다. 따뜻한 칸(켜진 화로 곁)의 가사인격에게는 동상이 쌓이지 않는다. 눈보라 속에서도 느려지지 않는다."],
       hp: 1200, atk: 240, def: 100, res: 40, speed: 0.8, interval: 2.4, weight: 1, mass: 2, life: 1, ranged: 2.6, frost: 1, snowproof: true, rscale: true },
-    iceguard: { name: "빙갑 근위병", info: ["얼음을 갑옷처럼 두른 근위대의 망령. 방어력과 마법 저항이 모두 매우 높고, 몹시 느리다.", "한 번에 셋을 저지해야 멈춘다. 오래 붙잡아 두고 깎아 내야 한다. 눈보라 속에서도 느려지지 않는다. 불 곁의 가사인격에게 막혀 있으면 얼음이 녹아 방어력과 마법 저항이 크게 떨어진다."],
+    iceguard: { name: "빙갑 근위병", info: ["얼음을 갑옷처럼 두른 근위대의 망령. 방어력과 마법 저항이 모두 매우 높고, 몹시 느리다.", "한 번에 셋을 저지해야 멈춘다. 오래 붙잡아 두고 깎아 내야 한다. 눈보라 속에서도 느려지지 않는다. 따뜻한 칸(켜진 화로 곁)의 가사인격에게 막혀 있는 동안에만 얼음이 녹아 방어력과 마법 저항이 크게 떨어진다."],
       hp: 18000, atk: 820, def: 1000, res: 60, speed: 0.25, interval: 3.2, weight: 3, mass: 4, life: 2, elite: true, snowproof: true, thaw: { def: 0.35, res: 0.5 } },
-    molotov: { name: "슈앙 화염병 투척병", info: ["독한 술병에 불을 붙여 던지는 반란군. 저지를 무시하고 2.5칸 안으로 던지며, 터진 자리와 바로 옆 칸에 마법 피해를 준다. 던지기 전 1초 동안 목표 위에 불꽃 표시가 뜬다.", "얼어붙은 가사인격을 먼저 노린다. 얼어 있는 상대가 맞으면 얼음이 녹으며 0.8초 동안 4번, 매번 최대 체력의 20%만큼 고정 피해를 입는다."],
+    /* 2-6's own (recolours): the snow blade, a line soldier in white who is hidden while the blizzard blows (snowcloak), and the guard captain, the ice-clad guard a size up (miniboss: a marker only) */
+    snowblade: { name: "설원 습격병", info: ["흰 외투를 두른 근접병.", "눈보라가 부는 동안에는 모습을 감춘다. 숨어 있는 동안에는 막고 있는 가사인격만 공격할 수 있다."],
+      hp: 2200, atk: 300, def: 120, res: 10, speed: 0.9, interval: 1.8, weight: 1, mass: 2, life: 1, snowcloak: true, snowproof: true },
+    icecaptain: { name: "빙갑 근위대장", info: ["근위대의 지휘관.", "따뜻한 칸의 가사인격에게 막히면 얼음 갑옷이 녹는다."],
+      hp: 16000, atk: 700, def: 800, res: 50, speed: 0.3, interval: 3.0, weight: 2, mass: 4, life: 3, elite: true, miniboss: true, snowproof: true, thaw: { def: 0.4, res: 0.5 } },
+    /* 2-10 v2's own (recolours, stage.frost): the mortar man who lobs shells from far off at the braziers first (lob: the shell lands on the square and the four beside it; siege: he stands while something is in reach),
+       the standard bearer who never fights but lifts every other foe's attack and defence while he lives, anywhere (aura, stacking), and the frost marshal, a second mid-boss who makes the blizzard bite harder (stormMul) */
+    mortar: { name: "박격포병", info: ["아주 먼 곳에서 포탄을 던진다. 화로부터 노린다.", "물리 피해. 사거리 6칸. 떨어진 칸과 그 상하좌우 칸을 함께 친다. 사거리 안에 무언가 있으면 멈춰 서서 쏜다."],
+      hp: 2600, atk: 520, def: 150, res: 0, speed: 0.5, interval: 5.0, weight: 1, mass: 2, life: 1, ranged: 6.0, splash: 1.0, lob: true, siege: true, fireFirst: true, phys: true },
+    standard: { name: "군기병", info: ["살아 있는 동안 모든 적의 공격력과 방어력을 올린다. 거리는 상관없다.", "직접 공격하지 않는다. 군기병 하나당 다른 모든 적의 공격력과 방어력 +15%, 겹쳐 쌓인다."],
+      hp: 3800, atk: 0, def: 300, res: 20, speed: 0.45, interval: 2.0, weight: 1, mass: 2, life: 1, noFight: true, aura: { atk: 0.15, def: 0.15 } },
+    frostmarshal: { name: "서리 원수", info: ["근위대를 거느린 서리의 원수.", "그가 살아 있는 동안 눈보라가 가사인격에게 주는 피해가 1.25배가 된다."],
+      hp: 22000, atk: 800, def: 900, res: 50, speed: 0.28, interval: 3.2, weight: 3, mass: 5, life: 3, elite: true, miniboss: true, snowproof: true, stormMul: 1.25 },
+    molotov: { name: "슈앙 화염병 투척병", info: ["독한 술병에 불을 붙여 던지는 반란군. 저지를 무시하고 2.5칸 안으로 던지며, 터진 자리와 바로 옆 칸에 마법 피해를 준다. 던지기 전 1초 동안 목표 위에 불꽃 표시가 뜬다.", "얼어붙은 가사인격을 먼저 노린다. 얼어 있는 상대가 맞으면 얼음이 녹으며 0.8초 동안 4번, 매번 최대 체력의 20%만큼 고정 피해를 입는다. 병이 꺼진 화로 바로 곁에서 터지면 그 화로에 불이 붙는다."],
       hp: 950, atk: 300, def: 60, res: 10, speed: 0.85, interval: 7, weight: 1, mass: 1, life: 1, ranged: 2.5, aim: 1.0, splash: 1.0, melt: { n: 4, pct: 0.2, gap: 0.2 }, rscale: true },
     chxelite: { name: "슈앙 명사수", info: ["오래 싸워 온 왕당파 명사수. 처음부터 길목을 차지하고 버틴다. 웬만한 선봉은 맞붙어도 이긴다.", "물리 피해. 사거리 2.4칸. 근위나 중장으로 붙거나, 둘 이상이 함께 덤벼야 한다."],
       hp: 2000, atk: 560, def: 120, res: 30, speed: 0.85, interval: 2.4, weight: 1, mass: 2, life: 1, ranged: 2.4, phys: true, elite: true, noMul: true },
+    /* the long rifle (2-5, a marksman recoloured): he stands on the last steps before the point and shells whoever of ours stands on the ground, far across the hill; he cannot aim up at a rise (def.groundOnly) */
+    chxlong: { name: "슈앙 장총수", info: ["긴 강선총을 받쳐 놓고 쏘는 왕당파 저격수. 방어 지점 앞에 자리를 잡고 서서, 언덕 건너편까지 쏜다.", "물리 피해. 사거리 4.3칸. 지상에 선 가사인격만 노리고(가장 나중에 선 쪽부터), 고지는 겨누지 못한다. 정해진 때가 되면 뒤쪽부터 하나씩 일어나 방어 지점으로 걸어 들어간다. 그 전에 쓰러뜨리자."],
+      hp: 5200, atk: 300, def: 110, res: 20, speed: 0.6, interval: 3.4, weight: 1, mass: 2, life: 1, ranged: 4.3, phys: true, elite: true, noMul: true, groundOnly: true },
     chxbow: { name: "슈앙 엽총수", info: ["왕당파 엽총수. 길을 걸으며 가사인격부터 쏜다.", "물리 피해. 사거리 2.4칸."],
       hp: 1300, atk: 420, def: 110, res: 20, speed: 0.85, interval: 2.3, weight: 1, mass: 2, life: 1, ranged: 2.4, phys: true, rscale: true },
     yshield: { name: "설원 중장병", info: ["얼음을 덧댄 큰 방패를 든 중장병. 느리지만 아주 단단하다.", "눈보라가 부는 동안에는 얼음 갑주가 두꺼워져 방어력이 1.5배가 된다. 불 곁의 가사인격에게 막혀 있으면 얼음 갑주가 녹아 방어력이 크게 떨어진다."],
@@ -514,17 +563,104 @@
     frosthound: { name: "서리 사냥개", info: ["얼음 송곳니를 가진 사냥개. 물리면 몸이 굳는다(동상).", "동상은 공격 속도를 늦추고, 두 번 쌓이면 얼어붙어 잠시 아무것도 못 하게 된다. 얼어붙은 상대는 더 깊이 문다(피해 1.5배).", "눈보라 속에서도 느려지지 않는다."], hp: 950, atk: 200, def: 30, res: 20, speed: 1.6, interval: 1.4, weight: 1, mass: 1, life: 1, frost: 1 , vsFrozen: 1.5, snowproof: true },
     frostmage: { name: "서리 술사", info: ["냉기를 쏘는 망령 술사. 마법 피해를 준다.", "맞으면 동상이 쌓인다. 두 번 쌓이면 얼어붙는다."], hp: 1300, atk: 210, def: 60, res: 40, speed: 0.6, interval: 2.6, weight: 1, mass: 2, life: 1, ranged: 2.2, frost: 1 , snowproof: true },
     icestalker: { name: "설원 척후병", info: ["흰 망토를 두른 척후병. 얼음 위에 서 있으면 보이지 않는다.", "얼음 위에 숨어 있는 동안에는 막고 있는 가사인격만 공격할 수 있다. 얼음을 벗어나면 드러난다."], hp: 1500, atk: 260, def: 120, res: 10, speed: 0.8, interval: 1.6, weight: 1, mass: 2, life: 1, iceHide: true , snowproof: true },
-    berserk: { name: "동상 광인", info: ["추위에 미쳐 버린 병사. 체력이 계속 줄어든다.", "대신 시간이 갈수록 공격력과 공격 속도가 미쳐 날뛴다. 눈보라를 맞는 동안에는 세 배로 빨리, 더 높이 미쳐 오른다. 불 곁의 가사인격에게 막히면 가라앉는다(광기도, 체력이 줄어드는 것도 멈춘다)."], hp: 3600, atk: 260, def: 80, res: 0, speed: 0.75, interval: 1.6, weight: 1, mass: 2, life: 1, frenzy: { drain: 0.025, rate: 0.06, cap: 1.5, wind: { rate: 3, cap: 2.5 } } },
-    bomber: { name: "얼음폭탄 드론", info: ["얼음 폭탄을 매단 드론(명일방주의 밤테일 기준). 근거리 가사인격은 막을 수 없다. 천천히 날아온다.", "가사인격이 사거리(2칸) 안에 들어오면 폭탄을 한 번 던진다. 폭탄은 목표와 주변 0.8칸 안의 모두에게 공격력 100%의 물리 피해를 주고 동상을 쌓는다. 던지고 나면 이동 속도가 두 배가 된다. 던지기 전에 떨어뜨리자.", "켜진 화로가 사거리 안에 있으면 가사인격보다 먼저 화로에 던진다. 화로는 꺼지고 둘레의 가사인격에게 동상이 쌓인다. 꺼진 화로는 그 옆에 새로 세운 가사인격이 6초 버티면 다시 붙는다."],
+    berserk: { name: "동상 광인", info: ["추위에 미쳐 버린 병사. 체력이 계속 줄어든다.", "대신 시간이 갈수록 공격력과 공격 속도가 미쳐 날뛴다. 눈보라를 맞는 동안에는 세 배로 빨리, 더 높이 미쳐 오른다. 따뜻한 칸의 가사인격에게 막히면 가라앉는다(광기도, 체력이 줄어드는 것도 멈춘다)."], hp: 3600, atk: 260, def: 80, res: 0, speed: 0.75, interval: 1.6, weight: 1, mass: 2, life: 1, frenzy: { drain: 0.025, rate: 0.06, cap: 1.5, wind: { rate: 3, cap: 2.5 } } },
+    bomber: { name: "얼음폭탄 드론", info: ["얼음 폭탄을 매단 드론(명일방주의 밤테일 기준). 근거리 가사인격은 막을 수 없다. 천천히 날아온다.", "가사인격이 사거리(2칸) 안에 들어오면 폭탄을 한 번 던진다. 폭탄은 목표와 주변 0.8칸 안의 모두에게 공격력 100%의 물리 피해를 주고 동상을 쌓는다. 던지고 나면 이동 속도가 두 배가 된다. 던지기 전에 떨어뜨리자.", "켜진 화로가 사거리 안에 있으면 가사인격보다 먼저 화로에 던진다. 화로는 꺼지고 둘레의 가사인격에게 동상이 쌓인다. 꺼진 화로는 그 옆에 새로 세운 가사인격이 5초 버티면 다시 붙는다."],
       hp: 4000, atk: 800, def: 150, res: 30, speed: 0.51, interval: 99, weight: 1, mass: 0, life: 1, flying: true,
       bomber: { range: 2, r: 0.8, mul: 1, frost: 1, fall: 0.9, arm: 0.6, dash: 2 } },
+    // the straggler by the fire (chapter 2, a straggler recoloured): a lit brazier within ember.see, and he leaves the road to sit on a warm ground square beside it (def.ember: emberStep)
+    emberstrag: { name: "불 쬐는 낙오병", info: ["모스크바 퇴각 행렬에서 처진 병사. 불만 보면 주저앉는다. 싸우지 않는다.", "켜진 화로가 4칸 안에 있으면 길을 벗어나 그 화로가 데우는 빈 지상 칸에 주저앉는다. 앉아 있는 동안 그 칸에는 가사인격을 세울 수 없다. 화로가 꺼지거나 60초가 지나면 일어나 방어 지점으로 달려간다."],
+      hp: 1400, atk: 130, def: 0, res: 0, speed: 0.42, interval: 2.0, weight: 1, mass: 1, life: 1, ember: { see: 4, run: 1.2, max: 60 }, noFight: true },
+    // the frost sack (chapter 2, a line soldier recoloured): a sack of snow and ice on his back; when he falls it bursts over the braziers and men beside him (def.douse)
+    frostsack: { name: "서리 자루병", info: ["눈과 얼음을 자루에 가득 지고 오는 보병.", "쓰러지면 자루가 터져, 1.5칸 안의 화로를 끄고 둘레의 가사인격에게 동상을 쌓는다. 불에서 먼 곳에서 잡자."],
+      hp: 2000, atk: 220, def: 120, res: 0, speed: 0.85, interval: 2.0, weight: 1, mass: 2, life: 1, douse: { r: 1.5, frost: 1 } },
     // the infernal machine (rue Saint-Nicaise, 1800): a cart with a barrel of powder, rolled on until it bursts — over everyone near it
-    cart:    { name: "지옥 기계", info: ["화약통을 실은 수레. 공격하지 않고 그저 굴러온다.", "부서지거나, 막힌 채 도화선이 다 타면 터진다. 주위의 적과 아군을 가리지 않는다. 적에게는 훨씬 큰 피해를 준다."], hp: 2600, atk: 0, def: 300, res: 60, speed: 0.36, interval: 99, weight: 2, mass: 4, life: 1, bomb: { r: 1.45, dmg: 1100, fuse: 3.5, foe: 2.4 } },   // foe: packed for the column it was meant for — their own men take it far worse than ours
+    cart:    { name: "지옥 기계", info: ["화약통을 실은 수레. 공격하지 않고 그저 굴러온다. 덮개를 씌워, 한 번 막히기 전까지는 고지에서 쏘는 공격에 30%만 다친다.", "부서지거나, 막힌 채 도화선이 다 타면 터진다. 주위의 적과 아군을 가리지 않는다. 적에게는 훨씬 큰 피해를 준다. 눈보라가 부는 동안에는 도화선이 타지 않는다. 터지면 2칸 안의 꺼진 화로가 다시 붙는다."], hp: 2600, atk: 0, def: 300, res: 60, speed: 0.36, interval: 99, weight: 2, mass: 4, life: 1, bomb: { r: 1.45, dmg: 1100, fuse: 3.5, foe: 2.4, windStop: true, relight: 2.0 }, cover: 0.3 },   // foe: packed for the column it was meant for — their own men take it far worse than ours
     // Marshal Ney: the sniper who never misses. Unseen on his perch at first, then down the road shooting as he walks;
     // every third round is a heavy one, and each time he is cut down a third he sweeps the field and puts three rounds into whoever stands furthest forward
     ney:     { name: "미셸 네", hp: 26000, atk: 600, def: 380, res: 30, speed: 0.34, interval: 2.6, weight: 2, mass: 4, life: 3, boss: true,
       sniper: { every: 3, strong: 2.0, aim: 0.9 }, stealth: { reveal: 16 }, perch: { at: [1, 3], until: 36 },
       scan: { at: [2 / 3, 1 / 3], sweep: 2.4, gap: 0.45, mark: 0.75, near: 0.08 } },
+    /* ---- chapter 4 「발푸르기스의 밤」 (E04): the roofs on the witches' night. Every figure is an existing one recoloured (see EN_POSED / EN_TINT / AIR_ART in the page).
+       The abilities below are read only by the chapter-4 code (ch4Init / ch4Step / ch4Hit / ch4Taken), which runs only on a stage with stage.ch4 */
+    lemure: { name: "레무르", info: ["잿빛 망령. 느리고 약하지만 떼로 온다.", "다리가 끊긴 지붕에 갇히면 남보다 일찍(20초) 뛰어넘는다."],
+      hp: 1300, atk: 170, def: 60, res: 0, speed: 0.55, interval: 2.0, weight: 1, mass: 1, life: 1, leapAfter: 20 },
+    roofcat: { name: "지붕 고양이", info: ["검은 고양이. 아주 빠르다. 세 번째 공격마다 상처를 남겨 4초 동안 피를 흘리게 한다.", "천창(땅굴)을 타고 배치 칸을 건너뛰기도 한다."],
+      hp: 1100, atk: 210, def: 20, res: 20, speed: 1.6, interval: 1.3, weight: 1, mass: 1, life: 1, bleed: { every: 3, dur: 4, pct: 0.3 } },
+    wisp: { name: "도깨비불", info: ["푸른 불덩이. 저지되는 순간 터져 둘레의 가사인격에게 마법 피해를 준다.", "저지하지 않고 쏘아 떨어뜨리면 터지지 않는다."],
+      hp: 900, atk: 0, def: 0, res: 50, speed: 1.3, interval: 99, weight: 1, mass: 1, life: 1, burst: { r: 1.2, dmg: 450 } },
+    crow: { name: "까마귀 사역마", info: ["마녀의 까마귀. 날아다녀서 다리가 필요 없고, 근거리 가사인격은 막을 수 없다.", "유이부터 노린다."],
+      hp: 900, atk: 260, def: 30, res: 30, speed: 1.1, interval: 1.6, weight: 0, mass: 0, life: 1, flying: true, vipFly: true },
+    broom: { name: "빗자루 마녀", info: ["빗자루를 탄 마녀. 공격할 때마다 막아선 가사인격을 넘어 그 뒤로 내려앉는다.", "한 겹의 저지로는 멈추지 않는다. 두 겹째를 세워 두자."],
+      hp: 2400, atk: 300, def: 80, res: 30, speed: 0.85, interval: 2.0, weight: 1, mass: 2, life: 1, hopBlock: { dist: 1.25, grace: 1.5 } },
+    pickpocket: { name: "소매치기", info: ["붉은 두건의 소매치기. 사거리 2.2칸. 사거리 안의 유이를 먼저 쏜다.", "세 번째로 맞힐 때마다 코스트 1을 가져간다."],
+      hp: 1300, atk: 230, def: 60, res: 10, speed: 0.75, interval: 2.4, weight: 1, mass: 1, life: 1, ranged: 2.2, phys: true, rscale: true, vipFirst: true, stealCost: { every: 3, n: 1 } },
+    dancer: { name: "연기 두른 춤꾼", info: ["흰 가면의 춤꾼. 빠르다. 연기 다리를 건너면 12초 동안 연기를 둘러 보이지 않는다(막고 있는 가사인격만 칠 수 있다).", "축제의 불꽃이 터지면 드러난다."],
+      hp: 1700, atk: 260, def: 80, res: 10, speed: 1.15, interval: 1.4, weight: 1, mass: 2, life: 1, cloak: { dur: 12 } },
+    clown: { name: "불 뿜는 광대", info: ["연기를 두른 채 오는 광대. 숨어 있는 동안은 걷기만 하고 공격하지 않는다.", "축제로 드러나면 사거리 2.5칸에서 불을 뿜는다(마법 피해). 드러내지 말고 막아서 잡는 것도 방법이다."],
+      hp: 2600, atk: 320, def: 100, res: 30, speed: 0.7, interval: 2.6, weight: 1, mass: 2, life: 1, ranged: 2.5, cloak: { dur: 12, start: true }, seenOnly: true },
+    paperlamp: { name: "풍등", info: ["떠서 지나가기만 하는 종이 등. 공격하지 않고, 지나가도 목숨이 줄지 않는다.", "축제 중에 떨어뜨리면 가까운 시민의 공포가 가라앉는다."],
+      hp: 1000, atk: 0, def: 0, res: 0, speed: 0.5, interval: 99, weight: 0, mass: 0, life: 0, flying: true, festCalm: { r: 2.5, by: 30 } },
+    skulker: { name: "검댕 도둑", info: ["검댕을 뒤집어쓴 도둑. 연기 다리를 건너면 12초 동안 보이지 않는다.", "판 위에 있는 동안 코스트 회복이 25% 느려진다(여럿이면 겹친다)."],
+      hp: 1800, atk: 200, def: 100, res: 10, speed: 0.85, interval: 2.0, weight: 1, mass: 2, life: 1, cloak: { dur: 12 }, costRegen: 0.25 },
+    cauldron: { name: "가마솥", info: ["걸어 다니는 무쇠 가마솥. 느리고 아주 단단하며 둘 몫으로 저지된다. 처음 막아선 가사인격을 삼키고 코스트 3을 가져간다.", "15초 안에 쓰러뜨리면 삼킨 가사인격이 체력 절반으로 그 자리에 돌아온다."],
+      hp: 4500, atk: 350, def: 400, res: 20, speed: 0.4, interval: 3.0, weight: 2, mass: 3, life: 1, swallow: { cost: 3, window: 15 } },
+    sharpshooter: { name: "집회 사수", info: ["검붉은 옷의 석궁 사수. 사거리 2.8칸. 사거리 안의 유이를 먼저 쏜다.", "네 번째 화살은 맞은 칸과 그 상하좌우를 함께 맞히고, 맞은 수만큼 코스트를 가져간다."],
+      hp: 1700, atk: 380, def: 100, res: 30, speed: 0.7, interval: 2.8, weight: 1, mass: 2, life: 1, ranged: 2.8, phys: true, rscale: true, vipFirst: true, cross: { every: 4 } },
+    stallwitch: { name: "노점 마녀", info: ["장터 천을 두른 큰 마녀. 셋 몫으로 저지되고, 무거워서 밀려 떨어지지 않는다. 12초마다 도깨비불을 하나 내놓는다.", "축제가 아닐 때는 받는 피해가 70% 줄어든다."],
+      hp: 9000, atk: 400, def: 300, res: 30, speed: 0.35, interval: 2.8, weight: 3, mass: 4, life: 1, festOnly: 0.3, summon: { type: "wisp", every: 12 } },
+    shadow: { name: "브로켄의 그림자", info: ["산꼭대기의 거대한 그림자. 셋 몫으로 저지되고 밀려 떨어지지 않는다.", "열린 굴뚝에서 2칸 안이나 연기 다리 위(연기 속)에서는 피해를 받지 않는다. 굴뚝을 막아 다리를 끊으면 연기 밖에 선다."],
+      hp: 12000, atk: 600, def: 350, res: 30, speed: 0.4, interval: 2.8, weight: 3, mass: 4, life: 2, elite: true, smokeProof: 2 },
+    acolyte: { name: "종복 사제", info: ["검은 옷의 사제. 마법으로 친다.", "판 위에 있는 동안 코스트 상한이 10 줄어든다(여럿이면 겹친다)."],
+      hp: 2600, atk: 280, def: 100, res: 40, speed: 0.75, interval: 2.0, weight: 1, mass: 2, life: 1, artsMelee: true, costCap: 10 },
+    float: { name: "가장행렬 수레", info: ["꽃으로 꾸민 큰 수레. 셋 몫으로 저지되고, 몇 초마다 내달려 막아선 가사인격에게 크게 부딪친다.", "축제가 아닐 때는 받는 피해가 70% 줄어든다."],
+      hp: 5500, atk: 450, def: 250, res: 20, speed: 0.9, interval: 2.2, weight: 3, mass: 4, life: 1, festOnly: 0.3, charge: { every: 8, dur: 1.2, mult: 2.0, hit: 2.5 } },
+    magicshot: { name: "마탄 사수", info: ["은빛 총의 사수. 탄은 여섯 발뿐이고, 한 발 한 발이 멀리서 크게 들어온다(사거리 4.5칸). 사거리 안의 유이를 먼저 쏜다.", "연기 다리 바로 곁에 선 상대에게는 절반이 빗나간다."],
+      hp: 4000, atk: 700, def: 150, res: 30, speed: 0.6, interval: 4.0, weight: 1, mass: 2, life: 1, ranged: 4.5, phys: true, elite: true, vipFirst: true, ammo: 6, missNear: 0.5 },
+    lantchild: { name: "불씨 든 아이", info: ["불씨를 든 시민 아이. 적이 아니다. 아무도 이 아이를 공격하지 않고, 다치지도 않는다.", "가장 가까운 점화구로 가서 도화선에 불을 붙이고 돌아간다. 20초 동안 막혀 있으면 그냥 돌아간다."],
+      hp: 1000, atk: 0, def: 0, res: 0, speed: 0.7, interval: 99, weight: 1, mass: 1, life: 0, child: true, invuln: true, giveUp: 20 },
+    volland: { name: "융커 볼란트", info: ["붉은 깃털 모자의 신사. 죽지 않고 막히지 않으며, 밤공기 위도 걸어 유이에게 곧장 온다. 지나가며 닿은 가사인격은 6초 동안 침묵한다. 판에 있는 동안 10초마다 시민 하나를 부른다.", "축제의 불꽃이 터지는 순간 그가 연기 밖(열린 굴뚝 바로 둘레 밖, 다리 밖)에 있으면 관심이 한 칸 깎이고 물러난다. 세 칸을 다 깎으면 떠난다. 유이에게 닿으면 그녀가 크게 다치고, 그는 물러났다가 다시 온다."],
+      hp: 99999, atk: 0, def: 0, res: 0, speed: 0.32, interval: 99, weight: 9, mass: 9, life: 0, boss: true, noMul: true, invuln: true, flying: true, volland: { land: 4, reach: 0.34, call: 10, callFear: 0.25, silence: 6, smoke: 1 } },
+    /* ---- chapter 5 「악마의 트릴」 (E05): the devil's orchestra on the beat. Every figure is an existing one recoloured (EN_POSED / EN_TINT / EN_ART in the page).
+       def.c5 holds the abilities, read only by the chapter-5 code (ch5Init / ch5Step / ch5Strike / ch5Taken ...), which runs only on a stage with stage.ch5.
+       "fast" / "slow" below: the tempo of the zone the foe stands in. down: what its attack on the fourth beat of its zone's bar does */
+    vghost: { name: "바이올린 망령", info: ["검은 연미복의 망령 악사. 박마다 한 칸씩 걷는다.", "마디의 넷째 박에 켜는 활은 1.8배로 들어간다."],
+      hp: 1700, atk: 210, def: 100, res: 0, speed: 0.85, interval: 2.0, weight: 1, mass: 2, life: 1, c5: { down: { mul: 1.8 } } },
+    offhound: { name: "엇박 사냥개", info: ["은빛 사냥개. 박과 박 사이(반 박)에 뛴다.", "쉼표 칸에서도 서지 않는다."],
+      hp: 1100, atk: 220, def: 20, res: 20, speed: 1.0, interval: 1.3, weight: 1, mass: 1, life: 1, c5: { offbeat: true } },
+    trumpet: { name: "트럼펫", info: ["놋쇠 나팔을 든 악단원. 넷째 박에 맞은 칸과 그 상하좌우를 함께 친다.", "빠른 구역에서는 마법 피해가 된다."],
+      hp: 2300, atk: 290, def: 150, res: 0, speed: 0.85, interval: 2.0, weight: 1, mass: 2, life: 1, c5: { down: { cross: true }, fastArts: true } },
+    horn: { name: "호른", info: ["놋쇠 호른 주자. 사거리 1.5칸의 원거리. 넷째 박에는 둘을 친다.", "빠른 구역에서는 마법 피해가 된다."],
+      hp: 1500, atk: 270, def: 100, res: 20, speed: 0.8, interval: 2.2, weight: 1, mass: 2, life: 1, ranged: 1.5, phys: true, rscale: true, c5: { down: { extra: 1 }, fastArts: true } },
+    busker: { name: "거리 악사", info: ["줄무늬 조끼의 거리 악사. 사거리 1.9칸의 원거리.", "흐름 밖에 선 가사인격은 두 번 친다."],
+      hp: 1600, atk: 250, def: 80, res: 20, speed: 0.8, interval: 2.2, weight: 1, mass: 2, life: 1, ranged: 1.9, phys: true, rscale: true, c5: { offFlux: { hits: 2 } } },
+    drunk: { name: "취객 관객", info: ["붉은 얼굴의 취객. 빠르다(박마다 두 칸).", "흐름 밖에 선 가사인격에게는 마법 피해가 더 들어간다."],
+      hp: 1900, atk: 230, def: 60, res: 0, speed: 1.3, interval: 1.3, weight: 1, mass: 2, life: 1, c5: { offFlux: { arts: 0.6 } } },
+    cello: { name: "첼로", info: ["나뭇결 빛깔의 거대한 악기 망령. 둘 몫으로 저지되고, 느리며 아주 단단하다. 무거워서 밀려 떨어지지 않는다.", "흐름 위에 있는 동안만 방어와 마법 저항이 꺾인다."],
+      hp: 8000, atk: 480, def: 900, res: 50, speed: 0.4, interval: 3.0, weight: 2, mass: 4, life: 1, c5: { fluxWeak: { def: 0.2, res: 0.3 } } },
+    organ: { name: "오르간 주자", info: ["보랏빛 오르간 주자. 사거리 2.2칸의 마법. 한 번에 둘을 친다.", "흐름 밖에 선 대상에게는 둘레 한 칸까지 번진다."],
+      hp: 1800, atk: 280, def: 80, res: 40, speed: 0.7, interval: 2.6, weight: 1, mass: 2, life: 1, ranged: 2.2, rscale: true, c5: { two: true, offFlux: { splash: 0.6 } } },
+    violin1: { name: "제1 바이올린", info: ["흰 연미복의 수석 바이올린. 사거리 3칸의 원거리.", "흐름 위에 서 있으면 넷째 박마다 그 흐름 줄에 선 가사인격 전부를 벤다. 조율기의 방패 면에서 멈춘다."],
+      hp: 2400, atk: 360, def: 120, res: 40, speed: 0.6, interval: 3.4, weight: 1, mass: 2, life: 1, ranged: 3.0, phys: true, rscale: true, c5: { fluxChain: true } },
+    timpani: { name: "팀파니", info: ["구릿빛 북을 멘 고수. 넷째 박에 둘레 한 칸 전체를 친다.", "빠른 구역에서는 둘레 두 칸까지 넓어진다."],
+      hp: 2200, atk: 250, def: 120, res: 20, speed: 0.7, interval: 2.4, weight: 1, mass: 2, life: 1, c5: { down: { aoe: 1 }, fastAoe: 1 } },
+    prima: { name: "프리마돈나", info: ["흰 드레스의 가수. 걷지 않고 제자리에서 노래한다. 한 소절(여덟 박)을 마칠 때마다 판 위의 적 전부를 회복시킨다.", "기절하면 소절이 처음부터 다시. 느린 구역에서는 소절이 길어진다. 막이 내리면(190초) 무대를 내려와 걷는다."],
+      hp: 4200, atk: 0, def: 150, res: 40, speed: 0.5, interval: 99, weight: 1, mass: 2, life: 2, noFight: true, c5: { phrase: { beats: 8, pct: 0.12 } } },
+    heckler: { name: "야유꾼", info: ["야회복의 야유꾼. 공격력은 없다. 사거리 2.5칸 안의 흐름 위에 선 가사인격을 골라 한 마디 동안 기절시킨다.", "그 칸에서 흐름이 8초 동안 끊긴다(그 뒤로는 흐름 밖)."],
+      hp: 1800, atk: 0, def: 60, res: 30, speed: 0.8, interval: 99, weight: 1, mass: 1, life: 1, noFight: true, c5: { heckle: { r: 2.5, every: 8, cut: 8 } } },
+    crescendo: { name: "크레셴도", info: ["금빛 나팔의 망령. 저지되지 않고 걸은 칸마다 공격력이 오르고(머리 위 숫자), 첫 일격에 다 쏟는다.", "느린 구역에서 맞은 그 일격은 한 마디 동안 기절시킨다. 가벼워서 잘 밀린다."],
+      hp: 1500, atk: 160, def: 60, res: 0, speed: 0.85, interval: 1.6, weight: 1, mass: 1, life: 1, c5: { cres: { per: 0.15, cap: 40 }, slowStun: true } },
+    contrabass: { name: "콘트라베이스", info: ["검은 나무빛의 거대한 현악기 망령. 무겁다. 넷째 박에 자기 칸의 가로줄과 세로줄 전체를 친다.", "흐름이 지나는 칸에서 그 줄 공격이 막힌다."],
+      hp: 6000, atk: 420, def: 500, res: 20, speed: 0.45, interval: 3.0, weight: 2, mass: 4, life: 1, c5: { lineShot: true } },
+    kapell: { name: "악장", info: ["검은 연미복의 악장(정예). 저지되지 않는다. 지나가며 한 칸 둘레의 둘을 한꺼번에 친다.", "지나간 칸에 8초 동안 잔향이 남아 그 칸에는 새로 배치할 수 없다(이미 선 가사인격은 그대로)."],
+      hp: 7000, atk: 400, def: 300, res: 30, speed: 0.6, interval: 2.4, weight: 1, mass: 3, life: 2, elite: true, unblockable: true, ranged: 1.5, phys: true, c5: { two: true, residue: 8 } },
+    tuner5: { name: "조율사", info: ["회색 작업복의 조율사. 공격력은 없다. 사거리 2.2칸 안의 조율기나 메트로놈 지킴이를 음소거한다(그 동안 조율기는 꺼지고, 지킴이는 메트로놈에 영향이 없다).", "음소거하는 동안은 그 자리에 선다."],
+      hp: 2200, atk: 0, def: 150, res: 20, speed: 0.7, interval: 99, weight: 1, mass: 2, life: 1, noFight: true, c5: { mute: { r: 2.2 } } },
+    echo: { name: "메아리", info: ["푸른 유리빛의 빈 갑주. 가사인격의 공격을 먼저 받는다(도발).", "마디의 첫 박에 받은 피해를 때린 쪽에 그대로 돌려준다. 느린 구역에서는 첫 박이 길다."],
+      hp: 3400, atk: 290, def: 380, res: 20, speed: 0.6, interval: 2.4, weight: 1, mass: 3, life: 1, taunt: true, c5: { reflect: 1 } },
+    ariel: { name: "대공 아리엘", info: ["흰 가발의 대공. 싸우지 않는다. 지휘단 위에서 네 악장 열여섯 마디의 곡을 지휘한다. 칠 수 없고 닿을 수 없다.", "네 구역이 모두 느린 채로 한 마디(8초)가 지나면 줄 하나가 끊긴다(악장마다 하나). 곡이 끝날 때 줄이 남아 있으면 목숨이 전부 빠진다."],
+      hp: 99999, atk: 0, def: 0, res: 0, speed: 0, interval: 99, weight: 9, mass: 9, life: 0, boss: true, noMul: true, flying: true, noFight: true, c5: { ariel: true } },
+    ear: { name: "대공의 귀", info: ["귀 모양의 그림자. 공격하지 않고 칠 수 없으며, 방어 지점에 닿지 않는다. 마디마다 두 칸씩 판을 가로지른다.", "둘레 2칸 안의 가사인격이 첫 박이 아닌 때에 스킬을 쓰면(자동 발동 포함) 불협이 1 오른다."],
+      hp: 99999, atk: 0, def: 0, res: 0, speed: 0, interval: 99, weight: 0, mass: 0, life: 0, noMul: true, flying: true, noFight: true, c5: { ear: { r: 2 } } },
   };
   // the waves Ney calls in when he is cut down a third: [delay, type, spawn]
   const NEY_CALL = [
@@ -535,6 +671,12 @@
   const MUD = 0.4;
   const THIN_ICE = 0.3;   // what thin ice takes off the armour of whoever stands on it
   const FROST = { slow: 1.35, dur: 7, freeze: 3, imm: 3 };
+  const STORM_SPAN = 1e4, LAMP_HP = { calm: 3, reach: 1.2 };
+  /* the eagle's two patterns (def.patterns, 2-10): split: the braziers' share of health that picks A (at or over) or B (under); A: warmth reach, our burn a second (share of max HP, arts),
+     the share of his max HP that must come off him to end it; B: what a frozen operator loses a second, the freeze-over clock, squares per freeze, reach round him, the squares kept clear round a point, the thaw after */
+  const PAT = { split: 0.5, reach: 2.5, burn: 0.015, breakAt: 0.05, frozen: 0.06, iceEvery: 4, iceN: 2, iceR: 2.5, iceSafe: 1.5, thaw: 2 };   /* the endless gust is kept this far from its end; a struck brazier mends only after calm s unstruck; foes this near a lit brazier strike it */
+  const FROST_LOSE = "모든 화로가 꺼졌습니다. 얼어붙었습니다.";
+  const FRZ = { unfog: 1.5, clear: 3, finalDps: 0.06, cost: 10, hp: 900, cd: 4, warm: 1 };   /* stage.frost (2-10 v2): the fog's fade, the clearing's length, the final storm's own damage and the brazier feed when the stage leaves them out */
   const BLIZ = { step: 1.1, dmg: 0.03, slow: 0.35 };   // the blizzard: how fast its front creeps a square, the share of max HP a frozen operator loses each second, how much it slows the foe   // 동상: attack interval x slow for dur; at two, frozen for freeze, then a moment's grace   // the rasputitsa: how much slower a foe wades through mud
   const FIRE = { pct: 0.07, min: 60 };   // a burning square: what share of an operator's health it takes a second (at least this much)
   const NEY_ROUNDS = 6;   // BL-07: the marked rounds he has at the lighthouse — a revolver's cylinder; the seventh is not his
@@ -750,7 +892,19 @@
       "#####,,,,,,,.B",
       "##############",
     ],
-    camp: [    // IM-05: the rebels' camp on the execution hill (the loop road of the original's 5-3 / 4-4 laid round a hill). The hill top (#) is ringed by rises; the scaffold with
+    gallows: [ // IM-05 (drawn by 유진 in the map editor, 2026-11-13): four pieces of road that only the tunnels join. Top left: the long road from (2,1) down a two-wide block and round to the point from below.
+               // Top middle: the short road from (10,1). Right: a dead end from (13,3) that ends in a tunnel mouth. Bottom left: a strip where what went under on the right comes up, walks four squares past the rise (1,5), and goes under again.
+               // Tunnels (stage.tunnels): (4,1)>(5,3), (5,5)>(7,7), (12,6)>(2,6), (0,4)>(9,6). Ground squares: (5,2) (4,4) (6,6) (9,2) (12,5); rises: (1,5) (11,5). The last steps to the point (7,4), (8,5), (8,6), (9,6) take nobody
+      "################",
+      "##S,,####,S#####",
+      "###,,.#,,.######",
+      "####,,#,####,S##",
+      ",###.,#,B###,###",
+      ",h###,,#,##h.###",
+      ",,,###.,,,##,###",
+      "#######,########",
+    ],
+    camp: [    // parked (the stage before the designer's own board): IM-05: the rebels' camp on the execution hill (the loop road of the original's 5-3 / 4-4 laid round a hill). The hill top (#) is ringed by rises; the scaffold with
                // the guillotine (W W) crowns it, and the camp's own gate (6,1) opens right under the blade. The ring road is two squares wide all round: the sunken road comes in at
                // the top left, the ravine at the bottom left, and both sides run east to the defence point (13,3). Ground squares lie along the ring at three depths on each side —
                // far (3,x), middle (9,x), near (12,x) — and the camp sleeps on the far and middle ones; the fowlers posted at (4,2)/(4,5) cover the whole western half
@@ -763,7 +917,7 @@
       "S,,.,,,,,.,,.#",
       "###########h##",   // (11,0)/(11,7): two rises that see the last squares before the point from two squares off — out of the general's reach
     ],
-    street: [  // IM-06: rue Saint-Nicaise (the one long lane of the original's 1-7, with a side square). The street is two rows: the roadway (y=3) and the doorsteps above it (y=2),
+    street: [  // parked (IM-06 now plays on square6). IM-06: rue Saint-Nicaise (the one long lane of the original's 1-7, with a side square). The street is two rows: the roadway (y=3) and the doorsteps above it (y=2),
                // under the balconies (the rises). The east gate is at the far end, our defence point at the west end. The fountain square (5..11, 0..1) opens off the north side: the carts
                // come down the alley at (6,0) and go round the fountain (W) by the west or the east; the back alley (6,5) comes up from the south into the middle of the street
       "######S,,,,###",
@@ -773,7 +927,29 @@
       "#.h.h#.#h#.h.#",
       "######S#######",
     ],
-    shadow: [  // IM-07: the crossroads (the two parallel roads of the original's annihilation maps, with a spine of high ground between them). The north road (y=1-2) and the south
+    square6: [  /* IM-06 (2-6): the fountain square of rue Saint-Nicaise. One gate in the middle (8,3), our point at the west end (4,3); three braziers (5,2) (7,5) (10,5).
+                   The guard drops into the middle and stands on the squares round the gate, then walks to the point, the outermost first. The street map above is parked */
+      "########,#####",
+      "######h,,,hh##",
+      "#####F.,,,,,h#",
+      "####B,.,S,,.,#",
+      "#####h,,,.,h##",
+      "#####WhF,,FW##",
+      "########,h####",
+    ],
+    detour: [  // IM-07 (the designer's own, reworked in the map editor from a reference board, 2026-11-13): one gate (0,4), two points (8,1) (9,1). The high road runs east along row 4 over the mud
+               // and turns north to the points. The long way round turns south at (2,4), goes under at (0,6), comes up at (0,1), walks the top row, goes under again at (6,1), comes up at (4,6)
+               // and walks the bottom row past the brazier's square (7,6) and up the right side. Raised walls shelter (5,5) (6,5) (8,5) from the west wind; the brazier (7,5) keeps the mud square (7,4) warm
+      "###########",
+      ",,,,,.,#BB#",
+      "#x,W,x#W,,#",
+      "##W#W,WW,,#",
+      "S,,,.~~~,,#",
+      "##,#Wh.Fh,#",
+      ",,,#,,,.,,#",
+      "###########",
+    ],
+    shadow: [  // parked for 2-7 (still the story stage IM-ST1's board): the crossroads (the two parallel roads of the origi the crossroads (the two parallel roads of the original's annihilation maps, with a spine of high ground between them). The north road (y=1-2) and the south
                // road (y=4-5) run east to the defence point; the wall lane along the top (y=0) is the hounds' way round. Our rebels hold the two road mouths at the west end and stand in
                // the wind from the west; the white snipers lie on the two westernmost rises (1,2)/(1,4) and cover the mouths. The central spine (y=3) sees both roads and the wall lane
       "###,,.,,.,,.,#",
@@ -806,16 +982,33 @@
       "S,,.,,,,,.,,,B",
       "##h##h#h##h###",
     ],
+    /* IM-10 as it was until 2026-11-18: parked, no stage uses it (IM-10 now plays on frostgate) */
     gate: [    // IM-10: the square before the city gate (the two lanes and central high ground of the original's annihilation 1, Chernobog). The gate opens between its towers (W, x=12)
-               // onto two roads (y=2 and y=4) that cross the square to the defence point in the west; the monument (4,3)/(7,3) with its steps (the rises) stands between them, and the
+               // onto two roads (y=2 and y=4) that cross the square to the defence point in the west; the monument (4,3)/(7,3) with its steps (the rises) stands between them (a brazier F at each end), and the
                // gate's throat (10,3) joins them. The side streets bring the carts down from the north (5,0) and up from the south (5,6). The wind blows out of the gate, down both roads
       "#####S,,######",
       "#h,.,,.,h,.hW#",
       "#,.,.,,.,,.,,S",
-      "B,,h#hh#h,.,W#",
+      "B,,hFhhFh,.,W#",
       "#,.,.,,.,,.,,S",
       "#h,.,,.,h,.hW#",
       "#####S,,######",
+    ],
+    /* IM-10 v2 (2026-11-18, the frost stage): the square before the capital's gate, 19x11. The defence point B (9,5); the first brazier (9,3) under the wall north of it.
+       Phase 0 opens the middle and its two gates (5,3), (13,7); phase 1 turns those into braziers and opens the ring with gates (3,5), (15,5), (9,1); phase 2 turns those into braziers,
+       opens the wall (9,7), closes (3,3) and (15,7), digs a tunnel (2,8)>(8,8) and opens the seven outer gates. The phases are in stage.frost.phases */
+    frostgate: [
+      "########SWS########",
+      "#Wh,,,,,,S,,,,,,hW#",
+      "S,,,WhW.,W,.WhW,,,S",
+      "#WW,WS.,.F.,.hW,WW#",
+      "#h.,,,,,,.,,,,,,.h#",
+      "W..S,,.,.B.,.,.S..W",
+      "#h.,,,,,,.,,,.,,.h#",
+      "#WW,Wh.,.W.,.SW,WW#",
+      "S,,,WhW.,,,.WhW,,,S",
+      "#Wh,,,,,,,,,,,,,hW#",
+      "#########S#########",
     ],
   };
   // ---------- chapter 3 (working title 「쏘지 않은 탄환」): inside the capital. On these boards F is a gas lamp: it lights the squares round it ----------
@@ -921,7 +1114,109 @@
       "#h,.,,..,.,.,#",
       "#######F######",
     ],
+    // chapter 3, third cut (2026-11-13): the rampart boards. T a wall top ours may stand on, m a wall top nobody of ours stands on, H a ladder, x a low fence.
+    // Every foe on foot climbs here (stage.climbAll). Tunnel mouths are plain road; the stage's `tunnels` joins them
+    wl1: [   // WL-01: the hill maze: the point in the middle, three gates, two lamps, no wall
+      "#S#########",
+      "#,...#hhh##",
+      "#hh.hFh.h##",
+      "#h...B..h##",
+      "#..hhhh.h##",
+      "#h..h#h...S",
+      "S..hF#hhhh#",
+      "###########",
+    ],
+    wl2: [   // WL-02: the fort: the yard gate and both outer gates must all cross the wall to reach the point
+      "############",
+      "B,.HTTTT#F##",
+      "##TTT,,TTT##",
+      "##FS....HT##",
+      "##TTT,,TTT##",
+      "S,,HTTTTH,,S",
+      "#####F######",
+    ],
+    wl3: [   // WL-03: two walls crossed in turn; ladders at both ends and in the middle, the lower wall is the way round
+      "###S#S#S###",
+      "#..,.H.,..#",
+      "#HTTTTTTTH#",
+      "F.........F",
+      "#TTTT.TTTT#",
+      "#TTTH.HTTT#",
+      "#H..,B,..H#",
+      "#####F#####",
+    ],
+    wl4: [   // WL-04: two long streets with a wall and ladders between them; lamps only at the street ends
+      "############",
+      "#F##########",
+      "#,,,,,,,,,S#",
+      "##HTT.xh##,#",
+      "S,.......,.#",
+      "####HTTh##.F",
+      "B,.........#",
+      "############",
+    ],
+    wl5: [   // WL-05: four gates inside the board and a tunnel (11,3) -> (0,3); a block of wall splits the two west points
+      "############",
+      "#B..T,,,hhF#",
+      "#.H..,S,,.h#",
+      ",.TT,,,,S,,,",
+      "#.TTF,,,S,,#",
+      "#.H..,S,,.h#",
+      "#B..h,,,hh##",
+      "############",
+    ],
+    wl6: [   // WL-06: the farm: the yard gate empties only by ladder, the outer road goes round by the west
+      "#########S##",
+      "#.,,,,,,,,F#",
+      "#.TTTmTmTmT#",
+      "F.TxFS#x#xH#",
+      "#.T,,,,,HT.#",
+      "#BTTTTTTTT.B",
+      "######F#####",
+    ],
+    wl7: [   // WL-07: the long loop: down from the top gates over the walls, round the south wall by the east ladder, up the west road
+      "####B#SSS##",
+      "#T...#,,,H#",
+      "#T.#FTTTTT#",
+      "#T.TSH....#",
+      "#T.T,,..,,#",
+      "#TH#S....H#",
+      "##mmmmTTTT#",
+      "###########",
+    ],
+    wl8: [   // WL-08: the fortress on the ridge: tunnel (12,7) -> (0,7), a gate in the inner yard, two points
+      "#############",
+      "#TTB......,,S",
+      "F..B......,,S",
+      "#.TTTTTTTH.T#",
+      "#.T,.......T#",
+      "#.TSHTTTTH.T#",
+      "S,T##S#FT####",
+      ",,TH........,",
+      "#############",
+    ],
+    wl9: [   // WL-09: before the palace: three points, four gates, tunnel (10,1) -> (2,2)
+      "######S###S#",
+      "B..T##,,.#,#",
+      "##,TH.,#,..#",
+      "#F.,,T.,.hh#",
+      "#TT##Hx.#F.#",
+      "B...,,....,S",
+      "###TTxhh#..#",
+      "B...,,....,S",
+      "############",
+    ],
   };
+  /* chapter 4's boards: the design's letters become the engine's own, so no new tile letter reaches the engine (the same letter can mean something else on another
+     chapter's boards): i / o (a skylight's mouths, the tunnel itself is in stage.tunnels) -> ",", u -> "." and v -> "," (a fuse's squares, listed in stage.fuses), p -> "_" (the
+     plank's slot, listed in stage.plank), f (the igniter) and P (the box) -> "W" (the page draws them from stage.fuses). C (chimney), ^ (smoke bridge), _ (night air) are LAB-01's */
+  const CH4MAP = (rows) => rows.map((r) => r.replace(/[iov]/g, ",").replace(/u/g, ".").replace(/p/g, "_").replace(/[fP]/g, "W"));
+  const CH4 = (o) => Object.assign({ ch4: true, ep: 4, bg: null, hz: 0.5, leap: { after: 30, warn: 5, dur: 3, retry: 5 }, rmul: { hp: 1, atk: 0.9 }, boss: ["", ""] }, o, { map: CH4MAP(o.map) });
+  /* chapter 5's boards: the design's letters become the engine's own: G (a tuba, listed in stage.tubas, drawn by the page) -> "W", Q (a resonance square, gathered into
+     stage.reso) -> ".". M (metronome) and R (rest) are LAB-02's own. Tuba facings: 0 east, 1 south, 2 west, 3 north */
+  const CH5MAP = (rows) => rows.map((r) => r.replace(/G/g, "W").replace(/Q/g, "."));
+  const CH5 = (o) => { const reso = []; o.map.forEach((r, y) => [...r].forEach((c, x) => { if (c === "Q") reso.push([x, y]); }));
+    return Object.assign({ ch5: true, ep: 5, bg: null, hz: 0.5, rmul: { hp: 1, atk: 0.9 }, boss: ["", ""], meters: { noise: { v: 0, min: 0, max: 4, label: "불협" } }, fallMeter: { meter: "noise", by: 1 } }, o, { map: CH5MAP(o.map), reso }); };
   const W1 = (list) => { const w = []; for (const [t, type, s, n = 1, gap = 0, o] of list) for (let i = 0; i < n; i++) w.push(o ? [t + i * gap, type, s, Array.isArray(o) ? o[i % o.length] : o] : [t + i * gap, type, s]); return w.sort((a, b) => a[0] - b[0]); };
   // parked for a later stage: 유진's IM-01 as it was played (map MAP_C2.mudYujin; gates 0 top-left, 1 the hounds' gate, 2 middle-left, 3 bottom-left)
   const PARKED_IM01_YUJIN = () => ({ map: MAP_C2.mudYujin, startCost: 14, mul: { hp: 0.68, atk: 0.86, def: 0.65 }, wind: { dir: 3, first: 22, every: 36, dur: 16 },
@@ -1315,9 +1610,9 @@
       waves: (() => { const POST = (x, y, i) => ({ at: [x, y], until: 120 }), posts = [[2, 6], [3, 6], [4, 6], [5, 6], [6, 6], [7, 6], [7, 5], [8, 5], [9, 5], [10, 5]];   // the designer's ten: every bottom-road square but two, held until after the last wave
         return W1([...posts.map(([x, y], i) => [0.5, "snowsniper", 2, 1, 0, POST(x, y, i)]),
         [6, "yfang", 1, 4, 1.2], [14, "chouang", 0, 1], [24, "yfang", 0, 4, 1.1],
-        [40, "chouang", 1, 2, 2.5], [42, "yfang", 2, 4, 1.5], [52, "yrazor", 0, 1], [53, "yfang", 2, 5, 1.1],
+        [40, "snowblade", 1, 2, 2.5], [42, "yfang", 2, 4, 1.5], [52, "yrazor", 0, 1], [53, "yfang", 2, 5, 1.1],
         [70, "yfang", 0, 6, 1], [70, "yfang", 1, 6, 1], [71, "yfang", 2, 5, 1],
-        [95, "chouang", 1, 2, 1.8], [96, "yrazor", 2, 2, 2], [102, "yfang", 0, 7, 1], [108, "yrazor", 1, 3, 2], [114, "yfang", 2, 6, 0.9], [116, "yrazor", 0, 1]]); })(),
+        [95, "snowblade", 1, 2, 1.8], [96, "yrazor", 2, 2, 2], [102, "yfang", 0, 7, 1], [108, "yrazor", 1, 3, 2], [114, "yfang", 2, 6, 0.9], [116, "yrazor", 0, 1]]); })(),
       boss: ["", ""], desc: "생울타리 사이의 길. 아래쪽 길에는 처음부터 설원 저격수들이 빼곡히 자리를 잡고 오래 버팁니다. 눈보라는 남쪽, 아래쪽 길에서 불어옵니다. 빠른 적이 길을 돌파해 옵니다. 저격수는 마법에 강하고 멀리서 쏘며, 얼어붙은 가사인격에게 훨씬 큰 피해를 줍니다. 눈보라가 부는 동안에는 모습을 감춥니다. 아래쪽 길로도 적이 오니, 저격수를 일찍 쓰러뜨려야 화망을 세울 수 있습니다. 생울타리는 올라온 벽이라 눈보라를 막습니다.",
       lose: "저격수는 눈보라가 그친 사이에 물리 화력으로 하나씩 잡으세요. 저격수가 남아 있는 동안 고지대에 세운 가사인격은 계속 노려집니다." },
     { code: "IM-03", name: "지옥 종대", map: MAP_C2.village, bg: null, hz: 0.5, ep: 2, startCost: 16, mul: { hp: 0.17, atk: 0.23, def: 0.7 }, rmul: { hp: 0.47, atk: 0.25 },
@@ -1327,8 +1622,8 @@
       // the ice-clad guards still set the clock: they stir at 50/58 and come round the long way
       waves: W1([[0.5, "iceguard", 1, 1, 0, { at: [3, 3], wait: 50, via: [[5, 2]] }], [0.5, "iceguard", 1, 1, 0, { at: [3, 4], wait: 58, via: [[5, 2]] }],   // by (5,2): the new forward square can take one of them
         [4, "yfang", 2, 3, 1.6], [11, "chouang", 0, 1], [12, "frostgun", 2, 1], [16, "chouang", 0, 2, 1.5], [17.5, "molotov", 0, 1], [24, "yfang", 2, 3, 1.4], [30, "chxbow", 0, 1],
-        [44, "frostgun", 2, 1], [47, "chouang", 0, 4, 1.5], [50, "molotov", 0, 2, 1.5], [54, "yfang", 2, 4, 1.2], [60, "strag", 1, 6, 1.2], [66, "frostgun", 2, 1], [69, "soldier", 0, 3, 1.5], [70.5, "molotov", 0, 1], [74, "yrazor", 2, 2, 2],
-        [90, "yfang", 2, 4, 1.2], [96, "frostgun", 2, 1], [99, "chouang", 0, 4, 1.5], [102, "molotov", 0, 2, 1.5], [106, "soldier", 1, 3, 2], [112, "frostgun", 2, 1], [113, "yfang", 2, 4, 1.1],
+        [44, "frostgun", 2, 1], [47, "chouang", 0, 4, 1.5], [50, "molotov", 0, 2, 1.5], [54, "yfang", 2, 4, 1.2], [60, "strag", 1, 6, 1.2], [66, "frostgun", 2, 1], [69, "snowblade", 0, 3, 1.5], [70.5, "molotov", 0, 1], [74, "yrazor", 2, 2, 2],
+        [90, "yfang", 2, 4, 1.2], [96, "frostgun", 2, 1], [99, "chouang", 0, 4, 1.5], [102, "molotov", 0, 2, 1.5], [106, "snowblade", 1, 3, 2], [112, "frostgun", 2, 1], [113, "yfang", 2, 4, 1.1],
         [116, "chouang", 0, 3, 1.2], [120, "yrazor", 2, 1], [121, "yfang", 2, 4, 1], [124.5, "molotov", 0, 2, 1.5]]),
       boss: ["", ""], desc: "불탄 수도 외곽 시가 한가운데를 지킵니다. 동쪽에서는 화염병 투척병이 북쪽 길을 돌아오고, 남쪽에서는 사냥개와 서리 사수가 올라옵니다. 서쪽에는 빙갑 근위병 둘이 쉬다가 움직입니다. 눈보라는 북쪽에서 불어옵니다. 무너지지 않은 성당 벽(올라온 벽) 아래 서쪽은 바람을 피할 수 있습니다. 화염병 투척병은 얼어붙은 가사인격을 먼저 노리고, 얼어 있는 채로 맞으면 얼음이 녹으며 큰 피해를 연달아 입습니다.",
       lose: "화염병 투척병은 북쪽 길 위에서 먼저 쓰러뜨리세요. 서리 사수의 동상도 얼음입니다. 빙갑 근위병은 느리니, 셋을 저지할 수 있는 중장으로 오래 붙잡아 두세요." },
@@ -1347,52 +1642,52 @@
         [118, "chouang", 2, 3, 1, RA], [119, "yshield", 0, 1, 0, CA], [126, "icestalker", 1, 3, 2, CB], [128, "yfang", 3, 4, 0.9, LB], [132, "soldier", 2, 3, 1.5, RA], [134, "yshield", 1, 1, 0, CB]]); })(),
       boss: ["", ""], desc: "밤의 마르스 연병장. 적은 얼음판 한가운데와 동쪽, 남서쪽에서 나와 얼음판을 한 바퀴 돈 뒤 방어 지점으로 갑니다. 방어 지점은 북서쪽과 남동쪽, 둘입니다. 방어 지점과 출입구 앞, 그리고 얼음판 한가운데에는 단단한 엽총수 일곱이 처음부터 앉아 있다가, 120초가 지나면 남은 엽총수가 모두 일어나 방어 지점으로 걸어옵니다. 흰 망토의 설원 척후병은 빙판 위에서는 보이지 않습니다. 얼음폭탄 드론은 얼음판을 한 바퀴 돈 뒤 반대편 방어 지점으로 날아가고, 폭탄을 한 번 떨어뜨리면 바로 빠져나갑니다.",
       lose: "앉아 있는 엽총수는 선봉과 근위를 바로 옆 칸에 붙여 쓰러뜨리세요. 그 칸을 되찾아야 방어 지점 앞이 막힙니다." },
-    { code: "IM-05", name: "목 없는 장군", map: MAP_C2.camp, bg: null, hz: 0.5, ep: 2, startCost: 12, mul: { hp: 0.47, atk: 0.45, def: 0.72 }, rmul: { hp: 0.9, atk: 0.85 },
-      // gates: 0 the sunken road (top side), 1 the camp's own gate under the guillotine, 2 the ravine (bottom side). Three surges: the scouts (6-34), the general and his column (48-100),
-      // the whole camp (112-175). SLEEP: the camp asleep on the far and middle squares of both sides (and its priest by the best rise): it wakes when someone is set down beside it,
-      // when it is hit, or when the general sounds his horn. POST: three fowlers, two holding the western half until late and the third on the east rise (10,4) over the point. bossFlee: switch `on` to make him quit the field at that share
-      // of his strength instead of falling (the designer has not decided yet: off)
-      bossFlee: { on: false, at: 0.3, text: ["카두달 퇴각", "언덕 너머로 물러났습니다"] },
-      vias: { 0: [[3, 1]], 2: [[3, 6]] },   // the mouths: each side road files past its far camp fire
-      waves: (() => { const SLEEP = (x, y) => ({ at: [x, y], wait: 150 }), POST = (x, y) => ({ at: [x, y], until: 150 }),   // whoever the horn has not roused is up by 150 anyway
-        ROW2 = { via: [[3, 1], [9, 2]] }, ROW5 = { via: [[3, 6], [9, 5]] }, UP = { via: [[9, 1]] }, DOWN = { via: [[3, 1], [2, 4], [3, 6], [9, 6]] },
-        BOSS = { via: [[6, 1, 10], [3, 1], [1, 2], [2, 4], [3, 6], [9, 6]] };   // under the blade a long moment, then west about the hill and in along the bottom side (only those he calls or rouses run straight for the point)
-        return W1([[0, "chouang", 1, 1, 0, SLEEP(3, 1)], [0, "chouang", 1, 1, 0, SLEEP(9, 1)], [0, "chouang", 1, 1, 0, SLEEP(3, 6)], [0, "chouang", 1, 1, 0, SLEEP(9, 6)], [0, "vicar", 1, 1, 0, SLEEP(9, 2)],
-        [0.5, "chxbow", 0, 1, 0, POST(4, 2)], [0.5, "chxbow", 2, 1, 0, POST(4, 5)], [0.5, "chxbow", 1, 1, 0, POST(10, 4)],
-        [8, "yfang", 2, 2, 1.6], [14, "chouang", 0, 2, 2], [24, "yfang", 2, 3, 1.3, ROW5], [30, "chouang", 0, 2, 2, ROW2],
-        [48, "chouang", 0, 2, 2], [50, "chxbow", 0, 1], [56, "yrazor", 2, 1], [57, "yfang", 2, 3, 1.2], [66, "cadoudal", 1, 1, 0, BOSS], [72, "molotov", 0, 2, 2], [84, "chouang", 2, 3, 1.5], [86, "vicar", 2, 1], [92, "yfang", 0, 3, 1],
-        [112, "chouang", 0, 2, 1.5], [118, "yfang", 2, 4, 1], [128, "chouang", 1, 2, 1.2, UP], [129, "chouang", 1, 2, 1.2, DOWN], [138, "molotov", 2, 1], [140, "yrazor", 2, 1],
-        [148, "chxbow", 0, 1], [150, "chouang", 0, 2, 1.3, ROW2], [152, "vicar", 0, 1, 0, ROW2], [158, "chouang", 2, 2, 1.5], [160, "yfang", 0, 2, 1], [168, "yrazor", 2, 1], [172, "chouang", 1, 2, 1.2, DOWN]]); })(),
-      boss: ["경고: 목 없는 장군", "조르주 카두달 · WARNING"], desc: "처형장 언덕의 반란군 진지. 언덕을 두 칸 폭의 길이 한 바퀴 두르고, 단두대 바로 아래가 진지의 출입구입니다. 서쪽 움푹한 길로는 슈앙 종대가 위쪽 길을, 남서쪽 골짜기로는 사냥개 무리가 아래쪽 길을 타고 동쪽 방어 지점으로 옵니다. 길 위의 설 자리는 양쪽 모두 먼 곳·가운데·방어 지점 앞, 세 군데입니다. 두 길의 적은 모두 먼 곳의 모닥불 자리 (3,1)·(3,6)을 지나갑니다. 먼 곳과 가운데 자리에는 반란군이 모닥불 곁에서 자고 있고, 옆에 가사인격을 세우거나 공격하면 깨어납니다. 서쪽 절반은 엽총수 둘이 지키고, 방어 지점을 내려다보는 동쪽 고지 (10,4)에도 엽총수 하나가 먼저 올라가 있습니다. 카두달은 단두대 아래에 한참 서 있다가 언덕을 서쪽으로 돌아 아래쪽 길로 옵니다. 그가 부르거나 깨운 반란군은 돌지 않고 방어 지점으로 곧장 달려옵니다. 막는 이가 없으면 옆 칸 고지의 가사인격까지 베고, 세 번째 공격마다 둘레 한 칸을 휩쓸며, 2칸 안 고지에 갈고리를 던져 끌어내립니다. 체력이 줄 때마다 호각을 불어 진지 전체를 깨우고, 절반 아래부터는 깃발을 올려 둘레의 반란군을 북돋우며 돌격으로 저지를 뚫고 지나갑니다.",
-      lose: "처음에는 방어 지점 앞 (12,2)·(12,5)에서 받고(그 바로 앞 (12,1)·(12,6)에 한 겹을 더 세울 수 있습니다), 잠든 반란군은 준비가 됐을 때 하나씩 깨워 정리하세요. 호각이 울리면 남은 진지가 한꺼번에 일어납니다. 카두달은 한 겹으로는 못 막습니다. 아래쪽 길 가운데 (9,6)과 방어 지점 앞 (12,6)·(12,5)에 겹쳐 서세요. 막혀 있는 동안에는 갈고리를 던지지 못합니다. 붉은 원이 뜨면 옆 고지의 가사인격을 잠깐 물리거나 치료를 붙이세요. 사제는 곁의 반란군을 계속 치료하니 먼저 쓰러뜨리세요. 동쪽 고지 (10,4)의 엽총수는 바로 옆 (11,4)에 근거리 가사인격을 세우면 쓰러뜨릴 수 있습니다. 먼 곳의 모닥불 자리 (3,1)·(3,6)은 두 길의 길목입니다. 자는 반란군을 깨워 쓰러뜨리고 그 칸에 서면 길 하나를 언덕 서쪽에서 통째로 받을 수 있습니다. 다만 엽총수 (4,2)·(4,5)의 사거리 안이고, 카두달도 두 칸을 모두 지나갑니다." },
-    { code: "IM-06", name: "생니카즈 거리", map: MAP_C2.street, bg: null, hz: 0.5, ep: 2, startCost: 10, mul: { hp: 0.66, atk: 0.93, def: 0.74 }, rmul: { hp: 0.95, atk: 0.9 },
-      // gates: 0 the carts' alley from the north (into the square), 1 the street from the east gate (the escort), 2 the back alley from the south. Three surges: one cart alone to be
-      // learnt on (5-40), carts with their escorts (52-108: each cart leaves a few seconds before the men who will bunch up behind it), carts against the shield-bearers, with the drones
-      // and a cart up the back alley (120-175). A cart goes round the fountain by the west and onto the street at (6,3); EAST sends it round the other way and in at (10,3)
-      waves: (() => { const EAST = { via: [[10, 1], [10, 2]] }, STEPS = { via: [[6, 1], [5, 2], [1, 2]] }, DOOR = { via: [[9, 3], [7, 2], [1, 2]] }, SLEEP = (x, y, t) => ({ at: [x, y], wait: t }),   // the bomb-makers get up of their own accord late on
-        HOV_W = { air: [[11, 4, 4], [4, 4, 6], [1, 1, 4], [0, 3]] }, HOV_E = { air: [[12, 1, 5], [8, 4, 6], [0, 3]] };
-        return W1([[0, "chouang", 0, 1, 0, SLEEP(6, 1, 112)], [0, "chxbow", 0, 1, 0, SLEEP(10, 1, 126)], [0.5, "chxbow", 2, 1, 0, { at: [4, 4], until: 112 }],
-        [5, "soldier", 1, 3, 2.2], [16, "cart", 0], [26, "soldier", 1, 2, 2], [34, "chouang", 0, 2, 1.5, STEPS],
-        [52, "cart", 0, 1, 0, EAST], [55, "soldier", 1, 3, 1.5], [62, "molotov", 2, 1], [70, "frostgun", 1, 1], [78, "cart", 0], [81, "chouang", 0, 3, 1.5, STEPS], [90, "soldier", 1, 4, 1.4, DOOR], [96, "bomber", 1, 1, 0, HOV_E], [100, "yfang", 2, 3, 1.2],
-        [120, "yshield", 1, 1], [122, "cart", 0, 1, 0, EAST], [128, "molotov", 2, 2, 2], [136, "soldier", 1, 4, 1.4], [142, "cart", 0], [144, "chouang", 0, 3, 1.4, STEPS], [150, "frostgun", 1, 2, 2.5], [152, "bomber", 1, 1, 0, HOV_W],
-        [158, "yshield", 1, 1], [160, "cart", 2], [166, "yfang", 2, 4, 1], [170, "soldier", 1, 3, 1.3]]); })(),
-      boss: ["", ""], desc: "생니카즈 거리. 발코니(고지)가 내려다보는 골목이 동쪽 성문에서 서쪽 우리 자리까지 이어집니다. 차도 위쪽으로는 문간 한 줄이 나란히 붙어 있습니다. 광장에서 내려온 반란군은 이 문간 줄을 따라 걷고, 호위 보병과 수레는 차도로 옵니다. 북쪽 분수 광장으로 반란군이 화약 수레(지옥 기계)를 굴려 내려보내고, 수레는 분수를 서쪽이나 동쪽으로 돌아 골목에 들어섭니다. 동쪽에서는 호위 보병이 골목을 따라 오고, 남쪽 뒷골목은 골목 한가운데로 이어집니다. 수레는 부서지거나, 막힌 채 도화선이 다 타면 터져 둘레의 적과 아군을 가리지 않습니다. 광장에는 폭탄꾼 둘이 쉬고 있습니다. 우리 자리 바로 앞 남쪽 발코니 (4,4)에는 엽총수 하나가 먼저 올라가 있다가, 112초가 지나면 내려와 걸어옵니다. 나중에는 방패를 든 중장병이 오는데, 수레의 폭발은 방어력을 무시합니다.",
-      lose: "수레는 광장에서 원거리로 미리 부수거나, 호위 보병이나 중장병 한가운데서 터지게 하세요. 수레를 막아 세울 칸의 바로 옆 발코니는 비워 두는 편이 안전합니다. 광장을 내려다보는 발코니 (3,1)·(12,1)이 수레를 일찍 잡기 좋습니다. 차도와 문간 줄을 한 칸으로 다 막을 수는 없습니다. 우리 자리 앞 (2,3)과 (1,2)에 나눠 서거나, 광장 출구 (6,1)·동쪽 (9,3)·뒷골목 (6,4)에서 길마다 따로 받으세요." },
-    { code: "IM-07", name: "반란의 그늘", map: MAP_C2.shadow, bg: null, hz: 0.5, ep: 2, startCost: 10, mul: { hp: 0.67, atk: 0.74, def: 0.75 },
-      wind: { dir: 0, first: 40, every: 34, dur: 12 },
-      // gates: 0 the north road, 1 the south road; WALL: the hounds' way round by the wall lane along the top. Our rebels (white rings) hold both road mouths and stand in the wind.
-      // Three surges: the line comes on and the rebels hold it alone (5-45, the first gust at 40 shows what they shelter); the drums come up and the mouths give way (58-112);
-      // the ice-clad guard on the south road, the drums on the north and the pack on the wall lane all at once (124-180)
-      waves: (() => { const ALLY = (x, y) => ({ at: [x, y], ally: true }), ALLYK = (x, y) => ({ at: [x, y], ally: true, hp: 0.73, atk: 0.86 }), WALL = { via: [[3, 0], [8, 0]] }, ROW2 = { via: [[4, 2], [11, 2]] }, ROW4 = { via: [[4, 4], [11, 4]] };
-        return W1([[0, "chouang", 0, 1, 0, ALLYK(1, 1)], [0, "chouang", 0, 1, 0, ALLYK(2, 1)], [0, "chxbow", 0, 1, 0, ALLY(3, 1)], [0, "chouang", 1, 1, 0, ALLYK(1, 5)], [0, "chouang", 1, 1, 0, ALLYK(2, 5)], [0, "chxbow", 1, 1, 0, ALLY(3, 5)],
-        [0.5, "snowsniper", 0, 1, 0, { at: [1, 2], until: 80 }], [0.5, "snowsniper", 1, 1, 0, { at: [1, 4], until: 80 }],
-        [5, "soldier", 0, 3, 2.5], [12, "strag", 1, 4, 1.5], [22, "soldier", 1, 2, 2.5], [30, "yfang", 0, 2, 1.4, WALL], [36, "soldier", 0, 2, 2, ROW2],
-        [58, "soldier", 0, 4, 1.2], [60, "drummer", 0, 1], [66, "frostgun", 1, 1], [74, "yfang", 0, 3, 1.2, WALL], [82, "soldier", 1, 2, 1.3, ROW4], [85, "frostgun", 1, 1, 0, ROW4], [84, "drummer", 1, 1, 0, ROW4], [90, "yshield", 0, 1], [96, "strag", 1, 6, 0.9], [104, "frostgun", 0, 2, 3, ROW2], [106, "yfang", 0, 2, 1.2, WALL], [110, "iceguard", 1, 1, 0, { hp: 0.55 }],
-        [124, "yrazor", 0, 1, 0, WALL], [125, "yfang", 0, 4, 1, WALL], [130, "soldier", 0, 5, 1.2], [133, "drummer", 0, 1], [138, "soldier", 1, 2, 1.4, ROW4], [141, "frostgun", 1, 1, 0, ROW4], [146, "frostgun", 0, 1], [148, "strag", 1, 6, 0.8],
-        [156, "yfang", 0, 3, 1, WALL], [158, "soldier", 0, 3, 1.3, ROW2], [162, "frostgun", 0, 1, 0, ROW2], [166, "soldier", 1, 5, 1.2], [168, "drummer", 1, 1], [174, "yrazor", 0, 1, 0, WALL]]); })(),
-      boss: ["", ""], desc: "갈림길. 북쪽 길과 남쪽 길이 나란히 동쪽 방어 지점으로 이어지고, 두 길 사이에는 양쪽을 다 내려다보는 고지가 줄지어 있습니다. 맨 위 담벼락 길은 아무도 지키지 않는 사냥개의 우회로입니다. 흰 고리를 두른 반란군이 서쪽 두 길목을 붙잡고 황제군을 막아섭니다. 이번 작전 동안 우리 편이고, 서쪽에서 번져 오는 눈보라도 몸으로 막아 그 줄의 뒤쪽을 지켜 줍니다. 그들이 쓰러지면 그 뒤부터 눈에 덮입니다. 서쪽 끝 두 고지에는 설원 저격수가 엎드려 길목 근처를 겨누다가, 80초가 지나면 일어나 걸어옵니다. 북을 치는 고수가 오면 둘레의 적이 빨라지고 세지며, 눈보라에도 느려지지 않습니다.",
-      lose: "반란군이 버티는 동안 뒤에서 화력을 보태세요. 가운데 줄 고지는 맨 서쪽 (2,3)에 누가 서 있어야 눈보라를 피합니다. 길목이 뚫리면 (4,2)·(4,4)나 (2,1)·(2,5)에 가사인격을 세워 바람막이 겸 저지선으로 쓰세요. 고수는 대열 한가운데에서 걸어옵니다. 먼저 쏘세요. 담벼락 길의 사냥개는 (5,0)·(8,0)·(11,0)에서 막습니다. 반란군 바로 뒤 (5,0)·(5,1)과 남쪽 길 (5,5)에 서면 세 길을 모두 앞에서 받습니다." },
-    // a story-only entry between the crossroads and the checkpoint: no battle, no cost (the board is only here so the stage list stays one shape)
+    { code: "IM-05", name: "목 없는 장군", map: MAP_C2.gallows, bg: null, hz: 0.5, ep: 2, startCost: 22, mul: { hp: 0.47, atk: 0.45, def: 0.72 }, rmul: { hp: 0.8, atk: 0.5 },
+      // gates: 0 the long road (top left), 1 the short road (top middle), 2 the dead end on the right (its only way on is the tunnel). The clock is the three long rifles on the last steps
+      // before the point: they shell whoever of ours stands on the ground, and get up one by one from the rear (80 / 105 / 130) to walk the two or three steps in. Only the rise (11,5), looking west,
+      // reaches them, and the fowlers from gate 2 walk right past that rise (and then past the other, on the strip) shooting at it. The long road's men come five ways, taught in this order:
+      // RIGHT column (met on (5,2) and (6,6)), LEFT column (met on (4,4) and (6,6)), T2 (left column, then under (6,6): met only on (4,4)), T1 (under the block: met only on (6,6)), TT (both tunnels: met nowhere, struck in passing)
+      tunnels: [{ a: [4, 1], b: [5, 3], t: 3 }, { a: [5, 5], b: [7, 7], t: 3 }, { a: [12, 6], b: [2, 6], t: 5 }, { a: [0, 4], b: [9, 6], t: 5 }],
+      waves: (() => { const RIFLE = (x, y, until) => ({ at: [x, y], until }), LEFT = { via: [[4, 4]] }, T2 = { via: [[4, 4]], tun: true }, T1 = { via: [[6, 6]], tun: true }, TT = { tun: true }, R = { tun: true };
+        return W1([[0.5, "chxlong", 0, 1, 0, RIFLE(9, 6, 80)], [0.5, "chxlong", 0, 1, 0, RIFLE(8, 6, 105)], [0.5, "chxlong", 0, 1, 0, RIFLE(8, 5, 130)],
+        /* the opening (0-48): nothing comes up by the point yet. The fowlers start at once; the road shows its right column, then its left, then the short road; one hound alone under (6,6) */
+        [8, "chxbow", 2, 1, 0, R], [12, "chouang", 0, 1], [20, "chouang", 0, 1, 0, LEFT], [22, "chxbow", 2, 1, 0, R], [30, "chouang", 0, 2, 2], [34, "chouang", 1, 1], [38, "chxbow", 2, 2, 2.5, R], [44, "yfang", 0, 1, 0, T2],
+        /* the tunnels (50-96): the dogs run both tunnels and can only be struck in passing; hounds under the block are met on (6,6); the first rifle gets up at 80 */
+        [52, "chouang", 0, 2, 2, LEFT], [56, "dog", 0, 2, 1.6, TT], [64, "chxbow", 2, 2, 2.5, R], [70, "dog", 0, 2, 1.6, TT], [74, "chouang", 1, 2, 6], [80, "yfang", 0, 2, 1.4, T1], [86, "chouang", 0, 2, 2], [92, "chxbow", 2, 2, 2.5, R],
+        /* the press (96-135): no general on this board (the designer, 2026-11-13). The road's left column and the tunnels run together; the second rifle at 105, the third at 130 */
+        [98, "chouang", 0, 2, 2, LEFT], [102, "dog", 0, 2, 1.6, TT], [106, "chouang", 0, 2, 2], [110, "chouang", 1, 1], [116, "yrazor", 0, 1, 0, T1], [120, "chxbow", 2, 2, 2.5, R], [126, "dog", 0, 2, 1.6, TT], [130, "chouang", 0, 1],
+        /* the last of it (135-170) */
+        [138, "chouang", 1, 2, 6], [144, "chxbow", 2, 2, 2.5, R], [150, "yfang", 0, 1, 0, T2], [154, "dog", 0, 3, 1.6, TT], [158, "chouang", 0, 1], [164, "yrazor", 0, 1, 0, T1]]); })(),
+      boss: ["", ""], desc: "처형장 언덕. 길이 네 토막으로 끊겨 있고, 토막 사이는 땅굴로만 이어집니다. 땅굴을 탄 적은 그 사이의 배치 칸을 건너뜁니다. 방어 지점 바로 앞 세 칸에는 슈앙 장총수 셋이 처음부터 서서 지상의 가사인격을 쏘고(고지는 못 겨눕니다), 80초, 105초, 130초에 뒤쪽부터 하나씩 걸어 들어옵니다. 오른쪽 길의 엽총수는 두 고지 곁을 차례로 지나며 고지를 쏩니다.",
+      lose: "동쪽 고지 (11,5)에서 서쪽을 보면 장총수에 닿습니다. 그 고지를 쏘는 엽총수는 바로 옆 (12,5)에서 막으세요. 땅굴 둘을 다 타는 사냥개는 막을 칸이 없으니, (5,2)·(4,4)·(6,6)에서 지나가는 것을 치세요." },
+    { code: "IM-06", name: "생니카즈 거리", map: MAP_C2.square6, bg: null, hz: 0.5, ep: 2, startCost: 16, mul: { hp: 1.0, atk: 1.15, def: 0.85 }, rmul: { hp: 0.95, atk: 0.9 }, hard: true, entryFx: true,
+      storm: { dir: 1, gauge: 100, drain: 0.45 },   /* the blizzard from the north that does not stop until the gauge runs out */
+      lamps: { fire: true, hp: 1200, regen: 40, relightAt: 0.5 },   /* braziers that foes beside them strike; out at 0, lit again by themselves at half */
+      // one gate (8,3). The guard drops in between 2 and 8 s, each one walks to its square round the gate and stands there until its time, the outer ring first, then the inner
+      // ring, the two frost gunners and last the captain on (9,3). Four small bands come in through the same gate meanwhile
+      waves: (() => { const P = (x, y, t) => ({ via: [[x, y, { until: t }]] }), N = (x, y, t) => ({ via: [[x, y, { until: t }], [6, 2]] });   /* N: leaves by the north side of the square, past the warm square (6,2) */
+        /* nobody waits within reach of a brazier: the fires are struck only by those who walk past them. The five who leave while the storm still blows (30-74) go by (6,2), the one warm
+           ground square, except the one from (8,6), who walks up past the brazier (7,5) first. After that they come by every way */
+        const SQUAD = [["snowblade", N(8, 0, 24)], ["snowblade", N(12, 3, 32)], ["snowblade", N(8, 6, 40)], ["snowblade", N(11, 2, 48)], ["snowblade", N(7, 1, 56)], ["snowblade", P(9, 1, 78)], ["snowblade", P(8, 1, 84)],
+          ["snowblade", P(10, 3, 90)], ["snowblade", P(10, 2, 96)], ["snowblade", P(8, 4, 102)], ["snowblade", P(9, 2, 108)], ["snowblade", P(7, 3, 114)],
+          ["frostgun", P(8, 2, 120)], ["frostgun", P(9, 4, 124)], ["icecaptain", N(9, 3, 132)]];   /* the captain comes by (6,2): held there beside a lit brazier, his ice thaws */
+        return W1(SQUAD.map(([type, o], i) => [+(2 + i * 0.4).toFixed(1), type, 0, 1, 0, o]).concat([
+          [88, "yfang", 0, 2, 1.5], [100, "snowblade", 0, 2, 2], [116, "snowblade", 0, 2, 2], [128, "yfang", 0, 3, 1.2]])); })(),
+      boss: ["", ""], desc: "생니카즈 거리의 분수 광장. 눈보라가 그치지 않습니다. 켜진 화로가 많을수록 눈보라 게이지가 빨리 줄고, 다 줄면 그칩니다. 근위대가 광장 한가운데에 한꺼번에 나타나 서 있다가, 바깥쪽부터 하나씩 방어 지점으로 걸어옵니다. 설원 습격병은 눈보라 속에서 보이지 않습니다. 적은 지나가다 곁의 화로를 부숩니다. 화로는 스스로 회복하고, 절반까지 차면 다시 켜집니다.",
+      lose: "눈보라가 부는 동안에는 화로 곁의 따뜻한 칸에만 설 수 있습니다. 화로를 치는 적부터 떼어 내세요." },
+    { code: "IM-07", name: "반란의 그늘", map: MAP_C2.detour, bg: null, hz: 0.5, ep: 2, startCost: 10, mul: { hp: 0.67, atk: 0.74, def: 0.75 }, rmul: { hp: 0.8, atk: 0.6 },
+      wind: { dir: 0, first: 40, every: 34, dur: 12 }, lamps: { fire: true },
+      tunnels: [{ a: [0, 6], b: [0, 1], t: 5 }, { a: [6, 1], b: [4, 6], t: 5 }],
+      // the waves keep the reference board's shape: few foes, long gaps on the high road, and a long way round that the slow and the strong take. Two gunners stand on the bottom row until 40;
+      // three shield-bearers walk to the pocket in the bottom left and stand there until 100 / 110 / 130 before they go round; three gunners stand at the head of the road, then turn off after them
+      waves: (() => { const ROUND = { via: [[2, 6], [5, 1], [7, 6]], tun: true }, POCKET = (x, y, t) => ({ via: [[x, y, { until: t }], [5, 1], [7, 6]], tun: true }), HEAD = (x, t) => ({ via: [[x, 4, { until: t }], [2, 6], [5, 1], [7, 6]], tun: true });
+        return W1([[0.5, "frostgun", 0, 1, 0, { at: [6, 6], until: 40 }], [0.5, "frostgun", 0, 1, 0, { at: [7, 6], until: 40 }],
+        [3, "yshield", 0, 1, 0, POCKET(1, 6, 100)], [6, "yshield", 0, 1, 0, POCKET(2, 6, 110)], [9, "yshield", 0, 1, 0, POCKET(2, 5, 130)],
+        [17, "soldier", 0, 2, 3], [25, "soldier", 0, 1, 0, ROUND], [44, "soldier", 0, 2, 2, ROUND], [54, "frostgun", 0, 1, 0, HEAD(3, 77)], [57, "frostgun", 0, 1, 0, HEAD(2, 89)], [60, "frostgun", 0, 1, 0, HEAD(1, 101)],
+        [86, "soldier", 0, 2, 3], [102, "frostgun", 0, 2, 3], [102, "grenadier", 0, 1, 0, ROUND], [122, "soldier", 0, 2, 2], [135, "soldier", 0, 3, 7],
+        [162, "frostgun", 0, 2, 2], [182, "soldier", 0, 2, 11], [187, "grenadier", 0, 1, 0, ROUND], [202, "frostgun", 0, 3, 15], [209, "soldier", 0, 3, 11]]); })(),
+      boss: ["", ""], desc: "갈림길. 큰길은 진창을 건너 동쪽 끝에서 북쪽 방어 지점으로 꺾습니다. 느리고 단단한 적은 (2,4)에서 남쪽으로 꺾어 땅굴로 들어가, 왼쪽 위로 나와 맨 윗줄을 걷고, 다시 땅굴을 타고 아랫줄 (4,6)으로 나와 오른쪽 줄로 올라옵니다. 눈보라는 서쪽에서 불어옵니다. 올라온 벽 뒤의 칸은 바람을 피하고, 화로 곁의 진창 (7,4)는 얼지 않습니다.",
+      lose: "큰길은 (4,4)와 화로 곁의 진창에서 받고, 돌아오는 적은 윗줄 (5,1)과 아랫줄 (7,6)에서 받으세요." },
     { code: "IM-ST1", name: "불 꺼진 밤", map: MAP_C2.shadow, bg: null, hz: 0.5, ep: 2, story: true, startCost: 10, mul: { hp: 1, atk: 1, def: 1 }, waves: [],
       boss: ["", ""], desc: "갈림길의 반란군은 거의 남지 않았다. 검문소를 앞둔 밤, 불을 피우지 못한 채 모여 앉은 사람들.", lose: "" },
     { code: "IM-08", name: "황제가 죽었다", map: MAP_C2.barrier, bg: null, hz: 0.5, ep: 2, startCost: 10, mul: { hp: 0.445, atk: 0.69, def: 0.76 },
@@ -1425,22 +1720,52 @@
         [152, "grenadier", 1, 2, 2.5], [154, "drummer", 1, 1], [160, "yrazor", 0, 2, 2, CORNER], [162, "strag", 0, 6, 0.8, GATE], [168, "cart", 1], [171, "soldier", 1, 3, 1.2], [174, "yfang", 0, 3, 1, CORNER]]); })(),
       boss: ["", ""], desc: "성 안을 두른 세관 성벽. 바깥 큰길의 적은 통행세 문(6,3)으로 꺾어 들거나 동쪽 무너진 모퉁이(12,3)로 돌아 들어오고, 성 안 길로는 근위대와 화약 수레가 옵니다. 눈보라는 북쪽에서 불어와 성벽이 막아 주지만, 문 아래와 모퉁이 아래로는 그대로 들이칩니다. 화로(F) 둘레 여덟 칸은 얼지 않습니다. 세관 건물의 화로는 문 바깥 칸 (6,2)를, 무너진 모퉁이의 화로는 모퉁이 바깥 (12,2)와 안쪽 (12,4)를 덥힙니다. 성벽 바깥의 나머지 칸과 문 바로 아래 (6,4)는 눈보라마다 얼어붙습니다. 세관 지붕 (4,2)·(10,2)에는 설원 저격수가 엎드려 있다가 90초가 지나면 일어나 걸어옵니다. 곰가죽 모자의 근위 척탄병은 단단하고 둘 몫으로 저지됩니다. 모퉁이 안쪽 (12,4)에는 척탄병 하나가 처음부터 초소를 지키다가, 124초가 지나면 방어 지점으로 걸어옵니다.",
       lose: "문은 바깥 (6,2)에서 막으면 얼지 않지만 저격수가 겨누고, 안쪽 (6,4)에서 막으면 눈보라마다 얼어붙습니다. 모퉁이로 들어오는 적은 바깥 (12,2)나 안쪽 (12,4)에서 막습니다. 바깥은 저격수 (10,2)의 사거리 안이고, 안쪽은 방어 지점 바로 곁이지만 초소의 척탄병부터 쓰러뜨려야 설 수 있습니다. 성벽 그늘의 고지 (11,4)가 모퉁이를 내려다봅니다. 수레는 근위대 한가운데서 터지게 하세요." },
-    { code: "IM-10", name: "지옥 기계", map: MAP_C2.gate, bg: null, hz: 0.5, ep: 2, startCost: 12, mul: { hp: 0.46, atk: 0.46, def: 0.8 },
-      wind: { dir: 2, first: 36, every: 36, dur: 12 },   // out of the gate, from the east: down both roads; the towers shelter the rows beside and between them
-      vias: { 1: [[10, 2]], 2: [[10, 4]] },   // the mouths: each gate road files through the windbreak square before the towers
-      // gates: 0 the north side street (carts), 1 the gate's upper road, 2 the gate's lower road, 3 the south side street (carts and hounds). Four movements: the Guard comes out (4-44),
-      // pikemen, carts and the first drums (58-92), the eagle (96: he plants the standard in the gate's throat, then comes down the lower road, halting once more below the monument;
-      // twice he raises it — grenadiers behind him, the blizzard out of the gate), and everything at once (130-190).
-      // Posts: two snipers on the tower rises (11,1) and (11,5) from the start, aiming in front of the gate; at 130 they come down and walk in with the rest
-      waves: (() => { const EAGLE = { via: [[10, 4], [10, 3, 9], [7, 4, 5], [2, 4]] }, CROSS = { via: [[10, 2], [10, 3], [7, 4]] }, HOV_P = { air: [[10, 1, 4], [6, 3, 6], [3, 3, 5], [0, 3]] }, HOV_S = { air: [[11, 5, 4], [8, 3, 5], [1, 5, 5], [0, 3]] };
-        return W1([[0.5, "snowsniper", 1, 1, 0, { at: [11, 1], until: 130, hp: 0.8, atk: 0.6 }], [0.5, "snowsniper", 2, 1, 0, { at: [11, 5], until: 130, hp: 0.8, atk: 0.6 }],
-        [5, "soldier", 1, 2, 2.5], [12, "soldier", 2, 2, 2.5], [18, "cart", 0], [24, "grenadier", 1, 1], [30, "yfang", 3, 3, 1.3], [38, "soldier", 2, 3, 1.4], [40, "drummer", 2, 1],
-        [58, "lancer", 1, 2, 2], [62, "cart", 3], [64, "yshield", 2, 1], [70, "frostgun", 1, 1], [78, "grenadier", 2, 2, 3], [80, "drummer", 2, 1], [86, "bomber", 1, 1, 0, HOV_P], [90, "cart", 0], [92, "chouang", 0, 3, 1.4],
-        [96, "eagle", 2, 1, 0, EAGLE], [100, "soldier", 1, 4, 1.5], [110, "yfang", 3, 4, 1], [112, "lancer", 2, 2, 2],
-        [118, "grenadier", 1, 1, 0, { via: [[11, 2, { until: 130 }], [10, 2]] }], [118, "grenadier", 2, 1, 0, { via: [[11, 4, { until: 130 }], [10, 4]] }], [121, "grenadier", 1, 1, 0, { via: [[12, 2, { until: 140 }], [10, 2]] }], [121, "grenadier", 2, 1, 0, { via: [[12, 4, { until: 140 }], [10, 4]] }], [134, "cart", 0], [135, "cart", 3], [143, "drummer", 2, 1], [148, "frostgun", 1, 2, 2.5], [150, "bomber", 2, 2, 6, HOV_S], [156, "yshield", 1, 1, 0, CROSS], [168, "yfang", 3, 3, 1],
-        [164, "lancer", 1, 2, 1.5], [172, "soldier", 1, 6, 1.2], [175, "drummer", 1, 1], [180, "cart", 3], [182, "yrazor", 3, 1], [184, "grenadier", 1, 1]]); })(),
-      boss: ["경고: 황제의 독수리", "독수리 기수 · WARNING"], desc: "성문 앞 광장. 근위대가 두 탑 사이 성문에서 쏟아져 나와 위쪽 길과 아래쪽 길로 광장을 건너옵니다. 두 길 사이에는 기념비와 그 계단(고지)이 있고, 성문 목 (10,3)이 두 길을 잇습니다. 반란군의 지옥 기계는 북쪽과 남쪽 골목에서 광장 서쪽으로 굴러 내려옵니다. 눈보라는 성문에서, 동쪽에서 불어와 두 길을 따라 들이치고, 탑 뒤의 줄과 가운데 줄은 바람을 피합니다. 길 위에 선 가사인격은 얼어붙는 대신 그 뒤를 지켜 줍니다. 두 탑 위 (11,1)·(11,5)에는 설원 저격수가 올라가 성문 앞을 겨누다가, 130초가 지나면 내려와 걸어옵니다. 118초에는 근위 척탄병 넷이 성문 안쪽 두 길에 두 줄로 늘어서고, 130초에 앞줄이, 140초에 뒷줄이 걸어 나옵니다. 독수리 기수는 성문 목에 군기를 꽂고 한참 서 있다가 아래쪽 길로 오고, 기념비 아래 (7,4)에서 한 번 더 멈춰 섭니다. 군기 둘레의 적은 빨라지고 세집니다. 체력이 2/3, 1/3로 줄 때마다 군기를 치켜들어 보병을 불러 세우고, 성문에서 눈보라가 한 번 더 불어옵니다.",
-      lose: "성문 가까운 (10,2)·(10,4)에 선 가사인격은 눈보라를 맞는 대신 그 뒤의 길 전체를 지켜 줍니다. 이 두 칸은 성문에서 나오는 근위대가 모두 지나는 길목이기도 합니다(골목의 수레와 사냥개는 그 뒤로 들어옵니다). 탑 위 저격수의 사거리 안이니, 저격수부터 쓰러뜨리세요. 독수리 기수의 체력을 깎을 때는 눈보라가 곧 불어온다는 것을 먼저 떠올리세요. 수레는 기념비 옆을 지날 때 그의 곁에서 터뜨리면 크게 아픕니다. 북과 군기 둘레의 적은 훨씬 빠르니, 고수를 먼저 떨어뜨리세요." },
+    { code: "IM-10", name: "지옥 기계", map: MAP_C2.frostgate, bg: null, hz: 0.5, ep: 2, startCost: 20, mul: { hp: 0.3, atk: 0.3, def: 0.7 }, rmul: { hp: 0.48, atk: 0.42 }, hard: true,
+      /* 2026-11-18, the frost stage (stage.frost, spec 2-10 v2): the cold is the boss. Directions: 0 from the west, 1 from the north, 2 from the east, 3 from the south */
+      frost: { braziers: { hp: 3000, drain: [5, 9, 14, 20], feed: { cost: 10, hp: 900, cd: 4 }, warm: 1 }, finalDps: 0.03,
+        storm: [{ dirs: [1] }, { dirs: [1] }, { dirs: [1, 0] }, { dirs: [0, 1, 2, 3] }],
+        phases: [{ open: [[4, 2, 14, 8]] },
+          { open: [[2, 1, 16, 9]], set: [[5, 3, "F"], [13, 7, "F"]], when: "clear" },
+          { open: [[0, 0, 18, 10]], set: [[3, 5, "F"], [15, 5, "F"], [9, 1, "F"], [9, 7, ","], [3, 3, "W"], [15, 7, "W"]], tunnels: [{ a: [2, 8], b: [8, 8], t: 4 }], when: "clear" },
+          { final: true, time: 70, when: "clear" }] },
+      /* waves: times from each phase's start, gates by square. Posts (at/until, via until) count from the phase's start too (frostShift) */
+      waves: (() => { const G = (ph, x, y, o) => Object.assign({ ph, gate: [x, y] }, o || {}), POST = (ph, gx, gy, x, y, t) => G(ph, gx, gy, { at: [x, y], until: t });
+          /* EAST: out of the north gate along the top row and down the east side (15,2)-(15,4). Snow blades are hidden while the blizzard blows, so one that stopped within reach of (9,3) could not be struck
+             at all; this way they pass two squares from it and come up against whoever holds (12,5) */
+          /* the phase-2 mortars stand on (8,1) and (11,9): a mortar stands wherever something is in reach, and at its gate it could be reached by nobody; (8,1) is in reach of a sniper on (5,2), (12,6) of one on (13,8) */
+          /* W3: the way in along row 3 from the west to (7,3): whoever holds (8,3) holds them there on a warm square (the ice of shields, ice guards and the frost marshal's men thaws), too far
+             from (9,3) to strike it. E3 / EAST3: in along row 3 from the east to (11,3) and down column 11 to (10,5); they pass (9,3) at two squares. Coming down columns 8 or 10 instead, a foe stops
+             within reach of (9,3) before anyone can hold him */
+          /* ROW9: the east gate of the bottom row comes along row 9 and in along row 7 to (12,7): held there, west of the brazier (13,7), it is out of reach of it */
+          const ROW9 = { via: [[15, 9], [11, 7], [12, 7]] };
+          const W3 = { via: [[6, 5], [7, 4], [7, 3]] }, E3 = { via: [[12, 4], [11, 3]] }, EAST3 = { via: [[15, 2], [12, 4], [11, 3]] }, EAST = { via: [[15, 2]] };
+        return W1([
+        /* phase 0: the two gates in the middle, soldiers and stragglers in ones and twos (the east gate a little later), two hounds to end it */
+        [2, "soldier", 0, 1, 0, G(0, 5, 3)], [8, "strag", 0, 2, 1.5, G(0, 5, 3)], [14, "soldier", 0, 1, 0, G(0, 5, 3)], [20, "strag", 0, 1, 0, G(0, 5, 3)], [25, "strag", 0, 1, 0, G(0, 13, 7)],
+        [27, "soldier", 0, 1, 0, G(0, 13, 7)], [29, "strag", 0, 2, 1.5, G(0, 13, 7)], [32, "yfang", 0, 1, 0, G(0, 5, 3)], [34, "yfang", 0, 1, 0, G(0, 13, 7)],
+        /* phase 1: the ring. Four frost gunners stand at the edge of it from the first second and leave one by one; the first mortar from the east, the first standard bearer from the west behind shields
+           (they come in along row 3, W3); everything from the north gate goes round by the east and in along row 3 (EAST3), past (9,3) at two squares; some bands go by (5,4) and (13,6)
+           and stop at the new braziers; the guard captain last */
+        [0.5, "frostgun", 0, 1, 0, POST(1, 15, 5, 16, 4, 18)], [0.5, "frostgun", 0, 1, 0, Object.assign(POST(1, 3, 5, 2, 4, 28), W3)], [0.5, "frostgun", 0, 1, 0, POST(1, 15, 5, 16, 6, 38)], [0.5, "frostgun", 0, 1, 0, Object.assign(POST(1, 3, 5, 3, 9, 48), W3)],
+        [4, "mortar", 0, 1, 0, G(1, 15, 5)], [6, "yshield", 0, 2, 3, G(1, 3, 5, Object.assign({ hp: 0.3 }, W3))], [14, "standard", 0, 1, 0, G(1, 3, 5, W3)],
+        [8, "snowblade", 0, 3, 3, G(1, 9, 1, EAST3)], [18, "soldier", 0, 2, 2, G(1, 3, 5, { via: [[5, 4]] })], [22, "soldier", 0, 2, 2, G(1, 15, 5, { via: [[13, 6]] })],
+        [28, "strag", 0, 2, 1.2, G(1, 9, 1, EAST3)], [34, "yfang", 0, 2, 1.5, G(1, 15, 5)], [40, "grenadier", 0, 1, 0, G(1, 3, 5, { via: [[5, 4]] })], [46, "snowblade", 0, 2, 3, G(1, 9, 1, EAST3)],
+        [52, "soldier", 0, 2, 2, G(1, 15, 5, { via: [[13, 6]] })], [58, "soldier", 0, 2, 2, G(1, 3, 5, W3)], [40, "icecaptain", 0, 1, 0, G(1, 9, 1, Object.assign({ hp: 0.2, atk: 0.6 }, EAST3))],
+        /* phase 2: all seven outer gates. Two gunners posted on the outer rows, a mortar north (8,1) and one south (12,6), a standard bearer behind shields from the south-west and one from the north-east (both
+           in along row 3), the eagle bearer from the north gate at 45 (down column 8), the frost marshal from the south gate at 80 (round by the west, in along row 3), an ice guard from
+           the south-east along the whole bottom row and one from the south-west (both in along row 3 from the west), hounds through the tunnel (and then in along row 3), grenadiers; the second
+           standard bearer comes down column 8 (he never strikes, so he walks on to whoever holds (8,3)); the bottom row from the east comes in by (12,7). What comes from the north gates passes (9,1) and strikes it, then
+           stops on column 8 or 10 within reach of (9,3) (the brazier (9,1) cuts the top row, so there is no other way down from the north-west). Snow blades only where they pass no brazier within reach (they cannot be struck while hidden) */
+        [0.5, "frostgun", 0, 1, 0, POST(2, 10, 0, 12, 1, 30)], [0.5, "frostgun", 0, 1, 0, POST(2, 9, 10, 6, 9, 40)],
+        [3, "soldier", 0, 3, 2, G(2, 0, 2)], [8, "yshield", 0, 2, 2.5, G(2, 0, 8, Object.assign({ hp: 0.5 }, W3))], [13, "standard", 0, 1, 0, G(2, 0, 8, W3)], [58, "soldier", 0, 2, 1.5, G(2, 0, 2)],
+        [8, "mortar", 0, 1, 0, POST(2, 8, 0, 8, 1, 999)], [18, "grenadier", 0, 2, 3, G(2, 8, 0)], [45, "eagle", 0, 1, 0, G(2, 8, 0, { hp: 0.3, atk: 0.25 })],
+        [52, "frostgun", 0, 2, 2, G(2, 10, 0)], [68, "yfang", 0, 3, 1, G(2, 10, 0)], [72, "strag", 0, 3, 1, G(2, 10, 0)],
+        [58, "yshield", 0, 2, 2.5, G(2, 18, 2, Object.assign({ hp: 0.5 }, E3))], [63, "standard", 0, 1, 0, G(2, 0, 2)],
+        [5, "soldier", 0, 3, 2, G(2, 18, 8, ROW9)], [0.5, "iceguard", 0, 1, 0, G(2, 18, 8, { via: [[15, 9], [3, 9], [6, 5], [7, 4], [7, 3]], hp: 0.25 })], [62, "grenadier", 0, 1, 0, G(2, 18, 8, ROW9)], [62, "grenadier", 0, 1, 0, G(2, 10, 0)],
+        [40, "iceguard", 0, 1, 0, G(2, 0, 8, Object.assign({ hp: 0.25 }, W3))], [22, "yfang", 0, 4, 1, G(2, 0, 8, Object.assign({ tun: true }, W3))],
+        [26, "soldier", 0, 3, 1.5, G(2, 10, 0)], [30, "snowblade", 0, 2, 2, G(2, 18, 8, ROW9)], [34, "mortar", 0, 1, 0, POST(2, 9, 10, 12, 6, 999)], [80, "frostmarshal", 0, 1, 0, G(2, 9, 10, Object.assign({ hp: 0.3 }, W3))]]); })(),
+      boss: ["", ""], desc: "수도의 성문. 눈보라가 그치지 않고, 화로가 모두 꺼지면 얼어 죽습니다. 적을 지울 때마다 안개가 걷히고 적이 나오던 자리에 화로가 놓입니다. 화로를 누르면 코스트 10으로 장작을 넣을 수 있습니다. 화로 곁에서는 얼지 않습니다. 마지막에는 적이 오지 않고 눈보라만 사방에서 밀려옵니다.",
+      lose: "바람이 들어오는 쪽 화로 옆에 가사인격을 세우면 그 방향의 눈보라가 막힙니다. 지킬 화로를 고르세요." },
     // a side branch shown under IM-01 and open with chapter 2: the terminal's lesson on the blizzard, with a fixed squad (lines by 유진)
     { code: "TR-03", name: "눈보라 학습", map: MAP_C2.lesson, bg: null, hz: 0.5, ep: 2, branch: "IM-01", startCost: 30, mul: { hp: 0.245, atk: 0.262, def: 0.5 },
       wind: { dir: 3, first: 30, every: 34, dur: 14, durs: [10] },
@@ -1450,152 +1775,345 @@
       lose: "맨 아래 줄 빈칸에 선봉을 바람막이로 세우세요. 두 길 사이 올라온 벽 뒤(위쪽 길)는 처음부터 안전합니다." },
     // ======== chapter 3 (working title 「쏘지 않은 탄환」): the capital, the Emperor who came back, the confessor ========
     // ---- chapter 3 (second cut) ----
-    // act 1, the Prefect's order: the dark. A street lamp lights two squares round it; whatever stands outside the light cannot be seen, and once it is held or met there only
-    // those right beside it can strike it. A lamp is kept by whoever stands right beside it (above, below, left, right)
-    { code: "WL-01", name: "불 꺼진 거리", map: MAP_C3.lamps1, bg: null, hz: 0.5, ep: 3, startCost: 10, mul: { hp: 1.31, atk: 1.23, def: 0.85 }, rmul: { hp: 1, atk: 0.9 },
-      lamps: { r: 2, events: [{ t: 80, off: [[1, 0]] }, { t: 125, off: [[5, 6]] }] },   // the two lamps nearest the point run dry in turn, unless somebody is standing by them
-      // gates: 0 the upper street, 1 the lower. No surges here: a patrol every eight seconds or so, now on one street, now on the other, and from 76 on some of them change
-      // streets by the cross street, in the dark
-      waves: (() => { const U1 = { via: [[11, 1], [1, 1]] }, U2 = { via: [[10, 1], [9, 2], [2, 2]] }, L4 = { via: [[12, 4], [3, 4]] }, L5 = { via: [[11, 4], [10, 5], [2, 5], [1, 4]] },
-        X = { via: [[10, 1], [7, 2], [7, 4], [3, 4]] }, Y = { via: [[11, 4], [6, 4], [6, 2], [2, 2]] };
-        return W1([[5, "soldier", 0, 2, 2, U2], [16, "soldier", 1, 2, 2, L4], [26, "dog", 0, 2, 1.4, U2], [34, "soldier", 1, 2, 2, L4], [42, "chasseur", 0, 1, 0, U2], [50, "dog", 1, 2, 1.3, L4],
-        [58, "soldier", 0, 2, 1.6, U1], [62, "chasseur", 0, 1, 0, U1], [64, "soldier", 1, 3, 1.6, L5], [72, "grenadier", 0, 1, 0, U2], [78, "dog", 0, 3, 1.2, X], [86, "chasseur", 1, 1, 0, L4], [92, "soldier", 1, 3, 1.5, Y], [100, "soldier", 0, 3, 1.5, U2],
-        [110, "grenadier", 1, 1, 0, L4], [116, "dog", 1, 3, 1.1, L5], [124, "soldier", 0, 3, 1.4, U1], [130, "chasseur", 0, 1, 0, U2], [134, "soldier", 1, 2, 1.4, L4], [142, "dog", 0, 3, 1, U1],
-        [148, "grenadier", 0, 1, 0, U2], [152, "soldier", 1, 3, 1.3, L5], [156, "chasseur", 1, 1, 0, L5], [158, "soldier", 0, 3, 1.3, X], [164, "grenadier", 1, 1, 0, L4], [170, "soldier", 0, 3, 1.3, U1], [172, "dog", 1, 3, 1, L5]]); })(),
-      boss: ["", ""], desc: "성 안의 밤거리. 가로등 넷이 둘레 두 칸씩을 비춥니다. 등불 밖의 적은 보이지 않고, 어둠 속에서 막아 세운 적은 곁 칸의 근거리 가사인격만 칠 수 있습니다. 80초와 125초에 등 둘이 기름이 떨어져 꺼집니다. 두 길의 순찰대는 각각 동쪽 등 아래 (10,1)·(11,4)를 지나 들어옵니다.",
-      lose: "저지선은 등불 아래에 세우세요. 깜빡이는 등은 바로 옆 칸에 누군가 서 있으면 꺼지지 않습니다. 꺼진 등은, 꺼진 뒤 옆 칸에 새로 배치된 가사인격이 6초 서 있으면 다시 켜집니다. 동쪽 등 아래 (10,1)·(11,4)는 순찰대가 줄지어 지나는 길목입니다. 거기서 막으면 한 칸으로 길 하나를 받지만, 방어 지점에서 멀어 뚫리면 다시 세울 틈이 없습니다." },
-    { code: "WL-02", name: "빵집 앞 줄", map: MAP_C3.lamps2, bg: null, hz: 0.5, ep: 3, startCost: 12, mul: { hp: 0.95, atk: 1.05, def: 0.85 }, rmul: { hp: 1, atk: 0.9 },
-      lamps: { r: 2 },
-      // gates: 0 the north alley (it drops into the street's dark middle), 1 the west end of the street, 2 the east end. Four rounds, each led by a lamplighter's opposite:
-      // the snuffer walks his round — street lamp, then down the steps to the door lamp — and what follows him comes through the dark he leaves. Short and tight: over by 165
-      waves: (() => { const WS = { via: [[2, 1], [4, 1], [4, 3], [4, 6]] }, W2 = { via: [[5, 2], [5, 5]] }, ES = { via: [[11, 1], [9, 1], [9, 3], [9, 6]] }, E2 = { via: [[8, 2], [8, 5]] },
-        NE = { via: [[9, 3], [8, 5]] }, NW = { via: [[9, 1], [5, 1], [5, 5]] }, NS = { via: [[9, 3], [9, 6]] };
-        return W1([[5, "soldier", 1, 2, 2, W2], [10, "soldier", 2, 2, 2, E2], [18, "snuffer", 1, 1, 0, WS], [26, "dog", 0, 2, 1.4, NE],
-        [44, "snuffer", 2, 1, 0, ES], [46, "soldier", 2, 3, 1.5, E2], [52, "chasseur", 1, 1, 0, W2], [58, "dog", 0, 3, 1.2, NW], [64, "grenadier", 1, 1, 0, WS], [70, "soldier", 1, 2, 1.5, W2], [73, "chasseur", 1, 1, 0, W2],
-        [84, "snuffer", 1, 1, 0, WS], [85, "snuffer", 0, 1, 0, NS], [88, "soldier", 2, 4, 1.4, ES], [94, "lancer", 1, 2, 2, W2], [100, "chasseur", 2, 1, 0, E2], [106, "dog", 0, 3, 1.1, NE], [110, "grenadier", 2, 1, 0, E2],
-        [124, "snuffer", 1, 1, 0, WS], [125, "snuffer", 2, 1, 0, ES], [128, "grenadier", 1, 1, 0, W2], [132, "soldier", 2, 3, 1.3, E2], [136, "chasseur", 2, 1, 0, E2], [136, "dog", 0, 3, 1, NW], [140, "chasseur", 1, 1, 0, WS], [142, "chasseur", 2, 1, 0, ES],
-        [146, "soldier", 1, 3, 1.3, W2], [150, "drummer", 2, 1, 0, E2], [154, "lancer", 2, 2, 2, E2], [158, "grenadier", 0, 1, 0, NE]]); })(),
-      boss: ["", ""], desc: "빵집 앞. 방어 지점은 아래쪽 한가운데의 두 짝 문입니다. 소등부가 큰길의 등부터 문 옆 등까지 돌며, 옆 칸에 아무도 없는 등을 전부 끕니다. 꺼진 등은, 꺼진 뒤 옆 칸에 새로 배치된 가사인격이 6초 서 있으면 다시 켜집니다.",
-      lose: "문 옆 등 둘은 그 곁의 고지에서만 지킬 수 있습니다. 여덟 자리로 다섯 등을 다 지킬 수는 없습니다. 소등부를 먼저 쓰러뜨려도 됩니다." },
-    { code: "WL-03", name: "경찰청 뒷마당", map: MAP_C3.lamps3, bg: null, hz: 0.5, ep: 3, startCost: 12, mul: { hp: 1.39, atk: 1.24, def: 0.85 }, rmul: { hp: 1, atk: 0.9 },
-      lamps: { r: 2, off: [[4, 2], [7, 2]], relight: 4 },   // here a fresh keeper lights a lamp in 4 s
-      // gates: 0 the north gate, 1 the main gate (east). Points: the cell door (0,3) and the wagon gate (7,6). POST: the Guard's marksmen in the dark, one over each point.
-      // TIED: the rebels taken last night, under the dead east lamp (7,2): light it and they are loose, and they hold the way to the wagon gate.
-      // Three movements: a look at both points (6-34), the informers with marksmen behind them (50-92), and a snuffer for the one lamp that was burning by the gate (110-160)
-      waves: (() => { const POST = (x, y) => ({ at: [x, y], until: 150, hp: 1.5 }), TIED = (x, y) => ({ at: [x, y], ally: true, wait: true, hp: 0.44, atk: 0.56 }),
-        EW = { via: [[11, 2], [3, 3], [0, 3]] }, ES = { via: [[11, 2], [9, 4], [8, 4], [7, 4], [7, 5], [7, 6]] }, NW = { via: [[5, 2], [2, 2], [0, 3]] }, NS = { via: [[5, 3], [5, 4], [7, 6]] }, SN = { via: [[11, 1], [9, 2], [5, 3], [3, 3], [0, 3]] };
-        return W1([[0.5, "chasseur", 1, 1, 0, POST(6, 3)], [0.5, "chasseur", 1, 1, 0, POST(1, 1)], [0, "chouang", 1, 1, 0, TIED(7, 4)], [0, "chouang", 1, 1, 0, TIED(8, 4)], [0, "chouang", 1, 1, 0, TIED(6, 4)],
-        [6, "soldier", 1, 3, 2, EW], [18, "dog", 0, 2, 1.4, NS], [20, "soldier", 1, 2, 2, ES], [26, "mouchard", 1, 1, 0, EW], [34, "soldier", 0, 2, 2, NW],
-        [50, "grenadier", 1, 1, 0, ES], [54, "mouchard", 0, 1, 0, NW], [56, "chasseur", 1, 1, 0, EW], [62, "soldier", 1, 4, 1.4, EW], [70, "dog", 0, 3, 1.2, NW], [76, "soldier", 0, 3, 1.5, NS], [84, "lancer", 1, 2, 2, ES], [88, "mouchard", 1, 1, 0, ES], [92, "chasseur", 0, 1, 0, NS],
-        [110, "snuffer", 1, 1, 0, SN], [112, "grenadier", 1, 2, 3, EW], [118, "mouchard", 0, 1, 0, NS], [120, "soldier", 0, 3, 1.4, NW], [126, "dog", 1, 4, 1.1, ES], [134, "chasseur", 1, 2, 3, EW], [140, "soldier", 1, 4, 1.3, ES], [142, "drummer", 1, 1, 0, ES],
-        [148, "lancer", 0, 2, 2, NW], [152, "mouchard", 1, 1, 0, EW], [156, "grenadier", 0, 1, 0, NS], [160, "soldier", 1, 4, 1.3, EW]]); })(),
-      boss: ["", ""], desc: "경찰청 뒷마당, 동트기 전. 방어 지점은 서쪽 유치장 문과 남쪽 마차 문, 둘입니다. 가운데 등 둘은 꺼져 있고, 그 어둠 속 고지 두 곳에서 근위 엽병이 겨누고 있습니다. 꺼진 동쪽 등 아래에는 반란군 셋이 묶여 있습니다. 밀고자가 지목한 가사인격은 10초 동안 1.6배로 맞습니다.",
-      lose: "꺼진 등 옆 칸에 가사인격을 배치하고 4초를 버티면 등이 켜집니다. 동쪽 등이 켜지면 묶인 셋이 풀려 남쪽 문 앞을 막습니다. 북서쪽 고지의 엽병은 등으로 비출 수 없으니 근거리 가사인격을 곁에 붙이세요. 정문으로 들어오는 적은 모두 정문 등 아래 (11,2)를, 북문으로 들어오는 적은 (5,2)를 지납니다." },
-    // act 2, the Emperor's order: grapeshot. A gun fires down its line on a timetable, warned first. It takes a third of whatever of ours stands in the line, armour or no,
-    // and far less of theirs. Stand on the square before the muzzle and it is silent; hold that square eight seconds and the gun is ours, firing only at them
-    { code: "WL-04", name: "성당 계단", map: MAP_C3.steps, bg: null, hz: 0.5, ep: 3, startCost: 14, mul: { hp: 1.06, atk: 1.166, def: 0.85 }, rmul: { hp: 1, atk: 0.9 },
-      // every third shot of each gun goes down the outer row of its street; a gun of ours fires every 13 s down both rows and takes 30% of each foe's strength
-      volleys: [{ first: 30, every: 26, warn: 4, dmg: 700, pct: 0.35, foe: 0.3, mine: 1.7, mineEvery: 13, minePct: 0.3, capture: 8, linger: 20, muzzle: [11, 2], gun: [13, 2], tiles: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((x) => [x, 2]),
-                  alt: { every: 3, tiles: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((x) => [x, 1]) } },
-                { first: 43, every: 26, warn: 4, dmg: 700, pct: 0.35, foe: 0.3, mine: 1.7, mineEvery: 13, minePct: 0.3, capture: 8, linger: 20, muzzle: [11, 5], gun: [13, 5], tiles: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((x) => [x, 5]),
-                  alt: { every: 3, tiles: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((x) => [x, 6]) } }],   // thirteen seconds apart: a round every thirteen
-      // gates: 0 the north alley, 1 the upper east gate, 2 the lower. The pickets: a grenadier of the gun crews on each muzzle square. CROWD: the royalist sections, come out for the wrong
-      // king on the right day (13 Vendémiaire, before this very church): they stand with us in the two lines of fire. A platoon comes in behind every round: the guns are the clock
-      waves: (() => { const NF = { via: [[12, 2], [2, 2], [1, 3]] }, NO = { via: [[12, 1], [1, 1], [1, 3]] }, SF = { via: [[12, 5], [2, 5], [1, 4]] }, SO = { via: [[12, 6], [1, 6], [1, 4]] },
-        XS = { via: [[12, 2], [8, 2], [8, 5], [2, 5], [1, 4]] }, AL = { via: [[7, 2], [5, 2], [5, 5], [1, 4]] }, CROWD = (x, y) => ({ at: [x, y], ally: true });
-        return W1([[0.5, "grenadier", 1, 1, 0, { at: [11, 2], until: 150 }], [0.5, "grenadier", 2, 1, 0, { at: [11, 5], until: 150 }], [0, "chouang", 1, 1, 0, CROWD(5, 2)], [0, "chouang", 1, 1, 0, CROWD(6, 2)], [0, "chouang", 2, 1, 0, CROWD(8, 5)], [0, "chouang", 2, 1, 0, CROWD(9, 5)],
-        [8, "soldier", 1, 2, 2.5, NF], [16, "soldier", 2, 2, 2, SO], [24, "dog", 0, 2, 1.4, AL],
-        [32, "soldier", 1, 3, 1.6, NO], [36, "grenadier", 2, 1, 0, SF], [45, "soldier", 2, 2, 1.6, SF], [48, "chasseur", 2, 1, 0, SF], [50, "chasseur", 1, 1, 0, NO],
-        [58, "lancer", 1, 2, 2, NF], [62, "dog", 0, 3, 1.2, AL], [71, "soldier", 2, 4, 1.4, SO], [76, "mouchard", 1, 1, 0, NO], [84, "grenadier", 1, 1, 0, NF], [88, "soldier", 1, 2, 1.5, XS], [91, "chasseur", 1, 1, 0, XS], [97, "soldier", 2, 3, 1.5, SF], [99, "drummer", 2, 1, 0, SF],
-        [110, "grenadier", 2, 1, 0, SO], [114, "chasseur", 2, 1, 0, SF], [123, "soldier", 1, 3, 1.3, NF], [128, "chasseur", 1, 1, 0, NF], [127, "dog", 0, 4, 1, AL], [136, "lancer", 2, 2, 2, SF], [140, "soldier", 1, 4, 1.3, NO], [142, "drummer", 1, 1, 0, NO],
-        [149, "grenadier", 1, 1, 0, XS], [153, "chasseur", 1, 1, 0, NF], [162, "soldier", 2, 4, 1.2, SF], [167, "chasseur", 2, 1, 0, SF], [166, "grenadier", 1, 1, 0, NF]]); })(),
-      boss: ["", ""], desc: "성당 계단 앞. 대포 두 문이 두 길에 포도탄을 쏩니다(26초마다, 4초 전 표시). 두 발은 안쪽 줄, 세 발째는 바깥 줄입니다. 줄 위의 가사인격은 최대 체력의 35%를 잃고, 근위대는 거의 다치지 않습니다. 길 한가운데의 왕당파 시민 넷도 함께 맞습니다. 포구 앞 칸에 서면 포가 멈추고, 8초를 지키면 빼앗습니다.",
-      lose: "포구 앞은 척탄병이 지킵니다(150초에 스스로 내려옵니다). 술사로 먼저 쓰러뜨리세요. 빼앗은 포는 13초마다 그 길의 두 줄을 모두 쏘아, 적마다 최대 체력의 30%를 깎습니다. 자리를 떠나도 20초 동안은 우리 편입니다. 포 하나를 빼앗고 남은 길에 힘을 모으세요." },
-    { code: "WL-05", name: "대성당 앞", map: MAP_C3.nave, bg: null, hz: 0.5, ep: 3, startCost: 14, mul: { hp: 1.23, atk: 1.12, def: 0.85 }, rmul: { hp: 1, atk: 0.75 },
-      lamps: { r: 2 },
-      volleys: [{ first: 34, every: 26, warn: 4, dmg: 700, pct: 0.35, foe: 0.3, mine: 1.7, capture: 8, linger: 20, muzzle: [4, 1], gun: [4, 0], tiles: [2, 3, 4, 5].map((y) => [4, y]) },
-                { first: 47, every: 26, warn: 4, dmg: 700, pct: 0.35, foe: 0.3, mine: 1.7, capture: 8, linger: 20, muzzle: [10, 1], gun: [10, 0], tiles: [2, 3, 4, 5].map((y) => [10, y]) }],
-      // gates: 0 the cathedral door, 1 the upper east gate, 2 the lower. The colonel comes out early (70) and stands under the door between his guns for twenty-two seconds:
-      // while he stands there no gun can be silenced or taken. Then he walks, pointing: a called shot every twelve seconds. At two thirds, "lights out"; at one third, "every gun"
-      waves: (() => { const POST = (x, y) => ({ at: [x, y], until: 150 }), BOSS = { via: [[7, 1, 22], [7, 3], [4, 4], [2, 4]] },
-        N1 = { via: [[11, 1], [2, 1], [1, 3]] }, M1 = { via: [[11, 2], [4, 3], [1, 3]] }, M2 = { via: [[11, 4], [4, 4], [2, 4]] }, S2 = { via: [[11, 5], [2, 5]] }, DS = { via: [[7, 3], [4, 4], [2, 4]] },
-        SN1 = { via: [[9, 1], [7, 1], [2, 1], [1, 3]] }, SN2 = { via: [[9, 4], [7, 4], [4, 4], [2, 4]] };
-        return W1([[0.5, "soldier", 0, 1, 0, POST(4, 1)], [0.5, "soldier", 0, 1, 0, POST(10, 1)],
-        [6, "soldier", 1, 2, 2, M1], [22, "soldier", 2, 2, 2, M2], [30, "snuffer", 1, 1, 0, SN1], [34, "dog", 2, 2, 1.5, S2], [42, "chasseur", 2, 1, 0, M2],
-        [48, "grenadier", 1, 1, 0, M1], [52, "soldier", 2, 3, 1.5, S2], [54, "mouchard", 1, 1, 0, N1], [72, "lancer", 1, 2, 2, N1],
-        [70, "colonel", 0, 1, 0, BOSS], [74, "soldier", 1, 3, 1.5, N1], [86, "dog", 2, 3, 1.2, S2], [94, "chasseur", 1, 1, 0, M1], [104, "snuffer", 1, 1, 0, SN1], [112, "soldier", 1, 2, 1.5, N1],
-        [124, "grenadier", 2, 1, 0, S2], [136, "lancer", 1, 2, 2, N1], [146, "soldier", 2, 3, 1.4, M2], [148, "drummer", 2, 1, 0, M2], [156, "chasseur", 2, 1, 0, S2], [160, "soldier", 0, 3, 1.4, DS],
-        [166, "grenadier", 1, 1, 0, M1], [172, "soldier", 2, 4, 1.3, M2], [174, "mouchard", 2, 1, 0, M2], [180, "dog", 1, 4, 1, N1], [184, "grenadier", 0, 1, 0, DS]]); })(),
-      boss: ["경고: 대관식의 예포", "의장 포병 대령 · WARNING"], desc: "대성당 앞 광장. 예포 두 문이 남쪽으로 쏘고, 모든 길이 그 두 줄을 가로지릅니다. 70초에 의장 포병 대령이 성당 문으로 나옵니다. 문 아래 서 있는 22초 동안은 포를 멈추거나 빼앗을 수 없습니다.",
-      lose: "대령은 둘 몫으로 저지됩니다. 가리킴 표시는 의무 가사인격부터 노립니다. 맞으면 최대 체력의 35%를 잃고 2초 동안 손이 멎으니, 그 곁 칸을 비워 두세요. \"소등\"에는 모든 등이 꺼집니다. 등 옆에 서 있던 가사인격은 14초 만에, 새로 세운 가사인격은 6초 만에 다시 켭니다. 등 셋을 다 지키려 들지 말고, 둘만 지키고 남는 한 명은 대령이 걸어 나온 뒤 포구 앞에 세우세요. \"전 포문\"은 대령을 쓰러뜨리면 멈춥니다." },
+    // chapter 3, third cut (2026-11-13): the lamps and the wall, on the rampart boards (MAP_C3.wl1 .. wl9). Rules on every one: every foe on foot climbs (climbAll),
+    // a lamp lights the eight squares round it (lamps.r 1, Chebyshev) and nobody of ours is set down in the dark (darkDeploy false); the torch card from WL-04 on.
+    // The chapter's question: when the light decides where we may stand and the wall decides where they may walk, where do we stand?
+    // WL-01. Question: how far do we let a foe walk in the dark before somebody meets it? (type: strike in passing; formula broken: "shooters on the high ground")
+    // gates: 0 the north lane (1,0), 1 the east lane (10,5), 2 the south-west lane (0,6). The point (5,3) sits between the two lamps' light; the rises round it are lit and see
+    // nothing in the dark. A blade asleep on the east lane and a picket on the north lane from the start; some wait in the dark pockets beside the light and grow there.
+    // The gloom runners (first alone at 26 s from the east) take the place of half the dogs: the long dark lanes are where they run fastest
+    { code: "WL-01", name: "불 꺼진 거리", map: MAP_C3.wl1, bg: null, hz: 0.5, ep: 3, startCost: 10, mul: { hp: 0.8, atk: 0.8, def: 0.85 }, rmul: { hp: 1, atk: 0.9 },
+      climbAll: true, lamps: { r: 1, darkDeploy: false },
+      waves: (() => { const NW = { via: [[1, 4]] }, SX = { via: [[3, 5]] }, N8 = (t) => ({ via: [[3, 1, { until: t }]] }), S8 = (t) => ({ via: [[2, 5, { until: t }]] }), E8 = (t) => ({ via: [[7, 3, { until: t }]] });
+        /* the blades that wait do it on the dark square just past a lit pocket: (3,1) beside (4,1), (2,5) beside (3,5), (7,3) before (6,3) */
+        return W1([[0.5, "nightblade", 1, 1, 0, { at: [7, 4], sleepDark: true, wait: 62 }], [0.5, "soldier", 0, 1, 0, { at: [2, 1], until: 40 }],
+        [6, "nightblade", 0, 1], [16, "soldier", 2, 2, 2.5], [26, "gloomrunner", 1, 1],
+        [36, "nightblade", 0, 1, 0, N8(58)], [44, "soldier", 1, 2, 2], [50, "nightblade", 2, 1, 0, S8(70)], [56, "chasseur", 0, 1], [62, "gloomrunner", 2, 2, 1.5], [68, "nightblade", 1, 1, 0, E8(86)], [74, "soldier", 0, 2, 2, NW], [80, "strag", 2, 3, 1],
+        [96, "nightblade", 0, 2, 2, N8(118)], [100, "gloomrunner", 2, 2, 2], [104, "nightblade", 2, 2, 2, S8(124)], [108, "chasseur", 1, 1], [112, "dog", 2, 3, 1.2, SX], [116, "nightblade", 1, 1, 0, E8(132)], [122, "soldier", 0, 2, 2, NW], [128, "gloomrunner", 1, 2, 1.3], [134, "chasseur", 2, 1], [138, "soldier", 1, 2, 2],
+        [146, "strag", 0, 3, 1], [150, "nightblade", 2, 2, 2, S8(166)], [156, "soldier", 1, 2, 2], [160, "nightblade", 0, 1, 0, N8(172)], [168, "gloomrunner", 2, 2, 1.3], [174, "nightblade", 1, 1]]); })(),
+      boss: ["", ""], desc: "언덕 사이 골목 한가운데의 방어 지점. 등 둘레 여덟 칸만 밝고, 어두운 칸에는 아무도 세울 수 없습니다. 야습병은 어둠 속에 있는 동안 점점 세집니다. 적은 북쪽, 동쪽, 남서쪽 골목에서 옵니다.",
+      lose: "고지에서는 어둠 속이 보이지 않습니다. 어두운 골목 바로 옆의 밝은 칸 (4,1)·(3,5)에 지상 가사인격을 세우면, 지나가거나 기다리는 적을 칠 수 있습니다." },
+    // WL-02. Question: the one square every way crosses: can one pair of hands hold it? (type: cross the wall; formula broken: "one heavy holds the road")
+    // gates: 0 the yard (3,3), 1 the west road (0,5), 2 the east road (11,5); the point (0,1) outside the fort. Every lit square is a wall top. Every way crosses the wall top (8,2)
+    // above the yard ladder and leaves by the ladder (3,1); the west road walks the south wall (4..7,5) first, under the south lamp. A wall gunner on the east wall and a picket
+    // in the yard from the start. The north wall (4..7,1) runs along the sunken floor: a foe shoved off it there falls.
+    // Pass 2: the wall gunner on the east wall now stays until 92 s; the dark fowler comes first alone at 44 s from the yard, its shots arts while it stands in the dark; gloom runners for most dogs
+    { code: "WL-02", name: "빵집 앞 줄", map: MAP_C3.wl2, bg: null, hz: 0.5, ep: 3, startCost: 12, mul: { hp: 0.95, atk: 0.95, def: 0.85 }, rmul: { hp: 1, atk: 0.9 },
+      climbAll: true, lamps: { r: 1, darkDeploy: false },
+      waves: (() => { const YE = { via: [[9, 3]] }, WE = { via: [[9, 4]] }, E2 = { via: [[3, 2]] }, WY = (t) => ({ via: [[2, 4, { until: t }]] });
+        return W1([[0.5, "wallgunner", 2, 1, 0, { at: [9, 4], until: 92 }], [0.5, "soldier", 0, 1, 0, { at: [5, 3], until: 28 }],
+        [6, "escalader", 0, 1], [18, "soldier", 1, 2, 2.5], [28, "gloomrunner", 2, 1],
+        [36, "escalader", 1, 2, 2], [44, "nightfowler", 0, 1, 0, YE], [50, "soldier", 1, 2, 2, WY(62)], [58, "escalader", 2, 1, 0, E2], [64, "dog", 1, 2, 1.4], [72, "escalader", 0, 1], [78, "grenadier", 1, 1],
+        [96, "escalader", 1, 2, 2], [100, "soldier", 0, 2, 2], [104, "nightfowler", 2, 1, 0, E2], [108, "soldier", 1, 2, 2, WE], [112, "escalader", 2, 1], [118, "gloomrunner", 1, 3, 1.2], [124, "grenadier", 1, 1], [130, "escalader", 1, 2, 2, WY(140)], [136, "wallgunner", 2, 1],
+        [146, "soldier", 0, 2, 2, YE], [152, "gloomrunner", 1, 2, 1.3], [158, "escalader", 2, 1, 0, E2], [166, "escalader", 1, 2, 2], [172, "soldier", 2, 1], [178, "grenadier", 1, 1]]); })(),
+      boss: ["", ""], desc: "요새 밖의 방어 지점. 밝은 칸은 모두 담장 위입니다. 사다리병뿐 아니라 모든 적이 사다리를 타고 담장을 넘어옵니다. 적은 안마당과 서쪽 길, 동쪽 길에서 옵니다.",
+      lose: "모든 길이 안마당 사다리 위 (8,2)를 지나지만, 서쪽 길의 적은 그 전에 남쪽 담장을 걷습니다. 한 칸에 다 받지 말고 남쪽 담장에도 저지선을 두세요." },
+    // WL-03. Question: which square do we take first, when the enemy is coming for the squares and not for us? (type: beat a clock; formula broken: "set the blockers down first")
+    // gates: 0 (3,0), 1 (5,0), 2 (7,0) on the north edge; the point (5,6). Every way comes down one of the two end ladders (1,2)/(9,2) onto the lit feet (1,3)/(9,3), crosses
+    // the dark middle and goes down the gap (5,4)-(5,5) or round over the lower wall. The only lit wall tops are (1,4) and (9,4); two stakers stand on the lower wall in the dark from
+    // the start and leave for them, the west one at 16 s, the east one at 34 s.
+    // Pass 2: the lapis marksman stands in the dark at (8,3) from the start (at half its attack here) and shoots whoever of ours stands in the light, until 130 s; only a ground operator on the lit
+    // ladder foot (9,3) beside it can strike it there; the ambusher first alone at 84 s (both ambushers at 0.7 of their attack here);
+    // gloom runners in place of the dogs
+    { code: "WL-03", name: "경찰청 뒷마당", map: MAP_C3.wl3, bg: null, hz: 0.5, ep: 3, startCost: 16, mul: { hp: 1.2, atk: 1.2, def: 0.85 }, rmul: { hp: 1, atk: 0.9 },
+      climbAll: true, lamps: { r: 1, darkDeploy: false },
+      waves: (() => { const TOP = { via: [[2, 2]] }, TOPE = { via: [[8, 2]] }, RW = { via: [[1, 4], [2, 6]] }, RE = { via: [[9, 4], [8, 6]] }, MID = (t) => ({ via: [[5, 3, { until: t }]] });
+        const STAKE = (x, t, side) => ({ at: [x, 4], until: t, via: [[side, 4], [side < 5 ? 2 : 8, 6]] });
+        return W1([[0.5, "staker", 0, 1, 0, STAKE(3, 16, 1)], [0.5, "staker", 2, 1, 0, STAKE(7, 34, 9)], [0.5, "longrifle3", 2, 1, 0, { at: [8, 3], until: 130, atk: 0.5 }],
+        [14, "soldier", 0, 1], [26, "gloomrunner", 0, 2, 1.5], [36, "soldier", 1, 1, 0, TOP],
+        [38, "staker", 1, 1, 0, TOP], [46, "soldier", 2, 2, 2], [52, "wallgunner", 0, 1], [58, "escalader", 1, 2, 2, TOPE], [66, "gloomrunner", 0, 2, 1.4], [74, "staker", 2, 1, 0, RE], [84, "ambusher3", 1, 1, 0, { atk: 0.7 }],
+        [94, "soldier", 0, 2, 2, MID(110)], [98, "escalader", 2, 2, 2], [104, "staker", 0, 1, 0, RW], [108, "wallgunner", 1, 1, 0, TOP], [114, "gloomrunner", 2, 2, 1.2], [120, "soldier", 1, 2, 2, TOPE], [126, "escalader", 0, 1, 0, RW], [132, "staker", 2, 1, 0, RE],
+        [142, "soldier", 2, 1], [144, "ambusher3", 2, 1, 0, { via: [[9, 4], [8, 6]], atk: 0.7 }], [150, "gloomrunner", 0, 2, 1.3], [156, "wallgunner", 2, 1], [162, "escalader", 1, 2, 2, TOP], [170, "soldier", 0, 2, 2]]); })(),
+      boss: ["", ""], desc: "담장 두 겹 사이의 뒷마당. 밝은 칸은 양 끝 사다리 아래와 그 곁 담장 위, 넷뿐입니다. 말뚝병은 담장 위의 밝은 빈 칸에 말뚝을 박아 그 칸을 빼앗습니다. 적은 북쪽 문 셋에서 옵니다.",
+      lose: "아래 담장의 어둠 속에 말뚝병 둘이 처음부터 서 있다가 (1,4)·(9,4)로 갑니다. 저지선보다 먼저 그 두 칸에 지상 가사인격을 세우세요. 담장 위에서도 바로 아래 칸을 칠 수 있습니다." },
+    // WL-04. Question: when the only light is at the far gate, where do we make our own? (type: make your own ground; formula broken: "take everything at the gate")
+    // gates: 0 the north street's east end (10,2), 1 the middle street's west end (0,4); the point (0,6) at the west end of the south street. The lamps stand at the street ends:
+    // the only lit squares anyone can stand on are (10,4)-(10,6) by gate 0. The north street has two short cuts down to the middle street: the gap (5,3) and the ladder (2,3);
+    // the middle street goes down to the south street only by the ladder (4,5). A wall gunner stands on the wall (3,3) from the start; drones set men down on the south street.
+    // Pass 2: the lapis marksman stands on the north street (7,2) from the start until 140 s (at 0.6 of its attack here); the lanternist first alone at 78 s (both at half attack here); gloom runners for the dogs
+    { code: "WL-04", name: "성당 계단", map: MAP_C3.wl4, bg: null, hz: 0.5, ep: 3, startCost: 12, mul: { hp: 1.4, atk: 1.4, def: 0.85 }, rmul: { hp: 1, atk: 0.9 },
+      climbAll: true, lamps: { r: 1, darkDeploy: false }, torch: true,
+      waves: (() => { const GAP = { via: [[5, 3]] }, LAD = { via: [[2, 3]] }, MID = { via: [[9, 4]] }, WALL = (t) => ({ via: [[3, 3, { until: t }]] }), AIR = (x, type) => ({ land: [x, 6], drop: type });
+        return W1([[0.5, "wallgunner", 1, 1, 0, { at: [3, 3], until: 60 }], [0.5, "longrifle3", 0, 1, 0, { at: [7, 2], until: 140, atk: 0.6 }],
+        [8, "soldier", 0, 2, 2.5], [20, "gloomrunner", 1, 1], [28, "soldier", 1, 1],
+        [36, "wallgunner", 0, 1, 0, GAP], [44, "soldier", 0, 2, 2, LAD], [52, "gloomrunner", 0, 2, 1.4, GAP], [58, "escalader", 1, 2, 2, WALL(70)], [66, "drone", 0, 1, 0, AIR(7, "soldier")], [72, "soldier", 0, 2, 2, MID], [78, "lanternist", 0, 1, 0, { atk: 0.5 }],
+        [96, "escalader", 0, 2, 2, GAP], [100, "soldier", 1, 2, 2], [104, "wallgunner", 0, 1, 0, LAD], [110, "drone", 1, 2, 3, AIR(6, "escalader")], [114, "gloomrunner", 0, 3, 1.2, GAP], [120, "escalader", 0, 2, 2, MID], [126, "soldier", 1, 2, 2], [132, "wallgunner", 0, 1, 0, GAP], [138, "escalader", 0, 2, 2, LAD],
+        [148, "soldier", 0, 2, 2], [154, "gloomrunner", 1, 2, 1.3], [160, "drone", 0, 2, 3, AIR(8, "soldier")], [166, "escalader", 0, 2, 2, GAP], [174, "lanternist", 1, 1, 0, { atk: 0.5 }]]); })(),
+      boss: ["", ""], desc: "세 줄 길. 등은 길 끝에만 있어서, 처음에 밝은 칸은 동쪽 문 곁의 셋뿐입니다. 횃불 카드를 어두운 칸에 놓으면 둘레 아홉 칸이 40초 동안 밝아집니다. 윗길의 적은 가운데 틈과 사다리로 지름길을 탑니다.",
+      lose: "모든 길은 방어 지점 앞 아랫길의 사다리 아래 (4,6)으로 모입니다. 문 곁이 아니라 그 둘레를 횃불로 밝혀 세우세요. 횃불은 30초마다 다시 쓸 수 있습니다." },
+    // WL-05. Question: when the road goes under the board, which way does our line face? (type: two fronts; formula broken: "behind the line is safe")
+    // gates (all inside the board): 0 (6,2), 1 (8,3), 2 (8,4), 3 (6,5); points (1,1) and (1,6) in the west, the block of wall (2..3,3..4) between them. The tunnel (11,3) -> (0,3):
+    // whoever of the east gates goes by it comes up between the two points, behind any line that faces the gates. The lamp (4,4) lights the south way and the wall block;
+    // the north way and the tunnel's mouth are dark. Drones set men down beside the north point (2,1). Two pickets stand between the inner gates from the start and leave by both ways.
+    // Pass 2: the observation balloon circles over the west half for the whole stage, marking whoever stands under it; the lapis marksman stands on the north road (7,1)
+    // from the start until 150 s (0.6 attack here) and aims at the marked first; the crawler (nobody can hold it) first alone at 22 s; gloom runners for the dogs and ladder men
+    { code: "WL-05", name: "대성당 앞", map: MAP_C3.wl5, bg: null, hz: 0.5, ep: 3, startCost: 24, mul: { hp: 0.7, atk: 0.7, def: 0.85 }, rmul: { hp: 1, atk: 0.9 },
+      climbAll: true, lamps: { r: 1, darkDeploy: false }, torch: true,
+      tunnels: [{ a: [11, 3], b: [0, 3], t: 5 }],
+      waves: (() => { const TUN = { tun: true }, TUNS = { tun: true, via: [[1, 4]] }, WALL = { via: [[2, 4]] }, AIR = (type) => ({ land: [2, 1], drop: type }), POST = (x, y, t) => ({ at: [x, y], until: t });
+        return W1([[0.5, "balloon", 0, 1, 0, { loop: [[3, 1], [3, 6], [6, 6], [6, 1]] }], [0.5, "longrifle3", 0, 1, 0, { at: [7, 1], until: 150, atk: 0.6 }], [0.5, "soldier", 1, 1, 0, POST(7, 3, 34)], [0.5, "soldier", 2, 1, 0, POST(7, 4, 40)],
+        [12, "sapper", 3, 1], [22, "crawler", 0, 1], [34, "soldier", 1, 1, 0, TUN],
+        [36, "soldier", 2, 2, 2], [44, "sapper", 0, 1, 0, WALL], [50, "gloomrunner", 2, 2, 1.4, TUNS], [56, "gloomrunner", 1, 1], [62, "drone", 0, 1, 0, AIR("soldier")], [68, "soldier", 3, 2, 2], [74, "soldier", 2, 2, 2],
+        [94, "sapper", 2, 1], [98, "gloomrunner", 0, 1], [104, "soldier", 1, 2, 2, TUNS], [110, "crawler", 3, 2, 1.5], [114, "drone", 2, 1, 0, AIR("gloomrunner")], [120, "sapper", 1, 1, 0, TUN], [126, "soldier", 0, 1], [132, "soldier", 3, 2, 2], [138, "crawler", 2, 1, 0, TUN],
+        [148, "sapper", 0, 1, 0, WALL], [154, "gloomrunner", 1, 1, 0, TUN], [160, "soldier", 3, 2, 2], [166, "drone", 1, 1, 0, AIR("soldier")], [172, "gloomrunner", 2, 2, 2, TUNS], [178, "soldier", 0, 2, 2]]); })(),
+      boss: ["", ""], desc: "판 안쪽에 문이 넷, 서쪽에 방어 지점이 둘입니다. 동쪽 끝 땅굴은 두 방어 지점 사이 (0,3)으로 이어지고, 땅굴로 간 적은 그 사이 칸을 건너뜁니다. 땅굴 어귀와 북쪽 길은 어둡습니다.",
+      lose: "문을 바라보는 저지선 뒤로 땅굴의 적이 올라옵니다. 횃불로 땅굴 어귀 (1,3)을 밝혀 서쪽을 보고 막으세요. 공병은 담장 위의 가사인격부터 쏩니다." },
     // a story-only entry: the confessional (no battle, no cost)
     { code: "WL-ST", name: "고해실", map: MAP_C3.nave, bg: null, hz: 0.5, ep: 3, story: true, startCost: 10, mul: { hp: 1, atk: 1, def: 1 }, waves: [],
       boss: ["", ""], desc: "대관식이 끝난 밤. 성당 뒷문은 열려 있었고, 고해실에는 불이 켜져 있었다.", lose: "" },
-    // act 3, Waterloo: the cavalry charge and the square. Horsemen ride down a line from off the board (no cavalry stands on the board): whoever has one of ours right beside
-    // them is in a square and loses little; whoever stands alone loses most of what they have
-    { code: "WL-06", name: "우구몽 농장", map: MAP_C3.farm, bg: null, hz: 0.5, ep: 3, startCost: 10, mul: { hp: 0.94, atk: 0.98, def: 0.85 }, rmul: { hp: 1, atk: 0.9 },
-      volleys: [{ kind: "charge", first: 28, every: 30, warn: 5, dmg: 1100, pct: 0.6, tiles: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((x) => [x, 1]),
-                  alt: { every: 2, tiles: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((x) => [x, 2]) } },   // the north charge rides the two rows of the field in turn
-                { kind: "charge", first: 43, every: 30, warn: 5, dmg: 1100, pct: 0.6, tiles: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((x) => [x, 6]) }],
-      // gates (all in the west): 0 the north field, 1 the farm lane, 2 the south field. Columns of foot, thick and regular, and pikemen at their head; some turn in through
-      // the gaps in the farm wall. The north field first (5-40), then all three (50-100), then everything with the Guard down the lane (116-170)
-      // POST: a Guard chasseur already up on the farm wall rise before the point (11,3) from the start; at 116 he comes down and walks in with the rest
-      waves: (() => { const N1 = { via: [[11, 1], [12, 1]] }, N2 = { via: [[3, 1], [4, 2], [11, 2]] }, S = { via: [[11, 6]] }, NX = { via: [[3, 1], [6, 2], [6, 3], [6, 4]] }, SX = { via: [[7, 6], [7, 5], [7, 4]] };
-        return W1([[0.5, "chasseur", 1, 1, 0, { at: [11, 3], until: 116, hp: 1.4 }],
-        [5, "soldier", 0, 2, 2, N1], [14, "soldier", 0, 2, 2, N2], [24, "lancer", 0, 1, 0, N1], [36, "soldier", 1, 2, 2], [44, "chasseur", 0, 1, 0, N2],
-        [54, "soldier", 2, 2, 2, S], [60, "soldier", 0, 2, 1.5, N2], [63, "chasseur", 0, 1, 0, N2], [66, "grenadier", 1, 1], [72, "lancer", 2, 1, 0, S], [78, "soldier", 0, 2, 1.5, NX], [84, "soldier", 1, 2, 1.5], [86, "drummer", 1, 1], [94, "chasseur", 2, 1, 0, S], [100, "lancer", 0, 2, 2, N1], [104, "soldier", 2, 2, 1.5, SX],
-        [118, "grenadier", 0, 1, 0, N2], [122, "soldier", 0, 3, 1.4, N1], [126, "soldier", 2, 3, 1.4, S], [134, "grenadier", 1, 1], [136, "chasseur", 1, 1], [142, "lancer", 0, 2, 2, N2], [146, "lancer", 2, 2, 2, S], [152, "soldier", 1, 2, 1.4], [154, "drummer", 1, 1], [156, "chasseur", 1, 1],
-        [160, "soldier", 0, 2, 1.4, NX], [164, "grenadier", 2, 1, 0, S], [170, "soldier", 0, 3, 1.3, N1], [172, "soldier", 2, 2, 1.4, S]]); })(),
-      boss: ["", ""], desc: "능선 오른쪽 끝의 농장. 적은 서쪽에서 오고 방어 지점은 동쪽입니다. 흉갑기병이 북쪽 들판의 두 줄을 번갈아, 그리고 남쪽 들판을 따라 돌격합니다(30초마다, 5초 전 표시). 혼자 서 있으면 최대 체력의 60%를 잃고 2초 동안 흐트러집니다. 바로 옆 칸에 다른 가사인격이 있으면 방진으로 15%만 잃습니다. 방어 지점 앞 농장 담 위 (11,3)에는 근위 엽병 하나가 먼저 올라가 있다가, 116초가 지나면 내려와 걸어옵니다.",
-      lose: "북쪽 들판은 위아래 두 칸을 나란히 막으면 그대로 방진입니다. 남쪽 들판은 담의 틈에 한 명을 붙이세요. 농장 안길에는 돌격이 오지 않습니다. 북쪽 들판의 종대는 모두 바깥 줄 (3,1)을 지난 뒤에 두 줄로 갈라집니다. (3,1)·(3,2)에 나란히 서면 북쪽 들판을 들머리에서 받습니다." },
+    // WL-06. Question: which light do we keep, when keeping it means standing where they walk? (type: keep a light alive; formula broken: "the point's doorstep is the last line")
+    // gates: 0 the north road (9,0), 1 the yard (5,3); points: (1,5) west, (11,5) east. The north road goes round by the west to the west point under the west lamp (0,3).
+    // The yard empties only by the ladder (8,4): its foes walk the whole wall round (south wall, west wall, north wall) and come down the ladder (10,3) to the east point,
+    // whose doorstep is dark. The snuffers walk the same way and put out every lamp they pass that nobody stands right beside: the south lamp (6,6) is kept only from (6,5),
+    // the yard lamp (4,3) from (4,2)/(3,3), the north-east lamp (10,1) from (10,2). A wall gunner sits on the north wall from the start.
+    // Pass 2: the lapis marksman stands on the north road by its gate (9,1) from the start until 150 s (0.6 attack here); the seer (half attack here) first alone at 86 s from the yard, again at 146 s;
+    // gloom runners for the dogs
+    { code: "WL-06", name: "우구몽 농장", map: MAP_C3.wl6, bg: null, hz: 0.5, ep: 3, startCost: 14, mul: { hp: 1, atk: 1, def: 0.85 }, rmul: { hp: 1, atk: 0.9 },
+      climbAll: true, lamps: { r: 1, darkDeploy: false }, torch: true,
+      waves: (() => { const E4 = { via: [[9, 4]] }, SW = (t) => ({ via: [[7, 5, { until: t }]] }), NW = (t) => ({ via: [[1, 2, { until: t }]] }), NWALL = (t) => ({ via: [[6, 2, { until: t }]] });
+        return W1([[0.5, "longrifle3", 0, 1, 0, { at: [9, 1], until: 150, atk: 0.6 }], [0.5, "wallgunner", 1, 1, 0, { at: [7, 2], until: 70 }], [0.5, "soldier", 0, 1, 0, { at: [3, 1], until: 30 }],
+        [10, "snuffer", 1, 1], [18, "soldier", 0, 2, 2.5], [28, "gloomrunner", 1, 1],
+        [36, "escalader", 1, 2, 2, E4], [44, "soldier", 0, 2, 2, NW(54)], [50, "snuffer", 1, 1, 0, SW(62)], [56, "gloomrunner", 0, 2, 1.4], [62, "escalader", 1, 2, 2], [70, "wallgunner", 0, 1], [76, "soldier", 1, 2, 2, NWALL(90)], [86, "seer", 1, 1, 0, { atk: 0.5 }],
+        [96, "snuffer", 1, 1], [100, "soldier", 0, 2, 2], [104, "escalader", 1, 2, 2, E4], [110, "gloomrunner", 0, 3, 1.2], [116, "wallgunner", 1, 1], [122, "snuffer", 1, 1, 0, SW(134)], [128, "soldier", 0, 2, 2, NW(140)], [134, "escalader", 1, 2, 2],
+        [146, "seer", 1, 1, 0, { atk: 0.5 }], [148, "gloomrunner", 1, 2, 1.3], [152, "soldier", 0, 2, 2], [158, "snuffer", 1, 1, 0, NWALL(170)], [164, "escalader", 1, 2, 2, E4], [172, "soldier", 0, 2, 2]]); })(),
+      boss: ["", ""], desc: "농장. 안마당 문에서 나온 적은 사다리 (8,4)로만 나가, 담장 위를 한 바퀴 돌아 동쪽 방어 지점으로 내려옵니다. 북쪽 길의 적은 서쪽으로 돕니다. 소등부는 지나가며 곁의 등을 끕니다. 등 바로 옆 칸에 누가 서 있으면 끄지 못합니다.",
+      lose: "동쪽 방어 지점 앞은 어두워서 설 수 없습니다. 남쪽 담장의 등은 (6,5)에 선 가사인격만 지킬 수 있고, 그 칸은 안마당의 적이 모두 지나는 담장 위입니다." },
     // a story-only entry between the two farms: the empty saddle (no battle, no cost)
     { code: "WL-ST2", name: "빈 안장", map: MAP_C3.farm, bg: null, hz: 0.5, ep: 3, story: true, startCost: 10, mul: { hp: 1, atk: 1, def: 1 }, waves: [], boss: ["", ""], desc: "돌격과 돌격 사이. 헛간 벽 틈으로, 안장이 빈 말 한 마리가 보였다.", lose: "" },
-    { code: "WL-07", name: "라에생트", map: MAP_C3.sainte, bg: null, hz: 0.5, ep: 3, startCost: 14, mul: { hp: 1.3, atk: 1.17, def: 0.85 }, rmul: { hp: 1, atk: 0.9 },
-      volleys: [{ kind: "charge", first: 30, every: 32, warn: 5, dmg: 1100, pct: 0.6, tiles: [1, 2, 3, 4, 5, 6].map((y) => [2, y]) },
-                { kind: "charge", first: 46, every: 32, warn: 5, dmg: 1100, pct: 0.6, tiles: [1, 2, 3, 4, 5, 6].map((y) => [11, y]) },
-                { first: 62, every: 32, warn: 4, dmg: 700, pct: 0.22, foe: 0.3, mine: 1.7, mineEvery: 13, minePct: 0.2, pack: 1.6, capture: 8, linger: 20, muzzle: [12, 5], gun: [13, 5], tiles: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((x) => [x, 5]) }],   // the gun on the cross road from 62 on: a packed square takes more of it
-      shifts: [{ when: { volley: 2, shots: 2 }, t: 94, warn: 4, set: [[6, 1, ","], [7, 1, ","]], banner: ["농장 문이 부서졌다", "THE GATE IS DOWN"] }],   /* the farm's north gate breaks under the cross-road gun's second shot while it is theirs (62, 94 s); a gun of ours does not fire on it */
-      // gates: 0 the west lane's head (3,0), 1 the farm gate (6,0), 2 the east lane's head (10,0), 3 the east side (13,2). Points: the foot of each lane. POST: the gun's picket.
-      // Three movements: the two lanes in turn (5-50); the gun and the cross road (60-94); the gate falls at 100 and the yard is the main road (102-176)
-      waves: (() => { const WA = { via: [[2, 1], [2, 6], [3, 7]] }, WB = { via: [[2, 1], [2, 2], [3, 3], [3, 6], [3, 7]] }, EA = { via: [[11, 1], [11, 6], [10, 7]] }, EB = { via: [[11, 1], [11, 2], [10, 3], [10, 6], [10, 7]] }, EG = { via: [[11, 2], [11, 6], [10, 7]] },
-        WX = { via: [[2, 1], [2, 2], [3, 3], [3, 5], [9, 5], [10, 6], [10, 7]] }, MW = { via: [[6, 1], [6, 2], [6, 4], [6, 5], [3, 5], [3, 6], [3, 7]], shut: { s: 0, via: [[2, 1], [2, 2], [3, 3], [3, 6], [3, 7]] } }, ME = { via: [[6, 1], [6, 2], [7, 3], [7, 4], [7, 5], [10, 5], [10, 6], [10, 7]], shut: { s: 2, via: [[11, 1], [11, 2], [10, 3], [10, 6], [10, 7]] } },   /* while the gate holds, the yard columns wait behind it a moment, then come down the lanes */ POST = (x, y) => ({ at: [x, y], until: 150 });
-        return W1([[0.5, "soldier", 3, 1, 0, Object.assign(POST(12, 5), { hp: 2, atk: 1.3 })],   // the gun's picket is a picked man
-        [10, "soldier", 0, 2, 2, WB], [18, "soldier", 0, 2, 2, WA], [26, "lancer", 0, 1, 0, WB], [34, "soldier", 2, 2, 2, EB], [44, "soldier", 3, 2, 2, EG], [50, "chasseur", 2, 1, 0, EA],
-        [60, "soldier", 2, 2, 1.5, EB], [63, "chasseur", 2, 1, 0, EB], [64, "grenadier", 0, 1, 0, WB], [70, "lancer", 3, 1, 0, EG], [76, "soldier", 0, 2, 1.5, WX], [84, "soldier", 2, 2, 1.5, EA], [86, "drummer", 2, 1, 0, EB], [94, "chasseur", 0, 1, 0, WA],
-        [102, "soldier", 1, 3, 1.4, MW], [104, "soldier", 1, 2, 1.4, ME], [108, "lancer", 1, 2, 2, ME], [112, "gunretaker", 3, 1, 0, EG], [114, "mouchard", 3, 1, 0, EG], [118, "grenadier", 1, 1, 0, MW], [122, "soldier", 0, 2, 1.4, WB], [125, "chasseur", 0, 1, 0, WB], [128, "soldier", 2, 3, 1.4, EA], [134, "soldier", 1, 2, 1.4, ME], [137, "chasseur", 1, 1, 0, ME], [138, "lancer", 0, 1, 0, WA],
-        [144, "chasseur", 1, 1, 0, MW], [146, "lancer", 1, 2, 2, MW], [150, "grenadier", 1, 1, 0, ME], [150, "gunretaker", 3, 1, 0, EG], [152, "drummer", 1, 1, 0, MW], [156, "soldier", 1, 3, 1.4, MW], [160, "lancer", 2, 2, 2, EB], [164, "soldier", 0, 2, 1.5, WX], [168, "grenadier", 2, 1, 0, EA], [172, "soldier", 1, 2, 1.3, ME], [175, "chasseur", 1, 1, 0, ME], [176, "lancer", 1, 1, 0, MW]]); })(),
-      boss: ["", ""], desc: "능선 한가운데의 농장. 적은 북쪽에서 두 길로 내려오고, 방어 지점은 두 길의 끝, 둘입니다. 두 길의 바깥 줄에는 기병 돌격, 방어 지점 앞을 가로지르는 길에는 포도탄이 옵니다(붙어 선 가사인격은 1.6배). 가운데 농장은 우리 고지입니다. 가로지르는 길의 포가 적의 손에 있는 채로 두 발을 쏘면(62초부터 32초마다) 그 포격에 농장의 북쪽 문이 부서지고, 안뜰이 세 번째 길이 되어 가로지르는 길 한복판으로 이어집니다. 포를 빼앗아 두면 문은 버티고, 안뜰로 오던 종대는 두 길로 돌아옵니다. 112초와 150초에는 포 되찾는 자가 동쪽에서 와서, 비어 있는 포구 앞 칸에 닿는 즉시 포를 되찾습니다.",
-      lose: "동쪽 끝 고지에서 보초를 쓰러뜨리고, 포가 처음 쏘기 전(62초)에 포구 앞 칸을 8초 지켜 포를 빼앗으세요. 서쪽은 안쪽 칸(문 쪽)부터 세우세요. 두 길의 적은 바깥 줄로 내려오다 (2,2)·(11,2)에서 갈라지고, 문이 부서진 뒤 안뜰의 적은 모두 (6,2)를 지납니다. 이 세 칸이 길목입니다. (2,2)·(11,2)는 돌격이 지나는 줄이니 바로 아래 칸에 한 명을 더 세워 방진을 만드세요. 그다음 두 방어 지점 앞, 가로지르는 길 위에 둘씩 세우면 세 길이 모두 그 앞을 지납니다. 빼앗은 포는 13초마다 그 길 위의 적을 최대 체력의 20%씩 깎습니다. 문을 살리려면 포구 앞 칸을 끝까지 비우지 마세요. 문을 내주고 (6,2)에서 받는 것도 한 가지 답입니다." },
-    { code: "WL-08", name: "몽생장 능선", map: MAP_C3.ridge, bg: null, hz: 0.5, ep: 3, startCost: 12, mul: { hp: 2.38, atk: 1.39, def: 0.85 }, rmul: { hp: 1, atk: 0.9 }, crest: 4,
-      volleys: [{ kind: "charge", first: 34, every: 34, warn: 5, dmg: 1100, pct: 0.6, tiles: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((x) => [x, 1]) },
-                { kind: "charge", first: 51, every: 34, warn: 5, dmg: 1100, pct: 0.6, tiles: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((x) => [x, 6]) },
-                { first: 68, every: 34, warn: 4, dmg: 700, pct: 0.3, foe: 0.3, mine: 1.7, pack: 1.6, capture: 8, linger: 20, muzzle: [12, 3], gun: [13, 3], mineEvery: 8, bossPct: 0.10, full: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((x) => [x, 3]), tiles: [5, 6, 7, 8, 9, 10, 11].map((x) => [x, 3]) }],   // the shot stops at the crest: west of column 5 the centre is in dead ground
-      // gates: 0 the upper road, 1 the centre, 2 the lower. The Emperor stands at his post on the gun's muzzle square from the first moment (in plain sight) until 118, then comes
-      // down the centre. Four movements: the line (5-45), horse and gun (60-108), the Guard and the Emperor himself (118-160: the centre is left to him, and the outer roads carry only light foot), and what is left (165-195)
-      waves: (() => { const N1 = { via: [[12, 1], [2, 1], [1, 3]] }, N2 = { via: [[11, 1], [10, 2], [7, 2], [2, 2], [1, 3]] }, C3 = { via: [[11, 4], [11, 3], [7, 3], [2, 3]] }, C4 = { via: [[11, 4], [7, 4], [2, 4]] }, S5 = { via: [[12, 6], [2, 6], [2, 4]] }, S6 = { via: [[12, 6], [2, 6], [2, 4]] },
-        POST = { at: [12, 3], until: 118, seen: true, via: [[5, 3], [2, 3]] };
-        return W1([[0.5, "emperor", 1, 1, 0, POST],
-        [5, "soldier", 0, 2, 2, N2], [18, "soldier", 2, 2, 2, S6], [30, "soldier", 1, 2, 2, C4], [40, "chasseur", 0, 1, 0, N1], [46, "lancer", 1, 1, 0, C3],
-        [60, "soldier", 1, 3, 1.5, C4], [66, "lancer", 0, 2, 2, N1], [72, "grenadier", 1, 1, 0, C3], [80, "soldier", 2, 3, 1.5, S6], [82, "drummer", 2, 1, 0, S5], [90, "chasseur", 1, 1, 0, C4], [96, "lancer", 2, 1, 0, S5], [102, "soldier", 0, 3, 1.4, N2],
-        [124, "soldier", 0, 3, 1.4, N1], [128, "soldier", 2, 2, 1.5, S6], [138, "drummer", 2, 1, 0, S6], [156, "chasseur", 2, 1, 0, S6],   // his descent: no weight-2 men and no lancers on the outer roads
-        [150, "soldier", 1, 1, 0, { via: [[12, 4, { until: 166 }], [11, 4], [7, 4], [2, 4]] }], [167.4, "soldier", 1, 2, 1.4, C4], [150, "grenadier", 0, 1, 0, { via: [[12, 1, { until: 172 }], [11, 1], [10, 2], [7, 2], [2, 2], [1, 3]] }], [150, "soldier", 2, 1, 0, { via: [[12, 6, { until: 176 }], [2, 6], [2, 4]] }], [177.4, "soldier", 2, 2, 1.4, S5], [184, "lancer", 1, 2, 2, C4], [190, "soldier", 0, 3, 1.3, N1]]); })(),
-      boss: ["경고: 황제", "관을 쓴 쪽 · WARNING"], desc: "능선. 길 셋이 서쪽의 방어 지점으로 옵니다. 바깥 두 줄에는 기병 돌격, 가운데 길의 위쪽 줄에는 포도탄이 옵니다. 포도탄은 능선마루를 넘지 못합니다. 황제는 포구 앞에서 지휘하다가 118초에 가운데 길로 내려옵니다. 황제가 방어 지점에 닿으면 작전은 실패합니다.",
-      lose: "황제는 둘 몫으로 저지됩니다. 그가 닿으면 가사인격은 막던 적을 놓고 그를 붙듭니다. 저지선은 둘: 능선마루 동쪽의 포격 줄 위와, 능선마루. 화력과 의무는 방어 지점 앞에 남기지 말고 그 두 줄을 내려다보는 고지에 올리세요. 쓰러뜨려도 관을 다시 쓰고 한 번 일어나며, 그때 첫 줄을 뚫습니다. 그가 떠난 포구 앞 칸을 8초 지키면 포는 우리 것이고, 8초마다 그의 체력을 10%씩 깎습니다. \"전군\"에는 포도탄도 능선마루를 넘습니다. 멈춰 선 6초에 모든 것을 쏟으세요. 150초에는 남은 근위대의 선두가 동쪽 세 길머리에 나와 멈춰 섭니다. 가운데, 위, 아래 순서로 한 길씩 내려옵니다. 위쪽 길과 가운데 길의 적은 각각 (11,1)·(11,4)를 지나 들어옵니다. 황제의 포구 바로 곁이라 오래 버틸 자리는 아니지만, 첫 물결은 거기서 끊을 수 있습니다." },
-    { code: "WL-09", name: "튈르리", map: MAP_C3.palace, bg: null, hz: 0.5, ep: 3, startCost: 12, mul: { hp: 1.05, atk: 1.05, def: 0.85 }, rmul: { hp: 1, atk: 0.75 },
-      lamps: { r: 2 },
-      // gates: 0 the palace door, 1 the upper east gate, 2 the lower. The Emperor is beaten; the confessor rings the armoury awake. Empty armour that falls in the dark gets up again:
-      // one alone under a lamp and one alone in the dark to show it (5-40), with snuffers (55-105), then the crowned armour comes out of the door (118) — and at 126 Cadoudal's
-      // raid arrives: he and his last men stand in the court on our side (RAID) for what is left
-      waves: (() => { const RAID = (x, y) => ({ at: [x, y], ally: true }), RAIDK = (x, y) => ({ at: [x, y], ally: true, hp: 0.86, atk: 0.94 }),
-        DW = { via: [[5, 1], [2, 2], [2, 3]] }, DE = { via: [[9, 1], [10, 2], [10, 4], [9, 5], [3, 5]] }, N = { via: [[10, 2], [9, 1], [2, 1], [1, 2], [1, 3]] }, S = { via: [[10, 4], [10, 5], [3, 5]] }, S2 = { via: [[10, 4], [9, 5], [6, 5], [4, 4], [3, 4], [3, 3], [2, 3]] },
-        SNA = { via: [[10, 2], [10, 4], [8, 5], [4, 4], [3, 4]] }, SNB = { via: [[10, 2], [9, 1], [4, 2], [3, 2], [2, 3]] };
-        return W1([[1, "armour", 2, 1, 0, { at: [11, 5], fallen: 5, until: 14, via: [[3, 5]] }], [12, "soldier", 1, 3, 2, N], [20, "armour", 0, 1, 0, DW], [30, "chasseur", 1, 1, 0, N], [36, "soldier", 2, 2, 2, S2],
-        [55, "snuffer", 2, 1, 0, SNA], [57, "armour", 2, 2, 3, S], [66, "soldier", 1, 2, 1.5, N], [69, "chasseur", 1, 1, 0, N], [74, "armour", 0, 1, 0, DE], [80, "lancer", 2, 1, 0, S2], [88, "lampbreaker", 1, 1, 0, SNB], [90, "armour", 1, 2, 3, N], [98, "mouchard", 0, 1, 0, DW], [99, "soldier", 2, 2, 1.4, S], [102, "chasseur", 2, 1, 0, S],
-        [118, "kingarmour", 0, 1, 0, { via: [[7, 1, 6], [5, 1], [2, 2], [2, 3]] }], [122, "armour", 1, 1, 0, N], [124, "armour", 2, 1, 0, S],
-        [126, "cadoudal", 0, 1, 0, RAID(8, 5)], [126, "chouang", 0, 1, 0, RAIDK(5, 5)], [126, "chouang", 0, 1, 0, RAIDK(4, 4)], [126, "chouang", 0, 1, 0, RAIDK(4, 2)], [126, "chxbow", 0, 1, 0, RAID(2, 2)], [126, "chxbow", 0, 1, 0, RAID(2, 5)],
-        [134, "snuffer", 1, 1, 0, SNA], [136, "soldier", 2, 3, 1.3, S2], [140, "chasseur", 2, 1, 0, S2], [142, "armour", 1, 1, 3, N], [150, "chasseur", 2, 1, 0, S], [150, "snuffer", 2, 1, 0, SNA], [156, "armour", 2, 2, 3, S], [162, "lancer", 1, 2, 2, N], [170, "armour", 0, 1, 3, DE], [170, "snuffer", 1, 1, 0, SNB], [176, "soldier", 1, 3, 1.3, N], [180, "chasseur", 1, 1, 0, N], [182, "armour", 2, 1, 0, S2]]); })(),
-      boss: ["경고: 빈 왕좌", "빈 왕좌의 갑주 · WARNING"], desc: "궁의 안뜰, 밤. 빈 갑주는 어둠 속에서 쓰러뜨리면 5초 뒤 다시 일어납니다. 등불 아래에서 쓰러뜨려야 끝납니다. 등은 셋. 소등부와, 지키는 이가 있어도 등을 깨는 자가 옵니다. 118초에 빈 왕좌의 갑주가 나오고, 126초에 카두달이 우리 편으로 뛰어듭니다.",
-      lose: "빈 갑주는 등불이 비추는 칸에서 막으세요. 동쪽 두 문의 적은 모두 동쪽 등 곁의 (10,2)·(10,4)를 지납니다. 등지기를 (10,3)에 세우면 세 칸이 한 줄로 붙습니다. 등 깨는 자가 깬 등은 지키던 이가 다시 켤 수 없습니다. 새로 세운 가사인격이 6초를 버텨야 합니다. 왕좌의 갑주가 끈 등은 지키던 이도 14초 만에 다시 켭니다. 빈 왕좌의 갑주는 체력이 절반이 되면 가장 가까운 등을 끕니다." },
+    // WL-07. Question: the one lamp is at the end of the road; will it still be burning when they get there? (type: defence in depth along one long road; formula broken: "what is lit stays lit")
+    // gates: 0-2 the three north gates (6..8,0), 3 the yard gate (4,3), 4 the south yard gate (4,5); the point (4,0). The long loop: down the ladder (9,1), west along the north wall,
+    // down (5,3) into the yard, out by the ladder (9,5), west along the south wall, up the west road by the ladder (2,5) to the point. The yard gates join it in the yard.
+    // The only lamp (4,2) lights the point's doorstep; the lamp-breakers walk the north wall right past it and break it whoever stands by. Two pickets in the yard from the start. The blades come after the first lamp-breaker: whatever reaches a dark doorstep reaches it at full strength.
+    // Pass 2: the balloon circles the yard all stage; the lapis marksman stands by the north gates (7,1) from the start until 160 s (0.6 attack here); the nightmare (half health, 0.7 attack here), one, at 150 s right after the second lamp-breaker:
+    // once the lamp is broken every back is to the dark. Gloom runners for the dogs and ladder men
+    { code: "WL-07", name: "라에생트", map: MAP_C3.wl7, bg: null, hz: 0.5, ep: 3, startCost: 14, mul: { hp: 1.3, atk: 1.3, def: 0.85 }, rmul: { hp: 1, atk: 0.9 },
+      climbAll: true, lamps: { r: 1, darkDeploy: false }, torch: true,
+      waves: (() => { const MID = { via: [[6, 4]] }, SPUR = (t) => ({ via: [[1, 4, { until: t }]] }), SOUTH = (t) => ({ via: [[6, 6, { until: t }]] }), POST = (x, y, t) => ({ at: [x, y], until: t });
+        return W1([[0.5, "balloon", 0, 1, 0, { loop: [[2, 1], [2, 4], [8, 4], [8, 1]] }], [0.5, "longrifle3", 2, 1, 0, { at: [7, 1], until: 160, atk: 0.6 }], [0.5, "soldier", 3, 1, 0, POST(7, 4, 30)], [0.5, "soldier", 4, 1, 0, POST(8, 4, 44)],
+        [6, "soldier", 0, 1], [16, "gloomrunner", 2, 2, 1.5], [26, "soldier", 3, 1, 0, MID],
+        [34, "soldier", 1, 2, 2], [42, "soldier", 4, 2, 2], [50, "nightblade", 0, 1], [56, "gloomrunner", 3, 2, 1.4, MID], [62, "soldier", 2, 2, 2, SPUR(100)], [70, "gloomrunner", 4, 1], [150, "nightmare", 1, 1, 0, { hp: 0.5, atk: 0.7 }],
+        [96, "nightblade", 0, 2, 2], [100, "lampbreaker", 2, 1], [106, "nightblade", 3, 2, 2], [112, "gloomrunner", 1, 3, 1.2], [118, "nightblade", 4, 2, 2, SOUTH(132)], [124, "nightblade", 2, 2, 2], [130, "soldier", 0, 2, 2], [136, "gloomrunner", 4, 2, 2, MID],
+        [146, "lampbreaker", 0, 1], [150, "nightblade", 3, 2, 2], [156, "gloomrunner", 2, 2, 1.3], [162, "nightblade", 1, 2, 2, SPUR(180)], [170, "nightblade", 4, 2, 2]]); })(),
+      boss: ["", ""], desc: "북쪽 문의 적은 사다리로 북쪽 담장에 올라 안마당으로 내려왔다가, 남쪽 담장을 돌아 서쪽 길로 방어 지점까지 갑니다. 등은 방어 지점 앞의 하나뿐입니다. 등 깨는 자는 곁에 누가 서 있어도 등을 깹니다.",
+      lose: "등 깨는 자는 북쪽 담장을 걸어 등 곁을 지납니다. 횃불로 북쪽 담장 가운데를 밝혀 거기서 쏘세요. 북쪽 문의 적은 그 담장과 바로 아래 안마당 줄을 차례로 지납니다." },
+    // WL-08. Question: when every square we can stand on is behind the points, which way is the front? (type: inside out; formula broken: "the medic stands behind")
+    // gates: 0 the upper road (12,1), 1 the second road (12,2), 2 the yard (3,5), 3 the west road (0,6), 4 the lower road (5,6); points (3,1) and (3,2), side by side. The open field before
+    // the points is dark. The only lit squares near the points are behind them, by the west lamp (0,2), which only (1,2) keeps. The yard's foes walk the yard wall (5..8,5) under the south lamp,
+    // the lower road's go up the west wall and along the north wall to the ladder (9,3), or east under the lamp to the tunnel (12,7) -> (0,7) and up the west road behind the points.
+    // Drones set men down on the west road (1,4). A sapper sits in the dark yard from the start.
+    // Pass 2: the lapis marksman stands on the upper road (11,1) from the start until 100 s (0.6 attack here); the supply wagon (0.35 health here) rolls in alone on the second road at
+    // 178 s, last, behind the last soldiers; only a block of four (the defender's smite) stops it. Gloom runners for the night raiders and ladder men
+    { code: "WL-08", name: "몽생장 능선", map: MAP_C3.wl8, bg: null, hz: 0.5, ep: 3, startCost: 16, mul: { hp: 1.2, atk: 1.2, def: 0.85 }, rmul: { hp: 1, atk: 0.9 },
+      climbAll: true, lamps: { r: 1, darkDeploy: false }, torch: true,
+      tunnels: [{ a: [12, 7], b: [0, 7], t: 5 }],
+      waves: (() => { const TUN = { via: [[12, 7]], tun: true }, UP = { via: [[10, 4]] }, YW = (t) => ({ via: [[7, 4, { until: t }]] }), AIR = (type) => ({ land: [1, 4], drop: type });
+        return W1([[0.5, "longrifle3", 0, 1, 0, { at: [11, 1], until: 100, atk: 0.6 }], [0.5, "sapper", 2, 1, 0, { at: [7, 4], until: 60 }],
+        [14, "soldier", 1, 2, 2.5], [26, "gloomrunner", 0, 1], [32, "snuffer", 3, 1],
+        [36, "gloomrunner", 2, 2, 2], [42, "soldier", 4, 2, 2, TUN], [48, "gloomrunner", 0, 1], [54, "soldier", 1, 2, 2], [60, "drone", 1, 1, 0, AIR("soldier")], [66, "soldier", 4, 2, 2], [72, "soldier", 3, 2, 2], [78, "sapper", 2, 1, 0, YW(90)],
+        [96, "gloomrunner", 4, 2, 2, TUN], [100, "soldier", 0, 2, 2, UP], [104, "snuffer", 3, 1], [108, "soldier", 2, 2, 2], [112, "drone", 0, 2, 3, AIR("gloomrunner")], [118, "soldier", 1, 2, 2], [124, "sapper", 4, 1], [130, "soldier", 4, 2, 2, TUN], [136, "gloomrunner", 1, 2, 2],
+        [146, "gloomrunner", 2, 2, 2], [152, "soldier", 3, 2, 2], [158, "soldier", 0, 2, 2], [164, "gloomrunner", 4, 2, 2, TUN], [170, "drone", 1, 1, 0, AIR("soldier")], [176, "soldier", 1, 2, 2], [178, "wagon", 1, 1, 0, { hp: 0.35 }]]); })(),
+      boss: ["", ""], desc: "능선의 성채. 방어 지점 둘이 나란히 있고, 그 앞 들판은 어둡습니다. 밝은 칸은 방어 지점 뒤의 서쪽 등 곁과 남쪽 등 곁뿐입니다. 아랫길의 적은 땅굴 (12,7)로 서쪽 끝 (0,7)에 나와 방어 지점 뒤로 올라오거나, 담장을 돌아 윗길로 넘어갑니다.",
+      lose: "방어 지점 뒤의 서쪽 길도 앞입니다. 서쪽 등은 (1,2)에 선 가사인격만 지킬 수 있습니다. 들판 쪽은 횃불로 밝혀 막으세요." },
+    // WL-09. Question: he gets up again if he falls in the dark, and he puts out the nearest lamp when he is half gone: where do we let him fall? (type: the boss hunt; formula broken:
+    // "hit the boss as hard and as soon as you can"). The boss's question: where will he fall? Empty armour, like him, gets up again if it falls in the dark.
+    // gates: 0 (6,0), 1 (10,0), 2 (11,5), 3 (11,7); points (0,1), (0,5), (0,7). The tunnel (10,1) -> (2,2) comes up right before the top point. The east lamp (9,4) lights the squares
+    // where the gates 1-3 come in; the west lamp (1,3) the top point's way. The crowned armour comes last from gate 1, the farthest from the points, on foot down the middle road.
+    // Pass 2: the balloon circles the middle and bottom roads all stage; the lapis marksman stands by the tunnel mouth (10,2) from the start until 190 s, after the crowned armour (0.6 attack here);
+    // gloom runners for the open-road stragglers, the night raiders and the lamp-snuffers (the crowned armour still puts a lamp out)
+    { code: "WL-09", name: "튈르리", map: MAP_C3.wl9, bg: null, hz: 0.5, ep: 3, startCost: 20, mul: { hp: 1, atk: 1, def: 0.85 }, rmul: { hp: 1, atk: 0.9 },
+      climbAll: true, lamps: { r: 1, darkDeploy: false }, torch: true,
+      tunnels: [{ a: [10, 1], b: [2, 2], t: 5 }],
+      waves: (() => { const TUN = { tun: true }, UP = { via: [[10, 6], [9, 5]] }, DOWN = { via: [[9, 6]] }, WALL = (t) => ({ via: [[3, 1, { until: t }]] }), EDGE = (t) => ({ via: [[9, 5, { until: t }]] });
+        return W1([[0.5, "balloon", 0, 1, 0, { loop: [[3, 5], [3, 7], [9, 7], [9, 5]] }], [0.5, "longrifle3", 1, 1, 0, { at: [10, 2], until: 190, atk: 0.6 }], [0.5, "armour", 2, 1, 0, { at: [8, 5], until: 40 }], [0.5, "soldier", 3, 1, 0, { at: [9, 7], until: 84 }],
+        [16, "soldier", 2, 1], [26, "soldier", 0, 1], [34, "armour", 3, 1, 0, UP],
+        [40, "soldier", 1, 1], [46, "gloomrunner", 2, 1], [52, "strag", 1, 2, 2, TUN], [58, "gloomrunner", 0, 1, 0, WALL(70)], [64, "armour", 3, 1], [70, "soldier", 2, 2, 2, DOWN], [76, "soldier", 1, 1],
+        [94, "armour", 2, 1], [98, "soldier", 0, 2, 2], [102, "gloomrunner", 3, 1, 0, UP], [106, "strag", 1, 3, 1.5, TUN], [112, "gloomrunner", 2, 2, 2, EDGE(120)], [118, "soldier", 3, 2, 2], [124, "kingarmour", 1, 1], [130, "armour", 0, 1],
+        [140, "gloomrunner", 3, 2, 2, UP], [146, "soldier", 2, 2, 2], [152, "gloomrunner", 0, 3, 1.2], [158, "armour", 1, 1], [166, "soldier", 2, 2, 2], [174, "soldier", 3, 2, 2, DOWN]]); })(),
+      boss: ["경고: 빈 왕좌", "빈 왕좌의 갑주 · WARNING"], desc: "궁 앞. 방어 지점 셋, 문 넷. 오른쪽 위 문 바로 아래의 땅굴은 맨 위 방어 지점 코앞 (2,2)로 나옵니다. 빈 갑주는 어둠 속에서 쓰러지면 다시 일어납니다. 빈 왕좌의 갑주는 마지막에, 방어 지점에서 가장 먼 북동쪽 문으로 걸어옵니다.",
+      lose: "왕좌의 갑주는 체력이 절반이 되면 가장 가까운 등을 끕니다. 등 곁이 아니라 횃불로 밝힌 칸에서 쓰러뜨리세요. (6,6)에 놓은 횃불 하나가 가운데 길과 아랫길을 함께 비춥니다." },
+    // ---- chapter 4 「발푸르기스의 밤」 (E04-01 .. E04-10): the roofs over the witches' night. Board letters from the design (scratchpad chplan/04/maps.js) go through CH4MAP;
+    // the chapter's rules are switched on by stage.ch4 (game.js ch4Init / ch4Step). Every gate number below is the order of the S squares on the board, row by row
+    // E04-01 「네 굴뚝」 11x7: 연기 다리 넷 가운데 어느 것을 끊어야 두 문의 적이 한 칸 (1,4)로 모이는가. gates 0 (5,0) middle roof, 1 (9,0) east roof; point (0,5). The cats go by the skylight (9,3)->(1,3) (tun). Two lemures stand on (2,2) and (1,2) till 35 s and 55 s
+    CH4({ code: "E04-01",
+      name: "네 굴뚝",
+      startCost: 12,
+      mul: { hp: 1, atk: 1, def: 0.85 },
+      map: ["#####SW##S#","#h.C_.,hC,#","#,,^^,.,^,#","Woh__h,,_i#","W..C_,,.C,#","B,,^^,,,^.#","#WW####W###"],
+      chimneys: [{ at: [3, 1], bridge: [[3, 2], [4, 2]] }, { at: [3, 4], bridge: [[3, 5], [4, 5]] }, { at: [8, 1], bridge: [[8, 2]] }, { at: [8, 4], bridge: [[8, 5]] }],
+      tunnels: [{ a: [9, 3], b: [1, 3], t: 4 }],
+      waves: (() => { const T = { tun: true }, SE = { via: [[8, 5]] }, NE = { via: [[8, 2]] }, SW = { via: [[3, 5]] };
+        return W1([[0.5, "lemure", 0, 1, 0, { at: [2, 2], until: 35 }], [0.5, "lemure", 0, 1, 0, { at: [1, 2], until: 55 }],
+          [8, "lemure", 0, 2, 3], [15, "lemure", 1, 2, 3, SE], [20, "roofcat", 1, 1, 0, T], [20.5, "roofcat", 0, 1, 0, { at: [9, 5], until: 21, via: [[8, 2]] }], [20.5, "roofcat", 0, 1, 0, { at: [9, 5], until: 21.5 }],
+          [30, "wisp", 0, 2, 2.5, SW], [38, "sweep", 1, 1], [46, "lemure", 1, 3, 2.5, NE], [56, "roofcat", 1, 2, 1.5, T], [64, "wisp", 1, 2, 2, SE],
+          [74, "lemure", 0, 3, 2, SW], [84, "sweep", 0, 1], [92, "roofcat", 1, 2, 1.2], [102, "wisp", 0, 2, 2], [112, "lemure", 1, 3, 2, SE], [124, "roofcat", 1, 1, 0, T], [132, "sweep", 1, 1],
+          [140, "lemure", 0, 2, 2.5], [148, "wisp", 1, 2, 2, NE], [158, "roofcat", 1, 2, 1.2, T], [166, "lemure", 0, 3, 2]]); })(),
+      desc: "지붕 셋. 굴뚝 옆 칸에 서면 그 굴뚝의 연기 다리가 4초 뒤 끊기고, 떠나면 6초 뒤 이어집니다. 다리가 끊긴 지붕의 적은 30초 뒤 뛰어넘습니다. 고양이는 천창을 탑니다.",
+      lose: "다리 넷을 다 끊으면 한꺼번에 뜁니다. 서남 굴뚝 하나만 막아 모든 길이 (1,4)를 지나게 하세요." }),
+    // E04-02 「지붕 위」 12x7: 방어 지점은 서쪽 끝에 남고 유이는 동쪽 끝으로 걸어간다. 그녀가 건널 다리를 언제 열고 언제 닫는가. gates 0 (6,0) middle roof, 1 (10,1) east roof; point (0,3). Yui walks west roof -> middle (6,4) -> east (10,4) -> (10,5). Three crows sit on the east roof till she reaches (6,4)
+    CH4({ code: "E04-02",
+      name: "지붕 위",
+      startCost: 18,
+      mul: { hp: 1.4, atk: 1.2, def: 0.85 },
+      map: ["######S##W##","#h.C_h,.C,S#","#,,^^,,,^.,W","B,,_W.h,W,h#","W,.C_,,.^,,#","#h,^^,.,C.,W","##W####W####"],
+      chimneys: [{ at: [3, 1], bridge: [[3, 2], [4, 2]] }, { at: [3, 4], bridge: [[3, 5], [4, 5]] }, { at: [8, 1], bridge: [[8, 2]] }, { at: [8, 5], bridge: [[8, 4]] }],
+      vip: { name: "유이", hp: 10000, def: 120, at: [1, 3], sprite: "yui", route: [{ to: [6, 4], wait: 40 }, { to: [10, 4], wait: 40 }, { to: [10, 5], wait: 0 }], speed: 0.6 },
+      goal: { win: [{ k: "clear" }], lose: [{ k: "life" }, { k: "vipDead" }], text: { win: "적을 모두 막아 낸다.", lose: "목숨이 다하거나 유이가 쓰러진다." }, hud: [{ vip: true }] },
+      waves: (() => { const V = { aim: "vip" }, NW = { via: [[3, 2]] }, SW = { via: [[3, 5]] };
+        return W1([[0.5, "crow", 1, 1, 0, { roost: [10, 2], wakeLeg: 1, until: 130 }], [0.5, "crow", 1, 1, 0, { roost: [9, 3], wakeLeg: 1, until: 130 }], [0.5, "crow", 1, 1, 0, { roost: [9, 1], wakeLeg: 1, until: 130 }],
+          [8, "lemure", 0, 2, 3, NW], [16, "lemure", 0, 2, 3, SW], [24, "lemure", 1, 2, 2.5], [32, "broom", 0, 1, 0, NW], [40, "lemure", 1, 2, 2],
+          [50, "lemure", 0, 2, 2, V], [58, "broom", 1, 1, 0, V], [66, "sweep", 0, 1], [72, "lemure", 1, 3, 2, V], [82, "crow", 1, 2, 2],
+          [92, "broom", 0, 1, 0, V], [100, "lemure", 0, 2, 2, SW], [108, "lemure", 1, 2, 2, V], [118, "sweep", 1, 1], [126, "crow", 0, 2, 2],
+          [136, "broom", 1, 1, 0, V], [144, "lemure", 0, 3, 2, NW], [156, "lemure", 1, 2, 2, V], [166, "broom", 0, 1]]); })(),
+      desc: "방어 지점은 서쪽 끝, 유이는 동쪽 끝까지 걸어갑니다. 그녀도 연기 다리가 있어야 건넙니다. 까마귀는 날아서 유이를 노립니다.",
+      lose: "굴뚝을 계속 막으면 유이가 묶입니다. 그녀가 건너는 동안만 다리를 여세요." }),
+    // E04-03 「잠옷 바람의 사람들」 12x7: 지붕에 선 시민 넷은 둘레 8칸에 적이 머무는 동안 공포가 찬다. 유이 곁 2칸만 차지 않는다. 유이는 45초에 서쪽 지붕에서 동쪽 지붕으로 건너간다. gates 0 (8,0) east roof, 1 (0,5) west roof; points (3,0) west, (11,5) east. Yui crosses at 45 s. Two pickpockets wait on (10,2), (10,4) till 60 s and 85 s
+    CH4({ code: "E04-03",
+      name: "잠옷 바람의 사람들",
+      startCost: 14,
+      mul: { hp: 1, atk: 1, def: 0.85 },
+      map: ["#W#B####S###","#.,,C_h,,.W#","#h,,.^^,.,,#","W,.h,WW,h,.#","#,,h.W_C.,,#","S,,,,^^,,.,B","###WW###W###"],
+      chimneys: [{ at: [4, 1], bridge: [[5, 2], [6, 2]] }, { at: [7, 4], bridge: [[6, 5], [5, 5]] }],
+      citizens: [[1, 3], [2, 1], [4, 5], [9, 3]],
+      citRules: { rate: 6.5 },
+      vip: { name: "유이", hp: 7000, def: 120, at: [3, 2], sprite: "yui", route: [{ to: [7, 2], wait: 45 }, { to: [9, 2], wait: 45 }], speed: 0.6 },
+      goal: { win: [{ k: "clear" }], lose: [{ k: "life" }, { k: "vipDead" }], text: { win: "적을 모두 막아 낸다.", lose: "목숨이 다하거나 유이가 쓰러진다." }, hud: [{ vip: true }] },
+      waves: (() => { const N = { via: [[5, 2]] }, S = { via: [[5, 5]] }, V = { aim: "vip" };
+        return W1([[0.5, "pickpocket", 0, 1, 0, { at: [10, 2], until: 60 }], [0.5, "pickpocket", 0, 1, 0, { at: [10, 4], until: 85 }],
+          [8, "lemure", 1, 2, 3], [16, "lemure", 0, 2, 3], [24, "roofcat", 1, 2, 1.5], [32, "lemure", 0, 2, 2, N], [40, "pickpocket", 1, 1],
+          [48, "lemure", 1, 2, 2, S], [56, "roofcat", 0, 2, 1.5], [64, "lemure", 0, 2, 2, V], [72, "pickpocket", 0, 1], [80, "lemure", 1, 3, 2],
+          [92, "roofcat", 1, 2, 1.5, S], [100, "lemure", 0, 2, 2], [110, "pickpocket", 1, 1, 0, N], [118, "lemure", 0, 2, 2, V], [128, "roofcat", 0, 2, 1.2],
+          [138, "lemure", 1, 2, 2], [148, "pickpocket", 0, 1], [158, "lemure", 0, 2, 2, S]]); })(),
+      desc: "지붕 위에 잠옷 바람의 시민 넷이 서 있습니다. 둘레에 적이 머무는 동안 겁이 차고, 가득 차면 달아나 목숨이 하나 줄어듭니다. 유이 곁 두 칸의 시민은 겁먹지 않습니다.",
+      lose: "시민 곁에서 적을 오래 붙들지 마세요. 유이가 없는 쪽에서는 시민에게서 떨어진 칸에서 받으세요." }),
+    // E04-04 「마녀의 부엌」 12x7: 연기를 두른 적은 축제의 불꽃이 터져야 보인다. 도화선은 4칸(4초), 축제는 20초, 다시 붙이기까지 40초. 무엇이 다리를 건넌 직후에 터뜨릴 것인가. gates 0 (10,1) north, 1 (11,4) south; points (0,2), (0,5). Two clowns stand cloaked on (8,3), (8,4) till 70 s and 90 s; the child comes at 45 s and 125 s
+    CH4({ code: "E04-04",
+      name: "마녀의 부엌",
+      startCost: 24,
+      mul: { hp: 0.65, atk: 0.8, def: 0.85 },
+      map: ["########W###","#h,.,.C,,,S#","B,,W,,^,.,,#","W,hW,h_h,Wi#","W,.,,.C,,W,S","B,.,,,^vuvv#","#oW##h#P##f#"],
+      chimneys: [{ at: [6, 1], bridge: [[6, 2]] }, { at: [6, 4], bridge: [[6, 5]] }],
+      tunnels: [{ a: [10, 3], b: [1, 6], t: 4 }],
+      fuses: [{ from: [10, 6], path: [[10, 5], [9, 5], [8, 5], [7, 5]], box: [7, 6] }],
+      waves: (() => { const T = { tun: true }, N = { via: [[6, 2]] }, S = { via: [[6, 5]] };
+        return W1([[0.5, "clown", 1, 1, 0, { at: [8, 3], until: 70 }], [0.5, "clown", 1, 1, 0, { at: [8, 4], until: 90 }],
+          [8, "lemure", 0, 2, 3, N], [16, "dancer", 1, 2, 2, S], [24, "lemure", 1, 2, 2.5], [32, "dancer", 0, 3, 1.5, N], [45, "lantchild", 1, 1],
+          [52, "dancer", 1, 3, 1.5, S], [60, "roofcat", 0, 1, 0, T], [68, "lemure", 0, 2, 2], [78, "dancer", 0, 3, 1.5, N], [88, "clown", 1, 1, 0, S],
+          [98, "lemure", 1, 2, 2, S], [106, "dancer", 1, 3, 1.5], [116, "roofcat", 0, 2, 1.2, N], [125, "lantchild", 1, 1], [132, "dancer", 0, 3, 1.5, N], [146, "clown", 0, 1, 0, N],
+          [154, "lemure", 1, 2, 2], [162, "dancer", 1, 3, 1.5, S]]); })(),
+      desc: "점화구를 누르면 도화선이 1초에 한 칸씩 탑니다. 폭죽 상자에 닿으면 20초 축제: 연기를 두른 적이 드러나지만 우리 편은 조금씩 다치고, 광대는 드러나면 불을 뿜습니다. 다시 붙이려면 40초.",
+      lose: "광대는 숨은 채로 막아서 잡고, 축제는 춤꾼 떼가 다리를 건넌 뒤에 쓰세요. 도화선 칸에 서 있으면 불이 그 앞에서 멈춥니다." }),
+    // E04-05 「널다리」 12x8: 판자 한 장(카드)을 판자 자리 (6,4)나 (1,4)에 깔면 그 자리로 누구나 건넌다. 유이는 판자가 있어야 빨리 건너지만 그 판자는 문0의 적에게도 지름길이다. gates 0 (5,0), 1 (11,1) north roof; point (0,6) south roof. Plank slots (1,4), (6,4). Paper lamps cross at 30 s with soot thieves under them; two broom witches land on (9,5) at 80 s
+    CH4({ code: "E04-05",
+      name: "널다리",
+      startCost: 24,
+      mul: { hp: 1, atk: 1, def: 0.85 },
+      map: ["#W###S##W#W#","#,,.,,,h,,,S","#h,W,.,,.W.#","#,,,C.,h,,C#","#p_^WWp__^_#","W,.,,h,.,,,#","B,,,.,,W,.,W","##W##W######"],
+      chimneys: [{ at: [4, 3], bridge: [[3, 4]] }, { at: [10, 3], bridge: [[9, 4]] }],
+      plank: { slots: [[1, 4], [6, 4]], cd: 15 },
+      vip: { name: "유이", hp: 7000, def: 120, at: [2, 1], sprite: "yui", route: [{ to: [6, 3], wait: 35 }, { to: [6, 5], wait: 35 }, { to: [10, 6], wait: 0 }], speed: 0.6 },
+      goal: { win: [{ k: "clear" }], lose: [{ k: "life" }, { k: "vipDead" }], text: { win: "적을 모두 막아 낸다.", lose: "목숨이 다하거나 유이가 쓰러진다." }, hud: [{ vip: true }] },
+      waves: (() => { const W = { via: [[3, 4]] }, E = { via: [[9, 4]] }, V = { aim: "vip" };
+        return W1([[8, "lemure", 0, 2, 3, W], [16, "lemure", 1, 2, 3], [24, "roofcat", 0, 2, 1.5, E],
+          [30, "paperlamp", 0, 6, 1.2], [31, "skulker", 0, 4, 1.8, W], [46, "lemure", 1, 2, 2], [54, "skulker", 1, 2, 2], [62, "lemure", 0, 2, 2, V],
+          [72, "roofcat", 1, 2, 1.5], [80, "broom", 0, 2, 0.8, { at: [9, 5], until: 81, landFx: true }], [90, "skulker", 0, 2, 2, E], [98, "lemure", 1, 3, 2],
+          [108, "paperlamp", 1, 4, 1.5], [109, "skulker", 1, 2, 2], [120, "broom", 1, 1, 0, E], [128, "lemure", 0, 2, 2, W], [138, "roofcat", 1, 2, 1.2, E],
+          [148, "skulker", 0, 2, 2], [158, "lemure", 1, 2, 2]]); })(),
+      desc: "판자 카드: 판자 자리에 깔면 그 칸으로 누구나 건넙니다. 바로 깔리고 바로 거둬지며, 거두면 15초 뒤 다시 쓸 수 있습니다. 유이는 판자가 있어야 남쪽으로 빨리 건넙니다.",
+      lose: "판자는 적에게도 지름길입니다. 유이가 건널 때만 깔고, 건너면 바로 거두세요." }),
+    // E04-06 「여덟 시의 고해」 12x8: 방어 지점이 가운데 지붕 한복판에 있고 문 셋이 양 날개에 있다. 천창 둘은 날개 끝에서 가운데 지붕의 반대편으로 솟는다. 방어 지점의 네 앞 칸 가운데 세울 수 있는 것은 북쪽 (6,2) 하나. gates 0 (0,1), 1 (11,3), 2 (0,6); the point (6,3) in the middle. Skylights (10,1)->(6,6), (1,5)->(5,1). Three crossbowmen wait on the east wing till 70, 95, 120 s
+    CH4({ code: "E04-06",
+      name: "여덟 시의 고해",
+      startCost: 30,
+      mul: { hp: 0.48, atk: 0.65, def: 0.85 },
+      map: ["######W##W##","S,.C,o,h_,i#","#,,^,,.,C.,W","#h,Wh,B,^,,S","W,._.,,,_h,W","#i,C.,h.C,,#","S,,^,,o,^,,#","####W#WW####"],
+      chimneys: [{ at: [3, 1], bridge: [[3, 2]] }, { at: [3, 5], bridge: [[3, 6]] }, { at: [8, 2], bridge: [[8, 3]] }, { at: [8, 5], bridge: [[8, 6]] }],
+      tunnels: [{ a: [10, 1], b: [6, 6], t: 4 }, { a: [1, 5], b: [5, 1], t: 4 }],
+      rmul: { hp: 0.6, atk: 0.5 },
+      waves: (() => { const T = { tun: true }, SE = { via: [[8, 6]] };
+        return W1([[0.5, "sharpshooter", 1, 1, 0, { at: [10, 5], until: 70 }], [0.5, "sharpshooter", 1, 1, 0, { at: [10, 4], until: 95 }], [0.5, "sharpshooter", 1, 1, 0, { at: [10, 2], until: 120 }],
+          [8, "lemure", 0, 2, 3], [14, "lemure", 2, 2, 3], [22, "roofcat", 1, 2, 1.5, T], [30, "cauldron", 0, 1], [38, "lemure", 1, 2, 2.5, SE], [46, "roofcat", 2, 2, 1.5, T],
+          [54, "lemure", 2, 2, 2], [62, "cauldron", 1, 1], [70, "lemure", 0, 3, 2], [80, "roofcat", 1, 2, 1.2, T], [88, "sweep", 2, 1], [96, "cauldron", 2, 1],
+          [104, "lemure", 1, 2, 2, SE], [112, "roofcat", 2, 2, 1.2, T], [120, "lemure", 0, 2, 2], [130, "cauldron", 0, 1], [138, "roofcat", 1, 2, 1.2, T], [148, "lemure", 2, 3, 2], [158, "sweep", 0, 1]]); })(),
+      desc: "방어 지점이 가운데 지붕 한복판에 있고, 문 셋은 양 날개에 있습니다. 천창 둘은 날개 끝에서 방어 지점 반대편으로 솟습니다. 가마솥은 막아선 가사인격을 삼킵니다.",
+      lose: "굴뚝 넷을 다 막으면 천창으로 오는 적을 받을 손이 없습니다. 가마솥은 막지 말고 고지에서 깎으세요." }),
+    // E04-07 「브로켄 오르는 길」 13x8: 세 단을 지그재그로 오르는 27칸 외길. 브로켄의 그림자는 열린 굴뚝에서 2칸 안(연기 속)에서는 맞지 않는다. 굴뚝을 막아 다리 머리에 30초 세워 둔 동안만 깎을 수 있다. gates 0 (12,4) middle tier, 1 (0,6) bottom tier; point (12,1) top tier. Skylight (5,6)->(6,3). A shadow stands on (1,4) till 90 s; the second comes at 140 s
+    // board change from the design: the skylight's mouth (6,3) lay between the middle and the top tier and joined them on foot (the 27-square road became 15); the mouth is moved up to (6,2) and (6,3) is night air
+    CH4({ code: "E04-07",
+      name: "브로켄 오르는 길",
+      startCost: 28,
+      mul: { hp: 0.55, atk: 0.7, def: 0.85 },
+      map: ["##W####WhW###","#h,,.,,,,,,,B","W,.W,,o.,.,,#","#^C_W____h__#","#,,.uvv,.,,,S","#___f_P___C^#","S,,.,i,,.,.,#","#############"],
+      chimneys: [{ at: [2, 3], bridge: [[1, 3]] }, { at: [10, 5], bridge: [[11, 5]] }],
+      tunnels: [{ a: [5, 6], b: [6, 2], t: 4 }],
+      fuses: [{ from: [4, 5], path: [[4, 4], [5, 4], [6, 4]], box: [6, 5] }],
+      waves: (() => { const T = { tun: true };
+        return W1([[0.5, "shadow", 0, 1, 0, { at: [1, 4], until: 90 }],
+          [8, "lemure", 1, 2, 3], [16, "lemure", 0, 2, 3], [24, "roofcat", 1, 2, 1.5, T], [32, "dancer", 1, 2, 2], [42, "stallwitch", 0, 1], [50, "lemure", 1, 2, 2],
+          [58, "roofcat", 1, 2, 1.2, T], [66, "dancer", 0, 2, 2], [76, "lemure", 1, 3, 2], [86, "stallwitch", 1, 1], [96, "roofcat", 1, 2, 1.2, T], [104, "dancer", 1, 2, 2],
+          [114, "lemure", 0, 2, 2], [124, "lemure", 1, 2, 2], [132, "dancer", 0, 2, 1.5], [140, "shadow", 1, 1], [150, "roofcat", 1, 2, 1.2, T], [160, "lemure", 0, 2, 2]]); })(),
+      desc: "세 단을 굽이 오르는 외길. 브로켄의 그림자는 열린 굴뚝 2칸 안과 연기 다리 위에서는 맞지 않습니다. 그 굴뚝을 막아 다리를 끊으면 그는 다리 머리에서 연기 밖에 섭니다.",
+      lose: "그림자가 다리 머리에 묶인 30초가 깎는 시간입니다. 화력을 방어 지점 앞이 아니라 막은 굴뚝의 다리 머리로 돌리세요." }),
+    // E04-08 「집회」 13x8: 고리 지붕 한가운데 섬에 문이 있다. 코스트를 치는 적 셋(소매치기는 훔치고, 검댕 도둑은 회복을 늦추고, 종복 사제는 상한을 깎는다)이 함께 온다. gates 0 (9,0), 1 (5,3) the island's door, 2 (0,6); points (0,1), (12,6). Four lemures stand round the island's door till 40 s and 75 s, when the acolytes come out
+    CH4({ code: "E04-08",
+      name: "집회",
+      startCost: 24,
+      mul: { hp: 0.6, atk: 0.7, def: 0.85 },
+      map: ["##W#h##W#S###","B,,,.,,,.,i,#","Woh_C^_h___,#","#.__,S,.^^^,#","#,^^.,,._C_,#","#.C_h_^C_h_.#","S,,.,,,,,.,,B","#W##W####W#W#"],
+      chimneys: [{ at: [4, 2], bridge: [[5, 2]] }, { at: [9, 4], bridge: [[8, 3], [9, 3], [10, 3]] }, { at: [2, 5], bridge: [[2, 4], [3, 4]] }, { at: [7, 5], bridge: [[6, 5]] }],
+      tunnels: [{ a: [10, 1], b: [1, 2], t: 4 }],
+      citizens: [[2, 1], [11, 4], [6, 6]],
+      waves: (() => { const T = { tun: true };
+        return W1([[0.5, "lemure", 1, 1, 0, { at: [4, 3], until: 40 }], [0.5, "lemure", 1, 1, 0, { at: [6, 3], until: 40 }], [0.5, "lemure", 1, 1, 0, { at: [5, 4], until: 75 }], [0.5, "lemure", 1, 1, 0, { at: [6, 4], until: 75 }],
+          [8, "pickpocket", 0, 1], [14, "lemure", 2, 2, 3], [22, "skulker", 2, 2, 2], [30, "roofcat", 0, 2, 1.5], [40, "acolyte", 1, 1], [46, "lemure", 2, 2, 2],
+          [54, "skulker", 1, 2, 2], [62, "pickpocket", 2, 1], [75, "acolyte", 1, 1], [80, "lemure", 0, 2, 2], [88, "roofcat", 2, 2, 1.2], [96, "skulker", 0, 2, 2],
+          [104, "acolyte", 0, 1], [112, "lemure", 1, 2, 2], [120, "pickpocket", 0, 1], [128, "roofcat", 0, 1, 0, T], [136, "skulker", 2, 2, 2], [146, "acolyte", 1, 1],
+          [154, "lemure", 2, 3, 2], [164, "lemure", 0, 2, 2]]); })(),
+      desc: "고리 지붕 한가운데 섬에 문이 있습니다. 소매치기는 코스트를 훔치고, 검댕 도둑은 회복을 늦추고, 종복 사제는 코스트 상한을 깎습니다.",
+      lose: "비싼 가사인격을 기다리지 말고 값싼 가사인격부터 넓게 세우세요. 섬 문에서 나오는 사제를 먼저 잡으세요." }),
+    // E04-09 「바다 축제」 13x8: 배 네 척. 걸어서 이어지는 길은 연기 다리 둘과 우리가 깔 판자 자리 둘뿐이고, 적은 물밑(터널)으로 건넌다. 문이 있는 배에서는 문 옆이 곧 물밑 입구다. 유이는 북서 배에서 남동 배까지 간다. gates 0 (11,1) north-east boat, 1 (0,5) south-west boat; points (0,1), (12,5). Under the water: (9,2)->(3,2), (1,6)->(11,6). The magic marksman stands on (10,2) till 100 s; three wisps land on (8,4) at 60 s
+    CH4({ code: "E04-09",
+      name: "바다 축제",
+      startCost: 24,
+      mul: { hp: 0.6, atk: 0.75, def: 0.85 },
+      map: ["#W##W##W#####","B,.,,_,,.,,S#","#h,o.p,.Wi,h#","#_^CW__hW^C_#","#,,.,W,,,,.,W","S,W,.pvu.,,,B","#i,,h_fP,h,o#","########W####"],
+      chimneys: [{ at: [3, 3], bridge: [[2, 3]] }, { at: [10, 3], bridge: [[9, 3]] }],
+      tunnels: [{ a: [9, 2], b: [3, 2], t: 4 }, { a: [1, 6], b: [11, 6], t: 4 }],
+      fuses: [{ from: [6, 6], path: [[6, 5], [7, 5]], box: [7, 6] }],
+      plank: { slots: [[5, 2], [5, 5]], cd: 15 },
+      vip: { name: "유이", hp: 7000, def: 60, at: [3, 1], sprite: "yui", route: [{ to: [6, 1], wait: 30 }, { to: [9, 5], wait: 40 }, { to: [10, 6], wait: 0 }], speed: 0.6 },
+      goal: { win: [{ k: "clear" }], lose: [{ k: "life" }, { k: "vipDead" }], text: { win: "적을 모두 막아 낸다.", lose: "목숨이 다하거나 유이가 쓰러진다." }, hud: [{ vip: true }] },
+      waves: (() => { const T = { tun: true }, V = { aim: "vip" };
+        return W1([[0.5, "magicshot", 0, 1, 0, { at: [10, 2], until: 100 }],
+          [8, "lemure", 0, 2, 3, T], [16, "lemure", 1, 2, 3], [24, "roofcat", 0, 2, 1.5, T], [32, "dancer", 1, 2, 2], [40, "float", 0, 1, 0], [48, "lemure", 1, 2, 2],
+          [60, "wisp", 0, 3, 0.4, { at: [8, 4], until: 61, landFx: true }], [66, "roofcat", 1, 2, 1.5], [74, "lemure", 0, 2, 2], [96, "float", 0, 1, 0], [90, "dancer", 0, 2, 2, T],
+          [100, "lemure", 1, 2, 2], [108, "roofcat", 0, 2, 1.2, T], [118, "lantchild", 1, 1], [124, "float", 0, 1, 0], [134, "lemure", 1, 2, 2, V], [144, "dancer", 0, 2, 1.5, T], [154, "lemure", 0, 2, 2, T]]); })(),
+      desc: "배 네 척. 걸어서 이어지는 길은 연기 다리 둘과 판자 자리 둘뿐이고, 적은 물밑으로 건넙니다. 가장행렬 수레는 축제 동안에만 제대로 다칩니다.",
+      lose: "첫 줄은 물밑 출구입니다. 수레가 올 때까지 도화선 칸을 밟아 불을 붙들어 두세요." }),
+    // E04-10 「융커 볼란트」 13x8: 볼란트는 죽지 않고 막히지 않는다. 축제의 불꽃이 터지는 순간 그가 연기 밖에 있으면 '관심'이 한 칸 깎인다. 세 번 다가오는 동안 세 번 맞혀 물러나게 한다. 축제는 시민을 놀라게 하고 광대를 깨운다. gates 0 (6,0) north, 1 (0,2) west, 2 (12,5) east; point (6,6). Junker Voland lands on (2,2) at 60 s, (10,2) at 120 s, (6,1) at 180 s; each time two broom witches land beside Yui
+    CH4({ code: "E04-10",
+      name: "융커 볼란트",
+      startCost: 28,
+      mul: { hp: 0.4, atk: 0.55, def: 0.85 },
+      map: ["#####WS######","#h,W.,,.oW,h#","S,,^,h,vv^,i#","W,.C,,,uPC.,W","W,h_.,hv,_,,#","#,,^,,,f,^.,S","Wi.Co.B,.C,h#","##########W##"],
+      chimneys: [{ at: [3, 3], bridge: [[3, 2]] }, { at: [9, 3], bridge: [[9, 2]] }, { at: [3, 6], bridge: [[3, 5]] }, { at: [9, 6], bridge: [[9, 5]] }],
+      tunnels: [{ a: [1, 6], b: [8, 1], t: 4 }, { a: [11, 2], b: [4, 6], t: 4 }],
+      fuses: [{ from: [7, 5], path: [[7, 4], [7, 3], [7, 2], [8, 2]], box: [8, 3] }],
+      citizens: [[5, 1], [4, 5], [10, 4], [1, 4]],
+      vip: { name: "유이", hp: 7000, def: 120, at: [6, 3], sprite: "yui", route: [{ to: [4, 3], wait: 60 }, { to: [6, 5], wait: 60 }, { to: [8, 4], wait: 60 }], speed: 0.6 },
+      meters: { interest: { v: 3, min: 0, max: 3, label: "관심" } },
+      vollandRing: [[2, 2], [10, 2], [6, 1]],
+      goal: { win: [{ k: "clear" }], lose: [{ k: "life" }, { k: "vipDead" }], text: { win: "적을 모두 막아 낸다.", lose: "목숨이 다하거나 유이가 쓰러진다." }, hud: [{ vip: true }, { meter: "interest" }] },
+      waves: (() => { const T = { tun: true }, V = { aim: "vip" };
+        return W1([[8, "lemure", 1, 2, 3], [16, "lemure", 2, 2, 3], [24, "dancer", 0, 2, 2], [32, "roofcat", 1, 2, 1.5, T], [40, "clown", 2, 1], [48, "lemure", 0, 2, 2],
+          [60, "volland", 1, 1, 0, { vfrom: [2, 2] }], [62, "broom", 0, 1, 0, { at: [5, 4], until: 63, landFx: true }], [62, "broom", 0, 1, 0, { at: [8, 5], until: 63, landFx: true }],
+          [70, "dancer", 2, 2, 2], [80, "lemure", 1, 2, 2, V], [90, "roofcat", 2, 2, 1.2, T], [100, "clown", 0, 1], [108, "lemure", 2, 2, 2],
+          [120, "volland", 2, 1, 0, { vfrom: [10, 2] }], [122, "broom", 0, 1, 0, { at: [5, 5], until: 123, landFx: true }], [122, "broom", 0, 1, 0, { at: [8, 5], until: 123, landFx: true }],
+          [132, "dancer", 1, 2, 2], [140, "lemure", 0, 2, 2], [150, "roofcat", 1, 2, 1.2, T], [160, "lantchild", 0, 1], [168, "lemure", 2, 2, 2, V],
+          [180, "volland", 0, 1, 0, { vfrom: [6, 1] }], [182, "broom", 0, 1, 0, { at: [5, 4], until: 183, landFx: true }], [182, "broom", 0, 1, 0, { at: [5, 5], until: 183, landFx: true }],
+          [192, "dancer", 2, 2, 2], [200, "lemure", 1, 2, 2], [210, "clown", 2, 1]]); })(),
+      boss: ["경고: 융커 볼란트", "융커 볼란트 · WARNING"],
+      desc: "융커 볼란트는 죽지 않고 막히지 않습니다. 축제의 불꽃이 터지는 순간 그가 연기 밖에 있으면 관심이 한 칸 깎이고 물러납니다. 관심 셋을 다 깎으면 떠납니다.",
+      lose: "그가 오는 쪽 굴뚝만 막아 연기를 걷고, 축제는 그가 유이에게 다가올 때를 위해 아껴 두세요. 도화선 칸에 서 있으면 불이 그 앞에서 멈춥니다." }),
     // ---- supply (자원 수집): built from the farm tables below, in the order the meta side counts them (AM FH CB AR, BM, CN) ----
     ...FARM_STAGES,
     ...LAB_STAGES,   // the lab: always last, so no stage before it moves
@@ -1701,6 +2219,18 @@
   const tileAt = (x, y) => (x < 0 || y < 0 || x >= W || y >= H) ? "#" : MAP[y][x];
   const walkable = (c) => c === "." || c === "," || c === "S" || c === "B" || c === "*" || c === "~" || c === "=" || c === "-" || c === "^" || c === "R" || c === "E";   // "^": a smoke bridge (the lab's chimneys): anyone walks it, nobody stands on it   // "R": a rest (the lab's beat): walked, never stood on; a foe landing there waits for the downbeat   // "E": the relay's exit (lab): walked, never stood on   // "=": thin ice (stand on it and the armour suffers), "-": an ice sheet nobody can stand on   // "~": mud (the rasputitsa): ground anyone may stand on, where the foe wades slowly   // "*": open ground anyone can stand on, near or far   // ",": ground the foe walks but nobody can stand on
 
+  /* chapter 3's rampart: "T" a wall top ours may stand on (any class), "m" a wall top nobody of ours stands on, "H" a ladder (nobody of ours stands on it either).
+     Only a foe whose def has climb: true walks them, and only by a ladder: ground <-> H <-> T/m, never straight between ground and T/m. For every other foe they are
+     as shut as "h". CLIMB_USE is on while a climber's way is worked out (as TUN_USE is for the tunnels); the default routes (PATHS) are worked out with it off */
+  const WALLTOP = (c) => c === "T" || c === "m", ONWALL = (c) => c === "T" || c === "m" || c === "H";
+  let CLIMB_USE = false;
+  let CLIMB_ALL = false;   /* stage.climbAll: every foe on foot climbs (the default routes too). Set by each Game as it starts, before its board is laid */
+  const RAMPART = { out: 1.3, in: 0.7, ladder: 2.5, reach: 1.0 };
+  const WALL_DROP = { stun: 2, pct: 0.3 };   /* a foe shoved off a rampart top onto the ground: stunned this long, and this share of its max hp gone */   /* out/in: what one of ours on T deals to / takes from foes on the ground; ladder: seconds up or down; reach: a ranged climber's extra range on the wall */
+  const STAKE_CARD = { def: { tile: "g" } };   /* asks canDeployAt whether a square is free and could take one of ours (the staker's rule) */
+  function climbStep(a, b) { if (WALLTOP(b)) return WALLTOP(a) || a === "H"; if (b === "H") return walkable(a) || ONWALL(a); return walkable(b) && !WALLTOP(a); }
+  const walkC = (c) => walkable(c) || (CLIMB_USE && ONWALL(c));
+
   function findAll(ch) { const r = []; for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) if (MAP[y][x] === ch) r.push([x, y]); return r; }
   const SPAWNS = [], BASE = [0, 0], BASES = [];   // BASE: the first defence point (and the one most boards have); BASES: all of them
 
@@ -1714,11 +2244,11 @@
       if (to === BASE ? MAP[y] && MAP[y][x] === "B" : x === to[0] && y === to[1]) { to = [x, y]; break; }   // asked for "the base": whichever defence point comes first
       for (const [dx, dy] of [[1, 0], [0, 1], [0, -1], [-1, 0]]) {
         const nx = x + dx, ny = y + dy;
-        if (!walkable(tileAt(nx, ny)) || prev.has(key(nx, ny))) continue;
+        if (!(CLIMB_USE ? climbStep(tileAt(x, y), tileAt(nx, ny)) : walkable(tileAt(nx, ny))) || prev.has(key(nx, ny))) continue;
         prev.set(key(nx, ny), [x, y]);
         q.push([nx, ny]);
       }
-      if (TUN_OUT.size) for (const [nx, ny] of TUN_OUT.get(y * 1000 + x) || []) { if (prev.has(key(nx, ny))) continue; prev.set(key(nx, ny), [x, y]); q.push([nx, ny]); }   /* a tunnel: one step to its far mouth */
+      if (TUN_USE && TUN_OUT.size) for (const [nx, ny] of TUN_OUT.get(y * 1000 + x) || []) { if (prev.has(key(nx, ny))) continue; prev.set(key(nx, ny), [x, y]); q.push([nx, ny]); }   /* a tunnel: one step to its far mouth */
     }
     const path = [];
     if (!prev.has(key(...to))) return null;   // no way through on foot (a drone-only gate)
@@ -1730,6 +2260,7 @@
   /* quick routes (tunnels): a foe stepping onto a tunnel mouth goes underground and comes up at the paired exit after t seconds; while under it can be neither seen, struck nor blocked.
      stage.tunnels: [{ a: [x, y], b: [x, y], t: seconds, both: false }] (one way a -> b unless both). Mouths sit on walkable squares; pathfinding counts the passage as one step */
   const TUN = new Map(), TUN_OUT = new Map();
+  let TUN_USE = false;   /* only a foe sent with the wave option `tun: true` paths through the tunnels (spawn turns this on while it works out that one's way) */
   function setTunnels(list) {
     TUN.clear(); TUN_OUT.clear();
     for (const q of list || []) { const add = (a, b) => { TUN.set(a[0] + "," + a[1] + ">" + b[0] + "," + b[1], { t: q.t === undefined ? 3 : q.t, a, b }); const k = a[1] * 1000 + a[0]; if (!TUN_OUT.has(k)) TUN_OUT.set(k, []); TUN_OUT.get(k).push(b); };
@@ -1738,7 +2269,7 @@
   const tunAt = (a, b) => TUN.size ? TUN.get(a[0] + "," + a[1] + ">" + b[0] + "," + b[1]) || null : null;
   const VIA = new Map();   // routes through waypoints, built once per map
   function viaPath(s, via) {
-    const k = s + ":" + JSON.stringify(via);
+    const k = (TUN_USE ? "T" : "") + (CLIMB_USE ? "C" : "") + s + ":" + JSON.stringify(via);
     if (VIA.has(k)) return VIA.get(k);
     let pts = [SPAWNS[s], ...via.map((p) => [p[0], p[1]]), BASE], path = [], waits = null;
     for (let i = 0; i < pts.length - 1; i++) { const seg = bfsPath(pts[i], pts[i + 1]); if (!seg) { path = PATHS[s]; waits = null; break; } path = path.concat(i ? seg.slice(1) : seg);
@@ -1764,7 +2295,7 @@
     MAP = rows; W = rows[0].length; H = rows.length;
     SPAWNS.length = 0; SPAWNS.push(...findAll("S"));
     BASES.length = 0; BASES.push(...findAll("B")); BASE[0] = BASES[0][0]; BASE[1] = BASES[0][1];
-    PATHS.length = 0; PATHS.push(...SPAWNS.map((s) => bfsPath(s, BASE))); VIA.clear();
+    CLIMB_USE = CLIMB_ALL; PATHS.length = 0; PATHS.push(...SPAWNS.map((s) => bfsPath(s, BASE))); VIA.clear(); CLIMB_USE = false;
     AIR_PATHS.length = 0; AIR_PATHS.push(...SPAWNS.map((s) => [s, nearBase(s)]));
   }
   setMap(MAP0);
@@ -1827,15 +2358,19 @@
       else if (stageIdx === "sandbox") { this.stageIdx = -2; this.stage = SANDBOX; }
       else { this.stageIdx = Math.max(0, Math.min(STAGES.length - 1, stageIdx || 0)); this.stage = STAGES[this.stageIdx]; }
       this.waves = this.stage.waves;
+      if (this.stage.frost) this.stage = this.frostStage(this.stage);   /* 2-10 v2: a frost stage plays on its own copy of the stage whose braziers have health and never mend (frostStage) */
+      /* a second wave held back (stage.wave2 { at, bossPct, waves }): it starts at `at` s or when the boss falls to bossPct of his strength, whichever comes first; its times count from then */
+      this.w2 = this.stage.wave2 ? { at: this.stage.wave2.at, pct: this.stage.wave2.bossPct, list: W1(this.stage.wave2.waves), done: false, t: null } : null;
+      if (this.w2) this.waves = this.waves.slice();
       // board shifts (a wall that opens at a set time): such a stage plays on its own copy of the rows, so the stage's map stays as written and a new game starts shut again
       this.rows = this.stage.shifts && this.stage.map ? this.stage.map.slice() : null;
       this.shifts = (this.stage.shifts || []).map((q) => ({ t: q.when ? Infinity : q.t, when: q.when, warn: q.warn || 0, set: q.set, banner: q.banner, tiles: q.set.map(([x, y]) => [x, y]), warned: false, done: false }));
-      setTunnels(this.stage.tunnels); setMap(this.rows || this.stage.map || MAP0);
+      CLIMB_ALL = !!this.stage.climbAll; setTunnels(this.stage.tunnels); setMap(this.rows || this.stage.map || MAP0);
       this.costRate = this.stage.costRate !== undefined ? this.stage.costRate : CFG.costPerSec;
       if (this.stage.startCost) this.cost = this.stage.startCost;
       this.hold = !!(this.stage.tutorial || this.stage.sandbox);
       if (this.stage.sandbox) { this.life = 99; this.cost = CFG.maxCost; }   // a scripted stage ends only when its script lets go; the training room never ends
-      this.killed = 0; this.leaked = 0; this.total = this.waves.filter((w) => !(w[3] && w[3].ally)).length;   // those who stand with us are not counted among the foe this.over = null;
+      this.killed = 0; this.leaked = 0; this.total = this.waves.filter((w) => !(w[3] && (w[3].ally || w[3].loop))).length + (this.w2 ? this.w2.list.length : 0);   // those who stand with us are not counted among the foe this.over = null;
       if (this.stage.march) { this.stage = Object.assign({}, this.stage); this.march = { def: this.stage.march, n: 0, route: [] }; this.loadPart(this.stage.march.start); }
       this.deployLimit = this.stage.deployLimit || CFG.deployLimit;
       // the villages that burn on a timetable: warned, then alight, then (if it says) burnt out
@@ -1849,6 +2384,7 @@
       const ES = this.stage.escort; this.escort = ES ? { x: ES.at[0], y: ES.at[1], hp: ES.life || 3, max: ES.life || 3, name: ES.name || "" } : null;
       this.smoke = new Map(); for (const [x, y] of this.stage.smoke || []) this.smoke.set(y * 100 + x, 0);   // key -> the time until which it is blown away (0: lying there)
       const CL = this.stage.calls; this.calls = CL ? { next: CL.first, every: CL.every, dur: CL.dur || 2.5, warn: CL.warn || 4, speed: CL.speed || 1.8, slow: CL.slow || 1.3, at: CL.at || (ES && ES.at), until: 0, warned: false } : null;
+      this.pat = null; this.summon = new Set(); this.iced = new Map();   /* the eagle's pattern running (patternStart), the summoned braziers of pattern A (keys y*100+x, overlays on their own tile), the squares frozen over in pattern B (key -> thaw time) */
       this.lampOff = new Set(); this.volleys = []; this.shells = []; this.lampEv = ((this.stage.lamps && this.stage.lamps.events) || []).map((e) => ({ t: e.t, off: e.off, warn: e.warn || 5 }));
       // Two kinds of dead lamp. A lamp BROKEN by a lamp-breaker lights again only when an operator deployed after it went out stands right beside it for
       // stage.lamps.relight seconds (6 by default) without a break. Any other dead lamp (an order such as "lights out", a snuffer, the clock, out from the start) lights
@@ -1857,8 +2393,23 @@
       // the time a fresh keeper's clock will run out; relightAt holds, for the lamps that will light, the earlier of the two times (the page shows the count).
       this.lampOffT = new Map(); this.relightAt = new Map(); this.freshAt = new Map(); this.lampBroken = new Set();
       if (this.stage.lamps) for (const [x, y] of this.stage.lamps.off || []) { this.lampOff.add(y * 100 + x); this.lampOffT.set(y * 100 + x, -1); }
+      /* the ember (불씨, chapter 2 from IM-05: stage.ember): a card, not an operator. Set down beside a brazier that is out, it lights it at once and is gone; cost 5, again after 25 s, as often as you like */
+      this.emberCard = this.stage.ember ? Object.assign({ cost: 5, cd: 25, cdT: 0, used: 0 }, typeof this.stage.ember === "object" ? this.stage.ember : {}) : null;
+      /* the torch (stage.torch, chapter 3): the ember card's slot and way of use; set down on a dark square it lights that square and those within r for dur seconds */
+      if (!this.emberCard && this.stage.torch) this.emberCard = Object.assign({ cost: 6, cd: 30, dur: 40, r: 1, cdT: 0, used: 0 }, typeof this.stage.torch === "object" ? this.stage.torch : {}, { torch: true });
+      this.torches = [];
+      this.darkNoDeploy = !!(this.stage.lamps && !this.stage.lamps.fire && this.stage.lamps.darkDeploy === false);
+      this.horns = this.stage.horns ? this.stage.horns.map((q) => Object.assign({ done: false }, q)) : null;
       if (this.stage.volleys) this.volleys = this.stage.volleys.map((v) => Object.assign({ next: v.first, st: 0 }, v));
-      if (this.stage.wind) { const w = this.stage.wind; this.wind = { dir: w.dir, every: w.every, warn: w.warn || 4, dur: w.dur || w.every * 0.5, durs: w.durs || null, n: 0, curDur: 0, step: w.step || BLIZ.step, next: w.first || w.every, warned: false, blowing: false, end: 0, front: null, adv: 0 }; }
+      if (this.stage.wind) { const w = this.stage.wind; this.wind = { dir: w.dir, every: w.every, warn: w.warn || 4, dur: w.dur || w.every * 0.5, durs: w.durs || null, n: 0, curDur: 0, step: w.step || BLIZ.step, next: w.first || w.every, warned: false, blowing: false, end: 0, front: null, adv: 0, dirs: w.dirs || null, turns: (w.turns || []).map((q) => Object.assign({ warn: 4, done: false, warned: false }, q)), flip: !!w.flip, pendingDir: null }; }   /* turns: [{ t, dir, warn }] the wind turns at t (warned before, arrows the new way); flip: a boss's standard turns it about */
+      /* the endless blizzard (stage.storm, 2-6): one gust from the first tick that does not end on its own; its end is pushed back every tick while the gauge lasts.
+         The gauge falls by drain each second for every brazier lit at that moment (none lit: it stands still); at 0 the gust passes as any gust does and no other comes */
+      this.storm = null;
+      if (this.stage.storm) { const S = this.stage.storm; this.storm = { gauge: S.gauge, max: S.gauge, drain: S.drain, lit: 0, ended: false, endT: null }; for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) if (this.lampLit(x, y)) this.storm.lit++;
+        this.wind = { dir: S.dir, every: Infinity, warn: 4, dur: STORM_SPAN, durs: null, n: 0, curDur: 0, step: S.step || BLIZ.step, next: 0, warned: true, blowing: false, end: 0, front: null, adv: 0, dirs: null, turns: [], flip: false, pendingDir: null, storm: true }; }
+      /* braziers that can be struck (stage.lamps.hp, 2-6): key y*100+x -> { hp, hitAt }. At 0 the brazier goes out (not broken); unstruck for LAMP_HP.calm s it mends regen a second, and an out one lights again at relightAt of its max */
+      this.lampHp = null;
+      if (this.stage.lamps && this.stage.lamps.hp) { this.lampHp = new Map(); for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) if (tileAt(x, y) === "F") this.lampHp.set(y * 100 + x, { hp: this.stage.lamps.hp, hitAt: -99 }); }
       // lab stages (L0): a stage may name its own win and lose conditions (goal), keep gauges (meters), bring an ally who walks (vip) and repeat its waves without end (loop).
       // None of the stages before the lab sets any of these, so for them all four stay empty and nothing below changes how they play
       this.goal = this.stage.goal || null; this.meters = {};
@@ -1886,6 +2437,9 @@
       if (EC) { const stored = echoGet(EC.key), src = Array.isArray(stored) && stored.length ? stored : (EC.seed || []).map(([t, id, x, y, dir, until]) => ({ t, id, x, y, dir, until: until === undefined ? null : until, seed: true }));
         this.echo = { key: EC.key, pct: EC.pct || 0.5, rec: [], saved: false, fromSeed: src !== stored, q: src.map((r) => Object.assign({}, r)).sort((a, b) => a.t - b.t) }; }
       this.chimneys = (this.stage.chimneys || []).map((c, i) => ({ i, at: c.at.slice(), bridge: c.bridge.map((q) => q.slice()), close: c.close || 4, open: c.open || 6, stopT: 0, freeT: 0, kept: false, shut: false, brokenUntil: -1 }));
+      this.ch4 = null; if (this.stage.ch4) this.ch4Init();
+      this.frost = null; if (this.stage.frost) this.frostInit();   /* 2-10 v2 (stage.frost): fog and phases, the blizzard that grows, braziers you feed (frostInit) */
+      this.ch5 = null; if (this.stage.ch5) this.ch5Init();   /* chapter 5 (stage.ch5): zones of any shape on the beat, the flow, the tuner card, the orchestra's rules (ch5Init) */   /* chapter 4 (stage.ch4): citizens, fuses and the festival, the plank card, the leaping roofs for every foe (ch4Init) */
     }
     // ---- lab (L0): gauges, the walking ally, enemies with an aim, squares that change, waves without end, and the goal tests ----
     // a gauge: add delta, keep it inside its bounds (a count is a gauge with none), return the new value
@@ -1930,8 +2484,10 @@
       if (e.aim === "item" && this.relay) { const R = this.relay; if (e.carrying) return this.bfsTo(T, (x, y) => near1(x, y, R.from[0], R.from[1]) && !(x === R.from[0] && y === R.from[1]));   // lab L4: carrying it home: to the vault
         if (R.state === "ground") return this.bfsTo(T, (x, y) => near1(x, y, R.x, R.y)); if (R.state === "held") return this.bfsTo(T, (x, y) => near1(x, y, R.holder.x, R.holder.y)); return null; }
       if (e.aim === "mirror" && this.mirror) { const st = this.mirror.sq.filter((q) => !q.broken); return st.length ? this.bfsTo(T, (x, y) => st.some((q) => near1(x, y, q.x, q.y))) : null; }   // lab L3: the nearest standing square of glass
-      if (e.aim === "metro" && this.beat) { const ms = this.beat.zones.filter((z) => z.x1 >= T[0]).map((z) => z.metronome); const p = ms.length ? this.bfsTo(T, (x, y) => ms.some((m) => near1(x, y, m[0], m[1]))) : null; return p; }   // the baton: the nearest metronome ahead
+      if (e.aim === "metro" && this.beat) { const ms = this.beat.zones.filter((z) => this.ch5 ? !!z.metronome : z.x1 >= T[0]).map((z) => z.metronome); const p = ms.length ? this.bfsTo(T, (x, y) => ms.some((m) => near1(x, y, m[0], m[1]))) : null; return p; }   // the baton: the nearest metronome ahead
       if (e.aim === "chimney") { const kept = this.chimneys.filter((c) => c.kept); const p = kept.length ? this.bfsTo(T, (x, y) => kept.some((c) => near1(x, y, c.at[0], c.at[1]))) : null; return p || toVip(); }   // the sweep: the nearest stopped chimney, else the ally
+      if (e.aim === "fuse" && this.ch4) { const F = this.ch4.fuses; return F.length ? this.bfsTo(T, (x, y) => F.some((f) => Math.abs(f.from[0] - x) + Math.abs(f.from[1] - y) === 1)) : null; }   /* chapter 4: the child, to the nearest igniter */
+      if (e.aim === "home" && e.home) return bfsPath(T, e.home);   /* chapter 4: the child, back out by its own gate */
       if (e.aim === "vip") return toVip();
       if (e.aim === "unit") { if (this.units.length) return this.bfsTo(T, (x, y) => this.units.some((u) => near1(x, y, u.x, u.y))); return toVip(); }
       return null;
@@ -1942,9 +2498,12 @@
       if (!walkable(tileAt(T[0], T[1]))) return;
       let p = e.aim !== undefined ? this.aimWay(e, T) : null; let aimed = !!p;
       e.stranded = false;
+      if (!p && this.ch4 && e.aim !== undefined) { TUN_USE = !!e.tun; p = bfsPath(T, BASE); TUN_USE = false; }   /* chapter 4: no way to what it is after: it makes for a point instead (and strands only if there is no way there either) */
       if (!p && e.aim !== undefined && this.stage.leap && this.vip && !this.vip.dead) { p = this.nearWay(T, [Math.round(this.vip.x), Math.round(this.vip.y)]); aimed = !!p; e.stranded = !!p; }   // lab L1: no way to her: the nearest square of its own roof
+      if (!p && this.ch4 && this.stage.leap && e.aim === undefined && !e.def.flying) { TUN_USE = !!e.tun; p = bfsPath(T, BASE); TUN_USE = false;   /* chapter 4: any foe on foot with no way to a point stands at the end of its roof nearest one, and leaps in the end */
+        if (!p) { const br = this.ch4Bridge(T, e), nb = br ? br.near : nearBase(T); TUN_USE = !!e.tun; p = br ? bfsPath(T, br.near) : null; if (!p) p = this.nearWay(T, nb); TUN_USE = false; aimed = !!p; e.stranded = !!p; e.leapTo = br ? br.far : null; } }
       if (!e.stranded) e.standT = 0;
-      if (!p) p = bfsPath(T, BASE);
+      if (!p) { TUN_USE = !!e.tun; p = bfsPath(T, BASE); TUN_USE = false; }
       if (!p) { if (!e.noWay) { e.noWay = true; this.fx.push({ k: "noway", x: e.x, y: e.y, t: 0, life: 1 }); } return; }
       e.noWay = false; e.aimHold = aimed;
       e.path = [[e.x, e.y]].concat(p.length > 1 ? p.slice(1) : [T]); e.seg = 0; e.segT = 0; e.waitedAt = undefined; this.advance(e, 0);
@@ -1989,7 +2548,7 @@
     goalHolds(q) {
       const V = this.vip, cmp = (v) => q.op === "<=" ? v <= q.v : v >= q.v;
       switch (q.k) {
-        case "clear": return !this.loopDef && this.waveIdx >= this.waves.length && !(this.extra && this.extra.length) && !(this.waitSpawn && this.waitSpawn.length) && this.enemies.every((e) => e.ally) && !this.hold && !(this.march && !this.march.part.final);
+        case "clear": return !this.loopDef && this.waveIdx >= this.waves.length && !(this.extra && this.extra.length) && !(this.waitSpawn && this.waitSpawn.length) && this.enemies.every((e) => e.ally || e.stake || e.loop) && !this.hold && !(this.march && !this.march.part.final);
         case "life": return this.life <= 0;
         case "time": return this.t >= q.t;
         case "meter": case "count": return cmp(this.meters[q.id] ? this.meters[q.id].v : 0);
@@ -2013,7 +2572,9 @@
       if (changed) this.boardChanged();
     }
     // the two squares a bridge joins: the walkable squares just past its first and its last square, along its line
-    bridgeEnds(c) { const a = c.bridge[0], b = c.bridge[c.bridge.length - 1], dx = Math.sign(b[0] - a[0]), dy = Math.sign(b[1] - a[1]); return [[a[0] - dx, a[1] - dy], [b[0] + dx, b[1] + dy]]; }
+    bridgeEnds(c) { const a = c.bridge[0], b = c.bridge[c.bridge.length - 1]; let dx = Math.sign(b[0] - a[0]), dy = Math.sign(b[1] - a[1]);
+      if (!dx && !dy) { const roof = (x, y) => { const t = tileAt(x, y); return walkable(t) && t !== "^"; }; if (roof(a[0] - 1, a[1]) && roof(a[0] + 1, a[1])) dx = 1; else dy = 1; }   /* chapter 4: a one-square bridge: the axis with roof on both sides */
+      return [[a[0] - dx, a[1] - dy], [b[0] + dx, b[1] + dy]]; }
     // every square that can be walked to from here (a roof)
     reach(from) { const seen = new Set([from[1] * W + from[0]]), q = [from]; while (q.length) { const [x, y] = q.shift(); for (const [dx, dy] of [[1, 0], [0, 1], [0, -1], [-1, 0]]) { const nx = x + dx, ny = y + dy, k = ny * W + nx; if (!walkable(tileAt(nx, ny)) || seen.has(k)) continue; seen.add(k); q.push([nx, ny]); } } return seen; }
     // with no way to what it is after: the way to the square of its own roof nearest to it (used where the stage lets foes leap)
@@ -2025,14 +2586,15 @@
       if (e.leap) { e.leap.t += dt; const u = Math.min(1, e.leap.t / e.leap.dur); e.x = e.leap.from[0] + (e.leap.to[0] - e.leap.from[0]) * u; e.y = e.leap.from[1] + (e.leap.to[1] - e.leap.from[1]) * u;
         if (u >= 1) { e.x = e.leap.to[0]; e.y = e.leap.to[1]; e.leap = null; e.stranded = false; e.standT = 0; e.leapWarn = false; this.replan(e); } return true; }
       if (!e.stranded || e.blockedBy || e.heldBy || e.remain > 0.05) { e.leapWarn = false; return false; }
-      e.standT = (e.standT || 0) + dt; e.leapWarn = e.standT >= L.after - L.warn;
-      if (e.standT < L.after) return false;
-      const T = [Math.round(e.x), Math.round(e.y)], roof = this.reach(T); let best = null, bd = 1e9;
-      for (const c of this.chimneys) { if (c.bridge.every(([x, y]) => walkable(tileAt(x, y)))) continue;
+      const after = e.def.leapAfter || L.after;   /* chapter 4: the lemures leap sooner */
+      e.standT = (e.standT || 0) + dt; e.leapWarn = e.standT >= after - L.warn;
+      if (e.standT < after) return false;
+      const T = [Math.round(e.x), Math.round(e.y)], roof = this.reach(T); let best = this.ch4 && e.leapTo && !walkable(tileAt(e.leapTo[0], e.leapTo[1])) ? null : this.ch4 && e.leapTo ? e.leapTo.slice() : null, bd = best ? -1 : 1e9;   /* chapter 4: over the bridge it was waiting at */
+      if (!best || bd >= 0) for (const c of this.chimneys) { if (c.bridge.every(([x, y]) => walkable(tileAt(x, y)))) continue;
         const [a, b] = this.bridgeEnds(c), na = roof.has(a[1] * W + a[0]), nb = roof.has(b[1] * W + b[0]); if (na === nb) continue;
         const near = na ? a : b, far = na ? b : a, d = Math.hypot(near[0] - e.x, near[1] - e.y); if (d < bd) { bd = d; best = far; } }
       if (!best) return false;
-      if (this.unitAt(best[0], best[1])) { e.standT = L.after - (L.retry || 5); return false; }
+      if (this.unitAt(best[0], best[1])) { e.standT = after - (L.retry || 5); return false; }
       e.leap = { t: 0, dur: L.dur || 3, from: [e.x, e.y], to: best.slice() }; e.leapWarn = false; e.blockedBy = null;
       this.fx.push({ k: "leap", e, x0: e.x, y0: e.y, x1: best[0], y1: best[1], t: 0, life: e.leap.dur }); return true;
     }
@@ -2145,10 +2707,12 @@
     }
     // ---- lab L2: the beat ----
     // the zone a square belongs to (one left of the first zone is in the first, one right of the last in the last)
-    beatZone(x) { const Z = this.beat.zones, rx = Math.round(x); return Z.find((z) => rx >= z.x0 && rx <= z.x1) || (rx < Z[0].x0 ? Z[0] : Z[Z.length - 1]); }
+    beatZone(x, y) { if (this.ch5) return this.ch5Zone(x, y);   /* chapter 5: zones by squares */
+      const Z = this.beat.zones, rx = Math.round(x); return Z.find((z) => rx >= z.x0 && rx <= z.x1) || (rx < Z[0].x0 ? Z[0] : Z[Z.length - 1]); }
     beatLen(z) { return [2.0, 1.4, 0.9][z.level]; }   // slow, normal, fast
     // the zones' clocks: a keeper beside the metronome makes its zone a level slower, a baton beside it a level faster (both: they cancel)
     beatStep(dt) {
+      if (this.ch5) return this.ch5Beat(dt);   /* chapter 5: its own clocks */
       for (const z of this.beat.zones) {
         const [mx, my] = z.metronome, near = (x, y) => Math.abs(x - mx) + Math.abs(y - my) === 1;
         z.kept = this.units.some((u) => near(u.x, u.y)); z.batoned = this.enemies.some((e) => !e.dead && e.def.baton && !e.hop && near(Math.round(e.x), Math.round(e.y)));
@@ -2164,20 +2728,20 @@
       const ex = Math.round(e.x), ey = Math.round(e.y); let i = e.seg + 1; while (i < e.path.length && Math.round(e.path[i][0]) === ex && Math.round(e.path[i][1]) === ey) i++;
       const nx = e.path[i], sq = nx ? [[ex, ey], [Math.round(nx[0]), Math.round(nx[1])]] : [[ex, ey]];
       for (const [x, y] of sq) { const u = this.unitAt(x, y);
-        if (u && this.onGround(u) && this.blockLoad(u) + e.def.weight <= this.stat(u, "block")) { e.blockedBy = u; e.blockedAt = this.t; return true; } }
+        if (u && this.canHold(u, e) && this.blockLoad(u) + e.def.weight <= this.stat(u, "block")) { e.blockedBy = u; e.blockedAt = this.t; return true; } }
       return false;
     }
     // a foe's step on the beat: it stands in the middle of its square and on each beat of its zone hops to the next square of its road (0.25 s). Slow (speed under 0.6, after
     // any slowing): every second beat; fast (over 1.2): two squares; a charge: three. Landing on a rest it waits for the zone's downbeat. Returns true at the end of its road
     beatMove(e, dt, slow) {
-      const z = this.beatZone(e.x); if (e.chargeT > 0) e.chargeQueued = true;
+      const z = this.beatZone(e.x, e.y), zn = this.ch5 && e.def.c5 && e.def.c5.offbeat ? z.hn : z.n; if (e.chargeT > 0) e.chargeQueued = true;   /* chapter 5: the off-beat hound keeps the half beats */
       if (!e.hop) {
-        { const u = this.unitAt(Math.round(e.x), Math.round(e.y)); if (u && this.onGround(u) && this.blockLoad(u) + e.def.weight <= this.stat(u, "block")) { e.blockedBy = u; e.blockedAt = this.t; return false; } }   // one of ours set down on its very square holds it at once
+        { const u = this.unitAt(Math.round(e.x), Math.round(e.y)); if (u && this.canHold(u, e) && this.blockLoad(u) + e.def.weight <= this.stat(u, "block")) { e.blockedBy = u; e.blockedAt = this.t; return false; } }   // one of ours set down on its very square holds it at once
         const skipped = e.beatSeen !== undefined && this.t - e.beatSeen > dt * 1.5; e.beatSeen = this.t;
-        if (skipped) { e.bn = z.n; e.bz = z.id; return e.seg >= e.path.length - 1; }   // it was held, aiming or pausing until now: it moves on the next beat, not on one it missed
-        if (e.bz !== z.id) { e.bz = z.id; e.bn = z.n; return e.seg >= e.path.length - 1; }   // just came into this zone: it waits for this zone's next beat
-        if (e.bn === z.n) return e.seg >= e.path.length - 1;
-        e.bn = z.n; const down = z.n % 4 === 0, sp = e.def.speed * (1 - (slow || 0));
+        if (skipped) { e.bn = zn; e.bz = z.id; return e.seg >= e.path.length - 1; }   // it was held, aiming or pausing until now: it moves on the next beat, not on one it missed
+        if (e.bz !== z.id) { e.bz = z.id; e.bn = zn; return e.seg >= e.path.length - 1; }   // just came into this zone: it waits for this zone's next beat
+        if (e.bn === zn) return e.seg >= e.path.length - 1;
+        e.bn = zn; const down = z.n % 4 === 0, sp = e.def.speed * (1 - (slow || 0));
         if (e.restUntilDown) { if (!down) return false; e.restUntilDown = false; }
         if (sp < 0.6) { e.beatOdd = !e.beatOdd; if (e.beatOdd) return false; }
         let n = sp > 1.2 ? 2 : 1; if (e.chargeQueued) { n = 3; e.chargeQueued = false; }
@@ -2193,7 +2757,7 @@
         if (d < rem) { this.advance(e, d); d = 0; break; }
         this.advance(e, rem); d -= rem; e.hop.left--;
         if (e.path.waits && e.path.waits[e.seg] && e.waitedAt !== e.seg) { e.waitedAt = e.seg; e.pauseT = typeof e.path.waits[e.seg] === "object" ? Math.max(0.01, e.path.waits[e.seg].until - this.t) : e.path.waits[e.seg]; e.hop.left = 0; }
-        if (tileAt(Math.round(e.x), Math.round(e.y)) === "R") { e.restUntilDown = true; e.hop.left = 0; this.fx.push({ k: "rest", x: e.x, y: e.y, t: 0, life: 0.8 }); }
+        if (tileAt(Math.round(e.x), Math.round(e.y)) === "R" && !(this.ch5 && e.def.c5 && e.def.c5.offbeat)) { e.restUntilDown = true; e.hop.left = 0; this.fx.push({ k: "rest", x: e.x, y: e.y, t: 0, life: 0.8 }); }
         if (e.hop.left > 0 && this.beatBlock(e)) e.hop.left = 0;
       }
       if (e.hop && e.hop.left <= 0) e.hop = null;
@@ -2212,19 +2776,24 @@
     // so does an operator — who freezes where they stand, unable to act and losing health, until it passes. Pull them back and the front moves on.
     // While it blows, every foe on foot is slowed, except those made for the cold.
     windStep() {
+      if (this.wind.turns.length || this.wind.pendingDir !== null) this.windTurns();
       const w = this.wind, t = this.t, [dx, dy] = [[1, 0], [0, 1], [-1, 0], [0, -1]][w.dir], horiz = dy === 0, lines = horiz ? H : W, len = horiz ? W : H;
       if (!w.blowing) {
-        if (!w.warned && t >= w.next - w.warn) { w.warned = true; this.fx.push({ k: "windwarn", dir: w.dir, t: 0, life: w.warn }); }
+        if (!w.warned && t >= w.next - w.warn) { w.warned = true;
+          if (w.dirs) { const nd = w.dirs[Math.min(w.n, w.dirs.length - 1)]; if (nd !== w.dir) { this.fx.push({ k: "windturn", dir: nd, from: w.dir, t: 0, life: w.warn + 1 }); w.dir = nd; } }   /* stage.wind.dirs: gust n comes from dirs[n] (the last one stays) */
+          this.fx.push({ k: "windwarn", dir: w.dir, t: 0, life: w.warn }); }
         if (t < w.next) return;
         w.curDur = (w.durs && w.durs[w.n]) || w.dur; w.n++;   // a stage may make the first ones short
         w.blowing = true; w.warned = false; w.end = t + w.curDur; w.front = new Array(lines).fill(0); w.adv = t; w.next += w.every; w.done = new Array(lines).fill(false);
-        this.fx.push({ k: "gust", dir: w.dir, t: 0, life: w.curDur }); this.snd("wind");
+        this.fx.push({ k: "gust", dir: w.dir, t: 0, life: w.curDur, storm: !!w.storm }); this.snd("wind");
+        this.patternStart();   /* the eagle reads the braziers as the gust comes */
         // the rasputitsa freezes over the moment it blows, sheltered or not: no one can be set down on the mud, and whoever stands in it freezes
         for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) if (tileAt(x, y) === "~") { this.drift.set(y * 100 + x, w.end + 1.5);
           const u = this.unitAt(x, y); if (u && !u.blizFrozen && !this.warmAt(x, y)) { u.blizFrozen = true; u.wind = null; u.frozenT = Math.max(u.frozenT || 0, w.curDur + 0.05); this.fx.push({ k: "freeze", x: u.x, y: u.y, t: 0, life: 0.8 }); } }
       }
       if (t >= w.end) {   // it passes: the snow melts off, the frozen thaw
         w.blowing = false; w.front = null;
+        if (w.pendingDir !== null) { const from = w.dir; w.dir = w.pendingDir; w.pendingDir = null; this.fx.push({ k: "windturn", dir: w.dir, from, t: 0, life: 2.5 }); }   /* turned about while it blew: the new way from now on */
         for (const [k, until] of this.drift) if (until > t + 1.5) this.drift.set(k, t + 1.5);
         for (const u of this.units) if (u.blizFrozen) { u.blizFrozen = false; u.frozenT = 0; u.frostN = 0; this.fx.push({ k: "freeze", x: u.x, y: u.y, t: 0, life: 0.6 }); }
         return;
@@ -2243,25 +2812,205 @@
           u.frozenT = Math.max(u.frozenT || 0, w.end - t + 0.05); continue;
         }
         if (this.enemies.some((q) => q.ally && !q.dead && !q.def.flying && Math.round(q.x) === x && Math.round(q.y) === y)) continue;   // our rebels stand in its way too, and they are used to the cold
-        if ((c === "." || c === "~" || c === "=" || c === "h" || c === "*") && !this.warmAt(x, y)) this.drift.set(y * 100 + x, w.end + 1.5);
+        if ((c === "." || c === "~" || c === "=" || c === "h" || c === "*" || c === "x") && !this.warmAt(x, y)) this.drift.set(y * 100 + x, w.end + 1.5);
         w.front[a] = i + 1;   // a rise is snowed over like anywhere else: only a raised wall or someone standing there holds it
       }
     }
+    /* the endless blizzard (stage.storm): run before windStep each tick. While the gauge lasts the gust's end is kept STORM_SPAN ahead, so every gust rule holds;
+       the gauge falls by drain a second for each lit brazier; at 0 the gust's end is set to now, windStep lets it pass, and no gust comes after it */
+    stormStep(dt) { const S = this.storm, w = this.wind; if (S.ended) return;
+      let n = 0; for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) if (this.lampLit(x, y)) n++;
+      S.lit = n; S.gauge = Math.max(0, S.gauge - S.drain * n * dt);
+      if (w.blowing) { w.end = this.t + STORM_SPAN; w.curDur = STORM_SPAN; }
+      if (S.gauge <= 0) { S.ended = true; S.endT = this.t; w.next = Infinity; w.warned = true; if (w.blowing) w.end = this.t;
+        for (const f of this.fx) if (f.k === "gust" && f.storm) f.life = Math.min(f.life, f.t + 1.2);   /* the snow streams thin out over a second */
+        this.fx.push({ k: "stormend", t: 0, life: 2.5 }); } }
+    /* braziers that can be struck (stage.lamps.hp): the lit brazier a foe would strike instead of walking on — the nearest one within LAMP_HP.reach of it. Any foe on foot
+       who is not held, not asleep, not on our side and not underground; walking, at its post or waiting at a waypoint alike */
+    fireTarget(e) { if (!this.lampHp || e.def.flying || e.blockedBy || e.heldBy || e.waiting || e.hired || e.ally || e.underT > 0 || e.hp <= 0 || e.def.atk <= 0 || e.def.noFight) return null;
+      let best = null, bd = (e.def.fireFirst ? this.foeReach(e) : LAMP_HP.reach) + 1e-6;   /* the mortar looks for a brazier as far as he can throw */
+      for (const [k] of this.lampHp) { const x = k % 100, y = (k / 100) | 0; if (!this.lampLit(x, y)) continue; const d = Math.hypot(x - e.x, y - e.y); if (d <= bd) { bd = d; best = [x, y]; } }
+      return best; }
+    strikeFire(e, f) { if (e.def.lob) return this.lobShell(e, f[0], f[1]); const k = f[1] * 100 + f[0], L = this.lampHp.get(k); if (!L) return;
+      L.hp = Math.max(0, L.hp - e.def.atk * (e.atkMul || 1) * this.auraMul(e, "atk")); L.hitAt = this.t; e.face = f[0] >= e.x ? 1 : -1; e.hitAt = this.t;
+      this.fx.push(e.def.ranged ? { k: "bolt", x0: e.x, y0: e.y, x1: f[0], y1: f[1], foe: true, t: 0, life: 0.25 } : { k: "firehit", x: f[0], y: f[1], t: 0, life: 0.4 });
+      if (e.def.ranged) e.firedAt = this.t;
+      if (L.hp <= 0 && this.snuff(f[0], f[1], e, true)) this.lampBroken.delete(k); }   /* out, but not broken: it lights again by itself (lampHpStep), no keeper needed */
+    lampHpStep(dt) { if (this.pat && this.pat.kind === "B") return;   /* the dead fire: no brazier mends by itself */
+      const LS = this.stage.lamps, max = LS.hp, regen = LS.regen || 0, at = (LS.relightAt || 0.5) * max;
+      for (const [k, L] of this.lampHp) { if (this.t - L.hitAt < LAMP_HP.calm || L.hp >= max) continue;
+        L.hp = Math.min(max, L.hp + regen * dt); const x = k % 100, y = (k / 100) | 0;
+        if (L.hp >= at && this.lampOff.has(k)) this.relight(x, y); } }
+    /* the eagle's two patterns (def.patterns, 2-10). As any gust starts, while such a foe is on the board (alive, not asleep on a post) and none is running, he reads the
+       braziers: R = their health over their max (lit or out; a stage without health counts lit ones as whole). R >= PAT.split: A, the great fire; under: B, the dead fire. No brazier: nothing */
+    patternStart() { if (this.pat) return; const boss = this.enemies.find((e) => e.def.patterns && !e.dead && e.hp > 0 && !e.waiting && !e.ally && !e.hired); if (!boss) return;
+      const fires = []; for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) if (tileAt(x, y) === "F") fires.push([x, y]); if (!fires.length) return;
+      const LS = this.stage.lamps || {}; let have = 0, max = 0;
+      for (const [x, y] of fires) { const L = this.lampHp && this.lampHp.get(y * 100 + x); max += L ? LS.hp : 1; have += L ? L.hp : (this.lampLit(x, y) ? 1 : 0); }
+      const R = have / max, w = this.wind;
+      if (R >= PAT.split) {   /* A: three more braziers on the stage's summon squares, lit and whole; every lit one warms all within 2.5; ours burn; it breaks when 12% of his max hp has come off him */
+        this.pat = { kind: "A", boss, R, t0: this.t, last: boss.hp, taken: 0, need: boss.maxHp * PAT.breakAt };
+        for (const [x, y] of LS.summon || []) { const k = y * 100 + x; if (tileAt(x, y) === "F" || this.summon.has(k) || x < 0 || y < 0 || x >= W || y >= H) continue;
+          this.summon.add(k); this.lampOff.delete(k); this.lampOffT.delete(k); if (this.lampHp) this.lampHp.set(k, { hp: LS.hp, hitAt: -99 }); this.fx.push({ k: "relight", x, y, t: 0, life: 0.9 }); }
+      } else {   /* B: every brazier out at 0; no mending, no keeper, only the ember; the gust does not end; he cannot be held; squares round him freeze over */
+        this.pat = { kind: "B", boss, R, t0: this.t, end0: w ? w.end : this.t, nextIce: this.t + PAT.iceEvery };
+        for (const [x, y] of fires) { const k = y * 100 + x; if (this.lampLit(x, y) && this.snuff(x, y, boss, true)) this.lampBroken.delete(k); const L = this.lampHp && this.lampHp.get(k); if (L) { L.hp = 0; L.hitAt = this.t; } }
+        boss.noBlock = true; boss.blockedBy = null;
+        if (w && w.blowing) { w.end = this.t + STORM_SPAN; for (const f of this.fx) if (f.k === "gust" && f.life - f.t > 0) { f.storm = true; f.life = f.t + STORM_SPAN; } }
+      }
+      this.lampV = (this.lampV || 0) + 1; this.fx.push({ k: "pattern", kind: this.pat.kind, x: boss.x, y: boss.y, t: 0, life: 2 }); }
+    patternStep(dt) { const P = this.pat, e = P.boss, gone = e.dead || e.hp <= 0 || !this.enemies.includes(e);
+      if (P.kind === "A") {
+        if (!gone) { P.taken += Math.max(0, P.last - e.hp); P.last = e.hp; }
+        if (gone || P.taken >= P.need) return this.patternEnd();
+        for (const u of this.units.slice()) if (u.hp > 0) this.damage(u, u.maxHp * PAT.burn * dt, "arts", null, null);   /* the price: ours burn, 3% of max HP a second before resistance */
+        return; }
+      if (gone) return this.patternEnd();
+      for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) if (tileAt(x, y) === "F" && this.lampLit(x, y)) return this.patternEnd();   /* a brazier lit again (the ember) */
+      const w = this.wind; if (w && w.blowing) { w.end = this.t + STORM_SPAN; w.curDur = Math.max(w.curDur, STORM_SPAN); }   /* the blizzard does not pass */
+      e.noBlock = true; e.blockedBy = null;
+      while (this.t >= P.nextIce) { P.nextIce += PAT.iceEvery;   /* two squares near him freeze over: nobody can stand there; whoever does falls */
+        const near = (x, y) => BASES.some((b) => Math.hypot(b[0] - x, b[1] - y) <= PAT.iceSafe + 1e-9), cand = [];
+        for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) { const c = tileAt(x, y); if (!(c === "." || c === "h" || c === "*" || c === "x" || c === "~") || this.iceAt(x, y) || near(x, y) || Math.hypot(x - e.x, y - e.y) > PAT.iceR + 1e-9) continue; cand.push([x, y]); }
+        for (let n = 0; n < PAT.iceN && cand.length; n++) { const [x, y] = cand.splice(Math.floor(Math.random() * cand.length), 1)[0]; this.iced.set(y * 100 + x, Infinity); this.fx.push({ k: "iceover", x, y, t: 0, life: 0.9 });
+          const u = this.unitAt(x, y); if (u) u.hp = 0; } } }   /* the normal death (the sweep at the end of the tick) */
+    patternEnd() { const P = this.pat; if (!P) return; this.pat = null; const w = this.wind;
+      if (P.kind === "A") { for (const k of this.summon) { this.lampOff.delete(k); this.lampOffT.delete(k); this.relightAt.delete(k); this.freshAt.delete(k); this.lampBroken.delete(k); if (this.lampHp) this.lampHp.delete(k); }
+        this.summon.clear(); }
+      else { P.boss.noBlock = false;
+        if (w && w.blowing) { w.end = Math.max(this.t, P.end0); w.curDur = Math.max(1, w.end - this.t); for (const f of this.fx) if (f.k === "gust" && f.life - f.t > 0) f.life = f.t + Math.max(1.2, w.end - this.t);
+          if (w.every < Infinity) w.next = Math.max(w.next, w.end + Math.max(0, w.every - w.dur)); }   /* after a long dead fire the next gust keeps its usual calm before it */
+        for (const [k] of this.iced) this.iced.set(k, this.t + PAT.thaw); }
+      this.lampV = (this.lampV || 0) + 1; this.fx.push({ k: "pattern", kind: P.kind, end: true, x: P.boss.x, y: P.boss.y, t: 0, life: 2 }); }
+    /* ---- 2-10 v2: the cold itself is the boss (stage.frost). Nothing here runs on a stage without frost ----
+       The stage plays on its own copy whose braziers have health (frost.braziers.hp) and never mend or light again. The board is fogged outside the opened rectangles; phases open
+       one after another when the one before is clear (all its waves sent, every foe of it dead or through). The blizzard blows from the first tick in every direction its level lists:
+       an operator on a cold square the wind reaches freezes (the chapter-2 rule, its frozen loss included); in the final phase it also bites every operator (finalDps). A lit
+       brazier loses drain[level] a second for each direction that reaches it (the square beside it on the windward side is not a wall, raised wall or one of ours). */
+    frostStage(st) { const B = st.frost.braziers || {};
+      return Object.assign({}, st, { lamps: Object.assign({}, st.lamps || {}, { fire: true, hp: B.hp || 3000, regen: 0, relightAt: 0 }) }); }
+    frostInit() { const F = this.stage.frost, B = F.braziers || {}, PH = F.phases && F.phases.length ? F.phases : [{}];
+      if (!this.rows) this.rows = (this.stage.map || MAP).slice(); setMap(this.rows);
+      this.frost = { phase: 0, t0: 0, level: 0, dirs: [1], final: false, endAt: null, clearT: null, lost: false, lit: 0, held: {}, open: [], all: !PH[0].open, max: B.hp || 3000, drain: B.drain || [0],
+        feed: Object.assign({ cost: FRZ.cost, hp: FRZ.hp, cd: FRZ.cd }, B.feed || {}), warm: B.warm !== undefined ? B.warm : FRZ.warm, storm: F.storm && F.storm.length ? F.storm : [{ dirs: [1] }],
+        feedAt: new Map(), skipped: [], tun: (this.stage.tunnels || []).slice(), tunAt: [], phases: PH };
+      this.wind = { dir: 1, every: Infinity, warn: 4, dur: STORM_SPAN, durs: null, n: 1, curDur: STORM_SPAN, step: BLIZ.step, next: Infinity, warned: true, blowing: true, end: Infinity, front: null, adv: 0, dirs: null, turns: [], flip: false, pendingDir: null, storm: true, frost: true };
+      const now = [];   /* every wave carries its phase (wave option ph, 0 when left out); a later phase's waves are held back and sent with times counted from that phase's start */
+      for (const w of this.waves) { const o = Object.assign({}, w[3] || {}); o.ph = o.ph || 0; const ww = [w[0], w[1], w[2], o]; if (o.ph === 0) now.push(ww); else (this.frost.held[o.ph] || (this.frost.held[o.ph] = [])).push(ww); }
+      this.waves = now.sort((a, b) => a[0] - b[0]); this.waveIdx = 0;
+      this.frostPhase(0, true); }
+    frostPhase(p, first) { const R = this.frost, P = R.phases[p] || {}; R.phase = p; R.t0 = this.t; R.final = !!P.final;
+      for (const r of P.open || []) R.open.push({ r: [Math.min(r[0], r[2]), Math.min(r[1], r[3]), Math.max(r[0], r[2]), Math.max(r[1], r[3])], at: first ? -99 : this.t });
+      let changed = false;
+      if (P.set && P.set.length) { this.frostSet(P.set); changed = true; }
+      if (P.tunnels && P.tunnels.length) { for (const q of P.tunnels) { R.tun.push(q); R.tunAt.push({ q, at: this.t }); } setTunnels(R.tun); setMap(this.rows || MAP); changed = true; }
+      if (changed && !first) this.frostReplan();
+      this.frostLevel(P.final ? R.storm.length - 1 : Math.min(p, R.storm.length - 1));
+      const list = R.held[p]; if (list && list.length) { const rest = this.waves.slice(this.waveIdx).concat(list.map((w) => [w[0] + this.t, w[1], w[2], this.frostShift(w[3], this.t)])); rest.sort((a, b) => a[0] - b[0]); this.waves = this.waves.slice(0, this.waveIdx).concat(rest); R.held[p] = []; }
+      if (P.final) R.endAt = this.t + (P.time || 60);
+      if (!first) this.fx.push({ k: "frostphase", final: R.final, n: p, t: 0, life: 2.5 });
+      this.lampV = (this.lampV || 0) + 1; }
+    /* a held wave's own clock (a post's until, a numeric wait, a via square's until) counts from its phase's start too */
+    frostShift(o, t0) { if (!o || !t0) return o; const q = Object.assign({}, o); if (typeof q.until === "number") q.until += t0; if (typeof q.wait === "number") q.wait += t0;
+      if (q.via) q.via = q.via.map((v) => v[2] && typeof v[2] === "object" && typeof v[2].until === "number" ? [v[0], v[1], Object.assign({}, v[2], { until: v[2].until + t0 })] : v);
+      return q; }
+    /* the eagle bearer on a frost stage (IM-10 v2): no patterns, no calls, no gust, no rally; a standard bearer with a stronger aura, announced as a mid-boss. Other stages keep him as he is */
+    frostEagle(D) { return this._frostEagle || (this._frostEagle = Object.assign({}, D, { patterns: false, call: null, rally: null, aura: { atk: 0.25, def: 0.25 }, miniboss: true, frostBanner: "독수리 기수 접근" })); }
+    frostLevel(n) { const R = this.frost, L = R.storm[n] || R.storm[R.storm.length - 1], dirs = L.dirs && L.dirs.length ? L.dirs.slice() : [1], w = this.wind;
+      R.level = n; R.dirs = dirs; w.dir = dirs[0]; w.blowing = true;
+      for (const f of this.fx) if (f.k === "gust" && f.frost) f.life = Math.min(f.life, f.t + 1.2);
+      for (const d of dirs) this.fx.push({ k: "gust", dir: d, t: 0, life: STORM_SPAN, storm: true, frost: true }); }
+    /* a phase's set: each square becomes its tile. One of ours on a square that no longer takes it is retreated the normal way; a gate (or anything) turned into "F" is a lit brazier at full health */
+    frostSet(list) { const R = this.frost; if (!this.rows) this.rows = MAP.slice();
+      for (const [x, y, ch] of list) { if (x < 0 || y < 0 || x >= W || y >= H) continue; const was = tileAt(x, y), k = y * 100 + x; if (was === ch) continue;
+        for (const u of this.units.slice()) if (u.x === x && u.y === y && !this.tileFor(u.def, ch)) this.retreat(u);
+        this.rows[y] = this.rows[y].slice(0, x) + ch + this.rows[y].slice(x + 1);
+        if (was === "F") { this.lampHp.delete(k); this.lampOff.delete(k); this.lampOffT.delete(k); this.lampBroken.delete(k); R.feedAt.delete(k); }
+        if (ch === "F") { this.lampHp.set(k, { hp: R.max, hitAt: -99 }); this.lampOff.delete(k); this.lampOffT.delete(k); this.lampBroken.delete(k); this.fx.push({ k: "relight", x, y, t: 0, life: 0.9 }); } }
+      setMap(this.rows); this.boardVer++; }
+    tileFor(d, ch) { const c = ch === "~" || ch === "=" ? "." : ch; return c === "*" || c === "T" || (d.tile === "g" ? c === "." || c === "x" : c === "h"); }
+    /* after the board changed: a foe on a square that cannot be walked any more is set on the nearest one that can; every foe on foot then finds its way by the board as it now is */
+    frostReplan() { for (const e of this.enemies) { if (e.dead || e.def.flying || e.hired || e.ally || e.boarded || e.underT > 0 || e.loop || e.stake) continue;
+        const X = Math.round(e.x), Y = Math.round(e.y);
+        if (!walkable(tileAt(X, Y))) { const q = this.nearWalk(X, Y); if (q) { e.x = q[0]; e.y = q[1]; e.blockedBy = null; e.relocated = (e.relocated || 0) + 1; this.fx.push({ k: "entry", x: q[0], y: q[1], t: 0, life: 0.5 }); } }
+        this.replan(e); } }
+    nearWalk(X, Y) { let best = null, bd = 1e9; for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) if (walkable(tileAt(x, y))) { const d = Math.hypot(x - X, y - Y); if (d < bd - 1e-9) { bd = d; best = [x, y]; } } return best; }
+    /* which gate a wave comes from: by coordinate ({ gate: [x, y] }) or by number in the gate list as it is now (gates read left to right, top to bottom); none, or one in the fog: it is not sent */
+    frostGate(s, o) { let i = s; if (o && o.gate) i = SPAWNS.findIndex((q) => q[0] === o.gate[0] && q[1] === o.gate[1]);
+      const g = SPAWNS[i], at = o && o.at ? o.at : g;
+      if (!g || this.fogAt(at[0], at[1])) { this.frost.skipped.push({ t: +this.t.toFixed(2), s, gate: o && o.gate, why: g ? "fog" : "nogate" }); this.total = Math.max(0, this.total - 1); return -1; }
+      return i; }
+    fogAt(x, y) { const R = this.frost; if (!R || R.all || R.clearT !== null) return false; x = Math.round(x); y = Math.round(y); return !R.open.some((q) => x >= q.r[0] && x <= q.r[2] && y >= q.r[1] && y <= q.r[3]); }
+    frostPhaseClear(p) { for (let i = this.waveIdx; i < this.waves.length; i++) { const o = this.waves[i][3]; if (o && o.ph === p) return false; }
+      if (this.waitSpawn && this.waitSpawn.some((w) => w.o && w.o.ph === p)) return false;
+      if (this.frost.held[p] && this.frost.held[p].length) return false;
+      return !this.enemies.some((e) => !e.dead && e.hp > 0 && e.ph === p && !e.ally && !e.stake && !e.loop && !e.hired); }
+    /* how many of the blowing directions reach a brazier: the square beside it on the side each one comes from is not a wall ("#"), a raised wall ("W") or one of ours (the edge of the board lets it in) */
+    frostReach(x, y) { const V = [[1, 0], [0, 1], [-1, 0], [0, -1]]; let n = 0;
+      for (const d of this.frost.dirs) { const a = x - V[d][0], b = y - V[d][1]; if (a >= 0 && b >= 0 && a < W && b < H) { const c = tileAt(a, b); if (c === "#" || c === "W" || this.unitAt(a, b)) continue; } n++; }
+      return n; }
+    frostMul() { let m = 1; for (const e of this.enemies) if (e.def.stormMul && !e.dead && e.hp > 0 && !e.ally && !e.hired) m = Math.max(m, e.def.stormMul); return m; }   /* the frost marshal alive: the blizzard bites ours harder */
+    frostStep(dt) { const R = this.frost; if (R.clearT !== null) return;
+      if (!R.final) { const nx = R.phases[R.phase + 1];   /* the next phase opens when this one is clear; a numeric when opens it that many seconds after this phase began, clear or not */
+        if (nx && typeof nx.when === "number" ? this.t >= R.t0 + nx.when : this.frostPhaseClear(R.phase)) { if (nx) this.frostPhase(R.phase + 1); else if (R.lit) return this.frostClearing(); } }   /* a board without a final phase is won when its last phase is clear */
+      if (R.final && this.t >= R.endAt && R.lit) return this.frostClearing();
+      const dirs = R.dirs, mul = this.frostMul();
+      for (const u of this.units) { if (u.blizFrozen || (u.frostImm || 0) > this.t || this.warmAt(u.x, u.y)) continue;   /* the chapter-2 rule: cold and in the wind, frozen until the storm lifts */
+        if (dirs.some((d) => this.windHitsDir(u.x, u.y, d))) { u.blizFrozen = true; u.wind = null; u.frozenT = STORM_SPAN; this.fx.push({ k: "freeze", x: u.x, y: u.y, t: 0, life: 0.8 }); } }
+      if (R.final) { const dps = (this.stage.frost.finalDps !== undefined ? this.stage.frost.finalDps : FRZ.finalDps) * mul; if (dps > 0) for (const u of this.units.slice()) if (u.hp > 0) this.damage(u, u.maxHp * dps * dt, "true", null); }   /* the last storm bites everyone, warm or not */
+      const drain = R.drain[Math.min(R.level, R.drain.length - 1)] || 0; let lit = 0, any = false;
+      for (const [k, L] of this.lampHp) { const x = k % 100, y = (k / 100) | 0; if (tileAt(x, y) !== "F") continue; any = true; if (!this.lampLit(x, y)) { L.reach = 0; continue; }
+        const n = this.frostReach(x, y); L.reach = n;
+        if (n && drain) { L.hp = Math.max(0, L.hp - drain * n * dt); if (L.hp <= 0) { if (this.snuff(x, y, null, true)) this.lampBroken.delete(k); continue; } }
+        lit++; }
+      R.lit = lit;
+      if (any && !lit) { this.over = "lose"; R.lost = true; this.frostWhy = FROST_LOSE; } }
+    frostClearing() { const R = this.frost; R.clearT = this.t; this.wind.blowing = false;
+      for (const f of this.fx) if (f.k === "gust" && f.frost) f.life = Math.min(f.life, f.t + FRZ.clear);
+      for (const u of this.units) if (u.blizFrozen) { u.blizFrozen = false; u.frozenT = 0; u.frostN = 0; this.fx.push({ k: "freeze", x: u.x, y: u.y, t: 0, life: 0.6 }); }
+      this.fx.push({ k: "frostclear", t: 0, life: FRZ.clear + 0.5 }); this.lampV = (this.lampV || 0) + 1; }
+    /* tapping a lit brazier: its one skill, the feed (cost in, health up to its max, a few seconds between uses) */
+    feedCheck(x, y) { const R = this.frost, k = y * 100 + x; if (!R || tileAt(x, y) !== "F" || !this.lampHp.has(k)) return "화로가 아닙니다";
+      if (!this.lampLit(x, y)) return "꺼진 화로에는 넣을 수 없습니다";
+      if ((R.feedAt.get(k) || -99) > this.t) return "재사용 대기 중";
+      if (this.cost < R.feed.cost) return "코스트 부족";
+      return null; }
+    feedBrazier(x, y) { if (this.feedCheck(x, y)) return false; const R = this.frost, k = y * 100 + x, L = this.lampHp.get(k);
+      this.cost -= R.feed.cost; L.hp = Math.min(R.max, L.hp + R.feed.hp); R.feedAt.set(k, this.t + R.feed.cd); this.fx.push({ k: "relight", x, y, t: 0, life: 0.9 }); this.lampV = (this.lampV || 0) + 1; return true; }
+    /* the standard bearers' aura: 1 + their share for every one alive (another foe's, never his own) */
+    auraMul(e, k) { if (!this.auras) return 1; let m = 1; for (const q of this.auras) if (q !== e && !q.dead && q.hp > 0) m += q.def.aura[k] || 0; return m; }
+    /* the mortar's shell: the square and the four beside it; ours there are struck, and so is a lit brazier there */
+    lobShell(e, x, y) { const atk = e.def.atk * (e.atkMul || 1), tiles = [[x, y], [x + 1, y], [x - 1, y], [x, y + 1], [x, y - 1]];
+      for (const u of this.units.slice()) if (tiles.some(([a, b]) => a === u.x && b === u.y)) { this.damage(u, atk, "phys", null, e); u.flash = 0.2; }
+      for (const [a, b] of tiles) { const k = b * 100 + a, L = this.lampHp && this.lampHp.get(k); if (!L || !this.lampLit(a, b)) continue; L.hp = Math.max(0, L.hp - atk * this.auraMul(e, "atk")); L.hitAt = this.t; this.fx.push({ k: "firehit", x: a, y: b, t: 0, life: 0.4 }); if (L.hp <= 0 && this.snuff(a, b, e, true)) this.lampBroken.delete(k); }
+      e.face = x >= e.x ? 1 : -1; e.hitAt = this.t; e.firedAt = this.t; e.aiming = false; e.shells = (e.shells || 0) + 1;
+      this.fx.push({ k: "bolt", x0: e.x, y0: e.y, x1: x, y1: y, foe: true, t: 0, life: 0.4 }); this.fx.push({ k: "blast", tiles, t: 0, life: 0.5 }); this.snd("boom"); }
+    iceAt(x, y) { const u = this.iced && this.iced.get(y * 100 + x); return u !== undefined && u > this.t; }
+    /* the wind turns (stage.wind.turns): warned q.warn s before with arrows the new way; it turns at q.t, or as soon as the gust then blowing has passed */
+    windTurns() { const w = this.wind, t = this.t;
+      for (const q of w.turns) { if (q.done) continue;
+        if (!q.warned && t >= q.t - q.warn) { q.warned = true; this.fx.push({ k: "windturn", dir: q.dir, from: w.dir, t: 0, life: q.warn + 1 }); }
+        if (t >= q.t && !w.blowing) { q.done = true; w.dir = q.dir; } } }
     smokeAt(x, y) { const v = this.smoke.get(y * 100 + x); return v !== undefined && v <= this.t; }
     clearSmoke(x, y, dur) { const k = y * 100 + x; if (this.smoke.has(k) && this.smoke.get(k) <= this.t) { this.smoke.set(k, this.t + dur); this.fx.push({ k: "unsmoke", x, y, t: 0, life: 0.9 }); } }
     calling() { return !!(this.calls && this.calls.until > this.t); }
     callStep() { const c = this.calls;
       if (!c.warned && this.t >= c.next - c.warn) { c.warned = true; this.fx.push({ k: "callwarn", x: c.at[0], y: c.at[1], t: 0, life: c.warn }); }
       if (this.t >= c.next) { c.until = this.t + c.dur; c.next += c.every; c.warned = false; this.fx.push({ k: "calling", x: c.at[0], y: c.at[1], t: 0, life: c.dur }); } }
-    lampLit(x, y) { return tileAt(x, y) === "F" && !this.lampOff.has(y * 100 + x); }
+    lampLit(x, y) { return (tileAt(x, y) === "F" || (!!this.summon && this.summon.size > 0 && this.summon.has(y * 100 + x))) && !this.lampOff.has(y * 100 + x); }
+    isSummon(x, y) { return !!this.summon && this.summon.has(y * 100 + x); }   /* a brazier the eagle's great fire set on this square (pattern A) */
     lampGuarded(x, y) { return this.units.some((u) => Math.abs(u.x - x) + Math.abs(u.y - y) === 1); }   // someone stands right by it (above, below, left or right): nobody puts it out
-    darkAt(x, y) { const L = this.stage.lamps; if (!L || L.fire) return false; const r = L.r || 1; for (let dy = -r; dy <= r; dy++) for (let dx = -r; dx <= r; dx++) if (this.lampLit(x + dx, y + dy)) return false; return true; }
+    darkAt(x, y) { const L = this.stage.lamps; if (!L || L.fire) return false; const r = L.r || 1;
+      if (this.torches && this.torches.length) for (const q of this.torches) if (Math.max(Math.abs(q.x - x), Math.abs(q.y - y)) <= q.r) return false;   /* a torch burning near */ for (let dy = -r; dy <= r; dy++) for (let dx = -r; dx <= r; dx++) if (this.lampLit(x + dx, y + dy)) return false; return true; }
     // force: put it out even if somebody stands by it. The time it went out is kept. A lamp put out by a lamp-breaker (by.def.snuff === "force") is broken:
     // only someone deployed after that can light it again
     snuff(x, y, by, force) { const fire = !!(this.stage.lamps && this.stage.lamps.fire); if (!this.lampLit(x, y) || (!force && !fire && this.lampGuarded(x, y))) return false; const k = y * 100 + x; this.lampOff.add(k); this.lampOffT.set(k, this.t);
       if ((by && by.def && by.def.snuff === "force") || fire) this.lampBroken.add(k); else this.lampBroken.delete(k);   /* a brazier put out (chapter 2): only someone set down beside it after that lights it again */
-      this.relightAt.delete(k); this.freshAt.delete(k); this.fx.push({ k: "snuff", x, y, t: 0, life: 0.9 }); return true; }
-    relight(x, y) { if (tileAt(x, y) !== "F" || !this.lampOff.delete(y * 100 + x)) return false; this.lampOffT.delete(y * 100 + x); this.relightAt.delete(y * 100 + x); this.freshAt.delete(y * 100 + x); this.lampBroken.delete(y * 100 + x); this.fx.push({ k: "relight", x, y, t: 0, life: 0.9 });
+      this.relightAt.delete(k); this.freshAt.delete(k); this.lampV = (this.lampV || 0) + 1; this.fx.push({ k: "snuff", x, y, t: 0, life: 0.9 });
+      if (this.lampHp && this.lampHp.has(k)) this.lampHp.get(k).hp = 0;   /* a brazier with health that anything puts out (a frost bomb, a standard) is at nothing: it mends and lights again by itself like one beaten out */
+      return true; }
+    relight(x, y) { if (this.frost) return false;   /* a frost stage: a brazier that has gone out stays out */
+      if (tileAt(x, y) !== "F" || (this.pat && this.pat.kind === "B" && !this._ember) || !this.lampOff.delete(y * 100 + x)) return false;   /* the dead fire: only the ember lights one */ this.lampOffT.delete(y * 100 + x); this.relightAt.delete(y * 100 + x); this.freshAt.delete(y * 100 + x); this.lampBroken.delete(y * 100 + x); this.lampV = (this.lampV || 0) + 1; this.fx.push({ k: "relight", x, y, t: 0, life: 0.9 });
       const r = (this.stage.lamps && this.stage.lamps.r) || 1; for (const e of this.enemies) if (e.ally && e.waiting && !e.dead && Math.max(Math.abs(e.x - x), Math.abs(e.y - y)) <= r) this.wake(e);   // the light finds whoever was left tied up in the dark: they are loose, and on our side
       return true; }
     // A fresh keeper of a lamp that is out: one of ours right beside it (above, below, left or right) who was deployed after the lamp went out
@@ -2271,7 +3020,7 @@
     // the relight clocks, over every lamp that is out. The fresh clock runs while a fresh keeper stands by it and lights the lamp when it runs out; with no fresh keeper
     // it starts over. It belongs to the lamp, so two fresh keepers in turn without a gap keep it running. A lamp that is not broken also lights relightStale seconds
     // after it went out while a stale keeper stands by it. relightAt holds whichever comes first
-    relightStep() { const L = this.stage.lamps || {}, R = L.relight || 6, RS = L.relightStale || 14;
+    relightStep() { if (this.pat && this.pat.kind === "B") return; const L = this.stage.lamps || {}, R = L.relight || (L.fire ? 5 : 6), RS = L.relightStale || 14;
       for (const k of [...this.lampOff]) { const x = k % 100, y = (k / 100) | 0;
         if (tileAt(x, y) !== "F") continue;
         if (!this.freshKeeper(x, y)) this.freshAt.delete(k); else if (!this.freshAt.has(k)) this.freshAt.set(k, this.t + R);
@@ -2372,14 +3121,34 @@
       this.shells = this.shells.filter((q) => !q.done); }
     blizzardOn() { return !!(this.wind && this.wind.blowing); }
     // the blizzard is blowing down this square's line and nothing stands between the square and the side it blows from: no raised wall, none of ours, none of our rebels
-    windHits(x, y) { const w = this.wind; if (!w || !w.blowing) return false; const [dx, dy] = [[1, 0], [0, 1], [-1, 0], [0, -1]][w.dir], X = Math.round(x), Y = Math.round(y);
+    windHits(x, y) { const w = this.wind; if (!w || !w.blowing) return false; if (this.frost) return this.frost.dirs.some((d) => this.windHitsDir(x, y, d));   /* a frost storm blows from every direction of its level */
+      return this.windHitsDir(x, y, w.dir); }
+    windHitsDir(x, y, dir) { const [dx, dy] = [[1, 0], [0, 1], [-1, 0], [0, -1]][dir], X = Math.round(x), Y = Math.round(y);
       if (X < 0 || Y < 0 || X >= W || Y >= H) return false;
       for (let cx = dx > 0 ? 0 : dx < 0 ? W - 1 : X, cy = dy > 0 ? 0 : dy < 0 ? H - 1 : Y; cx !== X || cy !== Y; cx += dx, cy += dy) {
-        if (tileAt(cx, cy) === "W" || this.unitAt(cx, cy) || this.enemies.some((q) => q.ally && !q.dead && !q.def.flying && Math.round(q.x) === cx && Math.round(q.y) === cy)) return false; }
+        const cc = tileAt(cx, cy); if (cc === "W" || this.unitAt(cx, cy) || this.enemies.some((q) => q.ally && !q.dead && !q.def.flying && Math.round(q.x) === cx && Math.round(q.y) === cy)) return false; }
       return true; }
     // held by one of ours who stands beside a lit brazier: the ice on it thaws (def.thaw)
-    thawed(e) { return !!(e && e.def.thaw && e.blockedBy && this.units.includes(e.blockedBy) && this.warmAt(e.blockedBy.x, e.blockedBy.y)); }
-    warmAt(x, y) { if (this.stage.lamps && !this.stage.lamps.fire) return false; for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) if (tileAt(x + dx, y + dy) === "F" && !this.lampOff.has((y + dy) * 100 + x + dx)) return true; return false; }   // beside a brazier (F) nobody freezes
+    thawed(e) { return !!(e && e.def.thaw && this.warmHeld(e)); }
+    warmHeld(e) { return !!(e && e.blockedBy && this.units.includes(e.blockedBy) && this.warmAt(e.blockedBy.x, e.blockedBy.y)); }   /* held by one of ours who stands on a warm square */
+    /* the braziers' warmth (chapter 2, R2): a lit brazier (F) warms the four squares beside it (above, below, left, right). In a gust the square on the side the wind
+       comes from goes cold, and the warmth lies down with the wind: up to three squares downwind of the brazier, cut short only by a raised wall (W) or the edge of the board; it passes over sunken ground, high ground and another brazier.
+       warmTiles(gust, dir) gives that set (keys y*100+x) for either state, so the page can show where the warmth will lie before a gust comes. On a stage whose
+       lamps are street lamps (chapter 3: lamps without fire) nothing is warm */
+    warmTiles(gust, dir) { const out = new Set(); if (this.stage.lamps && !this.stage.lamps.fire) return out;
+      if (this.frost) { const r = this.frost.warm; for (const [k] of this.lampHp) { const fx = k % 100, fy = (k / 100) | 0; if (!this.lampLit(fx, fy)) continue;   /* a frost stage: every square within warm (each way, corners too) of a lit brazier; no plume */
+          for (let b = -r; b <= r; b++) for (let a = -r; a <= r; a++) { const x = fx + a, y = fy + b; if (x >= 0 && y >= 0 && x < W && y < H) out.add(y * 100 + x); } } return out; } const V = [[1, 0], [0, 1], [-1, 0], [0, -1]], [wx, wy] = gust ? V[dir] : [0, 0];
+      const A = this.pat && this.pat.kind === "A", R = Math.floor(PAT.reach);
+      for (let fy = 0; fy < H; fy++) for (let fx = 0; fx < W; fx++) { if ((MAP[fy][fx] !== "F" && !this.summon.has(fy * 100 + fx)) || this.lampOff.has(fy * 100 + fx) || this.coldFire(fx, fy)) continue;
+        if (A) { for (let b = -R; b <= R; b++) for (let a = -R; a <= R; a++) { const x = fx + a, y = fy + b; if (x >= 0 && y >= 0 && x < W && y < H && Math.hypot(a, b) <= PAT.reach + 1e-9) out.add(y * 100 + x); } continue; }   /* the great fire: every square within 2.5, in calm and gust alike */
+        for (const [a, b] of V) { if (gust && a === -wx && b === -wy) continue; const x = fx + a, y = fy + b; if (x >= 0 && y >= 0 && x < W && y < H) out.add(y * 100 + x); }
+        if (gust) for (let k = 1; k <= 3; k++) { const x = fx + wx * k, y = fy + wy * k; if (x < 0 || y < 0 || x >= W || y >= H) break; const c = tileAt(x, y); if (c === "W") break; if (c !== "F") out.add(y * 100 + x); } }
+      return out; }
+    warmSet() { const w = this.wind, g = !!(w && w.blowing), key = this.t + "|" + (this.lampV || 0) + "|" + g + "|" + (w ? w.dir : -1) + "|" + (this.pat ? this.pat.kind : "");
+      if (this._warmKey !== key) { this._warmKey = key; this._warm = this.warmTiles(g, w ? w.dir : 0); } return this._warm; }
+    warmAt(x, y) { if (this.stage.lamps && !this.stage.lamps.fire) return false; return this.warmSet().has(Math.round(y) * 100 + Math.round(x)); }   // on a warm square nobody freezes
+    /* the blue fire at the general's neck: a brazier he stands near (def.coldfire squares) gives no warmth while he is there */
+    coldFire(x, y) { for (const e of this.enemies) if (e.def.coldfire && !e.dead && !e.ally && e.hp > 0 && !e.waiting && Math.hypot(e.x - x, e.y - y) <= e.def.coldfire) return true; return false; }
     // 동상: one more stack; two make an operator freeze solid for a while
     frostHit(u, n) {
       if (!u || u.isEnemy || !this.units.includes(u) || u.frozenT > 0 || (u.frostImm || 0) > this.t) return;
@@ -2396,6 +3165,25 @@
       }
       for (const u of this.units) if (this.fireAt(u.x, u.y)) { this.damage(u, Math.max(FIRE.min, u.maxHp * FIRE.pct) * dt, "true", null); u.flash = Math.max(u.flash || 0, 0.05); }
     }
+    /* running with the wind at its back in a gust (def.tail): the leg it is on points the way the wind blows */
+    tailOf(e) { const a = e.path[e.seg], b = e.path[e.seg + 1]; if (!a || !b) return 1; const [wx, wy] = [[1, 0], [0, 1], [-1, 0], [0, -1]][this.wind.dir], L = Math.hypot(b[0] - a[0], b[1] - a[1]);
+      return L > 1e-9 && ((b[0] - a[0]) * wx + (b[1] - a[1]) * wy) / L > 0.7 ? e.def.tail : 1; }
+    /* the frost sack bursts (def.douse): the braziers within r go out, and the frost takes those of ours within r */
+    douse(e) { const D = e.def.douse; let any = false;
+      for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) if (this.lampLit(x, y) && Math.hypot(x - e.x, y - e.y) <= D.r + 0.01) { this.snuff(x, y, e, true); any = true; }
+      for (const u of this.units.slice()) if (Math.hypot(u.x - e.x, u.y - e.y) <= D.r + 0.01) this.frostHit(u, D.frost);
+      this.fx.push({ k: "douse", x: e.x, y: e.y, r: D.r, t: 0, life: 0.9 }); return any; }
+    emberStep(e) { e.emberAt = this.t + 0.5; const D = e.def.ember, ex = Math.round(e.x), ey = Math.round(e.y);
+      const toBase = () => { const p = bfsPath([ex, ey], BASE); if (p) { e.path = [[e.x, e.y]].concat(p.length > 1 ? p.slice(1) : [[ex, ey]]); e.seg = 0; e.segT = 0; this.advance(e, 0); e.remain = segLen(e.path); } };
+      const run = () => { e.sitting = null; e.emberGo = null; e.postUntil = 0; e.aimHold = false; e.emberDone = true; e.dashMul = D.run / e.def.speed; toBase(); };
+      if (e.sitting) { if (!this.lampLit(e.sitting[0], e.sitting[1]) || this.t >= e.sitUntil) { run(); this.fx.push({ k: "wake", e, x: e.x, y: e.y, t: 0, life: 0.9 }); } return; }
+      if (e.emberGo) { const [sx, sy] = e.emberGo.sq; if (!this.lampLit(e.emberGo.f[0], e.emberGo.f[1]) || this.units.some((u) => u.x === sx && u.y === sy)) { e.emberGo = null; e.aimHold = false; toBase(); return; }
+        if (Math.hypot(e.x - sx, e.y - sy) < 0.15) { e.sitting = e.emberGo.f; e.emberGo = null; e.postUntil = 1e9; e.sitUntil = this.t + (D.max || 60); e.x = sx; e.y = sy; e.path = [[sx, sy], [sx, sy]]; e.seg = 0; e.segT = 0; e.aimHold = true; } return; }
+      const taken = (x, y) => this.units.some((u) => u.x === x && u.y === y) || this.enemies.some((q) => q !== e && !q.dead && ((q.emberGo && q.emberGo.sq[0] === x && q.emberGo.sq[1] === y) || ((q.sitting || q.postUntil > this.t || q.waiting) && Math.round(q.x) === x && Math.round(q.y) === y)));
+      let best = null; for (let fy = 0; fy < H; fy++) for (let fx = 0; fx < W; fx++) if (this.lampLit(fx, fy) && Math.hypot(fx - e.x, fy - e.y) <= D.see) for (const [dx, dy] of [[1, 0], [0, 1], [-1, 0], [0, -1]]) { const x = fx + dx, y = fy + dy;
+        if (tileAt(x, y) !== "." || taken(x, y)) continue; const p = bfsPath([ex, ey], [x, y]); if (!p) continue; if (!best || p.length < best.score) best = { score: p.length, p, f: [fx, fy], sq: [x, y] }; }   /* only a ground square the brazier warms */
+      if (!best) return;
+      e.emberGo = { f: best.f, sq: best.sq }; e.aimHold = true; e.path = [[e.x, e.y]].concat(best.p.length > 1 ? best.p.slice(1) : [best.sq.slice()]); e.seg = 0; e.segT = 0; e.waitedAt = undefined; this.advance(e, 0); e.remain = segLen(e.path); }
     // the infernal machine goes off: everything close by, theirs and ours alike
     explode(e) {
       if (e.boomed) return; e.boomed = true;
@@ -2403,23 +3191,49 @@
       for (const u of this.units.slice()) if (Math.hypot(u.x - e.x, u.y - e.y) <= b.r) this.damage(u, dmg, "true", null, e);
       for (const q of this.enemies) if (q !== e && !q.dead && !q.def.flying && Math.hypot(q.x - e.x, q.y - e.y) <= b.r) { this.damage(q, dmg * (q.def.bomb ? 1 : b.foe || 1), "true", null); q.flash = 0.25; }
       this.fx.push({ k: "boom", x: e.x, y: e.y, r: b.r, t: 0, life: 0.9 }); this.snd("boom");
+      if (b.relight && this.lampOff.size && this.stage.lamps && this.stage.lamps.fire) for (const k of [...this.lampOff]) { const x = k % 100, y = (k / 100) | 0; if (tileAt(x, y) === "F" && Math.hypot(x - e.x, y - e.y) <= b.relight) this.relight(x, y); }   /* the blast lights the braziers near it again */
     }
+    emberCheck() { const E = this.emberCard; if (!E) return "없음"; if (E.tuner) return this.tunerCheck();   /* chapter 5: the tuner card */ if (E.plank) return E.cdT > 0 && !(this.ch4 && this.ch4.plank) ? "재사용 대기 중" : null;   /* chapter 4: the plank card */ if (E.cdT > 0) return "재사용 대기 중"; if (this.cost < E.cost) return "코스트 부족"; return null; }
+    /* the brazier an ember set down on (x, y) would light: the square must be right beside one (above, below, left, right) */
+    emberTarget(x, y) { if (this.emberCard && this.emberCard.plank) return this.plankTarget(x, y); if (this.emberCard && this.emberCard.tuner) return this.tunerTarget(x, y);
+      if (this.emberCard && this.emberCard.torch) return x >= 0 && y >= 0 && x < W && y < H && this.darkAt(x, y) ? [x, y] : null;   /* the torch: any dark square */
+      if (x < 0 || y < 0 || x >= W || y >= H || tileAt(x, y) === "F") return null;
+      for (const [a, b] of [[1, 0], [0, 1], [-1, 0], [0, -1]]) { const fx = x + a, fy = y + b; if (tileAt(fx, fy) === "F" && this.lampOff.has(fy * 100 + fx)) return [fx, fy]; } return null; }
+    useEmber(x, y, dir) { if (this.emberCard && this.emberCard.plank) return this.usePlank(x, y); if (this.emberCard && this.emberCard.tuner) return this.placeTuner(x, y, dir);   /* chapter 4: lay or take up the plank */
+      if (this.emberCheck()) return false; const f = this.emberTarget(x, y); if (!f) return false; const E = this.emberCard;
+      if (E.torch) { this.cost -= E.cost; E.cdT = E.cd; E.used++; this.torches.push({ x, y, r: E.r, t0: this.t, until: this.t + E.dur }); this.lampV = (this.lampV || 0) + 1; this.fx.push({ k: "torch", x, y, t: 0, life: 0.9 }); return true; }
+      this.cost -= E.cost; E.cdT = E.cd; E.used++; this._ember = true; this.relight(f[0], f[1]); this._ember = false; this.fx.push({ k: "ember", x: f[0], y: f[1], from: [x, y], t: 0, life: 0.9 });
+      const L = this.lampHp && this.lampHp.get(f[1] * 100 + f[0]); if (L) L.hp = Math.max(L.hp, this.stage.lamps.hp * 0.5);   /* a brazier with health lit by the ember has at least half of it */
+      if (this.pat && this.pat.kind === "B") this.patternEnd(); return true; }
     get deployed() { return this.units.filter((u) => !u.clone).length; }   // a drawn summon takes a place too; only a skill's short-lived double does not
     unitAt(x, y) { return this.units.find((u) => u.x === x && u.y === y); }
-    canDeployAt(card, x, y) {
+    canDeployAt(card, x, y, lightOK) {
       if (this.onlyTile && (x !== this.onlyTile[0] || y !== this.onlyTile[1])) return false;
       const c0 = tileAt(x, y), c = c0 === "~" || c0 === "=" ? "." : c0;
-      if (c !== "*" && (card.def.tile === "g" ? c !== "." : c !== "h")) return false;
+      if (c !== "*" && c !== "T" && (card.def.tile === "g" ? c !== "." && c !== "x" : c !== "h")) return false;   /* "T": a rampart top, for any class (chapter 3) */   /* "x": a low fence (chapter 2): ground operators stand on it, no foe walks it, the wind blows over it */
       if (this.fireAt(x, y)) return false;   // a burning square: nobody can be set down in the fire
       if (this.driftAt(x, y)) return false;   // snowed under by the last gust
-      if (this.enemies.some((q) => !q.dead && !q.def.flying && (q.waiting || q.ally || q.postUntil > this.t) && Math.round(q.x) === x && Math.round(q.y) === y)) return false;   // somebody is waiting, posted or standing with us on that square
+      if (this.frost && this.fogAt(x, y)) return false;   /* a frost stage: nobody is set down in the fog */
+      if (this.iceAt(x, y)) return false;   /* frozen over by the eagle's dead fire (pattern B) */
+      if (this.enemies.some((q) => !q.dead && !q.def.flying && (q.waiting || q.ally || q.stake || q.postUntil > this.t) && Math.round(q.x) === x && Math.round(q.y) === y)) return false;   // somebody is waiting, posted or standing with us on that square
       for (let i = this.waveIdx; i < this.waves.length; i++) { const o = this.waves[i][3]; if (this.waves[i][0] <= 1 && o && o.at && (o.until !== undefined || o.wait || o.ally) && o.at[0] === x && o.at[1] === y) return false; }   // a post is kept free for the one who has not come to it yet
       if (this.enemies.some((q) => q.perched && q.x === x && q.y === y)) return false;   // somebody is already up there
       if (this.vip && !this.vip.dead && Math.round(this.vip.x) === x && Math.round(this.vip.y) === y) return false;   // lab: nobody is set down on the walking ally
       if (this.vipSquares.length && this.vipSquares.some((q) => q[0] === x && q[1] === y)) return false;   // ...nor on a square where she stands or will wait
+      if (this.ch4 && this.ch4.cit.some((c) => !c.gone && c.x === x && c.y === y)) return false;   /* chapter 4: nobody is set down on a citizen */
+      if (this.stage.foeLand && this.stage.foeLand.some(([x0, y0, x1, y1]) => x >= x0 && x <= x1 && y >= y0 && y <= y1)) return false;   /* the enemy's ground (stage.foeLand: [x0, y0, x1, y1] boxes): nobody is set down there */
       if (this.mirror && x >= this.mirror.x) return false;   // lab L3: only the real room, left of the glass
+      if (this.darkNoDeploy && !lightOK && this.darkAt(x, y)) return false;   /* stage.lamps.darkDeploy false: nobody is set down in the dark */
+      if (this.ch5 && this.ch5NoDeploy(x, y)) return false;   /* chapter 5: the kapellmeister's echo, the tuner's square */
       return !this.unitAt(x, y);
     }
+    /* refused only because the square is dark (the page says why) */
+    deployDark(card, x, y) { return !!this.darkNoDeploy && this.darkAt(x, y) && this.canDeployAt(card, x, y, true); }
+    /* the staker's stake: a held, harmless foe-side object on a rampart square. It keeps the square from us until broken; it is no foe (not counted, not needed for the win) */
+    plantStake(e, x, y) { const S = ENEMIES.stake, hp = (e.def.stake && e.def.stake.hp) || S.hp; e.staked = true;
+      this.enemies.push({ id: this.uid++, isEnemy: true, type: "stake", def: S, path: [[x, y], [x, y]], seg: 0, segT: 0, x, y, hp, maxHp: hp, defv: S.def, res: S.res, blockedBy: null, atkT: 99,
+        slowT: 0, slowAmt: 0, stunT: 0, flash: 0, remain: 1e9, hold: true, stake: true, postUntil: 0, born: this.t });
+      this.fx.push({ k: "stake", x, y, t: 0, life: 0.6 }); }
     // like the original: every retreat or fall makes the next deployment 50% dearer, up to double
     costOf(card) { return Math.min(CFG.maxCost, Math.round(Math.max(1, card.def.cost + eliteCost(card.def, card.elite) - (card.pot ? card.pot.cost : 0)) * (1 + 0.5 * Math.min(card.level, 2)))); }
     deployCheck(card) {
@@ -2456,7 +3270,7 @@
         return s;
       }
       card.deployed = true;
-      for (const q of this.enemies) if (q.waiting && !q.ally && Math.max(Math.abs(Math.round(q.x) - x), Math.abs(Math.round(q.y) - y)) <= 1) this.wake(q);   // setting someone down beside it stirs it (those tied up on our side are loosed only by the light)
+      for (const q of this.enemies) if (q.waiting && !q.ally && !q.sleepDark && Math.max(Math.abs(Math.round(q.x) - x), Math.abs(Math.round(q.y) - y)) <= 1) this.wake(q);   // setting someone down beside it stirs it (those tied up on our side are loosed only by the light)
       const sk = skillAt(d.skills[card.skillIdx] || d.skills[0], card.slv, maxMastery(d) && card.sm ? card.sm[card.skillIdx] || 0 : 0);
       const pt = card.pot || {};
       const mh = Math.round(d.hp * mOf(card.mult, "hp") * (pt.hp || 1));
@@ -2499,15 +3313,23 @@
     }
     // standing on a ground tile right now (she steps down during her second skill)
     onGround(u) { return u.ground !== undefined ? u.ground : u.def.tile === "g"; }
+    /* one of ours standing on a rampart top (T): high ground for the rules that ask (ground foes neither hold it nor cut at it, it does not see into the dark), but a ground
+       operator there still holds the climbers that walk the wall top through its square */
+    onRamp(u) { return !!u && !u.isEnemy && tileAt(u.x, u.y) === "T"; }
+    canHold(u, e) { if (e.def && e.def.unblockable) return false; if (this.onRamp(u)) return this.onGround(u) && this.climber(e.def); return this.onGround(u); }
     rangeTiles(u, dir = u.dir) { const c = this.cards[u.card]; return RANGE[u.rangeKey || rangeKeyOf(u.def, c ? c.elite : 0)].map((o) => { const [dx, dy] = rotate(o, dir); return [u.x + dx, u.y + dy]; }); }
     inRange(u, e, tiles = this.rangeTiles(u)) {
       if (e.isEnemy && e.downUntil > this.t) return false;
-      if (e.underT > 0) return false;   /* underground in a tunnel */   // lying where it fell: there is nothing to strike yet
+      if (e.underT > 0) return false;   /* underground in a tunnel */
+      if (this.frost && e.isEnemy && !u.isEnemy && this.fogAt(e.x, e.y)) return false;   /* a frost stage: a foe in the fog cannot be made out */   // lying where it fell: there is nothing to strike yet
       if (e.mask && !e.judged) return false;   // lab L3 (LAB-04): a masked figure not judged for killing is never struck
+      if (e.noTarget && !u.isEnemy) return false;   /* chapter 4: the child with the ember and the gentleman are nobody's target */
       if (e.ghost && !u.isEnemy) return false;   // lab L5: a ghost is not ours to heal or help
       if (!u.isEnemy && this.smoke.size && this.smokeAt(u.x, u.y) && Math.max(Math.abs(e.x - u.x), Math.abs(e.y - u.y)) > 1.5) return false;   // in the smoke: no further than the next square
+      if (e.stake && !u.isEnemy && u.def.tile === "g" && !this.onRamp(u)) return false;   /* a stake on the wall top: only melee up on the rampart, or ranged, reach it */
       if (e.stealth && e.blockedBy !== u) return false;   // 은신: only the one holding it back can find it
-      if (e.dim && !u.isEnemy && (u.def.tile !== "g" || Math.max(Math.abs(e.x - u.x), Math.abs(e.y - u.y)) > 1.5)) return false;   // held or met in the dark: only those on the ground right beside it can make it out; nobody up on a rise sees into the dark
+      if (e.isEnemy && e.def.highOnly && !u.isEnemy && !(tileAt(u.x, u.y) === "h" || this.onRamp(u))) return false;   /* the balloon: only from a rise or a rampart top */
+      if (e.dim && !u.isEnemy && (u.def.tile !== "g" || this.onRamp(u) || Math.max(Math.abs(e.x - u.x), Math.abs(e.y - u.y)) > 1.5)) return false;   // held or met in the dark: only those on the ground right beside it can make it out; nobody up on a rise sees into the dark
       // a foe has a little body, not a point: it counts on every tile its body overlaps, so one standing on a tile edge
       // (as a blocked foe does, held at the edge of its blocker's tile) can be reached from either side of that edge
       const R = 0.2, xs = [Math.round(e.x - R), Math.round(e.x + R)], ys = [Math.round(e.y - R), Math.round(e.y + R)];
@@ -2532,7 +3354,7 @@
       if (k === "interval" && b.ivMul) v *= b.ivMul;   // 그대가 뭇별에 닿기를: three blows, a slower beat
       if (k === "interval" && !u.isEnemy && this.calls && this.calls.until > this.t && (u.x === this.calls.at[0] || u.y === this.calls.at[1])) v *= this.calls.slow;   // the call: in line with the one called, hands falter
       if (k === "interval" && !u.isEnemy && u.frostN > 0) v *= FROST.slow;
-      if (k === "interval" && !u.isEnemy && this.beat) v *= this.beatLen(this.beatZone(u.x)) / this.beat.base;   // lab L2: a slow zone slows us too   // 동상: stiff fingers
+      if (k === "interval" && !u.isEnemy && this.beat) v *= this.beatLen(this.beatZone(u.x, u.y)) / this.beat.base;   // lab L2: a slow zone slows us too   // 동상: stiff fingers
       if (k === "def" && !u.isEnemy && tileAt(u.x, u.y) === "=") v *= 1 - THIN_ICE;   // thin ice under the feet
       if (k === "atk" && u.def.pair && !u.isEnemy && this.units.some((q) => q.def.id === u.def.pair)) v *= 1.1;   // 운명의 서약
       if (k === "block" && b.blockAdd) v += b.blockAdd;
@@ -2550,19 +3372,26 @@
     afflict(u, key, dur) { if (u.buff && u.buff.immune && u.skillT > 0) return 0; if (u.def.id === "lulu") dur *= 0.5; u[key] = Math.max(u[key] || 0, dur); return dur; }
     growth(u) { const g = u.def.grow; return g ? Math.min(g.max, Math.floor(Math.max(0, this.t - u.born) / g.every)) : 0; }
     damage(target, raw, type, fromUnit, fromEnemy) {
+      if (this.ch5) { raw = this.ch5Taken(target, raw, type, fromUnit); if (!(raw > 0)) return 0; }   /* chapter 5: the archduke and his ear are not harmed; the echo gives back */
+      if (this.ch4) { if (target.isEnemy) { raw = this.ch4Taken(target, raw); if (!(raw > 0)) return 0; } else if (fromEnemy && this.ch4Miss(fromEnemy, target)) return 0; }   /* chapter 4: smoke, the festival, the unharmed; the marksman's misses */
       if (this._beatAmpU && fromUnit === this._beatAmpU) raw *= 1.3;   // lab L2: an instant skill started on the downbeat
       if (target.isEnemy && (target.crownUntil > this.t || target.downUntil > this.t)) return 0;
       if (target.underT > 0) return 0;   /* underground in a tunnel */
       if (target.mask && !target.judged) return 0;   // lab L3 (LAB-04): nor harmed by a blast   // a boss between his two stages, or an armour still lying where it fell: nothing harms them
+      if (fromEnemy && !target.isEnemy && this.auras) raw *= this.auraMul(fromEnemy, "atk");   /* the standard bearers lift every other foe's blows */
       if (fromEnemy && !target.isEnemy && target.markT > this.t) raw *= target.markAmp || 1;   // pointed out by an informer
+      if (fromUnit && target.isEnemy && this.onRamp(fromUnit) && !ONWALL(tileAt(Math.round(target.x), Math.round(target.y)))) raw *= RAMPART.out;   /* from the rampart down onto the ground */
+      if (fromEnemy && !target.isEnemy && this.onRamp(target) && !ONWALL(tileAt(Math.round(fromEnemy.x), Math.round(fromEnemy.y)))) raw *= RAMPART.in;   /* from the ground up at the rampart */
+      if (target.isEnemy && target.def.cover && !target.uncovered && fromUnit && fromUnit.def && fromUnit.def.tile === "h") raw *= target.def.cover;   /* the cart's cover: shots from the high ground glance off until it has been held */
       if (fromEnemy && fromEnemy.def.vsFrozen && !target.isEnemy && target.frozenT > 0) raw *= fromEnemy.def.vsFrozen;   // fangs into the frozen
+      if (fromEnemy && !target.isEnemy && this.firelit(fromEnemy) && this.warmAt(target.x, target.y)) raw *= 1.5;   /* stage.firelight: lit up by the fire, an easy mark */
       if (fromEnemy && fromEnemy.def.frost && !target.isEnemy && raw > 0 && !this.warmAt(target.x, target.y)) this.frostHit(target, fromEnemy.def.frost);   /* by a lit brazier the frost does not stick */
       if (target.isEnemy && target.waiting && !target.ally) this.wake(target);   // (those tied up on our side are loosed by the light, not by a blow)
       let dmg;
       if (type === "true") dmg = raw;
       else if (type === "arts") dmg = raw * (1 - Math.max(0, (target.res !== undefined ? target.res : (target.def.res || 0)) * (target.isEnemy && target.def.thaw && target.def.thaw.res && this.thawed(target) ? target.def.thaw.res : 1) - (target.erodeT > 0 ? ERODE.resDown : 0)) / 100);   // 침식 eats into magic resistance
       else {
-        let def = target.isEnemy ? target.defv : this.stat(target, "def");
+        let def = target.isEnemy ? target.defv : this.stat(target, "def"); if (target.isEnemy && this.auras) def *= this.auraMul(target, "def");   /* ...and their guard */
         const thaw = target.isEnemy && this.thawed(target); if (target.isEnemy && target.def.iceArmor && this.wind && this.wind.blowing && !thaw) def *= target.def.iceArmor; if (thaw && target.def.thaw.def) def *= target.def.thaw.def;   /* held by one of ours beside a lit brazier, the ice on it thaws */
         if (target.isEnemy && target.def.falter && target.def.falter.bare && target.falterT > this.t) def = 0;   // while he falters his guard is down   // the ice on the shield thickens in the white-out
         if (fromUnit && fromUnit.def.pierce && target.isEnemy) def *= 1 - fromUnit.def.pierce;   // 대물 저격탄: armor is no excuse
@@ -2575,6 +3404,7 @@
       if (!target.isEnemy && fromEnemy) this.snd("hurt");
       if (!target.isEnemy) dmg = this.shield(target, dmg);
       if (target.hired) dmg *= target.hired.taken !== undefined ? target.hired.taken : 0.6;   // a paid man fights for his life
+      if (target.isEnemy && target.def.frostGuard && !this.warmHeld(target)) dmg *= target.def.frostGuard;   /* the eagle's frost: gone while one of ours on a warm square holds him */
       if (!target.isEnemy && target.dmgCutT > this.t) dmg *= 0.5;   // 광속일섬: still as stone while he gathers himself
       if (!target.isEnemy && target.def.dodge && fromEnemy && Math.random() < target.def.dodge) {   // 정신권: he simply isn't where the blow lands
         this.fx.push({ k: "tododge", x: target.x, y: target.y, t: 0, life: 0.6 }); return 0;
@@ -2820,20 +3650,26 @@
       const d = force - (e.def.mass !== undefined ? e.def.mass : 2);
       const dist = (d >= 4 ? 2.5 : d <= -3 ? 0.1 : [0.15, 0.3, 0.6, 1.0, 1.5, 2.0][d + 2]) * (0.85 + 0.1 * force);
       e.blockedBy = null; e.heldBy = null;
-      e.shove = { x0: e.x, y0: e.y, dx, dy, dist, done: 0, t: 0, dur: 0.16 + 0.12 * dist, wallStun };
+      e.shove = { x0: e.x, y0: e.y, dx, dy, dist, done: 0, t: 0, dur: 0.16 + 0.12 * dist, wallStun, fromWall: WALLTOP(tileAt(Math.round(e.x), Math.round(e.y))) };
       this.fx.push({ k: "shove", x: e.x, y: e.y, dx, dy, dist, e, t: 0, life: 0.5 });
       return dist;
     }
     stepShove(e, dt) {
       const sh = e.shove; sh.t += dt;
       const q = Math.min(1, sh.t / sh.dur), want = sh.dist * (1 - (1 - q) * (1 - q));
-      let wall = false;
+      let wall = false, fall = false;
       while (sh.done < want - 1e-6) {
-        const nd = Math.min(want, sh.done + 0.05), nx = sh.x0 + sh.dx * nd, ny = sh.y0 + sh.dy * nd;
-        if (!walkable(tileAt(Math.round(nx), Math.round(ny)))) { wall = true; break; }
+        const nd = Math.min(want, sh.done + 0.05), nx = sh.x0 + sh.dx * nd, ny = sh.y0 + sh.dy * nd, tx = Math.round(nx), ty = Math.round(ny), c = tileAt(tx, ty);
+        const onWall = WALLTOP(tileAt(Math.round(sh.x0 + sh.dx * sh.done), Math.round(sh.y0 + sh.dy * sh.done)));
+        if ((c === "#" || (c === "_" && this.ch4)) && tx >= 0 && ty >= 0 && tx < W && ty < H && this.voidFalls(e)) { sh.done = nd; fall = true; break; }   /* chapter 4: the night air between the roofs is no footing either */   /* the sunken floor: no footing, over it goes */
+        if (!(walkable(c) || (onWall && WALLTOP(c) && this.climber(e.def)))) { wall = true; break; }   /* a climber on the wall top slides along it; anything else solid stops the slide */
         sh.done = nd;
       }
       e.x = sh.x0 + sh.dx * sh.done; e.y = sh.y0 + sh.dy * sh.done;
+      if (fall) { e.shove = null; e.hp = 0; e.fell = true; this.fx.push({ k: "voidfall", x: e.x, y: e.y, e, t: 0, life: 0.7 }); return; }   /* dies where it fell; counted like any other kill */
+      if (sh.fromWall && !sh.landed && walkable(tileAt(Math.round(e.x), Math.round(e.y)))) {   /* shoved off a rampart top onto the ground: a hard landing */
+        sh.landed = true; e.stunT = Math.max(e.stunT || 0, WALL_DROP.stun); e.hp -= e.maxHp * WALL_DROP.pct; e.flash = 0.2;
+        this.fx.push({ k: "num", x: e.x, y: e.y, v: Math.round(e.maxHp * WALL_DROP.pct), true: true, t: 0, life: 1.0 }); this.fx.push({ k: "shovewall", x: e.x, y: e.y, dx: sh.dx, dy: sh.dy, t: 0, life: 0.4 }); }
       if (q >= 1 || wall) {
         e.shove = null;
         if (wall) this.fx.push({ k: "shovewall", x: e.x, y: e.y, dx: sh.dx, dy: sh.dy, t: 0, life: 0.4 });
@@ -2841,10 +3677,12 @@
         this.repath(e);
       }
     }
+    /* the sunken floor (chapter 2 on: a stage with no background art, unless stage.voidFall is false): a foe shoved onto "#" falls; bosses, fliers and the very heavy do not */
+    voidFalls(e) { return !this.stage.bg && this.stage.voidFall !== false && !e.def.boss && !e.def.flying && !((e.def.mass !== undefined ? e.def.mass : 2) >= 4); }
     // a new road to the base from where the foe stands now
     repath(e) {
       const T = [Math.round(e.x), Math.round(e.y)];
-      const p = (walkable(tileAt(T[0], T[1])) ? bfsPath(T, BASE) : null) || [];   // no way to the point at all (a lab board): the same as standing off the road
+      TUN_USE = !!e.tun; CLIMB_USE = this.climber(e.def); const p = (walkC(tileAt(T[0], T[1])) ? bfsPath(T, BASE) : null) || []; TUN_USE = false; CLIMB_USE = false;   // no way to the point at all (a lab board): the same as standing off the road
       e.path = p.length > 1 && p[0][0] === T[0] && p[0][1] === T[1] ? [[e.x, e.y]].concat(p.slice(1)) : [[e.x, e.y], T, BASE.slice()].filter((v, i, a) => i === 0 || v[0] !== a[i - 1][0] || v[1] !== a[i - 1][1]);
       e.seg = 0; e.segT = 0; this.advance(e, 0);
     }
@@ -2896,14 +3734,87 @@
         u.stored = 0;
       }
     }
+    /* ---- chapter 3, second pass ---- */
+    /* lit for a marksman that needs light (def litOnly): a lamp's or a torch's light on the square, or the balloon's mark on the one standing there */
+    litFor(u) { return !this.darkAt(u.x, u.y) || u.spotT > this.t; }
+    /* the balloon: round its loop at its own pace, for as long as it flies */
+    balloonStep(e, dt) { const L = e.loop; let step = e.def.speed * dt;
+      for (let n = 0; n <= L.length && step > 1e-9; n++) { const q = L[e.loopI % L.length], dx = q[0] - e.x, dy = q[1] - e.y, d = Math.hypot(dx, dy);
+        if (d <= step) { e.x = q[0]; e.y = q[1]; e.loopI = (e.loopI + 1) % L.length; step -= d; }
+        else { e.x += dx / d * step; e.y += dy / d * step; if (Math.abs(dx) > 1e-6) e.face = dx > 0 ? 1 : -1; step = 0; } } }
+    /* the balloon's spotting: every few seconds the one of ours nearest under it (within spot.r) is marked for spot.dur */
+    spotStep(e, dt) { const S = e.def.spot; if (e.spotCD === undefined) e.spotCD = S.every * 0.5;
+      if ((e.spotCD -= dt) > 0) return; e.spotCD = S.every;
+      let tg = null, bd = S.r; for (const u of this.units) { const d = Math.hypot(u.x - e.x, u.y - e.y); if (d <= bd) { bd = d; tg = u; } }
+      if (!tg) return; tg.spotT = this.t + S.dur; tg.spotBy = e;
+      this.fx = this.fx.filter((f) => !(f.k === "marked" && f.u === tg)); this.fx.push({ k: "marked", e, u: tg, x: tg.x, y: tg.y, label: "관측", t: 0, life: S.dur }); }
+    /* the seer: it locks on to one of ours in reach that stands in the light (the marked first); unbroken for lock.time it strikes arts x lock.mult, then shoots every
+       lock.every for lock.dur, then walks on for lock.rest before it looks again. The lock breaks if the one it holds leaves, falls, goes out of reach or into the dark, or the seer is stunned or shoved */
+    seerStep(e, dt) { const L = e.def.lock, ok = (u) => !!u && this.units.includes(u) && Math.hypot(u.x - e.x, u.y - e.y) <= this.foeReach(e) && this.litFor(u);
+      const atk = e.def.atk * (e.atkMul || 1) * (e.weakT > 0 ? 1 - e.weakAmt : 1);
+      if (e.lockU && !ok(e.lockU)) { this.breakLock(e); return; }
+      if (e.lockU) { e.aiming = true; e.aimTgt = e.lockU; e.face = e.lockU.x >= e.x ? 1 : -1;
+        if (e.volleyT > 0) { e.volleyT -= dt;
+          if ((e.lockAtk -= dt) <= 0) { e.lockAtk = L.every; this.damage(e.lockU, atk, "arts", null, e); this.fx.push({ k: "bolt", x0: e.x, y0: e.y, x1: e.lockU.x, y1: e.lockU.y, foe: true, t: 0, life: 0.25 }); }
+          if (e.volleyT <= 0) { e.lockU = null; e.aiming = false; e.aimTgt = null; e.lockCD = L.rest; }
+          return; }
+        if ((e.lockT += dt) >= L.time) { const u = e.lockU; this.damage(u, atk * L.mult, "arts", null, e); this.fx.push({ k: "bolt", x0: e.x, y0: e.y, x1: u.x, y1: u.y, foe: true, t: 0, life: 0.35 }, { k: "sweep", x: u.x, y: u.y, r: 0.2, t: 0, life: 0.5 });
+          if (e.lockFx) e.lockFx.t = e.lockFx.life; e.lockFx = null; e.volleyT = L.dur; e.lockAtk = L.every; }
+        return; }
+      e.aiming = false; e.aimTgt = null;
+      if ((e.lockCD -= dt) > 0) return;
+      const tg = e.blockedBy && ok(e.blockedBy) ? e.blockedBy : e.blockedBy || e.heldBy ? null : this.rangedTarget(e);
+      if (!tg) { e.lockCD = 0.25; return; }
+      e.lockU = tg; e.lockT = 0; e.volleyT = 0; e.aiming = true; e.aimTgt = tg;
+      e.lockFx = { k: "hookmark", e, u: tg, x: tg.x, y: tg.y, label: "겨눔", t: 0, life: L.time }; this.fx.push(e.lockFx); }
+    breakLock(e) { if (e.lockFx) e.lockFx.t = e.lockFx.life; e.lockFx = null; e.lockU = null; e.lockT = 0; e.volleyT = 0; e.aiming = false; e.aimTgt = null; e.lockCD = 1; }
+    /* the lanternist: unseen except while it charges (its aim) or is held */
+    burnShow(e) { const on = !e.aiming && !e.blockedBy && !e.heldBy; if (on !== !!e.stealth) { e.stealth = on; if (!on) e.revealT = this.t; }
+      if (e.aiming && e.aimTgt && !e.burnWarn) { e.burnWarn = true; this.fx.push({ k: "sweepwarn", e, x: e.aimTgt.x, y: e.aimTgt.y, r: e.def.burn.splash - 0.5, label: "불길", t: 0, life: Math.max(0.3, e.atkT) }); }
+      if (!e.aiming) e.burnWarn = false; }
+    burnShot(e, target) { const B = e.def.burn, raw = e.def.atk * B.mult * (e.atkMul || 1) * (e.weakT > 0 ? 1 - e.weakAmt : 1);
+      e.atkT = e.def.interval; e.firedAt = this.t; e.aiming = false; e.burnWarn = false; if (!e.blockedBy && !e.heldBy) e.stealth = true;
+      this.damage(target, raw, "arts", null, e);
+      for (const u of this.units.slice()) if (u !== target && this.units.includes(u) && Math.hypot(u.x - target.x, u.y - target.y) <= B.splash) this.damage(u, raw, "arts", null, e);
+      this.fx.push({ k: "bolt", x0: e.x, y0: e.y, x1: target.x, y1: target.y, foe: true, t: 0, life: 0.25 }, { k: "sweep", x: target.x, y: target.y, r: B.splash - 0.5, t: 0, life: 0.5 }); }
+    /* the nightmare's blow: every other one of ours whose square behind them (against their facing) is dark is struck as well */
+    fearStrike(e, target, raw) { for (const u of this.units.slice()) { if (u === target || !this.units.includes(u)) continue;
+        const [fx, fy] = rotate([1, 0], u.dir), bx = u.x - fx, by = u.y - fy;
+        if (bx < 0 || by < 0 || bx >= W || by >= H || !this.darkAt(bx, by)) continue;
+        this.damage(u, raw, "phys", null, e); u.flash = 0.2; this.fx.push({ k: "hookhit", x: u.x, y: u.y, label: "악몽", t: 0, life: 0.6 }); } }
+    /* the wagon: foes on foot that touch it get in (up to carry; not elites or bosses, and each only once); held or broken, it lets them out where it stands */
+    wagonStep(e) { if (e.blockedBy && !e.blockedBy.isEnemy && this.stat(e.blockedBy, "block") < e.def.weight) e.blockedBy = null;   /* held only while the holder's block is at least its weight (a skill's extra block run out: it rolls on) */
+      if (e.blockedBy || e.heldBy) { if (e.riders.length) this.unload(e); return; }
+      for (const q of this.enemies) { if (e.riders.length >= e.def.carry) break;
+        if (q === e || q.dead || q.boarded || q.rode || q.hp <= 0 || q.def.flying || q.def.elite || q.def.boss || q.def.carry || q.ally || q.hired || q.stake || q.hold || q.waiting || q.postUntil > this.t || q.blockedBy || q.heldBy || q.climbT > 0 || q.underT > 0 || q.shove || q.loop) continue;
+        if (Math.hypot(q.x - e.x, q.y - e.y) > 0.5) continue;
+        q.boarded = true; q.rode = true; q.aiming = false; q.aimTgt = null; e.riders.push(q); this.boardedN = (this.boardedN || 0) + 1; this.fx.push({ k: "land", x: q.x, y: q.y, t: 0, life: 0.5 }); } }
+    unload(e) { e.riders.forEach((q, i) => { q.boarded = false; q.path = e.path; q.seg = e.seg; q.segT = e.segT; this.advance(q, 0); q.remain = e.remain; q.blockedBy = null;
+        q.x = e.x + [0.25, -0.25, 0.2, -0.2][i & 3]; q.y = e.y + [0.2, -0.2, -0.25, 0.25][i & 3]; q.stunT = 0.4 + i * 0.5; if (!this.enemies.includes(q)) this.enemies.push(q);
+        this.fx.push({ k: "land", x: q.x, y: q.y, t: 0, life: 0.8 }); }); e.riders = []; }
+    cargoLeak(e) { for (const q of e.riders) { q.dead = true; q.leaked = true; this.life -= q.def.life; this.leaked++; } e.riders = []; }
+    /* does a foe of this def walk the ladders and wall tops? (its def's climb, or every foe on foot on a stage with climbAll) */
+    climber(d) { return !!d && !d.flying && !d.noClimb && (!!d.climb || CLIMB_ALL); }
     // can a foot soldier's way from its gate be built now? (a gate that is still shut has none). Flyers, posts, landings and drops do not ask
-    routeReady(type, s, o) { const d = ENEMIES[type]; if (!d || d.flying || (o && (o.at || o.land || o.drops))) return true;
+    routeReady(type, s, o) { const d = ENEMIES[type]; if (!d || d.flying || (o && (o.at || o.land || o.drops || o.loop))) return true;
+      if (d.noClimb) { const q = this.routeOf(type, s, o); return !!(q && q.length); }
       if (o && o.aim !== undefined && this.stage.leap) return true;
+      if (this.stage.ch4 && this.stage.leap) return true;   /* chapter 4: a gate whose bridges are down still lets its foes out onto their roof (spawn finds their way) */
+      if ((o && o.tun) || this.climber(d)) { const q = this.routeOf(type, s, o); return !!(q && q.length); }   /* a gate whose only way out is the sewer: its way exists only with the tunnels open */
       if (this.relay) return d.collector ? this.relay.state === "ground" || this.relay.state === "held" : true;   // lab L4: no road to a point here; a collector comes only while the paper is out   // lab L1: an aimed foe on a board where foes leap comes in even with no road to the point (it finds its own way)
       const p = o && o.via ? viaPath(s, o.via) : this.stage.vias && this.stage.vias[s] ? viaPath(s, this.stage.vias[s]) : PATHS[s]; return !!(p && p.length); }
+    /* the way a foe of this type sent from gate s with options o will walk (the page draws the same line as its preview) */
+    routeOf(type, s, o) { const d = ENEMIES[type];
+      if (o && o.loop) return [...o.loop.map((q) => q.slice()), o.loop[0].slice()];   /* the balloon's round over the board (wave option loop), drawn closed */
+      if (d && d.noClimb && !d.flying && !(o && (o.at || o.land || o.drops || o.tun))) { const pts = [SPAWNS[s], ...((o && o.via) || []).map((q) => [q[0], q[1]]), BASE]; let p = [];   /* the wagon: the ground way even where every foe climbs (none: no way) */
+        for (let i = 0; i < pts.length - 1; i++) { const q = bfsPath(pts[i], pts[i + 1]); if (!q) return null; p = p.concat(i ? q.slice(1) : q); } return p; }
+      if (o && o.tun) TUN_USE = true;   /* this one goes by the sewers: its way is worked out with the tunnels open */
+      if (this.climber(d)) CLIMB_USE = true;   /* a climber: its way is worked out with the ladders and wall tops open (its own shortest way, not the gate's default route) */
+      let path = o && o.tun && !o.at && !o.via && !d.flying ? bfsPath(SPAWNS[s], BASE) : o && o.at ? atPath(o.at, o.via) : o && o.land ? [SPAWNS[s].slice(), o.land.slice()] : o && o.drops ? [SPAWNS[s].slice(), ...o.drops.map((q) => q[0].slice()), BASE.slice()] : d.flying ? (o && o.air ? airPath(s, o.air) : AIR_PATHS[s]) : o && o.via ? viaPath(s, o.via) : this.stage.vias && this.stage.vias[s] ? viaPath(s, this.stage.vias[s]) : CLIMB_USE ? viaPath(s, []) : PATHS[s];   // a stage may send a gate's foot soldiers by its own way
+      TUN_USE = false; CLIMB_USE = false; return path; }
     spawn(type, s, o) {
-      const d = ENEMIES[type];
-      let path = o && o.at ? atPath(o.at, o.via) : o && o.land ? [SPAWNS[s].slice(), o.land.slice()] : o && o.drops ? [SPAWNS[s].slice(), ...o.drops.map((q) => q[0].slice()), BASE.slice()] : d.flying ? (o && o.air ? airPath(s, o.air) : AIR_PATHS[s]) : o && o.via ? viaPath(s, o.via) : this.stage.vias && this.stage.vias[s] ? viaPath(s, this.stage.vias[s]) : PATHS[s];   // a stage may send a gate's foot soldiers by its own way
+      const d = this.frost && ENEMIES[type] && ENEMIES[type].patterns ? this.frostEagle(ENEMIES[type]) : ENEMIES[type];
+      let path = this.routeOf(type, s, o); const noRoad = !path;
       if (!path) path = AIR_PATHS[s];   // a foot soldier sent through a gate only drones use: let it float in rather than break
       this.enemies.push({ id: this.uid++, isEnemy: true, type, def: d, path, seg: 0, segT: 0, x: path[0][0], y: path[0][1],
         hp: d.hp, maxHp: d.hp, defv: d.def, res: d.res, blockedBy: null, atkT: d.interval * 0.5,
@@ -2912,6 +3823,7 @@
       const rm = d.rscale ? this.stage.rmul || { hp: 1, atk: 1 } : null; if (rm) { e.hp = e.maxHp = Math.round(e.hp * rm.hp); e.atkMul = rm.atk; }   // the ranged rank and file: their own scale, which an early stage may ease
       const mul = this.stage.mul; if (mul && !d.noMul && !d.rscale) { e.hp = e.maxHp = Math.round(e.hp * (mul.hp || 1)); e.atkMul = mul.atk || 1; if (mul.def) e.defMul0 = mul.def; }   // early stages field weaker men
       if (o && o.land) { e.land = o.land; e.drop = o.drop || "soldier"; }
+      if (o && o.tun) e.tun = true;
       if (o && o.at) e.postUntil = o.until || 1e9;   // a garrison: it holds its square (and fights from it) until then
       if (o && o.drops) { e.drops = o.drops.map(([at, type, n]) => ({ at, type, n: n || 1 })); e.dropI = 0; e.hoverT = 0; e.cargo = e.drops.reduce((a, q) => a + q.n, 0); }
       if (o && o.escort && this.escort) { const at = [this.escort.x, this.escort.y], pts = [SPAWNS[s], ...(o.via || []).map((q) => [q[0], q[1]]), at]; let pp = [];   // this one is after the one we keep, not the point
@@ -2931,11 +3843,14 @@
       else if (d.boss && o && o.seen) this.bossRevealT = this.t;   // in plain sight from the start: the warning comes at once
       if (d.ambush && !(o && o.seen)) e.stealth = true;   // down in the hedge until he fires
       if (o && o.ally) { e.hired = { t: 1e9, by: null }; e.ally = true; }   // on our side for the whole operation: it holds its ground and fights what comes
+      if (o && o.sleepDark) { e.hold = true; e.waiting = true; e.sleepDark = true; e.postUntil = 0; e.litT = 0; }   /* asleep on its post while its square is dark (see the update) */
       if (o && o.wait) { e.hold = true; e.waiting = true; e.postUntil = 0; if (typeof o.wait === "number") e.holdUntil = o.wait; }   // standing about on the board until someone comes near, hits it, or its time comes
       if (o && o.ally && o.wait && this.stage.lamps) { const r = this.stage.lamps.r || 1, ex = Math.round(e.x), ey = Math.round(e.y); let lit = false;   // tied up on our side but already in reach of a lit lamp: loose at once
         for (let dy = -r; dy <= r; dy++) for (let dx = -r; dx <= r; dx++) if (this.lampLit(ex + dx, ey + dy)) lit = true;
         if (lit) this.wake(e); }
       e.born = this.t;
+      if (this.frost) { e.ph = o && o.ph !== undefined ? o.ph : this.frost.phase; if (d.elite || d.miniboss) this.fx.push({ k: "frostboss", type, text: d.frostBanner, x: e.x, y: e.y, t: 0, life: 2.2 }); }   /* a frost stage: whose phase it is; a mid-boss is announced */
+      if (this.stage.entryFx) this.fx.push({ k: "entry", x: e.x, y: e.y, t: 0, life: 0.5 });   /* 2-6: each one drops into the middle of the board with a dark ring closing on the square */
       if (o && o.at && o.fallen && d.revive) {   // already down on its square, as if it had just fallen in the dark with a rising left: it gets up after o.fallen seconds and that rising is spent
         e.rose = (e.rose || 0) + 1; e.hp = e.downHp = Math.round(e.maxHp * d.revive.pct); e.downUntil = this.t + o.fallen; e.stunT = Math.max(e.stunT || 0, o.fallen);
         this.fx.push({ k: "rise", e, x: e.x, y: e.y, t: 0, life: o.fallen }); }
@@ -2950,7 +3865,12 @@
       if (o && o.atk) e.atkMul = (e.atkMul || 1) * o.atk;
       if (o && o.hp) e.hp = e.maxHp = Math.round(e.maxHp * o.hp);   // this entry's own HP scale on top of the stage's (a picket stronger than the line; an ally kept as it was)
       if (d.sniper) { e.shots = 0; e.scanned = 0; e.scanQ = 0; e.atkT = d.interval; }
+      if (o && o.loop) { e.loop = o.loop; e.loopI = 1; e.remain = 99; }   /* flies its round for the whole stage; never makes for a point */
+      if (d.carry) e.riders = [];
+      if (d.lock) e.lockCD = 1;
       if (!d.boss) for (const q of this.enemies) if (q.stealth && q.def.stealth && !q.dead && q !== e && ++q.mins >= q.def.stealth.reveal) this.reveal(q);
+      if (this.ch4) this.ch4Spawn(e, s, o, noRoad);
+      if (this.ch5) this.ch5Spawn(e, s, o);   /* chapter 5: posts released by a trigger, the drop from the chandelier, the ear's line, the archduke on his stand */   /* chapter 4: posts on the roofs, roosting crows, the child, the gentleman; a foe with no way yet finds its roof's end */
       return e;
     }
     reveal(e) {
@@ -3093,6 +4013,7 @@
       this.fx.push({ k: "lob", x0: e.x, y0: e.y, x1: x, y1: y, t: 0, life: fly }); this.snd("throw");
       this.later.push({ at: this.t + fly, f: () => {
         this.fx.push({ k: "boom", x, y, r: D.splash, t: 0, life: 0.6 }); this.snd("boom");
+        if (this.lampOff.size && this.stage.lamps && this.stage.lamps.fire) for (const k of [...this.lampOff]) { const fx = k % 100, fy = (k / 100) | 0; if (tileAt(fx, fy) === "F" && Math.abs(fx - Math.round(x)) + Math.abs(fy - Math.round(y)) <= 1) this.relight(fx, fy); }   /* the bottle bursting beside a brazier that is out lights it (both ways: theirs too) */
         for (const u of this.units.slice()) {
           if (Math.hypot(u.x - x, u.y - y) > D.splash + 0.01) continue;
           const frozen = u.frozenT > 0;
@@ -3106,10 +4027,21 @@
     }
     // the original's rule: of those in range, the one deployed last draws the fire (the unseen only when nothing else is there)
     rangedTarget(e) {
-      let best = null, bd = 1e9;
-      for (const u of this.units) { if (this.smoke.size && this.smokeAt(u.x, u.y)) continue;   /* hidden in the smoke */ const d = Math.hypot(u.x - e.x, u.y - e.y), key = (u.def.unseen ? 1e6 : 0) - (u.seq || 0) * 100 + d - ((e.def.vsFrozen || e.def.melt) && u.frozenT > 0 ? 1e5 : 0) - (u.markT > this.t ? 2e5 : 0); if (d <= e.def.ranged && key < bd) { bd = key; best = u; } }   // those who feed on the frozen look for them first
+      if (this.ch4 && e.def.vipFirst && this.vip && !this.vip.dead && Math.hypot(this.vip.x - e.x, this.vip.y - e.y) <= this.foeReach(e)) return this.vip;   /* chapter 4: Yui first, when she is in reach */
+      let best = null, bd = 1e9; const FL = this.firelit(e), LT = !!(e.def.melt && this.stage.lamps && this.stage.lamps.fire && this.lampOff.size);
+      for (const u of this.units) { if (this.smoke.size && this.smokeAt(u.x, u.y)) continue;   /* hidden in the smoke */
+        if (e.def.groundOnly && (!this.onGround(u) || this.onRamp(u))) continue;   /* the long rifle cannot aim up at a rise (nor a rampart) */
+        if (FL && !this.warmAt(u.x, u.y)) continue;   /* stage.firelight: in the dark this marksman cannot pick anyone out */
+        if (e.def.litOnly && !this.litFor(u)) continue;   /* the long rifle and the seer: only ours in the light (or under the balloon's mark) */
+        const d = Math.hypot(u.x - e.x, u.y - e.y), key = (u.def.unseen ? 1e6 : 0) - (u.seq || 0) * 100 + d - ((e.def.vsFrozen || e.def.melt) && u.frozenT > 0 ? 1e5 : 0) - (u.markT > this.t ? 2e5 : 0) - (LT && this.lighting(u) ? 3e5 : 0) - (e.def.wallFirst && this.onRamp(u) ? 4e5 : 0) - (e.def.litOnly && u.spotT > this.t ? 5e5 : 0); if (d <= this.foeReach(e) && key < bd) { bd = key; best = u; } }   // those who feed on the frozen look for them first
       return best;
     }
+    /* a ranged foe's reach: a climber (def climb) standing on a wall top or a ladder sees and shoots a square further */
+    foeReach(e) { return e.def.ranged + (e.def.climb && ONWALL(tileAt(Math.round(e.x), Math.round(e.y))) ? RAMPART.reach : 0); }
+    /* the night (stage.firelight: [enemy types]): those marksmen see only ours who stand in a brazier's warmth, and hit them half again as hard */
+    firelit(e) { return !!(e && this.stage.firelight && this.stage.firelight.includes(e.type)); }
+    /* one of ours in the middle of lighting a brazier: set down beside (above, below, left, right) a brazier that is out, after it went out (the firebottle goes for them first) */
+    lighting(u) { for (const [a, b] of [[1, 0], [0, 1], [-1, 0], [0, -1]]) { const x = u.x + a, y = u.y + b, k = y * 100 + x; if (tileAt(x, y) === "F" && this.lampOff.has(k) && u.born > (this.lampOffT.has(k) ? this.lampOffT.get(k) : -1)) return true; } return false; }
     advance(e, dist) {
       // move along the path; returns true when the base is reached
       while (dist > 0 && e.seg < e.path.length - 1) {
@@ -3505,16 +4437,23 @@
     }
     update(dt) {
       if (this.over) return;
+      if (this.frost && this.frost.clearT !== null) { this.t += dt; for (const f of this.fx) f.t += dt; this.fx = this.fx.filter((f) => f.t < f.life); if (this.t >= this.frost.clearT + FRZ.clear) this.over = "win"; return; }   /* the blizzard lifts: the board clears, then the stage is won */
       if (this.march && this.march.choose) return;   // the road forks: everything waits for the choice
       this.t += dt;
       if (this.march) { this.marchStep(); if (this.march.choose) return; if (this.bar) this.barrageStep(dt); }
       if (this.fires.length) this.fireStep(dt);
-      if (this.wind) this.windStep();
+      if (this.storm && !this.frost) this.stormStep(dt);   /* a frost stage's own blizzard takes the place of stage.storm and stage.wind */
+      this.auras = null; for (const q of this.enemies) if (q.def.aura && !q.dead && q.hp > 0 && !q.ally && !q.hired) (this.auras || (this.auras = [])).push(q);   /* the standard bearers alive this tick */
+      if (this.frost) this.frostStep(dt); else if (this.wind) this.windStep();
+      if (this.pat) this.patternStep(dt);
+      if (this.lampHp && !this.frost) this.lampHpStep(dt);
       if (this.shifts.length) this.shiftStep();
       if (this.volleys.length) this.volleyStep();
       if (this.shells.length) this.shellStep();
       if (this.calls) this.callStep();
-      if (this.stage.lamps && this.lampOff.size) this.relightStep();
+      if (this.stage.lamps && this.lampOff.size && !this.lampHp) this.relightStep();   /* a brazier with health lights again only by mending (lampHpStep) */
+      if (this.emberCard && this.emberCard.cdT > 0) this.emberCard.cdT = Math.max(0, this.emberCard.cdT - dt);
+      if (this.torches.length && this.torches.some((q) => this.t >= q.until)) { this.torches = this.torches.filter((q) => this.t < q.until); this.lampV = (this.lampV || 0) + 1; }   /* a torch burnt down */
       if (this.lampEv.length) for (const ev of this.lampEv) { if (!ev.warned && this.t >= ev.t - ev.warn) { ev.warned = true; for (const [x, y] of ev.off || []) if (this.lampLit(x, y) && !this.lampGuarded(x, y)) this.fx.push({ k: "flicker", x, y, t: 0, life: ev.warn }); }
         if (!ev.done && this.t >= ev.t) { ev.done = true; for (const [x, y] of ev.off || []) this.snuff(x, y); } }   // a lamp that gutters out by the clock
       for (const b of this.bombs) if ((b.t -= dt) <= 0 && !b.done) {   // a frost bomb lands: a burst of ice over everyone close by
@@ -3525,16 +4464,24 @@
       }
       if (this.bombs.length) this.bombs = this.bombs.filter((b) => !b.done);
       // cost
-      this.costAcc += dt * this.costRate;
-      while (this.costAcc >= 1) { this.costAcc -= 1; if (this.cost < CFG.maxCost) this.cost++; }
+      this.costAcc += dt * this.costRate * (this.ch4 ? this.ch4.costMul : 1);   /* chapter 4: the soot thieves slow it */
+      while (this.costAcc >= 1) { this.costAcc -= 1; if (this.cost < (this.ch4 ? this.ch4.cap : CFG.maxCost)) this.cost++; }   /* chapter 4: the acolytes lower the cap */
       for (const c of this.cards) if (c.cooldown > 0) c.cooldown = Math.max(0, c.cooldown - dt);
       // spawns
+      if (this.w2 && !this.w2.done && (this.t >= this.w2.at || (this.w2.pct && this.enemies.some((q) => q.def.boss && !q.dead && !q.ally && q.hp <= q.maxHp * this.w2.pct)))) {
+        const W2 = this.w2; W2.done = true; W2.t = this.t; const rest = this.waves.slice(this.waveIdx).concat(W2.list.map((w) => [w[0] + this.t, ...w.slice(1)]));
+        rest.sort((a, b) => a[0] - b[0]); this.waves = this.waves.slice(0, this.waveIdx).concat(rest); this.fx.push({ k: "wave2", t: 0, life: 2.5 }); }   /* the second wave comes on */
+      if (this.horns) for (const hn of this.horns) if (!hn.done && this.t >= hn.t) { hn.done = true; let n = hn.n || 99; const by = this.enemies.find((q) => q.def.boss && !q.dead && !q.ally);
+        for (const q of this.enemies) if (n > 0 && q.waiting && !q.dead && !q.ally) { this.wake(q); n--; }
+        this.fx.push({ k: "call", x: by ? by.x : (BASE[0] + W) / 2, y: by ? by.y : H / 2, rouse: true, horn: true, t: 0, life: 1.4 }); }   /* stage.horns [{ t, n }]: the horn at t rouses n of the sleepers (in the order they lay down) */
       while (this.waveIdx < this.waves.length && this.waves[this.waveIdx][0] <= this.t) {
-        const [, type, s, o] = this.waves[this.waveIdx++];
+        let [, type, s, o] = this.waves[this.waveIdx++];
+        if (this.frost && (s = this.frostGate(s, o)) < 0) continue;   /* a frost stage: a gate named by its square; nothing comes out of the fog */
         if (!this.routeReady(type, s, o)) { (this.waitSpawn || (this.waitSpawn = [])).push({ type, s, o, next: this.t + 1, since: this.t }); continue; }   // its way is still shut: it waits behind the gate
         this.spawn(type, s, o);
       }
       if (this.waitSpawn && this.waitSpawn.length) for (const w of this.waitSpawn.slice()) if (this.t >= w.next) {   // tried again every second; it comes in the moment its way is open
+        if (this.frost && w.o && w.o.gate) { const i = SPAWNS.findIndex((q) => q[0] === w.o.gate[0] && q[1] === w.o.gate[1]); if (i >= 0) w.s = i; }   /* the gate list may have changed since */
         if (this.routeReady(w.type, w.s, w.o)) { this.waitSpawn.splice(this.waitSpawn.indexOf(w), 1); this.spawn(w.type, w.s, w.o); }
         else if (w.o && w.o.shut && this.t >= (w.since || 0) + (w.o.shut.after || 4)) { this.waitSpawn.splice(this.waitSpawn.indexOf(w), 1); this.spawn(w.type, w.o.shut.s, w.o.shut); }   /* the gate holds: round by the other way */
         else w.next = this.t + 1; }
@@ -3542,6 +4489,8 @@
       if (this.loopDef) this.loopStep();   // lab: waves without end
       if (this.vip) this.vipStep(dt);   // lab: the ally who walks
       if (this.chimneys.length) this.chimneyStep(dt);   // lab L1: the chimneys and their bridges
+      if (this.ch4) this.ch4Step(dt);   /* chapter 4: citizens, fuses, festival, cost pressure, the foes' own rules */
+      if (this.ch5) this.ch5Step(dt);   /* chapter 5: the flow, mutes, heckles, the ear, the archduke's song */
       if (this.beat) this.beatStep(dt);   // lab L2: the zones' beat clocks
       if (this.relay) this.relayStep(dt);   // lab L4: the hand-overs, the collectors' pick-up and carry back
       if (this.echo) this.echoStep();   // lab L5: yesterday's deployments, as ghosts
@@ -3554,11 +4503,12 @@
         if (e.def.mend) {
           if (e.mendT === undefined) e.mendT = e.def.mend.every * 0.5;
           if ((e.mendT -= dt) <= 0) { e.mendT = e.def.mend.every; let n = 0;
-            for (const q of this.enemies) if (q !== e && !q.dead && !q.hired && !q.def.flying && !q.def.bomb && q.hp > 0 && q.hp < q.maxHp && Math.hypot(q.x - e.x, q.y - e.y) <= e.def.mend.r) { q.hp = Math.min(q.maxHp, q.hp + q.maxHp * e.def.mend.pct); n++; }
+            for (const q of this.enemies) if (q !== e && !q.dead && !q.hired && !q.stake && !q.def.flying && !q.def.bomb && q.hp > 0 && q.hp < q.maxHp && Math.hypot(q.x - e.x, q.y - e.y) <= e.def.mend.r) { q.hp = Math.min(q.maxHp, q.hp + q.maxHp * e.def.mend.pct); n++; }
             if (n) this.fx.push({ k: "mend", x: e.x, y: e.y, r: e.def.mend.r, t: 0, life: 0.8 }); }
         }
       }
       for (const e of this.enemies) {
+        if (e.boarded) continue;   /* riding in a wagon: off the board until it lets them out */
         e.flash = Math.max(0, e.flash - dt);
         if (e.weakT > 0) e.weakT -= dt;
         if (e.nyalaT > 0) e.nyalaT -= dt;
@@ -3569,20 +4519,28 @@
           if (e.holyT <= 0) e.holyT = 0;
         }
         if (e.hold && e.holdUntil !== undefined && this.t >= e.holdUntil) { e.hold = false; e.holdUntil = undefined; if (e.waiting) { e.waiting = false; this.fx.push({ k: "wake", e, x: e.x, y: e.y, t: 0, life: 0.9 }); } }
+        if (e.sleepDark && e.waiting) { const dk = this.darkAt(Math.round(e.x), Math.round(e.y)); e.litT = dk ? 0 : (e.litT || 0) + dt;   /* asleep in the dark (wave option sleepDark): up and walking once its square has been lit 1.5 s (a lamp or a torch; one of ours beside it is no light) */
+          if (this.stage.lamps && !this.stage.lamps.fire) { const on = dk && !this.units.some((u) => Math.max(Math.abs(u.x - e.x), Math.abs(u.y - e.y)) <= 1.2); e.dim = dk && !on; e.stealth = on; }   /* the dark hides it as it hides a foe on the move */
+          if (e.litT >= 1.5) this.wake(e); }
         if (e.hold) continue;   // held in place by a script (the tutorial) or standing where the stage set it
         if (e.def.frenzy) { const F = e.def.frenzy;   /* the cold eats it as it rages */
           if (F.wind) { const calm = !!(e.blockedBy && this.warmAt(e.blockedBy.x, e.blockedBy.y)), gust = !calm && this.windHits(e.x, e.y); e.calm = calm; e.gusted = gust;   /* held by one of ours beside a lit brazier: calmed (no frenzy, no more drain); out in the blizzard: it rises three times as fast, and higher */
             if (!calm) { e.frenzyAcc = Math.min(F.wind.cap, (e.frenzyAcc || 0) + F.rate * (gust ? F.wind.rate : 1) * dt); e.hp -= e.maxHp * F.drain * dt; } e.frenzyM = calm ? 1 : 1 + Math.min(gust ? F.wind.cap : F.cap, e.frenzyAcc || 0); }
           else { e.frenzyM = 1 + Math.min(F.cap, F.rate * (this.t - e.born)); e.hp -= e.maxHp * F.drain * dt; } }
         if (e.def.snowcloak) { const on = !!(this.wind && this.wind.blowing); if (on !== !!e.stealth) { e.stealth = on; if (!on) { e.revealT = this.t; this.fx.push({ k: "icereveal", x: e.x, y: e.y, t: 0, life: 0.6 }); } } }   // white in the white-out
-        if (this.stage.lamps && !this.stage.lamps.fire && !e.def.flying && !e.def.boss && !e.ally && !e.def.lantern) { const dk = this.darkAt(Math.round(e.x), Math.round(e.y)), on = dk && !e.blockedBy && !this.units.some((u) => Math.max(Math.abs(u.x - e.x), Math.abs(u.y - e.y)) <= 1.2); e.dim = dk && !on; if (on !== !!e.stealth) { e.stealth = on; if (!on) { e.revealT = this.t; } } }   // out of the lamplight: unseen — unless someone holds it or it stands right beside one of ours, and then only those beside it can strike
+        if (this.stage.lamps && !this.stage.lamps.fire && !e.def.flying && !e.def.boss && !e.ally && !e.def.lantern && !e.def.burn && !(e.def.firstBlow && !e.shown)) { const dk = this.darkAt(Math.round(e.x), Math.round(e.y)), on = dk && !e.blockedBy && !this.units.some((u) => Math.max(Math.abs(u.x - e.x), Math.abs(u.y - e.y)) <= 1.2); e.dim = dk && !on; if (on !== !!e.stealth) { e.stealth = on; if (!on) { e.revealT = this.t; } } }   // out of the lamplight: unseen — unless someone holds it or it stands right beside one of ours, and then only those beside it can strike
+        if (e.def.carry) this.wagonStep(e);
+        if (e.def.spot) this.spotStep(e, dt);
+        if (e.def.darkGrow) { const G = e.def.darkGrow; e.darkM = Math.max(0, Math.min(G.cap, (e.darkM || 0) + (this.darkAt(Math.round(e.x), Math.round(e.y)) ? G.rate : -G.rate) * dt)); }   /* the night raider: stronger every second in the dark, back down in the light */
+        if (e.def.stake && !e.staked && !(e.climbT > 0)) { const sx = Math.round(e.x), sy = Math.round(e.y); if (tileAt(sx, sy) === "T" && this.canDeployAt(STAKE_CARD, sx, sy)) this.plantStake(e, sx, sy); }   /* the staker: the first empty rampart square it steps on gets its stake */
         if (e.def.snuff) for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) this.snuff(Math.round(e.x) + dx, Math.round(e.y) + dy, e, e.def.snuff === "force");   // the snuffer: every lamp he passes that nobody stands by goes out (the lamp-breaker breaks it even so)
         if (e.def.mark) { const M = e.def.mark; if (e.markCD === undefined) e.markCD = M.every * 0.4;   // the informer: he points someone out, and for a while they are hit harder and shot at first
-          if ((e.markCD -= dt) <= 0) { let tg = null; for (const high of [true, false]) { for (const u of this.units) if ((tileAt(u.x, u.y) === "h") === high && Math.hypot(u.x - e.x, u.y - e.y) <= M.r && (!tg || this.stat(u, "atk") > this.stat(tg, "atk"))) tg = u; if (tg) break; }   // an operator up on high ground first
+          if ((e.markCD -= dt) <= 0) { let tg = null; for (const high of [true, false]) { for (const u of this.units) if ((tileAt(u.x, u.y) === "h" || this.onRamp(u)) === high && Math.hypot(u.x - e.x, u.y - e.y) <= M.r && (!tg || this.stat(u, "atk") > this.stat(tg, "atk"))) tg = u; if (tg) break; }   // an operator up on high ground first
             if (tg) { e.markCD = M.every; tg.markT = this.t + M.dur; tg.markAmp = M.amp; this.fx.push({ k: "marked", e, u: tg, x: tg.x, y: tg.y, t: 0, life: M.dur }); } else e.markCD = 0.5; } }
         if (e.def.retake && !e.retook && !e.blockedBy && this.t >= (e.retakeAt || 0)) this.retakeStep(e);
+        if (e.def.ember && !e.emberDone && !e.blockedBy && this.t >= (e.emberAt || 0)) this.emberStep(e);
         if (e.unsmoke && this.smoke.size) for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) this.clearSmoke(Math.round(e.x) + dx, Math.round(e.y) + dy, e.unsmoke);   // it beats the smoke away as it passes
-        if (e.def.iceHide) { const c = tileAt(Math.round(e.x), Math.round(e.y)), on = c === "=" || c === "-"; if (on !== !!e.stealth) { e.stealth = on; if (!on) this.fx.push({ k: "icereveal", x: e.x, y: e.y, t: 0, life: 0.6 }); } }   // white on white
+        if (e.def.iceHide) { const c = tileAt(Math.round(e.x), Math.round(e.y)), on = c === "=" || c === "-" || (!!this.stage.snowHide && this.driftAt(Math.round(e.x), Math.round(e.y)));   /* stage.snowHide: white on the snow the gust left too */ if (on !== !!e.stealth) { e.stealth = on; if (!on) this.fx.push({ k: "icereveal", x: e.x, y: e.y, t: 0, life: 0.6 }); } }   // white on white
         if (e.def.bomber && !e.dropped) {   // drifting in slowly: the moment someone is below and in reach, the one frost bomb goes, and it bolts
           const B = e.def.bomber; if (e.bombT === undefined) e.bombT = B.arm;
           if ((e.bombT -= dt) <= 0) {
@@ -3612,7 +4570,7 @@
             continue;
           }
         }
-        if (e.shove) { this.stepShove(e, dt); continue; }   // mid-slide: no walking, no fighting
+        if (e.shove) { if (e.lockU) this.breakLock(e); this.stepShove(e, dt); continue; }   // mid-slide: no walking, no fighting
         if (e.heldBy && (e.heldBy.dead || !e.heldBy.hired || !this.enemies.includes(e.heldBy))) e.heldBy = null;
         e.slowT = Math.max(0, e.slowT - dt);
         if (e.def.falter && !e.faltered && this.phaseOn(e, e.def.falter) && e.hp > 0 && e.hp <= e.maxHp * e.def.falter.at) {   // the body changes hands for a moment: he stops where he stands, and so does everyone round him
@@ -3621,7 +4579,7 @@
           this.fx.push({ k: "falter", e, x: e.x, y: e.y, t: 0, life: F.dur }); }
         if (e.def.boss && !e.enraged && e.hp <= e.maxHp * RAGE.at) { e.enraged = true; this.fx.push({ k: "enrage", e, x: e.x, y: e.y, t: 0, life: 1.0 }); }
         if (e.def.sniper && this.neyStep(e, dt)) continue;
-        if (e.stunT > 0) { e.stunT -= dt; continue; }
+        if (e.stunT > 0) { if (e.lockU) this.breakLock(e); e.stunT -= dt; continue; }
         const ch = e.def.charge;
         if (ch) {   // the headless captain spurs his horse: a burst of speed, and the first blow after it lands double
           if (e.chargeT > 0) { e.chargeT -= dt; if (e.blockedBy) { e.chargeT = 0; e.atkT = Math.min(e.atkT, 0.25); } }
@@ -3653,11 +4611,12 @@
           if (only("dark")) for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) this.snuff(x, y, e, cl.dark === "all");   // "lights out": every lamp nobody stands by ("all": every lamp, kept or not)
           if (cl.darkNear) { let best = null, bd = 1e9; for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) if (this.lampLit(x, y)) { const d = Math.hypot(x - e.x, y - e.y); if (d < bd) { bd = d; best = [x, y]; } }
             if (best) this.snuff(best[0], best[1], e, true); }   // the lamp nearest him goes out, kept or not
+          if (cl.gust && this.wind && this.wind.flip) { const w = this.wind, nd = (w.dir + 2) % 4; if (w.blowing) w.pendingDir = nd; else { this.fx.push({ k: "windturn", dir: nd, from: w.dir, t: 0, life: w.warn + 1 }); w.dir = nd; } }   /* the standard raised turns the wind about (stage.wind.flip) */
           if (cl.gust && this.wind && !this.wind.blowing) { this.wind.next = Math.min(this.wind.next, this.t + this.wind.warn); this.wind.warned = false; }   // the standard raised: the wind answers it
           this.fx.push({ k: "call", x: e.x, y: e.y, rouse: !!cl.rouse, gust: !!cl.gust, dark: !!only("dark"), rapid: !!only("rapid"), near: !!cl.darkNear, barrage: !!cl.barrage, t: 0, life: 1.4 });
         }
-        if (e.blockedBy && !this.units.includes(e.blockedBy)) e.blockedBy = null;
-        if ((e.aim !== undefined || e.noWay) && this.t >= (e.replanAt || 0) && !e.blockedBy && !e.heldBy && !e.leap && !e.hop) this.replan(e);   // lab: an aimed foe (or one whose road was cut) looks again once a second
+        if (e.blockedBy && (!this.units.includes(e.blockedBy) || e.noBlock)) e.blockedBy = null;   /* noBlock: the eagle in his dead fire (pattern B), nobody can hold him */
+        if ((e.aim !== undefined || e.noWay || (this.ch4 && e.stranded)) && this.t >= (e.replanAt || 0) && !e.blockedBy && !e.heldBy && !e.leap && !e.hop && !e.def.flying) this.replan(e);   /* chapter 4: a foe stranded on its roof looks again once a second (a bridge may be back) */   // lab: an aimed foe (or one whose road was cut) looks again once a second
         if (this.stage.leap && (e.stranded || e.leap) && this.leapStep(e, dt)) continue;   // lab L1: stranded on its roof, it leaps across in the end
         if (e.def.sweeper && this.chimneys.length) this.sweepStep(e, dt);   // lab L1: the sweep at work beside a chimney
         if (e.def.rally && e.def.rally.at && !e.rallied && e.hp <= e.maxHp * e.def.rally.at) { e.rallied = true; this.fx.push({ k: "call", x: e.x, y: e.y, rally: true, t: 0, life: 1.6 }); }   // past half: the banner of the Sacred Heart goes up
@@ -3665,7 +4624,7 @@
         if (e.def.hook && !(e.windT > 0) && !e.blockedBy && !(e.pauseT > 0)) {   // free of any blocker: now and then he throws the hook at someone up on a rise
           if (e.hookCD === undefined) e.hookCD = e.def.hook.every * 0.5;
           if ((e.hookCD -= dt) <= 0) {
-            let tg = null; for (const u of this.units) if (tileAt(u.x, u.y) === "h" && Math.hypot(u.x - e.x, u.y - e.y) <= e.def.hook.r && (!tg || this.stat(u, "atk") > this.stat(tg, "atk"))) tg = u;
+            let tg = null; for (const u of this.units) if ((tileAt(u.x, u.y) === "h" || this.onRamp(u)) && Math.hypot(u.x - e.x, u.y - e.y) <= e.def.hook.r && (!tg || this.stat(u, "atk") > this.stat(tg, "atk"))) tg = u;
             if (tg) { e.hookCD = e.def.hook.every; e.windT = e.def.hook.wind; e.windK = "hook"; e.hookTgt = tg; this.fx.push({ k: "hookmark", e, u: tg, x: tg.x, y: tg.y, t: 0, life: e.def.hook.wind }); }
             else e.hookCD = 0.5;
           }
@@ -3678,10 +4637,12 @@
         const slow = Math.max(field, mud, bliz, e.slowT > 0 ? e.slowAmt : 0);
         if (e.def.bomb && e.blockedBy) {   // held up: the fuse is lit, and it burns down
           if (e.fuseT === undefined) e.fuseT = e.def.bomb.fuse;
-          if ((e.fuseT -= dt) <= 0) e.hp = 0;
+          if (e.def.cover && !e.uncovered) e.uncovered = true;   /* held: the cover is off */
+          if (!(e.def.bomb.windStop && this.wind && this.wind.blowing) && (e.fuseT -= dt) <= 0) e.hp = 0;   /* the fuse does not burn in the blizzard */
         }
+        e.fireTgt = this.lampHp ? this.fireTarget(e) : null;   /* a lit brazier within reach (stage.lamps.hp): it stops and strikes that instead */
         // a ranged foe keeps walking between shots; when the next one is due it stops, shoulders the gun and takes aim, then walks on
-        if (e.def.ranged && !(e.underT > 0) && (e.def.melt || (!e.blockedBy && !e.heldBy))) {   // the firebottle man takes aim even when someone has hold of him
+        if (e.def.ranged && !e.def.lock && !(e.underT > 0) && !e.fireTgt && !e.ammoOut && !(e.def.seenOnly && e.stealth) && (e.def.melt || (!e.blockedBy && !e.heldBy))) {   // the firebottle man takes aim even when someone has hold of him
           let tg = this.rangedTarget(e); const held = e.blockedBy || e.heldBy;
           if (held && !(tg && tg.frozenT > 0)) tg = held;
           if (tg && !e.aimTgt) e.atkT = Math.max(e.atkT, e.def.aim || RANGED_AIM);   // the sights first: never a snap shot
@@ -3689,13 +4650,15 @@
           e.aiming = !!tg && e.atkT <= (e.def.aim || RANGED_AIM);
           if (e.def.melt && e.aiming && e.markT !== tg) { e.markT = tg; this.fx.push({ k: "mmark", e, u: tg, x: tg.x, y: tg.y, t: 0, life: e.atkT + 0.5 }); }   // the bottle lit and raised: a flame over whoever it is meant for
         } else { e.aimTgt = null; e.aiming = false; }
+        if (e.def.lock) this.seerStep(e, dt);
+        if (e.def.burn) this.burnShow(e);
         const settling = e.def.ranged && e.firedAt !== undefined && this.t - e.firedAt < RANGED_HOLD;   // the kick of the shot: he stays put a moment
         if (e.drops && e.hoverT > 0) {   // an airship holding over its drop point: the men go down the ropes one by one
           e.hoverT -= dt; const q = e.drops[e.dropI - 1];
           while (q && q.left > 0 && e.hoverT <= q.next) {
             q.left--; q.next -= AIR_DROP.gap; e.cargo--;
             const m = this.spawn(q.type, 0), off = [[0, 0], [0.3, -0.25], [-0.3, 0.25], [0.3, 0.25]][q.n - q.left - 1 & 3];
-            m.path = bfsPath(q.at, BASE) || [q.at.slice(), BASE.slice()]; m.seg = 0; m.segT = 0; m.x = q.at[0] + off[0] * 0.5; m.y = q.at[1] + off[1] * 0.5; m.remain = segLen(m.path); m.dropT = this.t;
+            CLIMB_USE = this.climber(m.def); m.path = bfsPath(q.at, BASE) || [q.at.slice(), BASE.slice()]; CLIMB_USE = false; m.seg = 0; m.segT = 0; m.x = q.at[0] + off[0] * 0.5; m.y = q.at[1] + off[1] * 0.5; m.remain = segLen(m.path); m.dropT = this.t;   /* a climber set down from the air finds its way over the ladders too */
             this.total++; this.fx.push({ k: "land", x: m.x, y: m.y, t: 0, life: 0.8 });
           }
         } else if (e.windT > 0) {   // winding up a sweep or a throw of the hook: he stands still, and it shows
@@ -3712,21 +4675,27 @@
             e.windK = null;
           }
         } else if (e.underT > 0) { e.underT -= dt; if (e.underT <= 0) { e.underT = 0; this.fx.push({ k: "tunout", x: e.x, y: e.y, t: 0, life: 0.6 }); }   /* underground: out of sight and reach until it comes up */
+        } else if (e.climbT > 0) { e.climbT -= dt;   /* on a ladder: going up or down it, and it can be struck meanwhile */
         } else if (e.pauseT > 0) { e.pauseT -= dt;   // stopped at a waypoint of its route: looking the ground over
+        } else if (e.loop) { this.balloonStep(e, dt);
         } else if (this.beat && !e.def.flying && !e.blockedBy && !e.heldBy && ((!e.aiming && !settling) || e.hop) && !(e.postUntil > this.t) && !e.noWay) {   // lab L2: on the beat (a hop once begun is finished)
           const reached = this.beatMove(e, dt, slow);
           if (reached && !e.blockedBy && !e.heldBy && !e.aimHold) { e.dead = true; e.leaked = true; if (e.leakTo) this.meter(e.leakTo.meter, e.leakTo.by); else this.life -= e.def.life; this.leaked++; this.fx.push({ k: "leak", t: 0, life: 0.8 }); continue; }
-        } else if (!e.blockedBy && !e.heldBy && !e.aiming && !settling && !(e.postUntil > this.t) && !e.noWay) {
-          const step = e.def.speed * (1 - slow) * (e.dashMul || 1) * (this.calls && this.calls.until > this.t && !e.def.flying ? this.calls.speed : 1) * (rally ? rally.speed : 1) * (e.chargeT > 0 ? ch.mult : 1) * (e.dropped ? e.def.bomber.dash : 1) * dt;
+        } else if (!e.blockedBy && !e.heldBy && !e.aiming && !settling && !(e.postUntil > this.t) && !e.noWay && !e.fireTgt && !(e.def.siege && e.aimTgt)) {   /* the mortar stands while something is in reach */
+          const step = e.def.speed * (1 - slow) * (e.dashMul || 1) * (this.calls && this.calls.until > this.t && !e.def.flying ? this.calls.speed : 1) * (rally ? rally.speed : 1) * (e.chargeT > 0 ? ch.mult : 1) * (e.dropped ? e.def.bomber.dash : 1) * (e.def.tail && this.wind && this.wind.blowing ? this.tailOf(e) : 1) * (e.def.darkRun && this.darkAt(Math.round(e.x), Math.round(e.y)) ? e.def.darkRun : 1) * dt;
           const sx = e.x, sy = e.y, sseg = e.seg, st = e.segT;
           let reached = this.advance(e, step);
           if (e.path.waits && e.path.waits[e.seg] && e.waitedAt !== e.seg) { e.waitedAt = e.seg; e.pauseT = typeof e.path.waits[e.seg] === "object" ? Math.max(0.01, e.path.waits[e.seg].until - this.t) : e.path.waits[e.seg]; }
+          if (e.climbAt !== e.seg && e.seg < e.path.length - 1 && tileAt(Math.round(e.path[e.seg][0]), Math.round(e.path[e.seg][1])) === "H" && this.climber(e.def)) {   /* come onto a ladder: it stops there while it goes up or down */
+            const nx = e.path[e.seg + 1], pv = e.path[Math.max(0, e.seg - 1)]; e.climbAt = e.seg; e.segT = 0; this.advance(e, 0); e.climbT = e.climbDur = RAMPART.ladder;
+            e.climbUp = WALLTOP(tileAt(Math.round(nx[0]), Math.round(nx[1]))); e.climbFrom = WALLTOP(tileAt(Math.round(pv[0]), Math.round(pv[1]))); }
           if (!e.def.flying && !(e.underT > 0)) {   /* just gone underground: nobody can take hold of it */
             const tx = Math.round(e.x), ty = Math.round(e.y);
             const u = this.unitAt(tx, ty);
-            if (e.def.claim && u && this.onGround(u) && !(e.breachT > this.t && e.breachFrom === u)) this.claimBlocker(e, u);   // a boss is never walked past: a full blocker lets go of others to take him
-            if (u && this.onGround(u) && !e.passed && !(e.breachT > this.t && e.breachFrom === u) && this.blockLoad(u) + e.def.weight <= this.stat(u, "block")) {
+            if (e.def.claim && u && this.canHold(u, e) && !(e.breachT > this.t && e.breachFrom === u)) this.claimBlocker(e, u);   // a boss is never walked past: a full blocker lets go of others to take him
+            if (u && this.canHold(u, e) && !e.passed && !e.noBlock && !(e.breachT > this.t && e.breachFrom === u) && this.blockLoad(u) + e.def.weight <= this.stat(u, "block")) {
               e.blockedBy = u; e.blockedAt = this.t;
+              if (this.ch4 && e.def.burst) this.ch4Burst(e);   /* chapter 4: the will-o'-wisp bursts the moment it is held */
               // stop at the edge of the blocker's tile
               const d = Math.hypot(e.x - u.x, e.y - u.y);
               if (d < 0.45) { e.x = sx; e.y = sy; e.seg = sseg; e.segT = st; this.advance(e, 0); }
@@ -3751,14 +4720,15 @@
           }
           if (reached && e.land) {   // touchdown: the drone drops its man here and pulls away
             e.dead = true; e.landed = true; this.killed++;
-            const q = this.spawn(e.drop, 0); q.path = bfsPath(e.land, BASE) || [e.land.slice(), BASE.slice()]; q.seg = 0; q.segT = 0; q.x = e.land[0]; q.y = e.land[1]; q.remain = segLen(q.path); q.dropT = this.t;
+            const q = this.spawn(e.drop, 0); CLIMB_USE = this.climber(q.def); q.path = bfsPath(e.land, BASE) || [e.land.slice(), BASE.slice()]; CLIMB_USE = false; q.seg = 0; q.segT = 0; q.x = e.land[0]; q.y = e.land[1]; q.remain = segLen(q.path); q.dropT = this.t;
             this.total++; this.fx.push({ k: "land", x: e.land[0], y: e.land[1], t: 0, life: 0.8 }); continue;
           }
           if (reached && e.toEscort && this.escort && !e.blockedBy && !e.heldBy) { e.dead = true; e.leaked = true; this.escort.hp -= e.def.life; this.leaked++; this.fx.push({ k: "escorthit", x: this.escort.x, y: this.escort.y, t: 0, life: 0.9 }); continue; }
-          if (reached && !e.blockedBy && !e.heldBy && !e.aimHold) { if (e.def.bomb) this.explode(e); e.dead = true; e.leaked = true; if (e.leakTo) this.meter(e.leakTo.meter, e.leakTo.by); else this.life -= e.def.life; this.leaked++; this.fx.push({ k: "leak", t: 0, life: 0.8 }); continue; }
+          if (reached && !e.blockedBy && !e.heldBy && !e.aimHold) { if (e.riders && e.riders.length) this.cargoLeak(e); if (e.def.bomb) this.explode(e); e.dead = true; e.leaked = true; if (e.leakTo) this.meter(e.leakTo.meter, e.leakTo.by); else this.life -= e.def.life; this.leaked++; this.fx.push({ k: "leak", t: 0, life: 0.8 }); continue; }
         }
         if (!e.def.sniper) e.atkT -= dt;   // the marshal keeps his own count
-        if (e.atkT <= 0 && e.def.atk > 0 && !e.def.sniper) {
+        if (e.fireTgt && e.atkT <= 0 && !e.def.sniper && !e.sitting) { this.strikeFire(e, e.fireTgt); e.atkT = e.def.interval / (e.frenzyM || 1); }
+        else if (e.atkT <= 0 && e.def.atk > 0 && !e.def.sniper && !e.sitting && !e.def.noFight && !(e.def.lock && (e.lockU || !e.blockedBy)) && !(e.def.seenOnly && e.stealth) && !e.def.vipFly) {   /* chapter 4: the clown does not fight while hidden; the crow fights in ch4Step */
           let target = e.def.melt ? e.aimTgt || e.blockedBy || e.heldBy : e.blockedBy || e.heldBy;
           if (!target && e.def.ranged) target = e.aimTgt;
           if (!target && e.def.reachHigh) { const R = e.def.reachHigh, ex = Math.round(e.x), ey = Math.round(e.y);   // a long arm: nobody holding him, he cuts at whoever stands within reach — up on a rise too — the weakest first
@@ -3766,22 +4736,30 @@
           if (!target && e.aim !== undefined) target = this.aimStrike(e);   // lab: what it was sent for, beside it
           if (target && e.def.collector && this.relay && (this.relay.state !== "held" || target !== this.relay.holder || e.carrying)) target = null;   // lab L4: the collector strikes nobody but the holder
           if (target && target.isMirror) { e.atkT = e.def.interval / (e.frenzyM || 1); this.hitMirror(e, target.sq, e.def.atk * (e.enraged ? RAGE.atk : 1) * (e.atkMul || 1)); }   // lab L3: a blow on the glass
-          else if (target && target.isVip) { e.atkT = e.def.interval / (e.frenzyM || 1); this.hitVip(e, e.def.atk * (e.enraged ? RAGE.atk : 1) * (e.atkMul || 1)); }
+          else if (target && target.isVip) { e.atkT = e.def.interval / (e.frenzyM || 1); this.hitVip(e, e.def.atk * (e.enraged ? RAGE.atk : 1) * (e.atkMul || 1)); if (this.ch4) { if (e.def.ranged) { this.fx.push({ k: "bolt", x0: e.x, y0: e.y, x1: target.x, y1: target.y, foe: true, t: 0, life: 0.25 }); e.firedAt = this.t; e.aiming = false; } this.ch4Hit(e, target); } }
+          else if (target && this.ch5 && e.def.c5) this.ch5Strike(e, target, false);   /* chapter 5: the orchestra's blows (flow, tempo, fourth beat) */
           else if (target && e.def.sweep && (e.swings = (e.swings || 0) + 1) % e.def.sweep.every === 0) { e.windT = e.def.sweep.wind; e.windK = "sweep"; e.atkT = e.def.interval; this.fx.push({ k: "sweepwarn", e, x: e.x, y: e.y, r: e.def.sweep.r, t: 0, life: e.def.sweep.wind }); target = null; }
+          else if (target && e.def.lob && !target.isEnemy && !target.isVip && !target.isMirror) { e.atkT = e.def.interval / (e.frenzyM || 1); this.lobShell(e, target.x, target.y); }   /* the mortar's shell */
+          else if (target && e.def.burn) this.burnShot(e, target);
           else if (target) {
             e.atkT = e.def.interval / (e.frenzyM || 1);
             const reach = e.reachHit; e.reachHit = false;   // a cut in passing at someone he is not held by: lighter, and it does not spend the charge
             const hit = reach ? 0.7 : (e.charged && !e.def.ranged ? e.def.charge.hit : 1) * (e.frenzyM || 1) * (e.rallyT > this.t ? e.rallyBy.atk : 1);
             const br = !reach && e.charged && e.def.charge && e.def.charge.breach, breach = br && this.phaseOn(e, br) && target === e.blockedBy && !target.isEnemy && e.hp <= e.maxHp * br.at ? br : null;   // the charge that carries him through the line
             if (e.charged && !reach) { e.charged = false; if (hit > 1) this.fx.push({ k: "trample", x: target.x, y: target.y, t: 0, life: 0.6 }); }
+            const more = (e.def.fourth && (e.shotN = (e.shotN || 0) + 1) % 4 === 0 ? e.def.fourth : 1) * (e.def.firstBlow && !e.shown ? e.def.firstBlow : 1);   /* the long rifle's fourth shot; the ambusher's first blow */
             if (e.def.melt) this.throwBottle(e, target);
-            else this.damage(target, e.def.atk * hit * (e.weakT > 0 ? 1 - e.weakAmt : 1) * (e.enraged ? RAGE.atk : 1) * (e.atkMul || 1), e.def.ranged && !e.def.phys ? "arts" : "phys", null, e);
+            else this.damage(target, e.def.atk * hit * more * (1 + (e.darkM || 0)) * (e.weakT > 0 ? 1 - e.weakAmt : 1) * (e.enraged ? RAGE.atk : 1) * (e.atkMul || 1), (e.def.ranged && (!e.def.phys || (e.def.darkArts && this.darkAt(Math.round(e.x), Math.round(e.y))))) || e.def.artsMelee ? "arts" : "phys", null, e);
+            if (this.ch4) this.ch4Hit(e, target);   /* chapter 4: stolen cost, the cross, bleeding, the cauldron, the broom's hop, the marksman's rounds */
+            if (e.def.darkGrow) e.darkM = 0;   /* the night raider spends what it stored on the blow */
+            if (e.def.fearBehind && !target.isEnemy) this.fearStrike(e, target, e.def.atk * hit * (e.weakT > 0 ? 1 - e.weakAmt : 1) * (e.enraged ? RAGE.atk : 1) * (e.atkMul || 1));
             if (breach) { e.breachFrom = target; e.breachT = this.t + 1.2; e.blockedBy = null; this.advance(e, breach.push); this.fx.push({ k: "breach", x: e.x, y: e.y, t: 0, life: 1.0 }); }
             if (e.def.ranged) { if (!e.def.melt) this.fx.push({ k: "bolt", x0: e.x, y0: e.y, x1: target.x, y1: target.y, foe: true, t: 0, life: 0.25 }); e.firedAt = this.t; e.aiming = false; e.markT = null; }
-            if (e.stealth && e.def.ambush) { e.stealth = false; e.revealT = this.t; this.fx.push({ k: "ambush", e, x: e.x, y: e.y, t: 0, life: 0.9 }); }   // the muzzle flash gives him away
+            if (e.def.ambush && (e.stealth || !e.shown)) { e.shown = true; if (e.stealth) { e.stealth = false; e.revealT = this.t; this.fx.push({ k: "ambush", e, x: e.x, y: e.y, t: 0, life: 0.9 }); } }   // the muzzle flash gives him away
           } else e.atkT = 0.2;
         }
       }
+      if (this.boardedN) { this.enemies = this.enemies.filter((q) => !q.boarded); this.boardedN = 0; }
       // 체스판: every half tile an enemy travels across her board costs it a little arts damage
       const boards = this.units.filter((u) => u.def.board && !(u.def.deployAnim && this.t - u.born < u.def.deployAnim));
       for (const e of this.enemies) {
@@ -3818,7 +4796,7 @@
         u.flash = Math.max(0, u.flash - dt);
         u.swing = Math.max(0, u.swing - dt);
         if (u.frostT > 0) { u.frostT -= dt; if (u.frostT <= 0) { u.frostT = 0; u.frostN = 0; } }
-        if (u.blizFrozen) { u.hp -= u.maxHp * BLIZ.dmg * dt; u.flash = Math.max(u.flash || 0, 0.04); }   // frozen in the blizzard: the cold eats at them
+        if (u.blizFrozen) { u.hp -= u.maxHp * (this.pat && this.pat.kind === "B" ? PAT.frozen : BLIZ.dmg) * (this.frost ? this.frostMul() : 1) * dt; u.flash = Math.max(u.flash || 0, 0.04); }   // frozen in the blizzard: the cold eats at them
         if (u.frozenT > 0) { u.frozenT -= dt; if (u.frozenT <= 0) { u.frozenT = 0; u.frostImm = this.t + FROST.imm; u.blizFrozen = false; } }
         if (u.gritT > 0) u.gritT -= dt;
         const s = u.skill;
@@ -3979,6 +4957,7 @@
         if (!cands.length) { u.atkT = 0.15; continue; }
         cands.sort((a, b) => {
           if (this.onGround(u)) { const ab = (a.blockedBy === u) - (b.blockedBy === u); if (ab) return -ab; }
+          { const sk = (!!a.stake) - (!!b.stake); if (sk) return sk; }   /* a stake only when no foe is in reach */
           if (u.def.airFirst) { const af = (!!a.def.flying) - (!!b.def.flying); if (af) return -af; }
           { const tt = (!!a.def.taunt) - (!!b.def.taunt); if (tt) return -tt; }   // 방패병: the shield in reach is hit first
           if (u.def.lowDefFirst) { const dd = (a.defv || 0) - (b.defv || 0); if (dd) return dd; }   // 저격수: the softest target in reach
@@ -4064,16 +5043,21 @@
       for (const e of this.enemies) if (!e.dead && e.hp <= 0 && e.def.revive && (e.rose || 0) < (e.def.revive.n || 1) && this.stage.lamps && this.darkAt(Math.round(e.x), Math.round(e.y))) {
         e.rose = (e.rose || 0) + 1; e.hp = Math.round(e.maxHp * e.def.revive.pct); e.stunT = Math.max(e.stunT || 0, e.def.revive.delay); this.fx.push({ k: "rise", e, x: e.x, y: e.y, t: 0, life: e.def.revive.delay }); }
       for (const e of this.enemies) if (!e.dead && e.hp <= 0 && e.lastHitBy && e.lastHitBy.def && e.lastHitBy.def.id === "skakea" && !e.capNoted) { e.capNoted = true; this.fx.push({ k: "skcap", x: e.x, y: e.y, type: e.type, t: 0, life: 1.0 }); }
-      for (const e of this.enemies) if (!e.dead && e.hp <= 0 && e.lastHitBy && e.lastHitBy.skill.id === "b_roar" && e.lastHitBy.skillT > 0) { this.cost = Math.min(CFG.maxCost, this.cost + 1); this.fx.push({ k: "dp", x: e.x, y: e.y, t: 0, life: 0.8 }); }
-      for (const e of this.enemies) if (!e.dead && e.hp <= 0 && e.lastHitBy && e.lastHitBy.def && e.lastHitBy.def.reclaim && Math.random() < e.lastHitBy.def.reclaim) { this.cost = Math.min(CFG.maxCost, this.cost + 1); this.fx.push({ k: "boreclaim", x: e.x, y: e.y, t: 0, life: 0.9 }); }   // 시간 회수
-      for (const e of this.enemies) if (!e.dead && e.hp <= 0 && e.lastHitBy && e.lastHitBy.def && e.lastHitBy.def.wardKill && this.units.includes(e.lastHitBy)) this.addWard(e.lastHitBy, e.lastHitBy.def.wardKill);   // 서사 왜곡: every one he finishes adds to the shell
+      for (const e of this.enemies) if (!e.dead && !e.stake && e.hp <= 0 && e.lastHitBy && e.lastHitBy.skill.id === "b_roar" && e.lastHitBy.skillT > 0) { this.cost = Math.min(CFG.maxCost, this.cost + 1); this.fx.push({ k: "dp", x: e.x, y: e.y, t: 0, life: 0.8 }); }
+      for (const e of this.enemies) if (!e.dead && !e.stake && e.hp <= 0 && e.lastHitBy && e.lastHitBy.def && e.lastHitBy.def.reclaim && Math.random() < e.lastHitBy.def.reclaim) { this.cost = Math.min(CFG.maxCost, this.cost + 1); this.fx.push({ k: "boreclaim", x: e.x, y: e.y, t: 0, life: 0.9 }); }   // 시간 회수
+      for (const e of this.enemies) if (!e.dead && !e.stake && e.hp <= 0 && e.lastHitBy && e.lastHitBy.def && e.lastHitBy.def.wardKill && this.units.includes(e.lastHitBy)) this.addWard(e.lastHitBy, e.lastHitBy.def.wardKill);   // 서사 왜곡: every one he finishes adds to the shell
       const BF = this.stage.bossFlee;   // a boss who quits the field at a share of his strength instead of dying on it (a stage switches this on: { on: true, at: 0.3 })
       if (BF && BF.on) for (const e of this.enemies) if (e.def.boss && !e.dead && e.hp > 0 && e.hp <= e.maxHp * BF.at) { e.dead = true; e.fled = true; this.killed++; this.bossFledT = this.t; this.snd("retreat"); this.fx.push({ k: "die", x: e.x, y: e.y, boss: true, e, fled: true, t: 0, life: 0.5 }); }
       for (let more = true; more;) { more = false; for (const e of this.enemies) if (!e.dead && e.hp <= 0 && e.def.bomb && !e.boomed) { this.explode(e); more = true; } }   // a cart broken open goes up where it stands, and may set off the next
-      for (const e of this.enemies) if (!e.dead && e.hp <= 0) { e.dead = true; if (!e.ally) this.killed++; this.snd("die");
+      for (const e of this.enemies) if (!e.dead && e.hp <= 0) { e.dead = true; if (!e.ally && !e.stake && !e.loop) this.killed++; this.snd("die");
+        if (this.ch4) this.ch4Death(e);   /* chapter 4: a paper lamp downed in the festival, a cauldron's swallowed one given back */
+        if (e.riders && e.riders.length) this.unload(e);   /* the wagon broken: whoever rode in it gets out there */
+        if (e.def.spot) { for (const u of this.units) if (u.spotBy === e) u.spotT = 0; this.fx = this.fx.filter((f) => !(f.k === "marked" && f.e === e)); }   /* the balloon down: its marks go with it */
+        if (e.def.douse && !e.ally) this.douse(e);   /* the frost sack bursts where he falls */
         if (e.def.call && e.def.call.rapid && !e.ally) for (const v of this.volleys) if (v.rapidUntil > this.t) { v.rapidUntil = this.t;   // "every gun" dies with the one who gave it: the guns go back to their own time
           if (v.shotT !== undefined && v.next < v.shotT + v.every) { v.next = v.shotT + v.every; v.st = 0; } }
-        if (e.lastHitBy && e.lastHitBy.def && e.lastHitBy.def.killCost && this.units.includes(e.lastHitBy)) { this.cost = Math.min(CFG.maxCost, this.cost + e.lastHitBy.def.killCost); this.fx.push({ k: "killcost", x: e.lastHitBy.x, y: e.lastHitBy.y, n: e.lastHitBy.def.killCost, t: 0, life: 1.0 }); }   /* 돌격: every kill pays a point back */ this.fx.push({ k: "die", x: e.x, y: e.y, boss: !!e.def.boss, e, t: 0, life: 0.5 }); }
+        if (e.stake) this.fx.push({ k: "stakebreak", x: e.x, y: e.y, t: 0, life: 0.7 });   /* a stake broken: its square is free again */
+        if (!e.stake && e.lastHitBy && e.lastHitBy.def && e.lastHitBy.def.killCost && this.units.includes(e.lastHitBy)) { this.cost = Math.min(CFG.maxCost, this.cost + e.lastHitBy.def.killCost); this.fx.push({ k: "killcost", x: e.lastHitBy.x, y: e.lastHitBy.y, n: e.lastHitBy.def.killCost, t: 0, life: 1.0 }); }   /* 돌격: every kill pays a point back */ this.fx.push({ k: "die", x: e.x, y: e.y, boss: !!e.def.boss, e, t: 0, life: 0.5 }); }
       if (this.relay && this.relay.state === "carried" && (this.relay.carrier.dead || this.relay.carrier.hp <= 0)) { const e = this.relay.carrier; e.carrying = false; this.relayDrop(Math.round(e.x), Math.round(e.y)); }   // lab L4: the carrier falls: it lies where he fell
       if (this.stage.masks) this.maskStep();   // lab L3 (LAB-04): reflections (where the figures stand after this tick's moves) and the 12 s rule
       if (this.stage.masks) for (const e of this.enemies) if (e.dead && e.mask === "guest" && !e._counted) { e._counted = true;   // lab L3 (LAB-04): a guest who went in brings 3 cost; one killed is blood
@@ -4084,17 +5068,389 @@
       this.fx = this.fx.filter((f) => f.t < f.life);
       if (this.goal) this.goalStep();   // lab: the stage's own win and lose conditions in place of the two below
       else if (this.life <= 0 || (this.escort && this.escort.hp <= 0)) { this.life = Math.max(0, this.life); this.over = "lose"; this.escortLost = !!(this.escort && this.escort.hp <= 0); }
-      else if (this.waveIdx >= this.waves.length && !(this.extra && this.extra.length) && !(this.waitSpawn && this.waitSpawn.length) && this.enemies.every((e) => e.ally) && !this.hold && !(this.march && !this.march.part.final)) this.over = "win";
+      else if (this.waveIdx >= this.waves.length && !(this.extra && this.extra.length) && !(this.waitSpawn && this.waitSpawn.length) && this.enemies.every((e) => e.ally || e.stake || e.loop) && !this.hold && !(this.march && !this.march.part.final) && !this.frost) this.over = "win";   /* a frost stage is won only when its blizzard lifts (frostStep) */
       if (this.echo && this.over) this.echoSave();   // lab L5: the attempt is over: its record is kept
     }
   }
 
+  /* ---- chapter 4 「발푸르기스의 밤」 (E04): everything below runs only on a stage with stage.ch4 (this.ch4 is null elsewhere).
+     stage.citizens [[x, y], ...] + stage.citRules { rate, max, calm }: citizens whose fear fills while foes linger beside them; full, they run and a life is lost.
+     stage.fuses [{ from, path, box }] + stage.festival { dur, cd, tick, pct, frightMul }: pressing the igniter lights the fuse, one square a second; one of ours standing on the
+     next square holds the fire; at the box the festival opens (every cloak off, festOnly foes take full harm, ours lose pct of max HP every tick s, citizens fear twice as fast).
+     stage.plank { slots, cd }: the plank card (the ember card's slot): lay it on a slot and anyone walks there; take it up and it is ready again cd s later.
+     With stage.leap every foe on foot that has no way to a point stands at its roof's end and leaps (not only the aimed ones, as in LAB-01) */
+  Object.assign(Game.prototype, {
+    ch4Init() {
+      const S = this.stage, CR = S.citRules || {};
+      this.waves = this.waves.slice();   /* the gentleman's later approaches are added to this game's own copy */
+      this.ch4 = { costMul: 1, cap: CFG.maxCost, fest: null, festCdUntil: 0, plank: null, gulps: [], nextCall: 0,
+        cit: (S.citizens || []).map((c, i) => ({ i, x: c[0], y: c[1], f: 0, gone: false, goneT: 0 })), citRate: CR.rate || 2.5, citMax: CR.max || 100, calm: CR.calm || 2,
+        fuses: (S.fuses || []).map((f, i) => ({ i, from: f.from.slice(), path: f.path.map((q) => q.slice()), box: f.box ? f.box.slice() : null, lit: false, pos: -1, stepT: 0 })),
+        fd: Object.assign({ dur: 20, cd: 40, tick: 2, pct: 0.03, frightMul: 2 }, S.festival || {}) };
+      if (S.plank) this.emberCard = { plank: true, cost: 0, cd: S.plank.cd || 15, cdT: 0, used: 0, slots: S.plank.slots.map((q) => q.slice()) };
+    },
+    festOn() { return !!(this.ch4 && this.ch4.fest && this.t < this.ch4.fest.until); },
+    /* in the smoke: on a smoke bridge, or within r squares (each way) of a chimney whose bridge is up */
+    inSmoke(x, y, r) { const rx = Math.round(x), ry = Math.round(y); if (tileAt(rx, ry) === "^") return true;
+      return this.chimneys.some((c) => !c.shut && Math.max(Math.abs(c.at[0] - rx), Math.abs(c.at[1] - ry)) <= (r || 2)); },
+    plankTarget(x, y) { const E = this.emberCard, P = this.ch4.plank; if (P) return P[0] === x && P[1] === y ? [x, y] : null; return E.slots.some((q) => q[0] === x && q[1] === y) && E.cdT <= 0 ? [x, y] : null; },
+    usePlank(x, y) { const E = this.emberCard, C = this.ch4;
+      if (C.plank) { if (C.plank[0] !== x || C.plank[1] !== y || !this.setTile(x, y, "_")) return false; C.plank = null; E.cdT = E.cd; E.used++; this.fx.push({ k: "plankup", x, y, t: 0, life: 0.7 }); return true; }
+      if (E.cdT > 0 || !E.slots.some((q) => q[0] === x && q[1] === y)) return false;
+      if (!this.setTile(x, y, ",")) return false; C.plank = [x, y]; this.fx.push({ k: "plank", x, y, t: 0, life: 0.7 }); return true; },
+    /* the igniter at (x, y) (or the fuse it starts): lit if no fuse burns, no festival is on and the festival's wait is over */
+    igniteAt(x, y, by) { const C = this.ch4; if (!C) return false; const f = C.fuses.find((q) => q.from[0] === x && q.from[1] === y); if (!f) return false;
+      if (f.lit || this.festOn() || this.t < C.festCdUntil || C.fuses.some((q) => q.lit)) return false;
+      f.lit = true; f.pos = -1; f.stepT = 1; f.by = by ? "child" : "us"; this.fx.push({ k: "ignite", x, y, t: 0, life: 0.8 }); this.snd("chime"); return true; },
+    festStart() { const C = this.ch4, D = C.fd; C.fest = { until: this.t + D.dur, tickT: 0, t0: this.t }; C.festCdUntil = this.t + D.cd;
+      for (const e of this.enemies) if (e.def.cloak) { if (e.def.cloak.start && e.cloakPerm) e.recloak = true; e.cloakPerm = false; e.cloakUntil = 0; if (e.stealth) { e.stealth = false; e.revealT = this.t; } }   /* the clowns' smoke closes round them again when the festival is over */
+      for (const e of this.enemies) if (e.def.volland && !e.dead && !e.vret && !(e.underT > 0)) { const out = !this.inSmoke(e.x, e.y, e.def.volland.smoke);
+        if (out) { this.meter("interest", -1); e.vret = "hit"; this.fx.push({ k: "vhit", x: e.x, y: e.y, t: 0, life: 1.4 }); } else this.fx.push({ k: "vsmoke", x: e.x, y: e.y, t: 0, life: 1.2 }); }
+      this.fx.push({ k: "festival", t: 0, life: 2.0 }); this.snd("boom"); },
+    ch4Spawn(e, s, o, noRoad) { const d = e.def;
+      if (d.child || d.volland) e.noTarget = true;
+      if (d.cloak && d.cloak.start) { e.cloakPerm = true; e.stealth = true; }
+      if (o && o.roost) { e.x = o.roost[0]; e.y = o.roost[1]; e.path = [o.roost.slice(), o.roost.slice()]; e.seg = 0; e.segT = 0; e.remain = 0; e.hold = true; e.waiting = true; e.postUntil = 0; e.aimHold = true;
+        e.wakeLeg = o.wakeLeg; if (o.until !== undefined) e.holdUntil = o.until; }
+      if (o && o.landFx) this.fx.push({ k: "land", x: e.x, y: e.y, t: 0, life: 0.8 });
+      if (d.child) { e.aim = "fuse"; e.home = SPAWNS[s].slice(); this.replan(e); }
+      if (d.volland) { const at = (o && o.vfrom) || SPAWNS[s]; e.x = at[0]; e.y = at[1]; e.vfrom = at.slice(); e.vT = d.volland.land; e.path = [at.slice(), at.slice()]; e.seg = 0; e.segT = 0; e.remain = 0; e.aimHold = true; e.nextCall = this.t + d.volland.call;
+        if ((this.meters.interest ? this.meters.interest.v : 1) <= 0) e.hp = 0; else this.fx.push({ k: "vland", x: at[0], y: at[1], t: 0, life: d.volland.land }); }
+      if (!d.flying && !d.child && !(o && (o.roost || o.aim !== undefined)) && (noRoad || (o && o.at && !bfsPath([Math.round(e.x), Math.round(e.y)], BASE))) && !(e.postUntil > this.t)) this.replan(e);
+    },
+    /* what a foe takes after the chapter's rules (0: nothing) */
+    ch4Taken(e, raw) { const d = e.def;
+      if (d.invuln) return 0;
+      if (d.smokeProof && this.inSmoke(e.x, e.y, d.smokeProof)) { if (!(e.smokeFxT > this.t)) { e.smokeFxT = this.t + 0.8; this.fx.push({ k: "smokeguard", x: e.x, y: e.y, t: 0, life: 0.6 }); } return 0; }
+      if (d.festOnly && !this.festOn()) raw *= d.festOnly;
+      return raw; },
+    /* the marksman's round goes wide of one standing right beside a smoke bridge (half the time) */
+    ch4Miss(e, u) { const m = e.def.missNear; if (!m || u.isVip) return false;
+      for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) if (tileAt(u.x + dx, u.y + dy) === "^") { if (Math.random() < m) { this.fx.push({ k: "miss", x: u.x, y: u.y, t: 0, life: 0.7 }); return true; } return false; }
+      return false; },
+    ch4Hit(e, target) { const d = e.def, C = this.ch4; e.hitN = (e.hitN || 0) + 1;
+      if (d.ammo && e.hitN >= d.ammo) { e.ammoOut = true; e.aimTgt = null; e.aiming = false; }
+      if (!target || target.isVip || target.isEnemy) return;
+      const atk = d.atk * (e.atkMul || 1);
+      if (d.stealCost && e.hitN % d.stealCost.every === 0) { const n = Math.min(this.cost, d.stealCost.n); this.cost -= n; if (n) this.fx.push({ k: "steal", x: target.x, y: target.y, n, t: 0, life: 1.0 }); }
+      if (d.cross && e.hitN % d.cross.every === 0) { let n = 1; for (const u of this.units.slice()) if (u !== target && Math.abs(u.x - target.x) + Math.abs(u.y - target.y) === 1) { this.damage(u, atk, "phys", null, e); n++; }
+        const k = Math.min(this.cost, n); this.cost -= k; this.fx.push({ k: "cross", x: target.x, y: target.y, n: k, t: 0, life: 0.9 }); }
+      if (d.bleed && e.hitN % d.bleed.every === 0) { target.bleedUntil = this.t + d.bleed.dur; target.bleedDps = atk * d.bleed.pct; }
+      if (d.swallow && !e.gulped && target === e.blockedBy && !target.summoned && !target.clone && this.units.includes(target)) {
+        e.gulped = true; const i = this.units.indexOf(target); this.units.splice(i, 1); for (const q of this.enemies) if (q.blockedBy === target) q.blockedBy = null;
+        this.cost = Math.max(0, this.cost - d.swallow.cost); C.gulps.push({ e, u: target, until: this.t + d.swallow.window }); this.fx.push({ k: "gulp", x: target.x, y: target.y, t: 0, life: 1.0 }); this.snd("down"); }
+      if (d.hopBlock && target === e.blockedBy && this.units.includes(target) && (e.hops || 0) < (d.hopBlock.n || 1)) { e.hops = (e.hops || 0) + 1; e.breachFrom = target; e.breachT = this.t + d.hopBlock.grace; e.blockedBy = null; const x0 = e.x, y0 = e.y; this.advance(e, d.hopBlock.dist);
+        this.fx.push({ k: "leap", e, x0, y0, x1: e.x, y1: e.y, t: 0, life: 0.5 }); }
+    },
+    /* chapter 4: the cut bridge a stranded foe should wait at: of the cut bridges with one end on its own roof, the one whose far end is nearest a point counting every bridge
+       as standing (so it gathers at the head of the bridge that leads on, not under the point on the wrong roof) */
+    ch4Bridge(T, e) { const roof = this.reach(T), BR = new Set(); for (const c of this.chimneys) for (const [x, y] of c.bridge) BR.add(y * W + x);
+      const dist = (from) => { const key = (x, y) => y * W + x, seen = new Map([[key(from[0], from[1]), 0]]), q = [from]; while (q.length) { const [x, y] = q.shift(), d = seen.get(key(x, y)); if (tileAt(x, y) === "B") return d;
+          for (const [dx, dy] of [[1, 0], [0, 1], [0, -1], [-1, 0]]) { const nx = x + dx, ny = y + dy, k = key(nx, ny); if (seen.has(k) || !(walkable(tileAt(nx, ny)) || BR.has(k))) continue; seen.set(k, d + 1); q.push([nx, ny]); } } return 1e9; };
+      let best = null; for (const c of this.chimneys) { if (c.bridge.every(([x, y]) => walkable(tileAt(x, y)))) continue; const [a, b] = this.bridgeEnds(c), na = roof.has(a[1] * W + a[0]), nb = roof.has(b[1] * W + b[0]); if (na === nb) continue;
+        const near = na ? a : b, far = na ? b : a, d = dist(far); if (!best || d < best.d) best = { near, far, d }; }
+      return best && best.d < 1e9 ? best : null; },
+    ch4Burst(e) { const d = e.def; if (e.boomed) return; e.boomed = true; const dmg = d.burst.dmg * (e.atkMul || 1);
+      for (const u of this.units.slice()) if (Math.hypot(u.x - e.x, u.y - e.y) <= d.burst.r) this.damage(u, dmg, "arts", null, e);
+      e.hp = 0; this.fx.push({ k: "boom", x: e.x, y: e.y, r: d.burst.r, t: 0, life: 0.7 }); this.snd("boom"); },
+    ch4Death(e) { const d = e.def, C = this.ch4;
+      for (const G of C.gulps.slice()) if (G.e === e && this.t < G.until) { C.gulps.splice(C.gulps.indexOf(G), 1); const u = G.u;   /* the cauldron down in time: the one it swallowed is back, at half strength */
+        if (!this.unitAt(u.x, u.y)) { u.hp = Math.max(1, u.maxHp * 0.5); this.units.push(u); this.fx.push({ k: "deploy", x: u.x, y: u.y, t: 0, life: 0.5 }); } else { u.hp = 0; this.units.push(u); this.retreat(u, false); } }
+      if (d.festCalm && this.festOn()) for (const c of C.cit) if (!c.gone && Math.hypot(c.x - e.x, c.y - e.y) <= d.festCalm.r) { c.f = Math.max(0, c.f - d.festCalm.by); this.fx.push({ k: "calm", x: c.x, y: c.y, t: 0, life: 0.8 }); }
+    },
+    /* the gentleman's own way: over the board's walkable squares and the night air (never walls, chimneys or the drop), to the square beside Yui */
+    vollandWay(from, to) { const key = (x, y) => y * W + x, ok = (c) => walkable(c) || c === "_", prev = new Map([[key(from[0], from[1]), null]]), q = [from]; let end = null;
+      while (q.length) { const [x, y] = q.shift(); if (x === to[0] && y === to[1]) { end = [x, y]; break; }
+        for (const [dx, dy] of [[1, 0], [0, 1], [0, -1], [-1, 0]]) { const nx = x + dx, ny = y + dy; if (!ok(tileAt(nx, ny)) || prev.has(key(nx, ny))) continue; prev.set(key(nx, ny), [x, y]); q.push([nx, ny]); } }
+      if (!end) return null; const p = []; for (let c = end; c; c = prev.get(key(c[0], c[1]))) p.push(c); return p.reverse(); },
+    ch4Step(dt) {
+      const C = this.ch4, V = this.vip && !this.vip.dead ? this.vip : null, fest = this.festOn(), cheb = (ax, ay, bx, by) => Math.max(Math.abs(ax - bx), Math.abs(ay - by));
+      let sk = 0, pr = 0; for (const e of this.enemies) if (!e.dead && e.hp > 0) { if (e.def.costRegen) sk += e.def.costRegen; if (e.def.costCap) pr += e.def.costCap; }
+      C.costMul = Math.max(0.25, 1 - sk); C.cap = Math.max(10, CFG.maxCost - pr);
+      /* the fuses */
+      for (const f of C.fuses) if (f.lit) { f.stepT += dt; if (f.stepT < 1) continue;
+        const nx = f.pos + 1; if (nx < f.path.length) { if (this.unitAt(f.path[nx][0], f.path[nx][1])) { f.stepT = 1; f.held = true; continue; } f.held = false; f.pos = nx; f.stepT = 0; }
+        else { f.lit = false; f.pos = -1; f.stepT = 0; f.held = false; this.festStart(); } }
+      if (C.fest && this.t >= C.fest.until) C.fest = null;
+      if (fest && C.fest) { C.fest.tickT += dt; if (C.fest.tickT >= C.fd.tick) { C.fest.tickT -= C.fd.tick; for (const u of this.units.slice()) if (!u.clone) { u.hp -= u.maxHp * C.fd.pct; u.flash = 0.12; } } }
+      /* the citizens */
+      for (const c of C.cit) { if (c.gone) continue;
+        const calm = !!V && cheb(V.x, V.y, c.x, c.y) <= C.calm;
+        let n = 0; for (const e of this.enemies) if (!e.dead && e.hp > 0 && !e.def.flying && !e.def.child && !e.hold && !(e.postUntil > this.t) && !(e.underT > 0) && cheb(e.x, e.y, c.x, c.y) <= 1.5) n++;
+        if (calm) c.f = Math.max(0, c.f - C.citRate * dt); else c.f += C.citRate * n * (fest ? C.fd.frightMul : 1) * dt;
+        if (c.f >= C.citMax) { c.f = C.citMax; c.gone = true; c.goneT = this.t; this.life -= 1; this.leaked++; this.fx.push({ k: "citflee", x: c.x, y: c.y, t: 0, life: 1.5 }); this.fx.push({ k: "leak", t: 0, life: 0.8 }); } }
+      /* the swallowed: back at half strength if the cauldron fell in time, else fallen */
+      for (const G of C.gulps.slice()) { const gone = !G.e.leaked && (G.e.dead || G.e.hp <= 0 || !this.enemies.includes(G.e));
+        if (gone || G.e.leaked || this.t >= G.until) { C.gulps.splice(C.gulps.indexOf(G), 1); const u = G.u;
+          if (gone && this.t < G.until && !this.unitAt(u.x, u.y)) { u.hp = Math.max(1, u.maxHp * 0.5); this.units.push(u); this.fx.push({ k: "deploy", x: u.x, y: u.y, t: 0, life: 0.5 }); }
+          else { u.hp = 0; this.units.push(u); this.retreat(u, false); } } }
+      for (const u of this.units) { if (u.bleedUntil > this.t) u.hp -= (u.bleedDps || 0) * dt; if (u.silUntil > this.t) { u.atkT = Math.max(u.atkT || 0, 0.25); u.wind = null; } }   /* bleeding; silenced by the gentleman: no attacks */
+      /* the foes' own rules */
+      for (const e of this.enemies) { if (e.dead || e.hp <= 0 || e.boarded) continue; const d = e.def;
+        if (e.wakeLeg !== undefined && e.waiting && V && V.leg >= e.wakeLeg) this.wake(e);
+        if (e.postUntil > 0 && this.t >= e.postUntil && !e.postGone && !d.flying) { e.postGone = true; if (e.aim === undefined) this.replan(e); }   /* off its post: its way from the board as it stands now */
+        if (d.cloak && e.recloak && !fest) { e.recloak = false; e.cloakPerm = true; }
+        if (d.cloak) { if (!e.leap && tileAt(Math.round(e.x), Math.round(e.y)) === "^" && !fest) e.cloakUntil = this.t + d.cloak.dur;
+          const on = !fest && (!!e.cloakPerm || this.t < (e.cloakUntil || 0)); if (on !== !!e.stealth) { e.stealth = on; if (!on) e.revealT = this.t; } }
+        if (d.burst && e.blockedBy && !e.boomed) { this.ch4Burst(e); continue; }
+        if (d.summon && !e.hold && !(e.postUntil > this.t)) { e.sumT = (e.sumT || 0) + dt; if (e.sumT >= d.summon.every) { e.sumT = 0; const T = [Math.round(e.x), Math.round(e.y)];
+          if (walkable(tileAt(T[0], T[1]))) { const q = this.spawn(d.summon.type, 0); q.x = e.x + 0.2; q.y = e.y; q.path = [[q.x, q.y], T]; q.seg = 0; q.segT = 0; this.replan(q); q.stunT = 0.6; this.total++; this.fx.push({ k: "land", x: q.x, y: q.y, t: 0, life: 0.6 }); } } }
+        if (d.child && !e.hold) { if (e.blockedBy) { e.blkT = (e.blkT || 0) + dt; if (e.blkT >= d.giveUp && e.aim === "fuse") { e.aim = "home"; e.blockedBy = null; e.passed = true; this.replan(e); } }   /* turned back: nobody holds it again */
+          if (e.aim === "fuse" && !e.blockedBy && e.remain < 0.05) { const f = C.fuses.find((q) => Math.abs(q.from[0] - Math.round(e.x)) + Math.abs(q.from[1] - Math.round(e.y)) <= 1);
+            if (f) { this.igniteAt(f.from[0], f.from[1], e); e.aim = "home"; e.passed = true; this.replan(e); } }
+          if (e.aim === "home" && e.remain < 0.05 && Math.abs(e.x - e.home[0]) + Math.abs(e.y - e.home[1]) < 0.3) { e.dead = true; this.killed++; this.fx.push({ k: "wake", e, x: e.x, y: e.y, t: 0, life: 0.6 }); continue; } }
+        if (d.vipFly && !e.hold) { if (V) { const dd = Math.hypot(V.x - e.x, V.y - e.y); e.aimHold = true;
+            if (dd > 0.45) { e.path = [[e.x, e.y], [V.x, V.y]]; e.seg = 0; e.segT = 0; e.remain = dd; }
+            else { e.path = [[e.x, e.y], [e.x, e.y]]; e.seg = 0; e.segT = 0; e.remain = 0; e.vT = (e.vT === undefined ? d.interval * 0.5 : e.vT) - dt;
+              if (e.vT <= 0) { e.vT = d.interval; e.face = V.x >= e.x ? 1 : -1; e.hitAt = this.t; this.hitVip(e, d.atk * (e.atkMul || 1)); } } }
+          else if (e.aimHold) { e.aimHold = false; const b = nearBase([e.x, e.y]); e.path = [[e.x, e.y], b]; e.seg = 0; e.segT = 0; e.remain = Math.hypot(b[0] - e.x, b[1] - e.y); } }
+        if (d.volland) this.vollandStep(e, dt, V);
+      }
+    },
+    /* the gentleman: he lands (vT s), walks to Yui by his own way, and goes back where he came from once the festival has caught him out of the smoke (vret "hit") or once
+       he has reached her (vret "reach": she loses reach of her max HP). Back where he came from he leaves; while interest is left another approach is added 30 s later */
+    vollandStep(e, dt, V) { const VD = e.def.volland, C = this.ch4;
+      e.stealth = false;
+      if (e.vT > 0) { e.vT -= dt; e.path = [[e.x, e.y], [e.x, e.y]]; e.seg = 0; e.segT = 0; e.remain = 0; return; }
+      if (!e.vret && V) { if (Math.hypot(V.x - e.x, V.y - e.y) < 0.6) { V.hp -= V.maxHp * VD.reach; V.hitAt = this.t; this.fx.push({ k: "num", x: V.x, y: V.y, v: Math.round(V.maxHp * VD.reach), t: 0, life: 0.9 });
+          if (V.hp <= 0 && !V.dead) { V.hp = 0; V.dead = true; this.fx.push({ k: "vipdown", x: V.x, y: V.y, t: 0, life: 1.5 }); } e.vret = "reach"; }
+        else if (this.t >= (e.repT || 0)) { e.repT = this.t + 0.5; const p = this.vollandWay([Math.round(e.x), Math.round(e.y)], [Math.round(V.x), Math.round(V.y)]); if (p) { e.path = [[e.x, e.y]].concat(p.slice(1)); e.seg = 0; e.segT = 0; this.advance(e, 0); } }
+        for (const u of this.units) if (Math.hypot(u.x - e.x, u.y - e.y) < 0.75 && !(u.silUntil > this.t)) { u.silUntil = this.t + VD.silence; this.fx.push({ k: "silence", x: u.x, y: u.y, t: 0, life: 0.8 }); }
+        if (this.t >= e.nextCall) { e.nextCall = this.t + VD.call; let best = null, bd = 1e9; for (const c of C.cit) { if (c.gone || (V && Math.max(Math.abs(V.x - c.x), Math.abs(V.y - c.y)) <= C.calm)) continue; const dd = Math.hypot(c.x - e.x, c.y - e.y); if (dd < bd) { bd = dd; best = c; } }
+          if (best) { best.f += C.citMax * (VD.callFear || 0.4); this.fx.push({ k: "vcall", x: best.x, y: best.y, ex: e.x, ey: e.y, t: 0, life: 1.0 }); } } }
+      if (e.vret && !e.backing) { e.backing = true; const p = this.vollandWay([Math.round(e.x), Math.round(e.y)], e.vfrom); e.path = p ? [[e.x, e.y]].concat(p.slice(1)) : [[e.x, e.y], e.vfrom.slice()]; e.seg = 0; e.segT = 0; this.advance(e, 0); e.dashMul = 1.6; }
+      if (e.backing && e.remain < 0.05) { e.dead = true; this.killed++; this.fx.push({ k: "vgone", x: e.x, y: e.y, t: 0, life: 1.0 });
+        if ((this.meters.interest ? this.meters.interest.v : 0) > 0 && !this.waves.slice(this.waveIdx).some((w) => w[1] === "volland")) {
+          const ring = this.stage.vollandRing || [e.vfrom]; const i = ring.findIndex((q) => q[0] === e.vfrom[0] && q[1] === e.vfrom[1]), nx = ring[(i + 1) % ring.length];
+          const rest = this.waves.slice(this.waveIdx).concat([[this.t + 30, "volland", 0, { vfrom: nx.slice() }]]).sort((a, b) => a[0] - b[0]); this.waves = this.waves.slice(0, this.waveIdx).concat(rest); this.total++; } }
+    },
+  });
+  /* ---- chapter 5 「악마의 트릴」 (E05): everything below runs only on a stage with stage.ch5 (this.ch5 is null elsewhere). It sits on LAB-02's beat (this.beat):
+     stage.ch5beat { zones: [{ id, rects: [[x0, y0, x1, y1], ...], metronome: [x, y] | null }] }: zones of any shape (a square goes to the first zone that holds it), each with its
+       own clock; one of ours beside its metronome slows it a level, a baton beside it speeds it a level. No zones: one zone over the whole board, no metronome.
+     stage.tubas [{ at: [x, y], dir: 0..3 }]: the flow ("흐름") runs from each tuba square by square until "#", "W", "M" or the edge. Where it meets a resonance square
+       (stage.reso) with one of ours on it, a new flow starts in that one's facing; where it meets the tuner (the card) it turns into the tuner's facing.
+       On a stage with tubas: ours off the flow fill their skill points at half speed, and only ours on the flow get the downbeat bonus.
+     stage.tuner { cost, dur, cd }: the tuner card (the ember card's slot): set down on an empty square ours could stand on, facing a way; it shields that face from ranged
+       blows (the flow-borne bow included) and turns the flow; gone after dur s, ready again cd s later. Tap it to turn it a quarter.
+     stage.meters.noise + stage.fallMeter: the discord gauge; when it is full a life is lost and it starts again from nothing.
+     stage.ch5trig { name: { type, rect: [x0, y0, x1, y1], t } }: a wave option evt: name keeps a foe on its post until a foe of that type comes into rect (or until t).
+     stage.ariel { mvLen, bars, slowBar, rest }: the boss's song (E05-10) */
+  const CH5_FROZEN = 2;   /* a heckled one: stunned for this many of its zone's beats x 2 (one bar = four beats; see heckle) */
+  Object.assign(Game.prototype, {
+    ch5Init() {
+      const S = this.stage, ZS = (S.ch5beat && S.ch5beat.zones && S.ch5beat.zones.length) ? S.ch5beat.zones : [{ id: "A", rects: [[0, 0, W - 1, H - 1]], metronome: null }];
+      this.beat = { base: 1.4, zones: ZS.map((z) => { const xs = z.rects.flatMap((r) => [r[0], r[2]]);
+        return { id: z.id, rects: z.rects.map((r) => r.slice()), x0: Math.min(...xs), x1: Math.max(...xs), metronome: z.metronome ? z.metronome.slice() : null, level: 1, ph: 0, n: 0, hn: 0, lastDown: 0, kept: false, batoned: false, off: 0 }; }) };
+      this.waves = this.waves.slice();
+      this.ch5 = { flux: new Set(), lines: [], cuts: [], residue: new Map(), muted: new Set(), tunerMuted: false, tuner: null, levelOff: 0, freezeUntil: 0, fired: {},
+        tubas: (S.tubas || []).map((q) => ({ at: q.at.slice(), dir: q.dir })), reso: (S.reso || []).map((q) => q.slice()), sp: new Map(), ariel: null };
+      if (S.tuner) this.emberCard = { tuner: true, cost: S.tuner.cost || 0, dur: S.tuner.dur || 40, cd: S.tuner.cd || 30, cdT: 0, used: 0 };
+      if (S.ariel) this.ch5.ariel = Object.assign({ mvLen: 45, mvN: 4, slowBar: 8, rest: 5.6, mv: 0, cut: 0, cutMv: -1, since: null, done: false, ended: false, lastBeatN: -1 }, S.ariel);
+      this.ch5Flow();
+    },
+    /* the zone a square belongs to */
+    ch5Zone(x, y) { const Z = this.beat.zones, rx = Math.round(x), ry = Math.round(y === undefined ? 0 : y);
+      return Z.find((z) => z.rects.some((r) => rx >= r[0] && rx <= r[2] && ry >= r[1] && ry <= r[3])) || Z[0]; },
+    ch5Key(x, y) { return y * 100 + x; },
+    onFlux(x, y) { return !!this.ch5 && this.ch5.flux.has(this.ch5Key(Math.round(x), Math.round(y))); },
+    /* off the flow, on a stage that has one (where there is no tuba the flow rules are off) */
+    ch5Off(u) { return !!this.ch5 && this.ch5.tubas.length > 0 && !this.onFlux(u.x, u.y); },
+    tunerOn() { const T = this.ch5 && this.ch5.tuner; return !!T && this.t < T.until && !this.ch5.tunerMuted; },
+    /* the flow: every tuba's line, square by square, with the turns and branches; lines keep their squares in order for the bow */
+    ch5Flow() {
+      const C = this.ch5, flux = new Set(), lines = [], seen = new Set(), D = [[1, 0], [0, 1], [-1, 0], [0, -1]];
+      const cut = (x, y) => C.cuts.some((q) => q.until > this.t && q.x === x && q.y === y);
+      const T = this.tunerOn() ? C.tuner : null;
+      const run = (x, y, dir) => { const line = []; lines.push(line);
+        for (let k = 0; k < 60; k++) { x += D[dir][0]; y += D[dir][1]; const c = tileAt(x, y);
+          if (c === "#" || c === "W" || c === "M" || x < 0 || y < 0 || x >= W || y >= H || cut(x, y)) break;
+          const sk = (y * 100 + x) * 4 + dir; if (seen.has(sk)) break; seen.add(sk);
+          line.push([x, y]); flux.add(y * 100 + x);
+          if (T && T.x === x && T.y === y && T.dir !== dir) { dir = T.dir; continue; }   /* the tuner turns it */
+          if (C.reso.some((q) => q[0] === x && q[1] === y)) { const u = this.unitAt(x, y); if (u && u.dir !== dir) run(x, y, u.dir); }   /* a resonance square with one of ours on it: a new flow her way */
+        } };
+      for (const tb of C.tubas) run(tb.at[0], tb.at[1], tb.dir);
+      C.flux = flux; C.lines = lines.filter((l) => l.length);
+    },
+    /* nobody of ours set down on a square under the echo of the kapellmeister, nor on the tuner */
+    ch5NoDeploy(x, y) { const C = this.ch5, r = C.residue.get(y * 100 + x); if (r && r > this.t) return true; const T = C.tuner; return !!T && this.t < T.until && T.x === x && T.y === y; },
+    /* the zones' clocks (in place of the lab's beatStep) */
+    ch5Beat(dt) {
+      const C = this.ch5; if (C.freezeUntil > this.t) return;
+      for (const z of this.beat.zones) {
+        if (z.metronome) { const [mx, my] = z.metronome, near = (x, y) => Math.abs(x - mx) + Math.abs(y - my) === 1;
+          z.kept = this.units.some((u) => near(u.x, u.y) && !C.muted.has(u.id) && !u.ghost); z.batoned = this.enemies.some((e) => !e.dead && e.def.baton && !e.hop && near(Math.round(e.x), Math.round(e.y))); }
+        else { z.kept = false; z.batoned = false; }
+        z.level = Math.max(0, Math.min(2, 1 + C.levelOff - (z.kept ? 1 : 0) + (z.batoned ? 1 : 0)));
+        const ph0 = z.ph; z.ph += dt / this.beatLen(z);
+        if (ph0 < 0.5 && z.ph >= 0.5) z.hn++;   /* the half beat (the off-beat hounds) */
+        while (z.ph >= 1) { z.ph -= 1; z.n++; if (z.n % 4 === 0) z.lastDown = this.t; this.ch5OnBeat(z); }
+      }
+    },
+    /* a beat of zone z: the fourth beat's blows, the singer's phrase, the third movement's sore flow */
+    ch5OnBeat(z) {
+      const b = z.n % 4, inZ = (e) => this.ch5Zone(e.x, e.y) === z;
+      for (const e of this.enemies) { if (e.dead || e.hp <= 0 || !e.def.c5 || e.stunT > 0 || e.underT > 0 || !inZ(e)) continue; const c = e.def.c5;
+        if (c.phrase) { e.phB = (e.phB || 0) + 1; if (e.phB >= c.phrase.beats) { e.phB = 0; this.ch5Phrase(e); } }
+        if (b !== 3) continue;
+        if (c.fluxChain) { if (this.onFlux(e.x, e.y)) this.ch5Bow(e); continue; }
+        if (c.lineShot) { this.ch5Lines(e); continue; }
+        if (c.down) { const tg = e.blockedBy || (e.def.ranged ? this.rangedTarget(e) : null) || (c.down.aoe ? this.units.find((u) => Math.max(Math.abs(u.x - Math.round(e.x)), Math.abs(u.y - Math.round(e.y))) <= c.down.aoe) : null);
+          if (tg && !tg.isEnemy && (e.blockedBy || Math.hypot(tg.x - e.x, tg.y - e.y) <= (e.def.ranged || 1.5))) { this.ch5Strike(e, tg, true); e.atkT = Math.max(e.atkT, e.def.interval * 0.6); } }
+      }
+      const A = this.ch5.ariel; if (A && A.mv === 2 && b === 0) for (const u of this.units.slice()) if (this.onFlux(u.x, u.y) && this.ch5Zone(u.x, u.y) === z) { this.damage(u, u.maxHp * 0.03, "true", null, null); u.flash = 0.15; }   /* the third movement: the flow hurts */
+    },
+    /* the prima donna's phrase is done: every foe on the board is mended */
+    ch5Phrase(e) { const p = e.def.c5.phrase.pct; for (const q of this.enemies) if (!q.dead && q.hp > 0 && !q.def.c5?.ariel && !q.def.c5?.ear && q.hp < q.maxHp) q.hp = Math.min(q.maxHp, q.hp + q.maxHp * p);
+      this.fx.push({ k: "c5phrase", x: e.x, y: e.y, t: 0, life: 1.2 }); },
+    /* the tuner's shield: a ranged blow from e at u crosses the tuner's square from the side it faces */
+    ch5Shield(e, u) { if (!this.tunerOn()) return false; const T = this.ch5.tuner, D = [[1, 0], [0, 1], [-1, 0], [0, -1]][T.dir];
+      if ((e.x - T.x) * D[0] + (e.y - T.y) * D[1] <= 0.3) return false;   /* the foe is not on the shielded side */
+      if ((u.x - T.x) * D[0] + (u.y - T.y) * D[1] > 0) return false;   /* the one it aims at is not behind the shield */
+      const ax = e.x, ay = e.y, bx = u.x, by = u.y, L2 = (bx - ax) ** 2 + (by - ay) ** 2; if (L2 < 1e-6) return false;
+      const k = Math.max(0, Math.min(1, ((T.x - ax) * (bx - ax) + (T.y - ay) * (by - ay)) / L2)), px = ax + k * (bx - ax), py = ay + k * (by - ay);
+      return Math.hypot(px - T.x, py - T.y) <= 0.55; },
+    /* the first violin's bow: every one of ours on the flow line it stands on, both ways from it, up to a tuner that faces it */
+    ch5Bow(e) { const ex = Math.round(e.x), ey = Math.round(e.y), T = this.tunerOn() ? this.ch5.tuner : null, hit = new Set();
+      for (const L of this.ch5.lines) { const i = L.findIndex((q) => q[0] === ex && q[1] === ey); if (i < 0) continue;
+        for (const s of [-1, 1]) for (let j = i + s; j >= 0 && j < L.length; j += s) { const [x, y] = L[j];
+          if (T && T.x === x && T.y === y) { const D = [[1, 0], [0, 1], [-1, 0], [0, -1]][T.dir]; if ((ex - x) * D[0] + (ey - y) * D[1] > 0) break; }
+          const u = this.unitAt(x, y); if (u) hit.add(u); } }
+      const atk = e.def.atk * (e.atkMul || 1) * 1.2;
+      for (const u of hit) { this.damage(u, atk, "phys", null, e); u.flash = 0.2; this.fx.push({ k: "bolt", x0: e.x, y0: e.y, x1: u.x, y1: u.y, foe: true, t: 0, life: 0.3 }); }
+      this.fx.push({ k: "c5bow", x: e.x, y: e.y, n: hit.size, t: 0, life: 0.8 }); },
+    /* the double bass: its row and its column, each way until a wall, the edge, or a flow square (which stops it) */
+    ch5Lines(e) { const ex = Math.round(e.x), ey = Math.round(e.y), atk = e.def.atk * (e.atkMul || 1); let n = 0;
+      for (const [dx, dy] of [[1, 0], [0, 1], [-1, 0], [0, -1]]) for (let k = 1; k < 20; k++) { const x = ex + dx * k, y = ey + dy * k, c = tileAt(x, y);
+        if (x < 0 || y < 0 || x >= W || y >= H || c === "W" || c === "M") break; if (this.onFlux(x, y)) break;
+        const u = this.unitAt(x, y); if (u && !this.ch5Shield(e, u)) { this.damage(u, atk, "phys", null, e); u.flash = 0.2; n++; } }
+      const u0 = this.unitAt(ex, ey); if (u0) { this.damage(u0, atk, "phys", null, e); n++; }
+      this.fx.push({ k: "c5lines", x: ex, y: ey, t: 0, life: 0.6 }); },
+    /* a blow of a chapter-5 foe (its regular one, or the fourth beat's when acc) */
+    ch5Strike(e, tg, acc) {
+      const c = e.def.c5 || {}, z = this.ch5Zone(e.x, e.y), fast = z.level === 2, slow = z.level === 0;
+      if (!acc) e.atkT = e.def.interval / (e.frenzyM || 1);
+      if (!tg || tg.isEnemy || !this.units.includes(tg)) return;
+      if (e.def.ranged && !e.blockedBy && this.ch5Shield(e, tg)) { this.fx.push({ k: "c5block", x: tg.x, y: tg.y, t: 0, life: 0.5 }); e.firedAt = this.t; e.aiming = false; return; }
+      let atk = e.def.atk * (e.atkMul || 1) * (e.enraged ? RAGE.atk : 1); const D = acc ? c.down : null;
+      let type = (e.def.ranged && !e.def.phys) || e.def.artsMelee ? "arts" : "phys"; if (c.fastArts && fast) type = "arts";
+      let stun = 0; if (c.cres && e.cres) { atk *= 1 + c.cres.per * e.cres; if (c.slowStun && slow) stun = 4 * this.beatLen(z); this.fx.push({ k: "c5cres", x: tg.x, y: tg.y, n: e.cres, t: 0, life: 0.9 }); e.cres = 0; }
+      if (D && D.mul) atk *= D.mul;
+      let tgs = [tg]; const reach = e.blockedBy ? 1.5 : (e.def.ranged || 1.5) + 0.01;
+      if (c.two || (D && D.extra)) { const o = this.units.filter((u) => u !== tg && Math.hypot(u.x - e.x, u.y - e.y) <= reach && !(e.def.ranged && this.ch5Shield(e, u))).sort((a, b) => Math.hypot(a.x - e.x, a.y - e.y) - Math.hypot(b.x - e.x, b.y - e.y))[0]; if (o) tgs.push(o); }
+      if (D && D.cross) for (const u of this.units) if (u !== tg && Math.abs(u.x - tg.x) + Math.abs(u.y - tg.y) === 1) tgs.push(u);
+      if (D && D.aoe) { const r = D.aoe + (fast ? c.fastAoe || 0 : 0); tgs = this.units.filter((u) => Math.max(Math.abs(u.x - Math.round(e.x)), Math.abs(u.y - Math.round(e.y))) <= r); this.fx.push({ k: "c5aoe", x: e.x, y: e.y, r, t: 0, life: 0.6 }); }
+      for (const u of tgs) { if (!this.units.includes(u)) continue; const off = c.offFlux && this.ch5Off(u);
+        const hits = off && c.offFlux.hits ? c.offFlux.hits : 1;
+        for (let h = 0; h < hits; h++) this.damage(u, atk, type, null, e);
+        if (off && c.offFlux.arts) this.damage(u, atk * c.offFlux.arts, "arts", null, e);
+        if (off && c.offFlux.splash) for (const q of this.units.slice()) if (q !== u && Math.max(Math.abs(q.x - u.x), Math.abs(q.y - u.y)) <= 1) this.damage(q, atk * c.offFlux.splash, type, null, e);
+        if (stun && this.units.includes(u)) { u.st5Until = Math.max(u.st5Until || 0, this.t + stun); this.fx.push({ k: "c5stun", x: u.x, y: u.y, t: 0, life: 0.8 }); }
+        u.flash = 0.15; if (e.def.ranged) this.fx.push({ k: "bolt", x0: e.x, y0: e.y, x1: u.x, y1: u.y, foe: true, t: 0, life: 0.25 }); }
+      if (acc) this.fx.push({ k: "c5acc", x: e.x, y: e.y, t: 0, life: 0.5 });
+      if (e.def.ranged) { e.firedAt = this.t; e.aiming = false; }
+    },
+    /* harm to a foe (or to ours) on a chapter-5 stage: the boss and the ear are not to be harmed; the echo gives back what it takes on its zone's first beat */
+    ch5Taken(target, raw, type, fromUnit) {
+      if (target.isEnemy && target.def.c5 && (target.def.c5.ariel || target.def.c5.ear)) return 0;
+      if (target.isEnemy && target.def.c5 && target.def.c5.reflect && fromUnit && !fromUnit.isEnemy && raw > 0 && this.units.includes(fromUnit) && type !== "heal") {
+        const z = this.ch5Zone(target.x, target.y); if (z.n % 4 === 0 && z.n > 0) { this.damage(fromUnit, raw * target.def.c5.reflect, type === "arts" ? "arts" : "phys", null, target); fromUnit.flash = 0.2; this.fx.push({ k: "c5reflect", x: target.x, y: target.y, ux: fromUnit.x, uy: fromUnit.y, t: 0, life: 0.5 }); } }
+      return raw;
+    },
+    /* a skill goes off: on the downbeat (and, where there is a flow, on the flow) it is "on the beat"; under the ear, off the downbeat, the discord rises */
+    ch5Skill(u) { const on = this.onBeat(this.ch5Zone(u.x, u.y));
+      if (!on) for (const e of this.enemies) if (!e.dead && e.def.c5 && e.def.c5.ear && Math.max(Math.abs(u.x - e.x), Math.abs(u.y - e.y)) <= e.def.c5.ear.r + 0.01) { this.meter("noise", 1); this.fx.push({ k: "c5ear", x: u.x, y: u.y, t: 0, life: 1.0 }); break; }
+      return on && !this.ch5Off(u); },
+    ch5Spawn(e, s, o) {
+      const c = e.def.c5;
+      if (c && c.fluxWeak) { e.def5 = e.defv; e.res5 = e.res; }
+      if (o && o.evt) { e.evt = o.evt; e.postUntil = 1e9; }
+      if (o && o.fall) { e.postUntil = this.t + o.fall; e.stunT = Math.max(e.stunT || 0, o.fall); this.fx.push({ k: "land", x: e.x, y: e.y, t: 0, life: 0.8 }); }
+      if (c && c.ear) { const L = o && o.ear ? o.ear : [[0, Math.round(H / 2)], [W - 1, Math.round(H / 2)]]; e.earPath = L.map((q) => q.slice()); e.earI = 0; e.x = L[0][0]; e.y = L[0][1]; e.postUntil = 1e9; e.noTarget = true; e.path = [[e.x, e.y], [e.x, e.y]]; }
+      if (c && c.ariel) { const at = (o && o.at) || [6.5, 4]; e.x = at[0]; e.y = at[1]; e.path = [[e.x, e.y], [e.x, e.y]]; e.postUntil = 1e9; e.noTarget = true; e.remain = 99; }
+      if (c && c.phrase) e.phB = 0;
+    },
+    /* the chapter's rules, once a tick, before the foes move */
+    ch5Step(dt) {
+      const C = this.ch5, cheb = (ax, ay, bx, by) => Math.max(Math.abs(ax - bx), Math.abs(ay - by));
+      if (C.cuts.length) C.cuts = C.cuts.filter((q) => q.until > this.t);
+      const T = C.tuner; if (T && this.t >= T.until) { C.tuner = null; this.fx.push({ k: "c5tunerout", x: T.x, y: T.y, t: 0, life: 0.6 }); }
+      /* the tuners (조율사): the nearest tuner card or keeper in reach is muted while he stands */
+      C.muted.clear(); C.tunerMuted = false;
+      for (const e of this.enemies) { if (e.dead || e.hp <= 0 || !e.def.c5 || !e.def.c5.mute || e.stunT > 0 || e.underT > 0) { if (e.def.c5 && e.def.c5.mute) e.muteTgt = null; continue; }
+        const R = e.def.c5.mute.r; let best = null, bd = 1e9;
+        if (C.tuner && this.t < C.tuner.until) { const d = Math.hypot(C.tuner.x - e.x, C.tuner.y - e.y); if (d <= R && d < bd) { bd = d; best = { tuner: true, x: C.tuner.x, y: C.tuner.y }; } }
+        for (const z of this.beat.zones) if (z.metronome) for (const u of this.units) if (Math.abs(u.x - z.metronome[0]) + Math.abs(u.y - z.metronome[1]) === 1) { const d = Math.hypot(u.x - e.x, u.y - e.y); if (d <= R && d < bd) { bd = d; best = u; } }
+        e.muteTgt = best; if (best) { if (best.tuner) C.tunerMuted = true; else C.muted.add(best.id); if (!(e.postUntil > this.t + 0.2) && !e.evt) e.postUntil = this.t + 0.15; } }
+      this.ch5Flow();
+      /* the tempo's own rules: a batoned (fast) zone mends its foes a little; the cello weakens on the flow */
+      for (const e of this.enemies) { if (e.dead || e.hp <= 0 || e.boarded) continue; const c = e.def.c5;
+        const z = this.ch5Zone(e.x, e.y); if (z.batoned && z.level === 2 && !(c && (c.ariel || c.ear)) && e.hp < e.maxHp) e.hp = Math.min(e.maxHp, e.hp + e.maxHp * 0.012 * dt);
+        if (!c) continue;
+        if (c.fluxWeak) { const on = this.onFlux(e.x, e.y); e.defv = e.def5 * (on ? c.fluxWeak.def : 1); e.res = e.res5 * (on ? c.fluxWeak.res : 1); e.fluxWeakOn = on; }
+        if (c.cres) { const sq = Math.round(e.x) * 100 + Math.round(e.y); if (e.cresSq !== undefined && e.cresSq !== sq && !e.blockedBy && !(e.postUntil > this.t)) e.cres = Math.min(c.cres.cap, (e.cres || 0) + 1); e.cresSq = sq; }
+        if (c.residue && !(e.underT > 0)) { const k = Math.round(e.y) * 100 + Math.round(e.x); C.residue.set(k, this.t + c.residue); }
+        if (c.phrase && e.stunT > 0) e.phB = 0;
+        if (c.phrase && this.stage.ch5PrimaWalk && this.t >= this.stage.ch5PrimaWalk && e.postUntil > this.t && !e.walking5) { e.walking5 = true; e.postUntil = this.t; }
+        if (c.heckle && !(e.underT > 0) && !(e.stunT > 0)) { if (e.heckT === undefined) e.heckT = c.heckle.every * 0.5; e.heckT -= dt;
+          if (e.heckT <= 0) { let tg = null, bd = 1e9; for (const u of this.units) { if (!this.onFlux(u.x, u.y) || u.st5Until > this.t || this.ch5Shield(e, u)) continue; const d = Math.hypot(u.x - e.x, u.y - e.y); if (d <= c.heckle.r && d < bd) { bd = d; tg = u; } }
+            if (tg) { e.heckT = c.heckle.every; const zz = this.ch5Zone(tg.x, tg.y); tg.st5Until = this.t + 4 * this.beatLen(zz); C.cuts.push({ x: tg.x, y: tg.y, until: this.t + c.heckle.cut }); this.fx.push({ k: "c5heckle", x: tg.x, y: tg.y, ex: e.x, ey: e.y, t: 0, life: 1.0 }); }
+            else e.heckT = 0.5; } }
+        if (c.two && e.def.unblockable && !(e.underT > 0) && !(e.stunT > 0)) { e.k5T = (e.k5T === undefined ? e.def.interval * 0.5 : e.k5T) - dt;   /* the kapellmeister strikes as he walks: the two nearest within reach */
+          if (e.k5T <= 0) { const tg = this.units.filter((u) => Math.hypot(u.x - e.x, u.y - e.y) <= e.def.ranged + 0.01).sort((a, b) => Math.hypot(a.x - e.x, a.y - e.y) - Math.hypot(b.x - e.x, b.y - e.y))[0];
+            if (tg) { e.k5T = e.def.interval; this.ch5Strike(e, tg, false); } else e.k5T = 0.3; } }
+        if (c.ear) this.ch5EarStep(e, dt);
+      }
+      /* the triggers: posts that wait for someone to come by */
+      for (const nm in (this.stage.ch5trig || {})) { if (C.fired[nm]) continue; const tr = this.stage.ch5trig[nm];
+        const hit = (tr.t !== undefined && this.t >= tr.t) || this.enemies.some((e) => !e.dead && e.type === tr.type && !(e.underT > 0) && Math.round(e.x) >= tr.rect[0] && Math.round(e.x) <= tr.rect[2] && Math.round(e.y) >= tr.rect[1] && Math.round(e.y) <= tr.rect[3]);
+        if (hit) { C.fired[nm] = this.t; for (const e of this.enemies) if (e.evt === nm) { e.evt = null; e.postUntil = this.t; } this.fx.push({ k: "c5rise", t: 0, life: 1.2 }); } }
+      /* ours: stunned by a heckler or the crescendo's blow; skill points at half off the flow */
+      for (const u of this.units) {
+        if (u.st5Until > this.t) { u.atkT = Math.max(u.atkT || 0, 0.25); u.wind = null; }
+        if (C.freezeUntil > this.t) { u.atkT = Math.max(u.atkT || 0, 0.25); u.wind = null; }
+        const last = C.sp.get(u.id); if (last !== undefined && u.sp > last && !(u.skillT > 0) && (this.ch5Off(u) || u.st5Until > this.t || C.freezeUntil > this.t)) u.sp = last + (u.sp - last) * (this.ch5Off(u) && !(u.st5Until > this.t) && !(C.freezeUntil > this.t) ? 0.5 : 0);
+        C.sp.set(u.id, u.sp); }
+      if (C.freezeUntil > this.t) for (const e of this.enemies) if (!e.dead && !(e.def.c5 && (e.def.c5.ariel || e.def.c5.ear))) e.stunT = Math.max(e.stunT || 0, Math.min(0.2, C.freezeUntil - this.t));
+      /* the discord: full, it costs a life and starts again */
+      const N = this.meters.noise; if (N && N.max !== undefined && N.v >= N.max) { N.v = 0; this.life -= 1; this.fx.push({ k: "c5discord", t: 0, life: 1.6 }); this.fx.push({ k: "leak", t: 0, life: 0.8 }); }
+      if (C.ariel) this.arielStep(dt);
+    },
+    /* the ear drifts along its line, two squares to its zone's bar; at the end it is gone (no life lost) */
+    ch5EarStep(e, dt) { const P = e.earPath; if (!P || e.earI >= P.length - 1) { e.dead = true; e.hp = 0; this.killed--; return; }
+      const z = this.ch5Zone(e.x, e.y), v = 2 / (4 * this.beatLen(z)), a = P[e.earI], b = P[e.earI + 1], dx = b[0] - e.x, dy = b[1] - e.y, d = Math.hypot(dx, dy), st = v * dt * (this.ch5.freezeUntil > this.t ? 0 : 1);
+      if (d <= st) { e.x = b[0]; e.y = b[1]; e.earI++; } else { e.x += dx / d * st; e.y += dy / d * st; } e.face = dx >= 0 ? 1 : -1; void a; },
+    /* the archduke's song: movements of mvLen s; four strings; all four zones slow for one bar (slowBar s) cuts one, once a movement. Fourth movement: every zone a level faster.
+       Every cut stops every metronome for one bar (rest s: foes and ours stand still). The song's end with a string left: everyone hurt, every life gone */
+    arielStep() {
+      const A = this.ch5.ariel, C = this.ch5; if (A.done || A.ended) return;
+      const boss = this.enemies.find((e) => !e.dead && e.def.c5 && e.def.c5.ariel); if (!boss) return;
+      const mv = Math.min(A.mvN - 1, Math.floor(this.t / A.mvLen)); if (mv !== A.mv) { A.mv = mv; this.fx.push({ k: "c5move", n: mv + 1, t: 0, life: 2.0 }); }
+      C.levelOff = A.mv >= 3 ? 1 : 0;
+      const Z = this.beat.zones, allSlow = Z.every((z) => z.kept && !z.batoned);
+      if (allSlow && A.cutMv !== A.mv && C.freezeUntil <= this.t) { if (A.since === null) A.since = this.t; if (this.t - A.since >= A.slowBar) { A.cut++; A.cutMv = A.mv; A.since = null; C.freezeUntil = this.t + A.rest; this.fx.push({ k: "c5cut", n: A.cut, x: boss.x, y: boss.y, t: 0, life: 2.0 }); this.snd("chime");
+        if (A.cut >= 4) { A.done = true; boss.dead = true; boss.hp = 0; boss.fled = true; this.fx.push({ k: "c5bow2", x: boss.x, y: boss.y, t: 0, life: 2.5 }); } } }
+      else if (!allSlow) A.since = null;
+      if (!A.done && this.t >= A.mvLen * A.mvN) { A.ended = true; for (const u of this.units.slice()) this.damage(u, u.maxHp * 0.5, "true", null, null); this.life -= (this.stage.lifeMax || CFG.life); this.fx.push({ k: "c5finale", t: 0, life: 2.5 }); boss.dead = true; boss.hp = 0; }
+    },
+    /* the tuner card: set it down on an empty square ours could stand on (dir: 0 east, 1 south, 2 west, 3 north; left out: facing the nearest gate); tap the one set down to turn it */
+    tunerCheck() { const E = this.emberCard; if (!E || !E.tuner) return "없음"; if (this.ch5.tuner && this.t < this.ch5.tuner.until) return null; if (E.cdT > 0) return "재사용 대기 중"; if (this.cost < E.cost) return "코스트 부족"; return null; },
+    tunerTarget(x, y) { const T = this.ch5.tuner; if (T && this.t < T.until) return T.x === x && T.y === y ? [x, y] : null; const c = tileAt(x, y);
+      if (c !== "." && c !== "h" && c !== "*" && c !== "x") return null; if (this.unitAt(x, y) || this.ch5NoDeploy(x, y)) return null; return [x, y]; },
+    placeTuner(x, y, dir) { const E = this.emberCard, C = this.ch5, T = C.tuner;
+      if (T && this.t < T.until) { if (T.x !== x || T.y !== y) return false; T.dir = dir !== undefined ? dir : (T.dir + 1) % 4; this.ch5Flow(); this.fx.push({ k: "c5tuner", x, y, t: 0, life: 0.5 }); return true; }
+      if (this.tunerCheck() || !this.tunerTarget(x, y)) return false;
+      if (dir === undefined) { let best = null, bd = 1e9; for (const s of SPAWNS) { const d = Math.hypot(s[0] - x, s[1] - y); if (d < bd) { bd = d; best = s; } } dir = !best ? 0 : Math.abs(best[0] - x) >= Math.abs(best[1] - y) ? (best[0] >= x ? 0 : 2) : (best[1] >= y ? 1 : 3); }
+      this.cost -= E.cost; E.used++; E.cdT = E.dur + E.cd; C.tuner = { x, y, dir, until: this.t + E.dur }; this.ch5Flow(); this.fx.push({ k: "c5tuner", x, y, t: 0, life: 0.7 }); return true; },
+  });
   // lab L2: on a stage with a beat, a manual skill started within 0.2 s of its zone's downbeat is "on the beat" (맞음): a timed one lasts 30% longer, an instant one hits 30%
   // harder; a deployment on the downbeat halves that card's next redeploy time. Stages without a beat go straight through to the methods as they are
   { const useSkill0 = Game.prototype.useSkill, deploy0 = Game.prototype.deploy, retreat0 = Game.prototype.retreat;
     Game.prototype.useSkill = function (u) {
+      let on5 = false; if (this.ch5) { if (u.sp < u.skill.sp || u.skillT > 0 || u.frozenT > 0 || u.st5Until > this.t) return false; on5 = this.ch5Skill(u); }   /* chapter 5: stunned ones cannot; the ear; the bonus only on the flow */
       if (!this.beat || u.skill.mode !== "manual") return useSkill0.call(this, u);
-      const on = this.onBeat(this.beatZone(u.x)); if (on && !u.skill.dur) this._beatAmpU = u;
+      const on = this.ch5 ? on5 : this.onBeat(this.beatZone(u.x)); if (on && !u.skill.dur) this._beatAmpU = u;
       let r; try { r = useSkill0.call(this, u); } finally { this._beatAmpU = null; }
       if (on && r !== false) { if (u.skillT > 0) u.skillT *= 1.3; u.beatHitT = this.t; this.fx.push({ k: "onbeat", x: u.x, y: u.y, t: 0, life: 1.0 }); this.snd("chime"); }
       return r; };
@@ -4102,7 +5458,7 @@
       Game.prototype.useSkill = function (u) { const r = useSkillB.call(this, u); if (this.mirror && r !== false && !u.image) { const im = this.units.find((q) => q.image && q.owner === u); if (im && !(im.skillT > 0)) { im.sp = im.skill.sp; useSkillB.call(this, im); } } return r; }; }
     Game.prototype.deploy = function (cardIdx, x, y, dir) {
       const r = deploy0.call(this, cardIdx, x, y, dir);
-      if (this.beat && r !== false && this.units.some((u) => u.x === x && u.y === y && u.card === cardIdx) && this.onBeat(this.beatZone(x))) { this.cards[cardIdx].beatRd = true; this.fx.push({ k: "onbeat", x, y, deploy: true, t: 0, life: 1.0 }); }
+      if (this.beat && r !== false && this.units.some((u) => u.x === x && u.y === y && u.card === cardIdx) && this.onBeat(this.beatZone(x, y))) { this.cards[cardIdx].beatRd = true; this.fx.push({ k: "onbeat", x, y, deploy: true, t: 0, life: 1.0 }); }
       return r; };
     Game.prototype.deploy = (function (deployB) { return function (cardIdx, x, y, dir) { const r = deployB.call(this, cardIdx, x, y, dir); if (this.mirror && r && !r.summoned) this.mirrorImage(r); return r; }; })(Game.prototype.deploy);   // lab L3
     Game.prototype.deploy = (function (deployC) { return function (cardIdx, x, y, dir) { const r = deployC.call(this, cardIdx, x, y, dir);   // lab L5: every deployment of ours goes into the record

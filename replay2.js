@@ -19,9 +19,10 @@ function build(stage, lvl, plan, squadIds, meta = {}) {
   const st = TD.STAGES[S.stageIdx(stage)];
   return Object.assign({ stage, name: st.name, level: lvl, lost: r.lost, seed: 1, K: 1, variant: "none", stageMul: st.mul }, meta, {
     rng: "Math.random replaced before `new TD.Game` by im_sim's seed(n): a = n*7919, mulberry32-style step; nothing else draws from it between seeding and the game",
-    stepping: "fixed g.update(1/30) per frame, max 420*30 frames; actions run at the start of a frame, before that frame's update, in log order",
+    stepping: `fixed g.update(1/30) per frame, max ${S.maxTOf(st)}*30 frames; actions run at the start of a frame, before that frame's update, in log order` + (st.frost ? "; a frost brazier fed is the action {a:'feed', m:'feedBrazier', args:[x,y]} (a Game call); an operator set down again after it fell is an ordinary deploy" : ""),
     squad, squadNote: "card order = squad order (card index ci in actions); Game(stageIdx, squad) receives {id, elite, mult, pot, skillIdx, slv, sm}; skill level and mastery by rung (sim.js skillRank, slv-r1); sm[k] = mastery of skill k",
     expected: { win: r.win, rwin: r.rwin, over: r.over, life: r.life, lost: r.lost, winTime: r.tEnd, frames: r.frames, kills: r.kills, total: r.total },
+    frost: r.frost ? { phase: r.phase, lit: r.litList, fed: r.fed, nFeed: r.nFeed, falls: r.falls, moved: r.moved, phaseStarts: r.phT } : undefined,
     actions: r.actions, plan });
 }
 function writeFromResult(file, out) {
@@ -36,9 +37,11 @@ function replay(rep) {
   const g = new TD.Game(i, rep.squad.map((c) => ({ id: c.id, elite: c.elite, mult: c.mult, pot: c.pot, skillIdx: c.skillIdx, slv: c.slv, sm: c.sm })));
   g.life += 1000;   // the solver's padded pool (identical dynamics; only game over depends on it)
   const acts = rep.actions; let j = 0, k = 0; const bad = [];
-  for (k = 0; k < MAXF && !g.over; k++) {
+  const maxF = S.maxTOf(st) * FPS;
+  for (k = 0; k < maxF && !g.over; k++) {
     while (j < acts.length && acts[j].k === k) { const a = acts[j++]; let ok;
       if (a.a === "deploy") ok = !!g.deploy(a.ci, a.x, a.y, a.dir);
+      else if (a.a === "feed" || a.a === "call") { const m = a.m || "feedBrazier"; ok = typeof g[m] === "function" && g[m](...(a.args || [])) !== false; }
       else { const u = g.units.find((q) => q.id === a.uid); if (!u) ok = false; else if (a.a === "skill") ok = g.useSkill(u) !== false; else { g.retreat(u); ok = true; } }
       if (!ok) bad.push({ j: j - 1, a: a.a, id: a.id, k: a.k }); }
     g.update(1 / FPS);
@@ -51,7 +54,7 @@ function pack(rep) {
   return { c: rep.stage, n: rep.name, s: rep.seed, lv: rep.level, v: rep.variant || "base", src: "solver2",
     q: rep.squad.map((s) => [s.id, s.elite, s.lvl, s.pot || 1, s.skillIdx || 0, s.slv || 0, s.mult || 0, s.sm || 0]),
     x: [rep.expected.over, TD.CFG.life - rep.expected.lost, r3(rep.expected.winTime), rep.expected.kills, rep.expected.total],
-    L: rep.actions.map((a) => a.a === "deploy" ? [r3(a.t), "d", a.id, a.x, a.y, a.dir].concat(a.summon ? [1] : []) : [r3(a.t), a.a[0], a.id, a.x === undefined ? null : a.x, a.y === undefined ? null : a.y, a.uid]) };
+    L: rep.actions.map((a) => a.a === "feed" || a.a === "call" ? [r3(a.t), "c", a.m || "feedBrazier", a.args || []] : a.a === "deploy" ? [r3(a.t), "d", a.id, a.x, a.y, a.dir].concat(a.summon ? [1] : []) : [r3(a.t), a.a[0], a.id, a.x === undefined ? null : a.x, a.y === undefined ? null : a.y, a.uid]) };
 }
 module.exports = { build, writeFromResult, replay, pack };
 if (require.main === module) {

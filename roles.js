@@ -104,11 +104,14 @@ function templateOf(plan) {
   const first = new Map(); const slots = [];
   plan.entries.forEach((q, i) => { const isPrim = !first.has(q.id); if (isPrim) first.set(q.id, i);
     const s = { x: q.x, y: q.y, d: q.d, prim: first.get(q.id), role: roleOf(q.id), src: q.id };
-    if (q.from !== undefined) s.from = q.from; if (q.until !== undefined) s.until = q.until; if (q.after) s.after = q.after;
+    if (q.from !== undefined) s.from = q.from; if (q.until !== undefined) s.until = q.until; if (q.after) s.after = q.after; if (q.fp !== undefined) s.fp = q.fp; if (q.tp !== undefined) s.tp = q.tp;
     if (isPrim) { if (plan.skill && plan.skill[q.id]) s.skill = plan.skill[q.id]; if (plan.skillIdx && plan.skillIdx[q.id] !== undefined) s.skIdx = plan.skillIdx[q.id]; }
     if (S.isSummon(q.id)) { const summoner = plan.entries.find((r) => { const d = S.def(r.id); return d && d.summon && d.summon.id === q.id; }); s.summonOf = summoner ? first.get(summoner.id) : -1; }
     slots.push(s); });
-  return { slots, retreats: (plan.retreats || []).filter((r) => first.has(r.id)).map((r) => ({ slot: first.get(r.id), t: r.t })), pol: Object.assign({ fire: 1, melt: 1, lamp: 1 }, plan.pol || {}) };
+  const T = { slots, retreats: (plan.retreats || []).filter((r) => first.has(r.id)).map((r) => r.fp === undefined ? { slot: first.get(r.id), t: r.t } : { slot: first.get(r.id), t: r.t, fp: r.fp }), pol: Object.assign({ fire: 1, melt: 1, lamp: 1 }, plan.pol || {}) };
+  if (plan.feed) T.feed = JSON.parse(JSON.stringify(plan.feed));   /* frost genes: the feed policy goes with the template; the no-redeploy rule by slot */
+  if (plan.re) { const re = {}; for (const [id, v] of Object.entries(plan.re)) if (first.has(id)) re[first.get(id)] = v; if (Object.keys(re).length) T.re = re; }
+  return T;
 }
 const primaries = (T) => T.slots.map((s, i) => [s, i]).filter(([s, i]) => s.prim === i && s.summonOf === undefined);
 // a filled plan from a template and an assignment {primSlotIndex: opId}; slots without an operator (and their secondaries / summons) are dropped
@@ -119,10 +122,12 @@ function fillPlan(T, assign, lvl) {
     let id;
     if (s.summonOf !== undefined) { const sm = assign[s.summonOf]; const d = sm && S.def(sm); if (!d || !d.summon) return; id = d.summon.id; }
     else id = assign[s.prim]; if (!id) return;
-    const q = { id, x: s.x, y: s.y, d: s.d }; if (s.from !== undefined) q.from = s.from; if (s.until !== undefined) q.until = s.until; if (s.after) q.after = s.after; plan.entries.push(q);
+    const q = { id, x: s.x, y: s.y, d: s.d }; if (s.from !== undefined) q.from = s.from; if (s.until !== undefined) q.until = s.until; if (s.after) q.after = s.after; if (s.fp !== undefined) q.fp = s.fp; if (s.tp !== undefined) q.tp = s.tp; plan.entries.push(q);
     if (s.prim === i && s.summonOf === undefined) { if (s.skill) plan.skill[id] = Object.assign({}, s.skill); const m = S.maxSkillIdx(id, E); if (m >= 1) plan.skillIdx[id] = Math.min(m, s.skIdx === undefined ? m : s.skIdx); }
   });
-  for (const r of T.retreats) { const id = assign[r.slot]; if (id) plan.retreats.push({ id, t: r.t }); }
+  for (const r of T.retreats) { const id = assign[r.slot]; if (id) plan.retreats.push(r.fp === undefined ? { id, t: r.t } : { id, t: r.t, fp: r.fp }); }
+  if (T.feed) plan.feed = JSON.parse(JSON.stringify(T.feed));
+  if (T.re) { const re = {}; for (const [i, v] of Object.entries(T.re)) if (assign[i]) re[assign[i]] = v; if (Object.keys(re).length) plan.re = re; }
   return plan;
 }
 // who may stand in a slot: tier 0 = same class and kind and at least the block; 1 = same kind; 2 = another ranged damage dealer on high ground / any blocker on the ground

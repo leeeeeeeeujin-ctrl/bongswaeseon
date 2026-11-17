@@ -49,6 +49,17 @@
     { ep: 3, cost: 21, first: { orb: 2400 }, coin: 3600, exp: 240, rec: "정예화 2 · Lv.1" },
     { ep: 3, cost: 24, first: { orb: 3600 }, coin: 4000, exp: 260, rec: "정예화 2 · Lv.1" },
     { ep: 3, cost: 24, first: { orb: 3600 }, coin: 4200, exp: 270, rec: "정예화 2 · Lv.1" },
+    // chapter 4 「발푸르기스의 밤」 (E04-01..10): opens once WL-09 is cleared
+    { ep: 4, after: "WL-09", cost: 24, first: { orb: 2400 }, coin: 4300, exp: 275, rec: "정예화 1 · Lv.45" },
+    { ep: 4, cost: 24, first: { orb: 2400 }, coin: 4400, exp: 280, rec: "정예화 1 · Lv.45" },
+    { ep: 4, cost: 24, first: { orb: 2400 }, coin: 4500, exp: 285, rec: "정예화 1 · Lv.50" },
+    { ep: 4, cost: 24, first: { orb: 2400 }, coin: 4600, exp: 290, rec: "정예화 1 · Lv.50" },
+    { ep: 4, cost: 27, first: { orb: 3000 }, coin: 4800, exp: 300, rec: "정예화 1 · Lv.55" },
+    { ep: 4, cost: 27, first: { orb: 2400 }, coin: 4900, exp: 305, rec: "정예화 1 · Lv.55" },
+    { ep: 4, cost: 27, first: { orb: 2400 }, coin: 5000, exp: 310, rec: "정예화 1 · Lv.60" },
+    { ep: 4, cost: 27, first: { orb: 2400 }, coin: 5100, exp: 315, rec: "정예화 1 · Lv.60" },
+    { ep: 4, cost: 30, first: { orb: 3000 }, coin: 5300, exp: 325, rec: "정예화 2 · Lv.1" },
+    { ep: 4, cost: 30, first: { orb: 3600 }, coin: 5600, exp: 340, rec: "정예화 2 · Lv.1" },
     // the supply operations (자원 수집): open on their days, once the story is far enough along
     // (the same order as the supply operations in TD.STAGES)
     ...Object.keys(window.BSL_ECON.SUPPLY).flatMap((site) => Array.from({ length: window.BSL_ECON.SUPPLY[site].tiers }, (_, k) => k + 1).map((tier) => { const sm = window.BSL_ECON.SUPPLY_META(site, tier);
@@ -62,7 +73,7 @@
   // a stage already cleared on this save stays open whatever sits before it now (a story entry added later must not shut a stage behind it)
   .map((m, i) => { const base = m.unlock; m.unlock = (s) => base(s) || ((s.stages[TD.STAGES[i].code] || {}).stars || 0) > 0; return m; });
   // the main story's episodes: their names and their backdrops
-  const EPISODES = { 1: { no: "01", t: "망자의 행진", en: "THE MARCH OF THE DEAD", art: "st_war" }, 2: { no: "02", t: "지옥 기계", en: "THE INFERNAL MACHINE", art: "st_lane" }, 3: { no: "03", t: "쏘지 않은 탄환", en: "THE UNFIRED BULLET", art: "st_parade" } };   // chapter 3: a working title and a borrowed backdrop until its own is drawn
+  const EPISODES = { 1: { no: "01", t: "망자의 행진", en: "THE MARCH OF THE DEAD", art: "st_war" }, 2: { no: "02", t: "지옥 기계", en: "THE INFERNAL MACHINE", art: "st_lane" }, 3: { no: "03", t: "쏘지 않은 탄환", en: "THE UNFIRED BULLET", art: "st_parade" }, 4: { no: "04", t: "발푸르기스의 밤", en: "WALPURGIS NIGHT", art: "st_room" } };   // chapter 3: a working title and a borrowed backdrop until its own is drawn
   const epArt = (n) => ART[(EPISODES[n] || EPISODES[1]).art] || ART.st_war || ART.bg;
   const POOL = { 6: ["rabi6", "veil", "eungyeol", "smoqueen", "angelina"], 5: ["geomseon", "belina", "yui", "rabi", "piania", "silphy", "bongeun", "alpha2", "skakea2"], 4: ["falchion", "atat", "hakuren", "miho", "lulu", "irins", "alpha", "skakea", "ker", "sunae", "teka"], 3: ["brick", "jayeon", "capy", "hiro", "lilith", "ayaki", "nana", "tao"] };
   const DUMMY_OPS = new Set(["vanguard", "guard", "defender", "sniper", "caster", "medic", "supporter", "specialist"]);   /* the eight stand-ins from the first builds (로완, 카이, 브람, 세라, 이오, 미르, 노바, 제트): never offered on trial */
@@ -211,6 +222,7 @@
   .node.sel .box { background:linear-gradient(90deg,#8e9095,#6f7277); color:#2a2a2a; } .node.sel .hx { filter:grayscale(1) brightness(.85); }
   .node.tr .box { background:linear-gradient(90deg,#1d1e21 0,#2a2b2f 100%); color:#fff; } .node.tr .lab { background:#e9eaec; color:#151515; } .node.tr.sel .box { background:linear-gradient(90deg,#55585e,#43464b); color:#ddd; }   /* a lesson, as the original's TR stages: the tag in black */
   .node.st .box { background:linear-gradient(90deg,#efe6cf 0,#e4d8b8 70%,#cfc3a0 100%); color:#2a241c; } .node.st .lab { background:#5a4528; color:#f3ead6; } .node.st .c { font-size:19px; } .node.st.sel .box { background:linear-gradient(90deg,#8e8572,#6f685a); color:#2a241c; }   /* a story entry: a paper tag, as the original's ST stages */
+  .node.hard .lab { background:#5e0d14; color:#ffd9d9; font-weight:700; } .node.hard .hx, .node.hard.next .hx { background:linear-gradient(#a3222e,#5e0d14); } .node.hard .hx svg { width:18px; height:18px; }
   .node.st.next .hx { background:linear-gradient(#e8c77a,#b8882a); } .node.st.next .hx i { background:#d9a93f; box-shadow:inset 0 0 0 2px #fff; }
   .node .dm { position:absolute; right:-34px; top:-5px; width:50px; height:50px; border-radius:50%; background:radial-gradient(#3a3d43,#1b1c1f 70%); border:2px solid #9a9da3; box-shadow:0 0 0 2px rgba(0,0,0,.55),0 3px 6px rgba(0,0,0,.5); display:grid; place-items:center; overflow:hidden; }
   .node .dm svg { width:38px; height:38px; } .node .dm.t2 { border-color:#5fb3ff; } .node .dm.t3 { border-color:#d9a8ff; } .node.sel .dm { filter:brightness(.8); }
@@ -1932,7 +1944,7 @@
       row.addEventListener("wheel", (e) => { if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) { row.scrollLeft += e.deltaY; e.preventDefault(); } }, { passive: false });
       const epOpen = (k) => TD.STAGES.some((q, i) => STAGE_META[i].ep === k && STAGE_META[i].branch === undefined && STAGE_META[i].unlock(S));
       const epProg = (k) => { const l = TD.STAGES.filter((q, i) => STAGE_META[i].ep === k && STAGE_META[i].branch === undefined); return [l.filter((q) => ((S.stages[q.code] || {}).stars || 0) > 0).length, l.length]; };
-      const EPS = [1, 2, 3].map((k) => epOpen(k) ? Object.assign({ k, img: epArt(k), open: true }, EPISODES[k]) : { k, no: EPISODES[k].no, t: "???", en: "NOT YET RECEIVED" }).concat([{ no: "04", t: "???", en: "NOT YET RECEIVED" }]);
+      const EPS = [1, 2, 3, 4].map((k) => epOpen(k) ? Object.assign({ k, img: epArt(k), open: true }, EPISODES[k]) : { k, no: EPISODES[k].no, t: "???", en: "NOT YET RECEIVED" }).concat([{ no: "05", t: "???", en: "NOT YET RECEIVED" }]);
       for (const e of EPS) {
         const [done, n] = e.open ? epProg(e.k) : [0, 0];
         const c = h("div", "btn ch-sq" + (e.open ? " open" : ""), (e.img ? `<div class="im" style="background-image:url(${e.img})"></div>` : "") + `<div class="sh"></div>
@@ -1973,7 +1985,8 @@
       TD.STAGES.forEach((st, i) => {
         if (!STAGE_META[i].unlock(S) || STAGE_META[i].supply || STAGE_META[i].lab || !inEp(i)) return;
         const story = !!STAGE_META[i].story;   // a story-only entry: tagged STORY, nothing hangs off it
-        const nd = h("div", "btn node" + (cleared(i) ? " clear" : " next") + (isMain(i) ? "" : " tr") + (story ? " st" : ""), `<div class="lab en">${story ? "STORY" : isMain(i) ? "OPERATION" : "TUTORIAL"}</div><div class="box"><div class="hx"><i></i></div><div class="c en">${st.code}</div></div>${story ? "" : dm(st.code)}`);
+        const hard = !story && !!st.hard;   /* a hard stage (stage.hard): a near-boss mark, the hexagon in dark red with a double chevron, and the tag reads 고난도 */
+        const nd = h("div", "btn node" + (cleared(i) ? " clear" : " next") + (isMain(i) ? "" : " tr") + (story ? " st" : "") + (hard ? " hard" : ""), `<div class="lab${hard ? "" : " en"}">${story ? "STORY" : hard ? "고난도" : isMain(i) ? "OPERATION" : "TUTORIAL"}</div><div class="box"><div class="hx">${hard ? '<svg viewBox="0 0 20 20"><path d="M4 5l6 5 6-5M4 10l6 5 6-5" fill="none" stroke="#ffd9d9" stroke-width="2.6"/></svg>' : "<i></i>"}</div><div class="c en">${st.code}</div></div>${story ? "" : dm(st.code)}`);
         Object.assign(nd.style, { left: nx(i) + "px", top: ny(i) + "px" });
         nd.onclick = (ev) => { ev.stopPropagation(); pick(i, true); };
         nodes[i] = nd; track.appendChild(nd);

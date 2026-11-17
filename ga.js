@@ -41,7 +41,8 @@ const pick = (a) => a[ri(a.length)];
 const wpick = (items, w) => { let s = 0; for (const x of w) s += x; let r = R() * s; for (let i = 0; i < items.length; i++) { r -= w[i]; if (r <= 0) return items[i]; } return items[items.length - 1]; };
 const clone = (o) => JSON.parse(JSON.stringify(o));
 const median = (a) => { const b = a.slice().sort((x, y) => x - y); return b[b.length >> 1]; };
-const keyOf = (p) => JSON.stringify([p.entries.map((q) => [q.id, q.x, q.y, q.d, q.from, q.until, q.after]), p.skill || {}, p.skillIdx || {}, (p.retreats || []).map((r) => [r.id, r.t]), p.pol || {}]);
+const keyOf = (p) => { const k = [p.entries.map((q) => q.fp === undefined && q.tp === undefined ? [q.id, q.x, q.y, q.d, q.from, q.until, q.after] : [q.id, q.x, q.y, q.d, q.from, q.until, q.after, q.fp, q.tp]), p.skill || {}, p.skillIdx || {}, (p.retreats || []).map((r) => r.fp === undefined ? [r.id, r.t] : [r.id, r.t, r.fp]), p.pol || {}];
+  if (p.feed || p.re) k.push(p.feed || null, p.re || null); return JSON.stringify(k); };   // frost genes appended only when present: every older key (and memo line) stays exactly as it was
 const fmtT = (s) => `${Math.floor(s / 60)}:${String(Math.round(s % 60)).padStart(2, "0")}`;
 
 // ---------- plan operators ----------
@@ -54,6 +55,11 @@ class Space {
     this.limit = TD.STAGES[S.stageIdx(code)].deployLimit || TD.CFG.deployLimit;
     const st = TD.STAGES[S.stageIdx(code)];
     this.tEnd = Math.min(400, Math.max(...st.waves.map((w) => +w[0] || 0)) + 30);
+    this.frost = null;
+    if (st.frost) {   // frost stage (IM-10 v2): braziers in the order they appear (the map's, then each phase's set), the phase count; the frost genes are offered only here
+      const bz = []; st.map.forEach((row, y) => [...row].forEach((c, x) => { if (c === "F") bz.push([x, y]); }));
+      for (const P of st.frost.phases || []) for (const [x, y, ch] of P.set || []) if (ch === "F" && !bz.some(([a, b]) => a === x && b === y)) bz.push([x, y]);
+      this.frost = { bz, nph: (st.frost.phases || [{}]).length, TH: [0.3, 0.5, 0.7, 1] }; this.tEnd = 560; }
     this.tile = {}; for (const id of this.ids) this.tile[id] = defAny(id).tile;
     // tile weights per unit: coverage (best facing) plus a floor so every legal tile stays reachable
     this.w = {};
@@ -79,8 +85,10 @@ class Space {
     // cheap and blocking first, a little: a loose prior on order the search reshuffles anyway
     plan.entries.sort((a, b) => (defAny(a.id).cost - defAny(b.id).cost) * 0.3 + (R() - 0.5) * 10);
     this.pickSkills(plan, "random");
+    if (this.frost) { plan.feed = this.randomFeed(); for (const q of plan.entries) if (R() < 0.3) { q.fp = ri(this.frost.nph); if (R() < 0.5) q.from = ri(40); } }
     return plan;
   }
+  randomFeed() { const F = this.frost; const b = F.bz.filter(() => R() < 0.75).map(([x, y]) => [x, y, pick(F.TH)]).sort(() => R() - 0.5); return { b, w: R() < 0.3 ? 1 : 0 }; }
   // each card's skill is a search variable: any skill unlocked at this elite (S1 at E0; S1/S2 at E1; S3 at E2). mode: "random" | "s1" | "max" (im_sim's forced min(elite, n-1))
   pickSkills(plan, mode) {
     plan.skillIdx = plan.skillIdx || {};
@@ -95,6 +103,7 @@ class Space {
     for (const q of p.entries) { if (have.has(q.id)) continue; if (sub[q.id] === undefined) { const d = defAny(q.id); const free = this.squad.filter((id) => !used.has(id) && defAny(id).tile === d.tile);
         const c = free.find((id) => defAny(id).cls === d.cls) || free[0] || null; sub[q.id] = c; if (c) used.add(c); } q.id = sub[q.id]; }
     p.entries = p.entries.filter((q) => q.id && this.tileIdx(q.id, q.x, q.y) >= 0 || (q.id && q.after));
+    if (p.re) { const re = {}; for (const [id, v] of Object.entries(p.re)) { const n = have.has(id) ? id : sub[id]; if (n) re[n] = v; } p.re = re; }
     p.skill = p.skill || {}; p.skillIdx = p.skillIdx || {}; p.retreats = (p.retreats || []).filter((r) => have.has(r.id)); p.pol = Object.assign({ fire: 1, melt: 1, lamp: 1 }, p.pol || {});
     return { plan: p, sub };
   }
@@ -116,6 +125,7 @@ class Space {
       ? [["tile", 5], ["nudge", 4], ["dir", 3], ["order", 4], ["add", 2], ["del", 1.5], ["swapUnit", 2], ["exch", 2], ["skillIdx", 2]]
       : [["tile", 1.5], ["nudge", 1.5], ["dir", 1], ["order", 2], ["add", 0.6], ["del", 0.6], ["swapUnit", 0.6], ["exch", 0.6], ["skillIdx", 1.5],
          ["from", 4], ["skill", 3], ["retreat", 1.5], ["retreatT", 2], ["relocate", 1.5], ["alt", 1], ["pol", 0.5], ["dropX", 1]];
+    if (this.frost) ops.push(["feedTh", phase === 1 ? 2 : 2.5], ["feedPh", 1], ["feedOrd", 1.5], ["feedW", 0.5], ["re", 1], ["fp", phase === 1 ? 2 : 3], ["tp", 1], ["fb", 1]);
     const op = wpick(ops.map((o) => o[0]), ops.map((o) => o[1]));
     const E = p.entries;
     const anyE = () => E.length ? pick(E) : null;
@@ -132,7 +142,7 @@ class Space {
         if (!u.length) break; const id = pick(u); const old = q.id; for (const r of E) if (r.id === old) r.id = id; for (const r of p.retreats || []) if (r.id === old) r.id = id; if (p.skill[old]) { p.skill[id] = p.skill[old]; delete p.skill[old]; } break; }
       case "exch": { if (E.length < 2) break; const a = pick(E), b = pick(E); if (a === b || a.id === b.id) break; if (this.tileIdx(a.id, b.x, b.y) < 0 || this.tileIdx(b.id, a.x, a.y) < 0) break; [a.x, b.x] = [b.x, a.x]; [a.y, b.y] = [b.y, a.y]; [a.d, b.d] = [b.d, a.d]; break; }
       case "skillIdx": { const ch = E.filter((q) => maxSk(q.id, this.E) >= 1); if (!ch.length) break; const q = pick(ch); const m = maxSk(q.id, this.E); const cur = p.skillIdx[q.id] !== undefined ? p.skillIdx[q.id] : m; p.skillIdx[q.id] = (cur + 1 + ri(m)) % (m + 1); break; }
-      case "from": { const q = anyE(); if (!q) break; const r = R(); if (r < 0.25) delete q.from; else if (r < 0.6 && q.from !== undefined) q.from = Math.max(0, Math.round(q.from + (R() - 0.5) * 30)); else q.from = Math.round(R() * R() * this.tEnd * 0.7); if (q.from === 0) delete q.from; if (q.until !== undefined && q.from !== undefined && q.from >= q.until) delete q.until; break; }
+      case "from": { const q = anyE(); if (!q) break; if (q.fp !== undefined) { q.from = Math.max(0, Math.round((q.from || 0) + (R() - 0.5) * 30)); if (!q.from) delete q.from; break; } const r = R(); if (r < 0.25) delete q.from; else if (r < 0.6 && q.from !== undefined) q.from = Math.max(0, Math.round(q.from + (R() - 0.5) * 30)); else q.from = Math.round(R() * R() * this.tEnd * 0.7); if (q.from === 0) delete q.from; if (q.until !== undefined && q.from !== undefined && q.from >= q.until) delete q.until; break; }
       case "skill": { const q = anyE(); if (!q) break; const r = R(); const cur = p.skill[q.id];
         if (r < 0.2) delete p.skill[q.id]; else if (r < 0.45 && cur && cur.m === 1) cur.t = Math.max(0, Math.round(cur.t + (R() - 0.5) * 30)); else { const m = wpick([1, 2, 3], [3, 3, 1]); p.skill[q.id] = m === 1 ? { m, t: Math.round(R() * this.tEnd) } : { m }; } break; }
       case "retreat": { p.retreats = p.retreats || []; if (p.retreats.length >= 2 || R() < 0.3) { if (p.retreats.length) p.retreats.splice(ri(p.retreats.length), 1); break; } const q = anyE(); if (!q) break; p.retreats.push({ id: q.id, t: Math.round(10 + R() * (this.tEnd - 10)) }); break; }
@@ -148,25 +158,47 @@ class Space {
       case "dropX": {   // drop a secondary entry / retreat
         const ids = new Set(); const sec = E.filter((q) => { if (ids.has(q.id)) return true; ids.add(q.id); return false; }); if (sec.length) { const q = pick(sec); p.entries = E.filter((r) => r !== q); const first = p.entries.find((r) => r.id === q.id); if (first) delete first.until; p.retreats = (p.retreats || []).filter((r) => r.id !== q.id || R() < 0.5); } else if ((p.retreats || []).length) p.retreats.splice(ri(p.retreats.length), 1); break; }
       case "pol": { const k = pick(["fire", "melt", "lamp"]); p.pol[k] = p.pol[k] ? 0 : 1; break; }
+      // ---- frost genes (only offered on a frost stage) ----
+      case "feedTh": { const F = this.frost; p.feed = p.feed || { b: [], w: 0 }; const [x, y] = pick(F.bz); const at = p.feed.b.map((b, i) => [b, i]).filter(([b]) => b[0] === x && b[1] === y);
+        const th = R() < 0.2 ? 0 : pick(F.TH); if (at.length) { const [, i] = pick(at); if (th) p.feed.b[i][2] = th; else p.feed.b.splice(i, 1); } else if (th) p.feed.b.splice(ri(p.feed.b.length + 1), 0, [x, y, th]); break; }
+      case "feedPh": { const F = this.frost; p.feed = p.feed || { b: [], w: 0 }; const [x, y] = pick(F.bz); const ph = 1 + ri(F.nph - 1);   /* a threshold that applies from a later phase on (e.g. feed with every 10 cost in the final storm) */
+        const i = p.feed.b.findIndex((b) => b[0] === x && b[1] === y && (b[3] || 0) === ph); if (i >= 0) p.feed.b.splice(i, 1); else p.feed.b.push([x, y, pick(F.TH), ph]); break; }
+      case "feedOrd": { const b = p.feed && p.feed.b; if (!b || b.length < 2) break; const i = ri(b.length), j = ri(b.length); [b[i], b[j]] = [b[j], b[i]]; break; }
+      case "feedW": { p.feed = p.feed || { b: [], w: 0 }; p.feed.w = p.feed.w ? 0 : 1; break; }
+      case "re": { const q = anyE(); if (!q || S.isSummon(q.id)) break; p.re = p.re || {}; if (p.re[q.id] === 0) delete p.re[q.id]; else p.re[q.id] = 0; if (!Object.keys(p.re).length) delete p.re; break; }
+      case "fp": { const q = anyE(); if (!q) break; const r = R(); if (r < 0.25) { delete q.fp; delete q.tp; delete q.from; delete q.until; }
+        else if (r < 0.55 && q.fp !== undefined) q.from = Math.max(0, Math.round((q.from || 0) + (R() - 0.5) * 30));
+        else { q.fp = ri(this.frost.nph); q.from = R() < 0.4 ? 0 : Math.round(R() * 60); delete q.until; delete q.tp; }
+        if (q.from === 0) delete q.from; break; }
+      case "tp": { const q = anyE(); if (!q) break; if (q.tp !== undefined && R() < 0.4) { delete q.tp; delete q.until; break; }   /* stand there until phase k starts (+ a few s) */
+        const k0 = q.fp !== undefined ? q.fp + 1 : 1; if (k0 >= this.frost.nph) break; q.tp = k0 + ri(this.frost.nph - k0); q.until = R() < 0.5 ? 0 : Math.round(R() * 30); break; }
+      case "fb": {   // a fall-back square for a card: used when its own square is taken or cannot be deployed on (fog, a changed board)
+        const prim = this.primary(p); if (!prim.length) break; const q = pick(prim); const t = this.sampleTile(q.id, p, q); if (!t) break;
+        const e = { id: q.id, x: t.x, y: t.y, d: t.d }; if (q.fp !== undefined) e.fp = q.fp; E.splice(E.indexOf(q) + 1, 0, e); break; }
     }
   }
   crossover(a, b) {
     // a's order and unit set; each unit takes b's square/facing with p=0.5 when b fields it and the square is free
     const p = clone(a); const bm = new Map(); for (const q of this.primary(b)) bm.set(q.id, q);
-    for (const q of this.primary(p)) { const o = bm.get(q.id); if (!o || R() < 0.5) continue; const occ = this.occupied(p, q); if (occ.has(o.x * 100 + o.y)) continue; q.x = o.x; q.y = o.y; q.d = o.d; if (o.from !== undefined) q.from = o.from; else delete q.from; }
+    for (const q of this.primary(p)) { const o = bm.get(q.id); if (!o || R() < 0.5) continue; const occ = this.occupied(p, q); if (occ.has(o.x * 100 + o.y)) continue; q.x = o.x; q.y = o.y; q.d = o.d; if (o.from !== undefined) q.from = o.from; else delete q.from; if (o.fp !== undefined) q.fp = o.fp; else delete q.fp; if (o.tp !== undefined) { q.tp = o.tp; q.until = o.until; } else if (q.tp !== undefined) { delete q.tp; delete q.until; } }
     for (const id of Object.keys(b.skill || {})) if (R() < 0.5 && p.entries.some((q) => q.id === id)) p.skill[id] = clone(b.skill[id]);
+    if (this.frost && b.feed && R() < 0.5) p.feed = clone(b.feed);
     return p;
   }
   sanitize(p) {
     // drop entries on squares this unit can never use; keep at most 12 entries; tidy empty fields
     p.entries = p.entries.filter((q) => q.after || this.tileIdx(q.id, q.x, q.y) >= 0).slice(0, 12);
     if (this.allOps) { const real = new Set(), names = new Set(); p.entries = p.entries.filter((q) => { if (S.isSummon(q.id) || real.has(q.id)) return true; const nm = defAny(q.id).name; if (names.has(nm) || real.size >= this.squadMax) return false; names.add(nm); real.add(q.id); return true; }); }
-    for (const q of p.entries) { if (q.from === 0) delete q.from; if (q.until !== undefined && q.from !== undefined && q.until <= q.from) delete q.until; }
+    for (const q of p.entries) { if (q.from === 0) delete q.from; if (q.until !== undefined && q.from !== undefined && q.tp === undefined && q.until <= q.from) delete q.until; }
     const ids = new Set(p.entries.map((q) => q.id));
     for (const id of Object.keys(p.skill || {})) if (!ids.has(id) || defAny(id).skills.every((s) => s.mode !== "manual")) delete p.skill[id];
     p.skillIdx = p.skillIdx || {}; for (const id of Object.keys(p.skillIdx)) if (!ids.has(id) || maxSk(id, this.E) < 1) delete p.skillIdx[id]; else p.skillIdx[id] = Math.min(p.skillIdx[id], maxSk(id, this.E));
     for (const id of ids) if (!S.isSummon(id) && maxSk(id, this.E) >= 1 && p.skillIdx[id] === undefined) p.skillIdx[id] = maxSk(id, this.E);
     p.retreats = (p.retreats || []).filter((r) => ids.has(r.id));
+    if (p.re) { for (const id of Object.keys(p.re)) if (!ids.has(id)) delete p.re[id]; if (!Object.keys(p.re).length) delete p.re; }
+    if (p.feed && !this.frost) delete p.feed;
+    if (p.feed) { const seen = new Set(); p.feed.b = (p.feed.b || []).filter((b) => { const k = b[0] * 100 + b[1] + 1e4 * (b[3] || 0); if (!(b[2] > 0) || !this.frost.bz.some(([x, y]) => x === b[0] && y === b[1]) || seen.has(k)) return false; seen.add(k); return true; }); }
+    if (!this.frost) for (const q of p.entries) { delete q.fp; delete q.tp; }
     return p;
   }
 }
@@ -302,7 +334,8 @@ function harvestOf(cache, ver, n) {
   all.sort((a, b) => b.s - a.s);
   return all.slice(0, n).map((x) => ({ plan: x.v ? x.v.plan : planFromKey(x.key), lost: x.r.lost, win: x.r.win, aborted: !!x.r.aborted, kills: x.r.kills, total: x.r.total, t: x.r.t, five: x.v ? { lives: x.v.lives, wins: x.v.wins, worst: x.v.worst } : null }));
 }
-function planFromKey(k) { const [en, skill, skillIdx, rets, pol] = JSON.parse(k); return { entries: en.map(([id, x, y, d, from, until, after]) => { const q = { id, x, y, d }; if (from !== undefined && from !== null) q.from = from; if (until !== undefined && until !== null) q.until = until; if (after) q.after = after; return q; }), skill, skillIdx, retreats: rets.map(([id, t]) => ({ id, t })), pol }; }
+function planFromKey(k) { const [en, skill, skillIdx, rets, pol, feed, re] = JSON.parse(k); const p = { entries: en.map(([id, x, y, d, from, until, after, fp, tp]) => { const q = { id, x, y, d }; if (from !== undefined && from !== null) q.from = from; if (until !== undefined && until !== null) q.until = until; if (after) q.after = after; if (fp !== undefined && fp !== null) q.fp = fp; if (tp !== undefined && tp !== null) q.tp = tp; return q; }), skill, skillIdx, retreats: rets.map(([id, t, fp]) => fp === undefined || fp === null ? { id, t } : { id, t, fp }), pol };
+  if (feed) p.feed = feed; if (re) p.re = re; return p; }
 
 // ---------- bot P plan, for comparison ----------
 const IM = S.readImSim();

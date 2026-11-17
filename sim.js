@@ -10,6 +10,9 @@ global.window = global;
 require(path.join(GAME_DIR, "econ.js"));
 require(path.join(GAME_DIR, "game.js"));
 const TD = global.TD;
+const FP = require("./frostpol.js");   // frost-stage genes (feed policy, redeploy rule, phase-tied timing); inert elsewhere
+const FROST_MAXT = 750;   // a frost stage runs ~460-530 s of game time (phases open on clear, then the final storm); a run still going at 750 s is stuck
+const maxTOf = (st) => st && st.frost ? Math.max(FROST_MAXT, MAXT) : MAXT;
 if (process.env.AKBENCH_STAGES) require("./akload.js").install(TD, process.env.AKBENCH_STAGES);   // akbench (private benchmark): converted stages added in memory; unset = no change
 if (process.env.AKOPS) require("./akops.js").install(TD, process.env.AKOPS);   // akbench control: converted AK 3★/4★ operators (ids ak_*) added to TD.UNITS in memory; unset = no change
 
@@ -68,7 +71,7 @@ const AFTER = {
 };
 
 // im_sim's lamp-keeper reflex (generic: acts only on a stage with lamps)
-function lampKeeper(g, log) {
+function lampKeeper(g, log, fs) {
   if (!g.stage.lamps || !g.lampOff.size) return;
   const last = g._keeperT || (g._keeperT = new Map());
   for (const k of g.lampOff) { const x = k % 100, y = (k / 100) | 0; if (TD.tileAt(x, y) !== "F" || g.freshKeeper(x, y) || !(g.lampBroken && g.lampBroken.has(k))) continue;
@@ -76,7 +79,7 @@ function lampKeeper(g, log) {
     const off = g.lampOffT.has(k) ? g.lampOffT.get(k) : -1;
     const u = g.units.find((q) => Math.abs(q.x - x) + Math.abs(q.y - y) === 1 && q.born <= off && !q.clone && !q.summoned && !g.enemies.some((e) => e.def.boss && !e.dead && e.blockedBy === q));
     if (!u) continue;
-    last.set(k, g.t); g._why = "lamp"; if (log) log.push({ t: g.t, a: "retreat", id: u.def.id, x: u.x, y: u.y, why: "lamp" }); g.retreat(u); }
+    last.set(k, g.t); g._why = "lamp"; if (log) log.push({ t: g.t, a: "retreat", id: u.def.id, x: u.x, y: u.y, why: "lamp" }); const ci = u.card; g.retreat(u); if (fs) FP.ourRetreat(g, fs, ci); }
 }
 
 /*
@@ -116,7 +119,8 @@ function run(code, lvl, plan, opt = {}) {
   let spent = 0, deploys = 0; const used = new Set();
   const prune = opt.pruneLost;   // abort once more life than this is lost (cannot beat the incumbent)
   let aborted = false;
-  const fps = opt.fps || FPS, N = MAXT * fps;   // opt.fps: a finer step to compare with the browser (which sub-steps at 1/60)
+  const fps = opt.fps || FPS, N = maxTOf(st) * fps;
+  const fs0 = FP.newState(g);   // opt.fps: a finer step to compare with the browser (which sub-steps at 1/60)
   // exact action trace (record mode): the game's own deploy / useSkill / retreat are wrapped on this instance, and only calls made by this
   // loop outside g.update (depth 0) are logged, with the frame and game time, after the game accepted them; engine-internal calls (a fall, a torn drawing) are not
   let k = 0, depth = 0; const actions = opt.record ? [] : null;
@@ -127,27 +131,32 @@ function run(code, lvl, plan, opt = {}) {
       if (u) actions.push({ t: g.t, k, a: "deploy", ci, id: card.def.id, x, y, dir, uid: u.id, cost: c0 - g.cost, summon: card.summonOf !== undefined || undefined }); return u; };
     g.useSkill = (u) => { if (depth) return sk0(u); depth++; let r; try { r = sk0(u); } finally { depth--; } if (r !== false) actions.push({ t: g.t, k, a: "skill", ci: u.card, id: u.def.id, uid: u.id }); return r; };
     g.retreat = (u, refund) => { if (depth || !g.units.includes(u)) return ret(u, refund); depth++; const e = { t: g.t, k, a: "retreat", ci: u.card, id: u.def.id, uid: u.id, x: u.x, y: u.y, why: g._why }; try { ret(u, refund); } finally { depth--; } actions.push(e); };
+    if (g.feedBrazier) { const fb = g.feedBrazier.bind(g); g.feedBrazier = (x, y) => { if (depth) return fb(x, y); depth++; let r; try { r = fb(x, y); } finally { depth--; } if (r) actions.push({ t: g.t, k, a: "feed", m: "feedBrazier", args: [x, y] }); return r; }; }   // a frost brazier fed: replayed as the Game call feedBrazier(x, y)
   }
   for (k = 0; k < N && !g.over; k++) {
+    FP.frameStart(g, fs0);
     // timed retreats
-    for (const r of rets) { if (r.done || g.t < r.t) continue; r.done = true; const u = g.units.find((q) => q.def.id === r.id && !q.clone && !q.summoned); if (u) { g._why = "plan"; if (log) log.push({ t: g.t, a: "retreat", id: r.id, x: u.x, y: u.y, why: "plan" }); g.retreat(u); } }
+    for (const r of rets) { if (r.done || !FP.retreatDue(g, fs0, r)) continue; r.done = true; const u = g.units.find((q) => q.def.id === r.id && !q.clone && !q.summoned); if (u) { g._why = "plan"; if (log) log.push({ t: g.t, a: "retreat", id: r.id, x: u.x, y: u.y, why: "plan" }); const ci = u.card; g.retreat(u); FP.ourRetreat(g, fs0, ci); } }
     // deploys (im_sim order semantics)
+    let waiting = false;
     for (const q of entries) {
       let ci = cardIdx.get(q.id);
       if (ci === undefined) { if (!isSummon(q.id)) continue; ci = g.cards.findIndex((c) => c.summonOf !== undefined && c.def.id === q.id && c.active); if (ci < 0) continue;
         const c = g.cards[ci]; if (c.charges <= 0 || c.placeT > 0) continue; }
       const c = g.cards[ci];
       if (c.summonOf === undefined && (c.deployed || c.cooldown > 0)) continue;
-      if (q.from !== undefined && g.t < q.from) continue;
-      if (q.until !== undefined && g.t >= q.until) continue;
+      if (!FP.entryDue(g, fs0, q)) continue;
+      if (plan.re && FP.blockedByRe(plan, fs0, ci, q.id)) continue;
       if (g.unitAt(q.x, q.y)) continue;
       if (q.after && AFTER[q.after] && !AFTER[q.after](g, q)) continue;
       if (!g.canDeployAt(c, q.x, q.y)) continue;
-      if (g.deployCheck(c)) break;
+      if (g.deployCheck(c)) { waiting = true; break; }
       const cost = g.costOf(c); const u = g.deploy(ci, q.x, q.y, q.d);
       if (u) { spent += cost; deploys++; used.add(q.id); if (log) log.push({ t: g.t, a: "deploy", id: q.id, x: q.x, y: q.y, d: q.d, cost, n: deploys }); }
       break;
     }
+    // frost: feed braziers by the plan's policy (cost and cooldown permitting)
+    if (plan.feed && g.frost) for (let xy; (xy = FP.feedNext(g, plan, waiting));) { if (!g.feedBrazier(xy[0], xy[1])) break; fs0.fed += g.frost.feed.cost; fs0.nFeed++; if (log) log.push({ t: g.t, a: "feed", x: xy[0], y: xy[1] }); }
     // manual skills
     for (const u of g.units) {
       if (!(u.sp >= u.skill.sp && u.skillT <= 0 && u.skill.mode === "manual")) continue;
@@ -157,25 +166,37 @@ function run(code, lvl, plan, opt = {}) {
       if (m === 2) { let any = false; const tiles = g.rangeTiles(u); for (const e of g.enemies) if (!e.dead && !e.ally && (e.blockedBy === u || g.inRange(u, e, tiles))) { any = true; break; } if (!any) continue; }
       if (g.useSkill(u) !== false && log) log.push({ t: g.t, a: "skill", id: u.def.id });
     }
-    if (pol.fire) for (const f of g.fires || []) if (f.st === 1) for (const u of g.units.slice()) if (f.tiles.some(([a, b]) => a === u.x && b === u.y)) { g._why = "fire"; if (log) log.push({ t: g.t, a: "retreat", id: u.def.id, x: u.x, y: u.y, why: "fire" }); g.retreat(u); }
-    if (pol.melt) for (const e of g.enemies) if (e.def.melt && e.aiming && e.aimTgt && e.aimTgt.frozenT > 0 && g.units.includes(e.aimTgt)) { g._why = "melt"; if (log) log.push({ t: g.t, a: "retreat", id: e.aimTgt.def.id, x: e.aimTgt.x, y: e.aimTgt.y, why: "melt" }); g.retreat(e.aimTgt); }
-    if (pol.lamp) lampKeeper(g, log);
+    if (pol.fire) for (const f of g.fires || []) if (f.st === 1) for (const u of g.units.slice()) if (f.tiles.some(([a, b]) => a === u.x && b === u.y)) { g._why = "fire"; if (log) log.push({ t: g.t, a: "retreat", id: u.def.id, x: u.x, y: u.y, why: "fire" }); const ci = u.card; g.retreat(u); FP.ourRetreat(g, fs0, ci); }
+    if (pol.melt) for (const e of g.enemies) if (e.def.melt && e.aiming && e.aimTgt && e.aimTgt.frozenT > 0 && g.units.includes(e.aimTgt)) { g._why = "melt"; if (log) log.push({ t: g.t, a: "retreat", id: e.aimTgt.def.id, x: e.aimTgt.x, y: e.aimTgt.y, why: "melt" }); const ci = e.aimTgt.card; g.retreat(e.aimTgt); FP.ourRetreat(g, fs0, ci); }
+    if (pol.lamp) lampKeeper(g, log, fs0);
     g.update(1 / fps);
     if (prune !== undefined && life0 - g.life > prune) { aborted = true; break; }
   }
   const lost = life0 - g.life;
+  const fr = frostInfo(g, fs0);
   const escortLost = !!(g.escort && g.escort.hp <= 0);
   const complete = g.over === "win";
   const win = complete && lost < 10 && !escortLost;
   const life = win ? 10 - lost : 0;
-  return { win, rwin: complete && lost < TD.CFG.life && !escortLost, life, lost, complete, aborted, stall: !g.over && !aborted, escortLost, t: Math.round(g.t), tEnd: g.t, frames: k, over: g.over, kills: g.killed, total: g.total, units: used.size, deploys, spent, log, actions };
+  return { win, rwin: complete && lost < TD.CFG.life && !escortLost, life, lost, complete, aborted, stall: !g.over && !aborted, escortLost, t: Math.round(g.t), tEnd: g.t, frames: k, over: g.over, kills: g.killed, total: g.total, units: used.size, deploys, spent, log, actions, ...fr };
+}
+// frost stats for the result (empty on other stages: the result then has exactly its old fields)
+function frostInfo(g, s) {
+  if (!g.frost) return {};
+  const F = g.frost, lit = [];
+  for (const [k, L] of g.lampHp) { const x = k % 100, y = (k / 100) | 0; if (TD.tileAt(x, y) === "F" && g.lampLit(x, y)) lit.push(x + "," + y + ":" + Math.round(L.hp)); }
+  return { frost: 1, frostLost: !!F.lost, phase: F.final ? "F" : F.phase, lit: lit.length, litList: lit, fed: s.fed, nFeed: s.nFeed, falls: FP.falls(s), moved: s.moved.reduce((a, b) => a + b, 0), phT: s.ph.map((v) => Math.round(v)) };
 }
 
 // fitness: winners first by life, then fewer units, then less cost; losers by total life lost (the padded pool lets them play every wave), then kills
 function score(r) {
-  if (r.win) return 1e6 + r.life * 1e4 - r.units * 100 - r.spent;
+  if (r.win) return 1e6 + r.life * 1e4 - r.units * 100 - r.spent + (r.frost ? r.lit * 200 : 0);   // frost: braziers still lit as margin
+  /* frost: a run pruned (past the criterion), stuck at the time cap (a foe nobody reaches keeps its phase open) or lost to the cold all rank on one scale, by foes cleared:
+     a stuck run that never loses a life must not outrank a run that got further and was pruned (that was the trap: "hold forever, feed forever") */
+  if (r.frost && (r.aborted || r.stall || r.frostLost)) return -1e6 + r.kills * 150 - r.lost * 10;
   if (r.aborted) return -1e6 + r.t * 10 + r.kills;   // pruned (past the criterion or the incumbent): longer survival and more kills rank higher
   const pen = r.escortLost ? 50 : 0;
+  if (r.frost) return -(r.lost + pen) * 1000 + r.kills * 150 - r.units * 1;   /* frost, completed but losing lives (no prune): foes cleared count heavily */
   return -(r.lost + pen) * 1000 + r.kills * 10 - r.units * 1 - (r.stall ? 5000 : 0);
 }
 
@@ -186,17 +207,24 @@ function stageInfo(code, ids, lvl) {
   const i = stageIdx(code), st = TD.STAGES[i];
   TD.setMap(st.map);
   seed(1);
-  const g = new TD.Game(i, buildSquad(ids, E, L));
+  let g = new TD.Game(i, buildSquad(ids, E, L));
   g.life += LIFE_PAD;
   const W = st.map[0].length, H = st.map.length;
   const legal = {};
   const fake = summonIds(ids).map((sid) => ({ def: TD.SUMMONS[sid], summonOf: -1, elite: 0 }));
   for (const c of g.cards.concat(fake)) { if (c.summonOf !== undefined && c.summonOf !== -1) continue; const a = []; for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) if (g.canDeployAt(c, x, y)) a.push([x, y]); legal[c.def.id] = a; }
+  let legalPh = null;
+  if (g.frost) {   // frost: the board changes by phase (fog lifts, squares change), so a square is legal if it is in any phase; legalPh[id][k] = the squares legal in phase k
+    legalPh = {}; const phs = (st.frost.phases || [{}]).length; seed(1); TD.setMap(st.map); const h = new TD.Game(i, buildSquad(ids, E, L)); h.fx = NULLFX; h.snd = NOOP;
+    for (let p = 0; p < phs; p++) { if (p) h.frostPhase(p); for (const c of h.cards.concat(fake)) { if (c.summonOf !== undefined && c.summonOf !== -1) continue; const id = c.def.id; (legalPh[id] || (legalPh[id] = []))[p] = [];
+        for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) if (h.canDeployAt(c, x, y)) { legalPh[id][p].push([x, y]); if (!legal[id].some(([a, b]) => a === x && b === y)) legal[id].push([x, y]); } } }
+    seed(1); TD.setMap(st.map); g = new TD.Game(i, buildSquad(ids, E, L)); g.life += LIFE_PAD; }
   // foe traffic: enemy-seconds per tile with nobody deployed (ground and air separately)
   const traffic = new Float64Array(W * H), air = new Float64Array(W * H);
-  for (let k = 0; k < MAXT * FPS && !g.over; k++) {
+  for (let k = 0; k < maxTOf(st) * FPS && !g.over; k++) {
     // sample the board every 0.2 s (6 frames)
     if (k % 6 === 0) for (const e of g.enemies) { if (e.dead || e.ally) continue; const x = Math.round(e.x), y = Math.round(e.y); if (x < 0 || y < 0 || x >= W || y >= H) continue; (e.def.flying ? air : traffic)[y * W + x] += 0.2; }
+    if (g.frost) for (const [, Lh] of g.lampHp) Lh.hp = g.frost.max;   // frost: the braziers are kept full in this empty run so every phase plays and its traffic is seen
     g.update(1 / FPS);
   }
   // range-coverage score per unit/tile/facing (ground traffic always; air counts for ranged units)
@@ -204,7 +232,7 @@ function stageInfo(code, ids, lvl) {
   for (const c of g.cards.concat(fake)) { if (c.summonOf !== undefined && c.summonOf !== -1) continue; const id = c.def.id, d = c.def; const RK = TD.rangeKeyOf(d, c.elite), R = TD.RANGE[RK] || [[0, 0]];
     cover[id] = legal[id].map(([x, y]) => { const s = [0, 1, 2, 3].map((dir) => { let v = 0; for (const o of R) { const [dx, dy] = TD.rotate(o, dir); const X = x + dx, Y = y + dy; if (X < 0 || Y < 0 || X >= W || Y >= H) continue; v += traffic[Y * W + X] + (d.tile === "h" ? air[Y * W + X] : 0); }
         if (d.block > 0) v += 3 * traffic[y * W + x]; return v; }); return s; }); }
-  return { W, H, legal, cover, traffic: Array.from(traffic), air: Array.from(air), map: st.map.slice(), name: st.name, code, emptyLost: LIFE_PAD + 10 - g.life - 10 };
+  return { W, H, legal, cover, traffic: Array.from(traffic), air: Array.from(air), map: st.map.slice(), name: st.name, code, legalPh, emptyLost: LIFE_PAD + 10 - g.life - 10 };
 }
 
-module.exports = { SLV_RULE, skillRank, isSummon, summonIds, TD, GAME_DIR, MAXLV, LADDER, parseLv, lvName, def, stageIdx, buildSquad, maxSkillIdx, seed, run, score, stageInfo, readImSim, starterParty, squadIdsOf, AFTER };
+module.exports = { FP, FROST_MAXT, maxTOf, frostInfo, SLV_RULE, skillRank, isSummon, summonIds, TD, GAME_DIR, MAXLV, LADDER, parseLv, lvName, def, stageIdx, buildSquad, maxSkillIdx, seed, run, score, stageInfo, readImSim, starterParty, squadIdsOf, AFTER };

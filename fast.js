@@ -7,6 +7,7 @@
 "use strict";
 const S = require("./sim.js");
 const { TD } = S;
+const FP = S.FP;   // frost genes (inert elsewhere)
 const FPS = 30, MAXT = +(process.env.SOLVER_MAXT || 420), LIFE_PAD = 1000, CK = +(process.env.FAST_CK || 30);
 const NOOP = () => {};
 const NULLFX = { push() { return 0; }, pop() { return undefined; }, filter() { return NULLFX; }, [Symbol.iterator]() { return [][Symbol.iterator](); }, length: 0 };
@@ -52,29 +53,32 @@ class Ctl {
     this.entries = plan.entries; this.sk = plan.skill || {}; this.pol = Object.assign({ fire: 1, melt: 1, lamp: 1 }, plan.pol || {});
     this.rets = (plan.retreats || []).map((r) => Object.assign({ done: false }, r)).sort((a, b) => a.t - b.t);
     this.cardIdx = new Map(); g.cards.forEach((c, k) => { if (!this.cardIdx.has(c.def.id)) this.cardIdx.set(c.def.id, k); });
-    this.spent = 0; this.deploys = 0; this.used = new Set();
+    this.spent = 0; this.deploys = 0; this.used = new Set(); this.plan = plan; this.fs = FP.newState(g);
   }
-  snap() { return { d: this.rets.map((r) => r.done), spent: this.spent, deploys: this.deploys, used: [...this.used] }; }
-  restore(s) { this.rets.forEach((r, i) => { r.done = s.d[i]; }); this.spent = s.spent; this.deploys = s.deploys; this.used = new Set(s.used); }
+  snap() { return { d: this.rets.map((r) => r.done), spent: this.spent, deploys: this.deploys, used: [...this.used], fs: FP.snapState(this.fs) }; }
+  restore(s) { this.rets.forEach((r, i) => { r.done = s.d[i]; }); this.spent = s.spent; this.deploys = s.deploys; this.used = new Set(s.used); this.fs = FP.snapState(s.fs); }
   // yields [kind, ...] before each action; receives the action's result
   *frame(g) {
-    for (const r of this.rets) { if (r.done || g.t < r.t) continue; r.done = true; const u = g.units.find((q) => q.def.id === r.id && !q.clone && !q.summoned); if (u) yield ["R", u]; }
+    const fs = this.fs, plan = this.plan; FP.frameStart(g, fs);
+    for (const r of this.rets) { if (r.done || !FP.retreatDue(g, fs, r)) continue; r.done = true; const u = g.units.find((q) => q.def.id === r.id && !q.clone && !q.summoned); if (u) { const ci = u.card; yield ["R", u]; FP.ourRetreat(g, fs, ci); } }
+    let waiting = false;
     for (const q of this.entries) {
       let ci = this.cardIdx.get(q.id);
       if (ci === undefined) { if (!S.isSummon(q.id)) continue; ci = g.cards.findIndex((c) => c.summonOf !== undefined && c.def.id === q.id && c.active); if (ci < 0) continue;
         const c = g.cards[ci]; if (c.charges <= 0 || c.placeT > 0) continue; }
       const c = g.cards[ci];
       if (c.summonOf === undefined && (c.deployed || c.cooldown > 0)) continue;
-      if (q.from !== undefined && g.t < q.from) continue;
-      if (q.until !== undefined && g.t >= q.until) continue;
+      if (!FP.entryDue(g, fs, q)) continue;
+      if (plan.re && FP.blockedByRe(plan, fs, ci, q.id)) continue;
       if (g.unitAt(q.x, q.y)) continue;
       if (q.after && AFTER[q.after] && !AFTER[q.after](g, q)) continue;
       if (!g.canDeployAt(c, q.x, q.y)) continue;
-      if (g.deployCheck(c)) break;
+      if (g.deployCheck(c)) { waiting = true; break; }
       const cost = g.costOf(c); const u = yield ["D", ci, q.x, q.y, q.d];
       if (u) { this.spent += cost; this.deploys++; this.used.add(q.id); }
       break;
     }
+    if (plan.feed && g.frost) for (let xy; (xy = FP.feedNext(g, plan, waiting));) { const ok = yield ["B", xy[0], xy[1]]; if (!ok) break; fs.fed += g.frost.feed.cost; fs.nFeed++; }
     for (const u of g.units) {
       if (!(u.sp >= u.skill.sp && u.skillT <= 0 && u.skill.mode === "manual")) continue;
       const s = this.sk[u.def.id], m = s ? s.m : 0;
@@ -83,8 +87,8 @@ class Ctl {
       if (m === 2) { let any = false; const tiles = g.rangeTiles(u); for (const e of g.enemies) if (!e.dead && !e.ally && (e.blockedBy === u || g.inRange(u, e, tiles))) { any = true; break; } if (!any) continue; }
       yield ["S", u];
     }
-    if (this.pol.fire) for (const f of g.fires || []) if (f.st === 1) for (const u of g.units.slice()) if (f.tiles.some(([a, b]) => a === u.x && b === u.y)) yield ["F", u];
-    if (this.pol.melt) for (const e of g.enemies) if (e.def.melt && e.aiming && e.aimTgt && e.aimTgt.frozenT > 0 && g.units.includes(e.aimTgt)) yield ["M", e.aimTgt];
+    if (this.pol.fire) for (const f of g.fires || []) if (f.st === 1) for (const u of g.units.slice()) if (f.tiles.some(([a, b]) => a === u.x && b === u.y)) { const ci = u.card; yield ["F", u]; FP.ourRetreat(g, fs, ci); }
+    if (this.pol.melt) for (const e of g.enemies) if (e.def.melt && e.aiming && e.aimTgt && e.aimTgt.frozenT > 0 && g.units.includes(e.aimTgt)) { const ci = e.aimTgt.card; yield ["M", e.aimTgt]; FP.ourRetreat(g, fs, ci); }
     if (this.pol.lamp && g.stage.lamps && g.lampOff.size) {
       const last = g._keeperT || (g._keeperT = new Map());
       for (const k of g.lampOff) { const x = k % 100, y = (k / 100) | 0; if (TD.tileAt(x, y) !== "F" || g.freshKeeper(x, y) || !(g.lampBroken && g.lampBroken.has(k))) continue;
@@ -92,7 +96,7 @@ class Ctl {
         const off = g.lampOffT.has(k) ? g.lampOffT.get(k) : -1;
         const u = g.units.find((q) => Math.abs(q.x - x) + Math.abs(q.y - y) === 1 && q.born <= off && !q.clone && !q.summoned && !g.enemies.some((e) => e.def.boss && !e.dead && e.blockedBy === q));
         if (!u) continue;
-        yield ["L", u, k]; }
+        const ci = u.card; yield ["L", u, k]; FP.ourRetreat(g, fs, ci); }
     }
   }
 }
@@ -104,6 +108,7 @@ function apply(g, a) {
     case "F": g._why = "fire"; g.retreat(a[1]); return undefined;
     case "M": g._why = "melt"; g.retreat(a[1]); return undefined;
     case "L": g._keeperT.set(a[2], g.t); g._why = "lamp"; g.retreat(a[1]); return undefined;
+    case "B": return g.feedBrazier(a[1], a[2]);
   }
 }
 const same = (a, b) => a.length === b.length && a.every((x, i) => x === b[i]);
@@ -122,11 +127,11 @@ function setup(code, lvl, plan, opt) {
 }
 function result(g, life0, ctl, k, aborted) {
   const lost = life0 - g.life, escortLost = !!(g.escort && g.escort.hp <= 0), complete = g.over === "win", win = complete && lost < 10 && !escortLost;
-  return { win, rwin: complete && lost < TD.CFG.life && !escortLost, life: win ? 10 - lost : 0, lost, complete, aborted, stall: !g.over && !aborted, escortLost, t: Math.round(g.t), tEnd: g.t, frames: k, over: g.over, kills: g.killed, total: g.total, units: ctl.used.size, deploys: ctl.deploys, spent: ctl.spent };
+  return { win, rwin: complete && lost < TD.CFG.life && !escortLost, life: win ? 10 - lost : 0, lost, complete, aborted, stall: !g.over && !aborted, escortLost, t: Math.round(g.t), tEnd: g.t, frames: k, over: g.over, kills: g.killed, total: g.total, units: ctl.used.size, deploys: ctl.deploys, spent: ctl.spent, ...S.frostInfo(g, ctl.fs) };
 }
 // continue one plan alone from frame k0 (its frame-k0 actions not yet taken)
 function runFrom(g, ctl, k0, life0, opt) {
-  const fps = opt.fps || FPS, N = MAXT * fps, prune = opt.pruneLost; let k = k0, aborted = false;
+  const fps = opt.fps || FPS, N = S.maxTOf(g.stage) * fps, prune = opt.pruneLost; let k = k0, aborted = false;
   for (; k < N && !g.over; k++) { frameAlone(g, ctl); g.update(1 / fps); if (prune !== undefined && life0 - g.life > prune) { aborted = true; break; } }
   return result(g, life0, ctl, k, aborted);
 }
@@ -137,7 +142,7 @@ const stats = { batches: 0, plans: 0, framesSim: 0, framesFull: 0, ckTaken: 0, c
 function runBatch(code, lvl, plans, opt = {}) {
   if (plans.length === 1) { const r = runOne(code, lvl, plans[0], opt); stats.plans++; stats.framesSim += r.frames; stats.framesFull += r.frames; return [r]; }
   const { g, st, life0 } = setup(code, lvl, plans[0], opt);
-  const fps = opt.fps || FPS, N = MAXT * fps, prune = opt.pruneLost;
+  const fps = opt.fps || FPS, N = S.maxTOf(st) * fps, prune = opt.pruneLost;
   const ctls = plans.map((p) => new Ctl(p, g));
   let att = plans.map((_, i) => i).slice(1); const det = []; let ck = null; let k = 0, aborted = false;
   for (; k < N && !g.over; k++) {
@@ -165,7 +170,7 @@ function runBatch(code, lvl, plans, opt = {}) {
   // the diverged plans: from their checkpoint, alone
   for (const { i, ck: c } of det) {
     if (!c) { const r = runOne(code, lvl, plans[i], opt); out[i] = r; stats.framesSim += r.frames; stats.framesFull += r.frames; continue; }   // no clean checkpoint yet: from the start
-    const gc = cloneState(c.g); RNG.a = c.rng; Math.random = rngFn; if (gc.rows || TD.MAP !== st.map) TD.setMap(gc.rows || st.map);
+    const gc = cloneState(c.g); RNG.a = c.rng; Math.random = rngFn; if (gc.frost) TD.setTunnels(gc.frost.tun); if (gc.rows || TD.MAP !== st.map) TD.setMap(gc.rows || st.map);   /* frost: tunnels added by a phase are module state too */
     ctls[i].restore(c.ctl.get(i));
     const r = runFrom(gc, ctls[i], c.k, life0, opt); out[i] = r; stats.framesSim += r.frames - c.k; stats.framesFull += r.frames;
   }

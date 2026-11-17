@@ -79,7 +79,7 @@ async function main() {
       for (const x of list) { if (x.gameHash === R.GAMEHASH && !A.force) continue; if (Date.now() > deadline - 60e3) break;
         const sq = E.formation(x.squad, x.plan); const rs = await pool.all([1, 2, 3, 4, 5].map((sd) => ({ code: x.stage, lvl: x.min, plan: x.plan, opt: { seed: sd, squadIds: sq, sameRung: true } })));
         const worst = Math.max(...rs.map((r) => r.lost)), ok = rs.every((r) => r.complete) && worst <= E.CRIT[x.crit];
-        if (ok) { const prev = x.gameHash; x.gameHash = R.GAMEHASH; x.verified = new Date().toISOString(); x.worstLost = worst; if (prev !== R.GAMEHASH) delete x.keyOps; R.writeJSON(jf(x.stage, x.deck, x.crit), x); require("./replay2.js").writeFromResult(path.join(REP, `${x.stage}_${x.deck}_${x.crit}.json`), Object.assign({}, x, { name: x.deck })); log(`VERIFY ${jid(x.stage, x.deck, x.crit)} @${x.min}: still clears (worst lost ${worst})`); }
+        if (ok) { const prev = x.gameHash; x.gameHash = R.GAMEHASH; x.verified = new Date().toISOString(); x.worstLost = worst; if (prev !== R.GAMEHASH) delete x.keyOps; x.replay = `${x.stage}_${x.deck}_${x.crit}.json`; R.writeJSON(jf(x.stage, x.deck, x.crit), x); require("./replay2.js").writeFromResult(path.join(REP, x.replay), Object.assign({}, x, { name: x.deck })); log(`VERIFY ${jid(x.stage, x.deck, x.crit)} @${x.min}: still clears (worst lost ${worst})`); }
         else { x.stale = true; x.done = false; x.staleResult = rs.map((r) => r.lost); R.writeJSON(jf(x.stage, x.deck, x.crit), x); try { fs.unlinkSync(pf(x.stage, x.deck, x.crit)); } catch (e) { /* none */ } log(`VERIFY ${jid(x.stage, x.deck, x.crit)} @${x.min}: NO LONGER CLEARS (lost ${x.staleResult.join(" ")}); reopened`); }
       }
     } else if (cmd === "recheck") {

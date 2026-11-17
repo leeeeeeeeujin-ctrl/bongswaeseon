@@ -32,6 +32,7 @@ class Memo {
         for (const line of txt.split("\n")) { const i = line.indexOf("\t"); if (i < 0) continue; const k = line.slice(0, i); if (!k.startsWith(R.GAMEHASH + "|")) continue; try { this.m.set(k, JSON.parse(line.slice(i + 1))); } catch (e) { /* torn line */ } } } } catch (e) { /* new */ } }
   get(k) { return this.m.get(R.GAMEHASH + "|" + k); }
   set(k, r) { const key = R.GAMEHASH + "|" + k; if (this.m.has(key)) return; const v = { win: r.win, rwin: r.rwin, life: r.life, lost: r.lost, complete: r.complete, aborted: r.aborted, stall: r.stall, escortLost: r.escortLost, t: r.t, tEnd: r.tEnd, frames: r.frames, over: r.over, kills: r.kills, total: r.total, units: r.units, deploys: r.deploys, spent: r.spent };
+    if (r.frost) Object.assign(v, { frost: 1, frostLost: r.frostLost, phase: r.phase, lit: r.lit, fed: r.fed, falls: r.falls });   // frost stats (the score reads frostLost and lit)
     this.m.set(key, v); this.buf.push(key + "\t" + JSON.stringify(v)); if (this.buf.length >= 200) this.flush(); }
   flush() { if (!this.buf.length) return; fs.appendFileSync(this.file, this.buf.join("\n") + "\n"); this.buf = []; }
 }
@@ -62,6 +63,8 @@ async function squadSolve(pool, code, lvl, squad, o = {}) {
   const t0 = now(); const ctx = R.stageCtx(code, lvl); const model = SG.loadModel(); const critLost = o.critLost !== undefined ? o.critLost : 1;
   const memo = o.memo; let evals = 0;
   let fams = (o.fams || F.loadFamilies(code)).slice();
+  const FROST = !!TD.STAGES[S.stageIdx(code)].frost;
+  if (FROST) fams = fams.filter((f) => f.rec && f.rec.gameHash === R.GAMEHASH);   /* a frost stage (IM-10 v2 is a new board): families found on an older game are for another board */
   // replicate searches: a seeded subset of the stored families as starting points (o.famSeed; o.famFrac of them, at least 3), so replicates do not all start from the same fills
   if (o.famSeed !== undefined && fams.length > 3) { const rg = mkRng(o.famSeed); for (let i = fams.length - 1; i > 0; i--) { const j = Math.floor(rg() * (i + 1)); [fams[i], fams[j]] = [fams[j], fams[i]]; } fams = fams.slice(0, Math.max(3, Math.ceil(fams.length * (+o.famFrac || 0.6)))); }
   const { keep, drop } = o.noPrune ? { keep: squad, drop: [] } : R.prune(squad, lvl);
@@ -105,7 +108,8 @@ async function squadSolve(pool, code, lvl, squad, o = {}) {
   // 3) local refinement from every family's best (after descent where it ran)
   const warm = lead.map((x) => ({ plan: x.cdPlan || x.plan, sc: x.cdSc !== undefined ? x.cdSc : x.sc })).sort((a, b) => b.sc - a.sc).map((w) => w.plan);
   const left = o.deadline ? Math.max(10, (o.deadline - now()) / 1000) : 1e9;
-  const warmAll = (o.warmPlans || []).map((p) => G.clone(p)).concat(warm);   // o.warmPlans: plans to start from (a contained deck's answer, for the cross-deck bound)
+  const warmAll = (o.warmPlans || []).map((p) => G.clone(p)).concat(warm);
+  if (FROST) { const sp = frostSeeds(code); for (const p of sp) warmAll.push(G.clone(p)); }   /* the hand-written plan of the stage pass, as a starting point (adapted to the squad by the search) */   // o.warmPlans: plans to start from (a contained deck's answer, for the cross-deck bound)
   const seedHere = o.rngSeed !== undefined ? ((o.rngSeed ^ Math.imul(RUNGS.indexOf(lvl) + 1, 0x9e3779b1)) >>> 0) : undefined;   // one seed per rung
   const r = await G.solve(pool, code, lvl, squad, { time: Math.min(+(o.refineSec || 90), left), evals: 1e9, warm: warmAll.slice(0, 14), allOps: squad.length > 12, pool: squad, sameRung: true,
     earlyStop: +(o.polish || 20), earlyLife: 10 - critLost, critLost, memo, screen: true, p1: o.p1 !== undefined ? +o.p1 : 0.35, verbose: !!o.verbose, must: o.must, quota: o.quota, place: o.place, rngSeed: seedHere, finalists: o.finalists || 6 });
@@ -123,6 +127,8 @@ async function squadSolve(pool, code, lvl, squad, o = {}) {
   return res;
 }
 
+// frost seed plans (data/frost_seeds.json: { STAGE: [plan, ...] }); none: []
+function frostSeeds(code) { try { return (JSON.parse(fs.readFileSync(path.join(__dirname, "data", "frost_seeds.json"), "utf8"))[code]) || []; } catch (e) { return []; } }
 // ---- the lowest rung for a squad on a stage ----
 async function ladder(pool, code, squad, crit, o = {}) {
   const critLost = CRIT[crit]; const t0 = now(); const probes = {}; let evals = 0;
