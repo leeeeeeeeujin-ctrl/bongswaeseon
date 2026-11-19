@@ -16736,9 +16736,9 @@ window.BGM = (() => {
       for (const [wd, al] of [[7, 0.35], [3.2, 1]]) { const gr = g.createLinearGradient(0, 0, 128, 0); gr.addColorStop(0, "rgba(255,255,255,0)"); gr.addColorStop(0.55, `rgba(255,255,255,${al * 0.35})`); gr.addColorStop(0.9, `rgba(255,255,255,${al * 0.9})`); gr.addColorStop(1, `rgba(255,255,255,${al})`);
         g.fillStyle = gr; g.beginPath(); g.moveTo(0, 8); g.lineTo(118, 8 - wd); g.quadraticCurveTo(128, 8, 118, 8 + wd); g.closePath(); g.fill(); } });
     const fdisc = (n, core, rim) => mkCanvas(n, n, (g) => { const c = n / 2, gr = g.createRadialGradient(c, c, 0, c, c, c);
-      gr.addColorStop(0, "rgba(255,255,255,1)"); gr.addColorStop(core, "rgba(255,255,255,1)"); gr.addColorStop(core + 0.12, "rgba(236,242,250,.9)"); gr.addColorStop(Math.min(0.9, core + 0.26), `rgba(140,160,190,${rim})`); gr.addColorStop(1, "rgba(140,160,190,0)"); g.fillStyle = gr; g.fillRect(0, 0, n, n); });
+      gr.addColorStop(0, "rgba(255,255,255,1)"); gr.addColorStop(core, "rgba(255,255,255,1)"); gr.addColorStop(core + 0.1, "rgba(232,238,248,.92)"); gr.addColorStop(Math.min(0.86, core + 0.22), `rgba(84,98,126,${rim * 0.9})`); gr.addColorStop(1, "rgba(70,84,112,0)"); g.fillStyle = gr; g.fillRect(0, 0, n, n); });   /* a faint darker edge round the bright core: the flake still reads on white snow */
     T.flake = [fdisc(16, 0.4, 0.35), fdisc(24, 0.44, 0.4),
-      mkCanvas(64, 64, (g) => { const gr = g.createRadialGradient(32, 32, 0, 32, 32, 32); gr.addColorStop(0, "rgba(255,255,255,.7)"); gr.addColorStop(0.62, "rgba(248,251,255,.58)"); gr.addColorStop(0.8, "rgba(240,246,255,.25)"); gr.addColorStop(1, "rgba(240,246,255,0)"); g.fillStyle = gr; g.fillRect(0, 0, 64, 64); })];
+      mkCanvas(64, 64, (g) => { const gr = g.createRadialGradient(32, 32, 0, 32, 32, 32); gr.addColorStop(0, "rgba(255,255,255,.72)"); gr.addColorStop(0.58, "rgba(248,251,255,.6)"); gr.addColorStop(0.74, "rgba(200,212,232,.34)"); gr.addColorStop(0.86, "rgba(96,110,140,.16)"); gr.addColorStop(1, "rgba(96,110,140,0)"); g.fillStyle = gr; g.fillRect(0, 0, 64, 64); })];   /* out of focus, with a soft grey bokeh rim */
     T.crystal = mkCanvas(24, 24, (g) => { g.translate(12, 12); g.strokeStyle = "#fff"; g.lineCap = "round";
       for (let i = 0; i < 3; i++) { g.rotate(Math.PI / 3); g.lineWidth = 2; g.beginPath(); g.moveTo(-10, 0); g.lineTo(10, 0); g.stroke(); g.lineWidth = 1.2; for (const s of [-1, 1]) { g.beginPath(); g.moveTo(s * 6, 0); g.lineTo(s * 9, -3); g.moveTo(s * 6, 0); g.lineTo(s * 9, 3); g.stroke(); } }
       const gr = g.createRadialGradient(0, 0, 0, 0, 0, 6); gr.addColorStop(0, "rgba(255,255,255,1)"); gr.addColorStop(1, "rgba(255,255,255,0)"); g.fillStyle = gr; g.fillRect(-6, -6, 12, 12); });
@@ -16776,6 +16776,84 @@ window.BGM = (() => {
     T.crysB = tn(T.crystal, "#bfe6ff"); T.shardB = tn(T.shard, "#d6f0ff");
     T.flameL = [tn(TEX.flame, "#ff4a14"), tn(TEX.flame, "#ff8a24"), tn(TEX.flame, "#ffc24a"), tn(TEX.flame, "#fff2c8")];
     return T;
+  })();
+  /* ---- second pass textures (made once): billows for the gust front, a dusting for the snow left on squares, heaps, faceted shards, debris, the bomb, the crater, sheets of driven snow ---- */
+  (() => {
+    const T = QT, sr = (s) => () => (s = (s * 16807) % 2147483647) / 2147483647;
+    /* a rolling billow of blown snow: many soft lobes, a lit top, a cool shaded underside, streaks running along x (the wind's way once turned) */
+    T.billow = [0, 1, 2].map((v) => mkCanvas(128, 96, (g) => { const r2 = sr(311 + v * 97), L = [];
+      for (let i = 0; i < 22; i++) { const a = r2() * 6.28, d = Math.sqrt(r2()); L.push([64 + Math.cos(a) * d * 38, 54 + Math.sin(a) * d * 19 - (1 - d) * 6, 6 + r2() * r2() * 20]); }
+      L.sort((p, q) => q[1] - p[1]);   /* lower lobes first, so each upper lobe's lit crown sits on the shaded underside of the one below */
+      for (const [x, y, r] of L) { const gr = g.createRadialGradient(x - r * 0.3, y - r * 0.35, 0, x, y, r); gr.addColorStop(0, "rgba(255,255,255,.8)"); gr.addColorStop(0.5, "rgba(244,248,253,.6)"); gr.addColorStop(0.8, "rgba(200,212,232,.32)"); gr.addColorStop(1, "rgba(190,204,228,0)"); g.fillStyle = gr; g.beginPath(); g.arc(x, y, r, 0, 6.29); g.fill(); }
+      g.globalCompositeOperation = "source-atop"; const sh = g.createLinearGradient(0, 30, 0, 90); sh.addColorStop(0, "rgba(255,255,255,0)"); sh.addColorStop(1, "rgba(118,138,176,.55)"); g.fillStyle = sh; g.fillRect(0, 0, 128, 96);
+      for (let i = 0; i < 26; i++) { const y = 22 + r2() * 60, x0 = r2() * 70, Lw = 20 + r2() * 60, gl = g.createLinearGradient(x0, 0, x0 + Lw, 0), lt = r2() < 0.55; gl.addColorStop(0, "rgba(255,255,255,0)"); gl.addColorStop(0.5, lt ? `rgba(255,255,255,${0.35 + r2() * 0.45})` : `rgba(130,150,186,${0.2 + r2() * 0.25})`); gl.addColorStop(1, "rgba(255,255,255,0)"); g.fillStyle = gl; g.fillRect(x0, y, Lw, 0.8 + r2() * 1.6); }
+      g.globalCompositeOperation = "destination-out"; for (let i = 0; i < 10; i++) { const x = r2() * 128, y = r2() * 96, r = 3 + r2() * 7, gr = g.createRadialGradient(x, y, 0, x, y, r); gr.addColorStop(0, "rgba(0,0,0,.5)"); gr.addColorStop(1, "rgba(0,0,0,0)"); g.fillStyle = gr; g.fillRect(x - r, y - r, r * 2, r * 2); } }));
+    /* the snow a gust leaves on a square: a thin blotchy dusting with holes, a cool shadow under each clot so it reads on bright stone, glints */
+    T.dust = [0, 1, 2, 3].map((v) => mkCanvas(128, 128, (g) => { const r2 = sr(71 + v * 53), P = [];
+      const cl = 4 + ((r2() * 3) | 0); for (let c = 0; c < cl; c++) { const cx = 64 + (r2() - 0.5) * 64, cy = 64 + (r2() - 0.5) * 64, n = 60 + ((r2() * 50) | 0), sp = 9 + r2() * 16;
+        for (let i = 0; i < n; i++) { const a = r2() * 6.28, d = (r2() + r2() + r2()) / 3 * sp * 1.9; P.push([cx + Math.cos(a) * d * 1.2, cy + Math.sin(a) * d, 1.2 + r2() * r2() * 5.5, 0.4 + r2() * 0.45]); } }
+      for (let c = 0; c < cl * 2; c++) { const [x, y] = P[(r2() * P.length) | 0], r = 12 + r2() * 14, gr = g.createRadialGradient(x, y, 0, x, y, r); gr.addColorStop(0, "rgba(238,244,251,.62)"); gr.addColorStop(0.7, "rgba(236,243,250,.3)"); gr.addColorStop(1, "rgba(236,243,250,0)"); g.fillStyle = gr; g.fillRect(x - r, y - r, r * 2, r * 2); }   /* a thin film where the grains lie thickest */
+      g.fillStyle = "rgba(92,108,140,.4)"; for (const [x, y, r] of P) { g.beginPath(); g.ellipse(x + 0.4, y + 1.1, r, r * 0.7, 0, 0, 6.29); g.fill(); }   /* each grain's cool shadow, so the dusting reads on bright stone */
+      for (const [x, y, r, a] of P) { g.fillStyle = `rgba(248,251,255,${a})`; g.beginPath(); g.ellipse(x, y, r, r * 0.7, 0, 0, 6.29); g.fill(); }
+      g.globalCompositeOperation = "destination-in"; const fe = g.createRadialGradient(64, 64, 34, 64, 64, 64); fe.addColorStop(0, "rgba(0,0,0,1)"); fe.addColorStop(1, "rgba(0,0,0,0)"); g.fillStyle = fe; g.fillRect(0, 0, 128, 128);
+      g.globalCompositeOperation = "source-over"; for (let i = 0; i < 22; i++) { const [x, y] = P[(r2() * P.length) | 0]; g.fillStyle = "#fff"; g.fillRect(x, y, 1.3, 1.3); } }));
+    /* a heap of drifted snow against a face: a ragged crest, faceted lit planes on top, a cool shadowed foot */
+    T.heap = [0, 1].map((v) => mkCanvas(128, 56, (g) => { const r2 = sr(907 + v * 31), top = [];
+      for (let i = 0; i <= 16; i++) { const x = 6 + i * 7.25, e = Math.sin(i / 16 * Math.PI); top.push([x, 46 - e * (24 + r2() * 10) - r2() * 4]); }
+      g.beginPath(); g.moveTo(0, 54); for (const [x, y] of top) g.lineTo(x, y); g.lineTo(128, 54); g.closePath();
+      const gb = g.createLinearGradient(0, 12, 0, 56); gb.addColorStop(0, "rgba(252,253,255,.95)"); gb.addColorStop(0.55, "rgba(226,236,248,.9)"); gb.addColorStop(1, "rgba(150,170,204,.0)"); g.fillStyle = gb; g.fill();
+      g.save(); g.clip(); for (let i = 1; i < top.length - 1; i += 2) { const [x, y] = top[i], [x2, y2] = top[i + 1]; g.fillStyle = r2() < 0.5 ? "rgba(255,255,255,.55)" : "rgba(176,194,222,.35)"; g.beginPath(); g.moveTo(x, y); g.lineTo(x2, y2); g.lineTo(x2 - 4 + r2() * 8, y2 + 10 + r2() * 8); g.lineTo(x - 2, y + 9 + r2() * 6); g.closePath(); g.fill(); }
+      const sh = g.createLinearGradient(0, 30, 0, 56); sh.addColorStop(0, "rgba(120,140,178,0)"); sh.addColorStop(1, "rgba(110,130,170,.45)"); g.fillStyle = sh; g.fillRect(0, 30, 128, 26); g.restore();
+      g.strokeStyle = "rgba(255,255,255,.95)"; g.lineWidth = 1.4; g.lineJoin = "round"; g.beginPath(); top.forEach(([x, y], i) => i ? g.lineTo(x, y) : g.moveTo(x, y)); g.stroke();
+      g.globalCompositeOperation = "destination-in"; const fx = g.createLinearGradient(0, 0, 128, 0); fx.addColorStop(0, "rgba(0,0,0,0)"); fx.addColorStop(0.18, "rgba(0,0,0,1)"); fx.addColorStop(0.82, "rgba(0,0,0,1)"); fx.addColorStop(1, "rgba(0,0,0,0)"); g.fillStyle = fx; g.fillRect(0, 0, 128, 56); }));
+    /* faceted ice shards: a lit face, a shaded face, a bright ridge and a glint */
+    T.shardF = [0, 1, 2].map((v) => mkCanvas(24, 36, (g) => { const r2 = sr(13 + v * 7), w = 6 + r2() * 4, tip = [12 + (r2() - 0.5) * 4, 1], mid = [12 + (r2() - 0.5) * 3, 18 + r2() * 6], l = [12 - w, 14 + r2() * 6], r = [12 + w, 12 + r2() * 8], b = [12 + (r2() - 0.5) * 5, 35];
+      const f = (pts, col) => { g.fillStyle = col; g.beginPath(); pts.forEach(([x, y], i) => i ? g.lineTo(x, y) : g.moveTo(x, y)); g.closePath(); g.fill(); };
+      f([tip, l, mid], "rgba(236,248,255,.95)"); f([tip, mid, r], "rgba(150,198,236,.85)"); f([l, b, mid], "rgba(176,214,244,.8)"); f([mid, b, r], "rgba(96,150,206,.85)");
+      g.strokeStyle = "rgba(255,255,255,1)"; g.lineWidth = 1.2; g.beginPath(); g.moveTo(tip[0], tip[1]); g.lineTo(mid[0], mid[1]); g.lineTo(b[0], b[1]); g.stroke();
+      g.strokeStyle = "rgba(40,80,130,.6)"; g.lineWidth = 0.8; g.beginPath(); g.moveTo(tip[0], tip[1]); g.lineTo(r[0], r[1]); g.lineTo(b[0], b[1]); g.lineTo(l[0], l[1]); g.closePath(); g.stroke();
+      g.fillStyle = "#fff"; g.fillRect(tip[0] - 1, tip[1] + 4, 2, 2); }));
+    /* debris: clods of frozen earth, broken stone, lumps of snow */
+    T.chunk = [["#3b2e24", "#6a5644"], ["#4a4c52", "#8a8e96"], ["#e8eef6", "#ffffff"], ["#2c2420", "#54443a"]].map(([c0, c1], v) => mkCanvas(20, 20, (g) => { const r2 = sr(5 + v * 19), n = 6 + ((r2() * 3) | 0), pts = [];
+      for (let i = 0; i < n; i++) { const a = i / n * 6.28 + r2() * 0.5, d = 5 + r2() * 4.5; pts.push([10 + Math.cos(a) * d, 10 + Math.sin(a) * d]); }
+      g.fillStyle = c0; g.beginPath(); pts.forEach(([x, y], i) => i ? g.lineTo(x, y) : g.moveTo(x, y)); g.closePath(); g.fill(); g.strokeStyle = "rgba(10,8,8,.55)"; g.lineWidth = 1; g.stroke();
+      g.fillStyle = c1; g.beginPath(); g.moveTo(pts[0][0], pts[0][1]); g.lineTo(pts[1][0], pts[1][1]); g.lineTo(10, 10); g.lineTo(pts[n - 1][0], pts[n - 1][1]); g.closePath(); g.fill(); }));
+    /* the mortar bomb: an iron ball lit from the upper left, a cold rim light, a dark outline so it reads on snow */
+    T.bomb = mkCanvas(64, 64, (g) => { const gr = g.createRadialGradient(24, 22, 2, 30, 30, 30); gr.addColorStop(0, "#9aa4b2"); gr.addColorStop(0.25, "#4a525e"); gr.addColorStop(0.7, "#1c1f25"); gr.addColorStop(1, "#0a0b0e"); g.fillStyle = gr; g.beginPath(); g.arc(32, 32, 27, 0, 6.29); g.fill();
+      g.strokeStyle = "rgba(186,214,246,.95)"; g.lineWidth = 3; g.beginPath(); g.arc(32, 32, 25, 0.1, 1.6); g.stroke();
+      g.strokeStyle = "rgba(60,66,76,.9)"; g.lineWidth = 2; g.beginPath(); g.ellipse(32, 32, 27, 9, -0.5, 0, 6.29); g.stroke();
+      g.fillStyle = "rgba(255,255,255,.9)"; g.beginPath(); g.ellipse(22, 19, 5, 3, -0.6, 0, 6.29); g.fill();
+      g.strokeStyle = "#050506"; g.lineWidth = 2.5; g.beginPath(); g.arc(32, 32, 28, 0, 6.29); g.stroke(); });
+    T.shad = mkCanvas(64, 32, (g) => { const gr = g.createRadialGradient(32, 16, 0, 32, 16, 32); gr.addColorStop(0, "rgba(6,8,14,.85)"); gr.addColorStop(0.5, "rgba(6,8,14,.45)"); gr.addColorStop(1, "rgba(6,8,14,0)"); g.setTransform(1, 0, 0, 0.5, 0, 8); g.fillStyle = gr; g.fillRect(0, -16, 64, 64); });
+    /* the crater: a black pit, a lip of thrown earth, scorched streaks, snow spattered round it and scattered clods */
+    T.crater = mkCanvas(160, 160, (g) => { const r2 = sr(4111), c = 80;
+      for (let i = 0; i < 22; i++) { const a = r2() * 6.28, d = 6 + r2() * 30, x = c + Math.cos(a) * d, y = c + Math.sin(a) * d, r = 16 + r2() * 22, gr = g.createRadialGradient(x, y, 0, x, y, r); gr.addColorStop(0, "rgba(26,20,16,.5)"); gr.addColorStop(1, "rgba(26,20,16,0)"); g.fillStyle = gr; g.fillRect(0, 0, 160, 160); }
+      g.lineCap = "round"; for (let i = 0; i < 30; i++) { const a = r2() * 6.28, d0 = 16 + r2() * 8, d1 = 40 + r2() * 34; g.strokeStyle = `rgba(${18 + r2() * 30 | 0},${14 + r2() * 20 | 0},10,${0.25 + r2() * 0.35})`; g.lineWidth = 1 + r2() * 3; g.beginPath(); g.moveTo(c + Math.cos(a) * d0, c + Math.sin(a) * d0); g.lineTo(c + Math.cos(a + (r2() - 0.5) * 0.2) * d1, c + Math.sin(a) * d1); g.stroke(); }
+      for (let i = 0; i < 40; i++) { const a = r2() * 6.28, d = 17 + r2() * 9, x = c + Math.cos(a) * d, y = c + Math.sin(a) * d, r = 3 + r2() * 5; g.fillStyle = r2() < 0.5 ? "rgba(70,54,40,.85)" : "rgba(104,86,66,.8)"; g.beginPath(); g.ellipse(x, y, r, r * 0.7, a, 0, 6.29); g.fill(); }
+      const gp = g.createRadialGradient(c, c - 2, 0, c, c, 20); gp.addColorStop(0, "rgba(4,3,3,.95)"); gp.addColorStop(0.6, "rgba(14,10,8,.85)"); gp.addColorStop(1, "rgba(40,30,22,0)"); g.fillStyle = gp; g.beginPath(); g.arc(c, c, 20, 0, 6.29); g.fill();
+      g.strokeStyle = "rgba(150,128,100,.6)"; g.lineWidth = 1.5; g.beginPath(); g.arc(c, c + 1, 15, 3.6, 5.9); g.stroke();
+      for (let i = 0; i < 26; i++) { const a = r2() * 6.28, d = 34 + r2() * 40, x = c + Math.cos(a) * d, y = c + Math.sin(a) * d; g.save(); g.translate(x, y); g.rotate(r2() * 6.28); g.globalAlpha = 0.85; g.drawImage(T.chunk[(r2() * 4) | 0], -4, -4, 5 + r2() * 5, 5 + r2() * 5); g.restore(); }
+      for (let i = 0; i < 90; i++) { const a = r2() * 6.28, d = 40 + r2() * 36, x = c + Math.cos(a) * d, y = c + Math.sin(a) * d, r = 0.8 + r2() * 2.6; g.fillStyle = `rgba(245,248,252,${0.35 + r2() * 0.55})`; g.beginPath(); g.arc(x, y, r, 0, 6.29); g.fill(); } });
+    /* a sheet of driven snow, tileable both ways: streaks of many lengths bunched into gust bands, a few clots */
+    T.sheet = [0, 1].map((v) => mkCanvas(256, 128, (g) => { const r2 = sr(2203 + v * 17);
+      const band = (y) => 0.35 + 0.65 * Math.pow(0.5 + 0.5 * Math.sin(y / 128 * 6.28 * 2 + v), 2);
+      for (let i = 0; i < 150; i++) { const y = r2() * 128, x = r2() * 256, L = 20 + r2() * r2() * 170, th = 0.8 + r2() * r2() * 6, a = Math.min(0.95, (0.22 + r2() * 0.6) * band(y));
+        for (const ox of [0, -256]) for (const oy of [0, -128, 128]) { if (x + ox + L < 0 || x + ox > 256 || y + oy < -6 || y + oy > 134) continue; const gl = g.createLinearGradient(x + ox, 0, x + ox + L, 0); gl.addColorStop(0, "rgba(255,255,255,0)"); gl.addColorStop(0.65, `rgba(255,255,255,${a})`); gl.addColorStop(1, "rgba(255,255,255,0)"); g.fillStyle = gl; g.fillRect(x + ox, y + oy - th / 2, L, th); } }
+      for (let i = 0; i < 40; i++) { const x = r2() * 256, y = r2() * 128, r = 6 + r2() * 16, a = 0.08 + r2() * 0.12; for (const ox of [0, -256, 256]) for (const oy of [0, -128, 128]) { const X = x + ox, Y = y + oy; if (X < -r || X > 256 + r || Y < -r || Y > 128 + r) continue; const gr = g.createRadialGradient(X, Y, 0, X, Y, r); gr.addColorStop(0, `rgba(255,255,255,${a})`); gr.addColorStop(1, "rgba(255,255,255,0)"); g.fillStyle = gr; g.fillRect(X - r, Y - r, r * 2, r * 2); } } }));
+    /* a wisp of driven snow for the veils: several long streaks bundled, feathered at both ends and both sides */
+    T.wisp = mkCanvas(256, 48, (g) => { const r2 = sr(613);
+      for (let i = 0; i < 26; i++) { const y = 24 + (r2() + r2() - 1) * 16, x0 = r2() * 90, L = 60 + r2() * 160, gl = g.createLinearGradient(x0, 0, x0 + L, 0), a = 0.12 + r2() * 0.35; gl.addColorStop(0, "rgba(255,255,255,0)"); gl.addColorStop(0.6, `rgba(255,255,255,${a})`); gl.addColorStop(1, "rgba(255,255,255,0)"); g.fillStyle = gl; g.fillRect(x0, y, L, 0.7 + r2() * 2.4); }
+      g.globalCompositeOperation = "destination-in"; const gx = g.createLinearGradient(0, 0, 256, 0); gx.addColorStop(0, "rgba(0,0,0,0)"); gx.addColorStop(0.25, "rgba(0,0,0,1)"); gx.addColorStop(0.75, "rgba(0,0,0,1)"); gx.addColorStop(1, "rgba(0,0,0,0)"); g.fillStyle = gx; g.fillRect(0, 0, 256, 48);
+      const gy = g.createLinearGradient(0, 0, 0, 48); gy.addColorStop(0, "rgba(0,0,0,0)"); gy.addColorStop(0.5, "rgba(0,0,0,1)"); gy.addColorStop(1, "rgba(0,0,0,0)"); g.fillStyle = gy; g.fillRect(0, 0, 256, 48); });
+    /* a warm hole in the white-out: a soft core with turbulent lobes at its rim */
+    T.holeT = mkCanvas(96, 96, (g) => { const r2 = sr(77); const gr = g.createRadialGradient(48, 48, 0, 48, 48, 30); gr.addColorStop(0, "rgba(0,0,0,1)"); gr.addColorStop(0.6, "rgba(0,0,0,.85)"); gr.addColorStop(1, "rgba(0,0,0,0)"); g.fillStyle = gr; g.fillRect(0, 0, 96, 96);
+      for (let i = 0; i < 14; i++) { const a = i / 14 * 6.28 + r2() * 0.4, d = 22 + r2() * 12, x = 48 + Math.cos(a) * d, y = 48 + Math.sin(a) * d, r = 7 + r2() * 11, gl = g.createRadialGradient(x, y, 0, x, y, r); gl.addColorStop(0, `rgba(0,0,0,${0.5 + r2() * 0.4})`); gl.addColorStop(1, "rgba(0,0,0,0)"); g.fillStyle = gl; g.fillRect(x - r, y - r, r * 2, r * 2); } });
+    T.ringW = tinted(TEX.ring, "#fff1d8"); T.ringB = tinted(TEX.ring, "#cfeaff"); T.ringS = tinted(TEX.ring, "#f2f6fb");
+    T.smE = TEX.smoke.map((s) => tinted(s, "#5e4c3c")); T.glassG = tinted(T.shardF[0], "#b8e6b0");
+    T.fireDeep = TEX.puff.map((s) => tinted(s, "#e0501a")); T.smP = TEX.smoke.map((s) => tinted(s, "#c3cad4"));   /* powder smoke: a shade greyer than the snow, so it shows on it */
+    T.bottle = mkCanvas(48, 96, (g) => { g.scale(400, 400); g.translate(0.06, 0.145); const g1 = g.createLinearGradient(-0.05, 0, 0.05, 0); g1.addColorStop(0, "#1c3020"); g1.addColorStop(0.35, "#4f7a48"); g1.addColorStop(0.6, "#2f4c2c"); g1.addColorStop(1, "#142016");
+      g.fillStyle = g1; g.strokeStyle = "#0a0f08"; g.lineWidth = 0.004; g.beginPath(); g.moveTo(-0.05, 0.08); g.lineTo(-0.05, -0.02); g.lineTo(-0.022, -0.06); g.lineTo(-0.022, -0.11); g.lineTo(0.022, -0.11); g.lineTo(0.022, -0.06); g.lineTo(0.05, -0.02); g.lineTo(0.05, 0.08); g.closePath(); g.fill(); g.stroke();
+      g.fillStyle = "rgba(220,245,210,.75)"; g.fillRect(-0.036, -0.015, 0.012, 0.08); g.fillStyle = "rgba(255,160,60,.35)"; g.fillRect(-0.045, 0.03, 0.09, 0.045); g.fillStyle = "#c9b48a"; g.fillRect(-0.028, -0.135, 0.056, 0.03); });
   })();
   const qsm = (arr) => arr[(Math.random() * arr.length) | 0];
   /* ---- the particle pool ---- */
@@ -16860,8 +16938,8 @@ window.BGM = (() => {
       let p = qp(1, QT.gWarm, x, y, 0, 0, 0.07, k * 0.42); if (p) { p.add = true; p.alpha = 0.9; }
       p = qp(1, QT.cW, x, y, 0, 0, 0.05, k * 0.16); if (p) p.add = true;
       for (let i = 0; i < 3; i++) { const a = ang + (i - 1) * 0.35, v = 260 + Math.random() * 200; p = qp(1, QT.sGold, x, y, Math.cos(a) * v, Math.sin(a) * v, 0.06 + Math.random() * 0.04, k * 0.06); if (p) { p.add = true; p.stretch = 5; p.drag = 10; } }
-      if (j.kind === 1) for (let i = 0; i < 4; i++) { p = qp(1, qsm(QT.smW), x + c * k * 0.06 * i, y + s * k * 0.04 * i - k * 0.02, c * (20 + i * 12) + rr(-8, 8), s * 10 - rr(6, 18), rr(1.1, 1.8), k * rr(0.12, 0.2));
-        if (p) { p.grow = 2.6; p.alpha = 0.5; p.drag = 1.6; p.wind = 0.85; p.rot = rr(0, 6); p.rotv = rr(-0.8, 0.8); p.spin = true; p.fadeIn = 0.08; } }
+      if (j.kind === 1) for (let i = 0; i < 5; i++) { p = qp(1, qsm(QT.smP), x + c * k * 0.06 * i, y + s * k * 0.04 * i - k * 0.02, c * (40 + i * 22) + rr(-8, 8), s * 16 - rr(6, 18), rr(2.4, 3.4), k * rr(0.1, 0.17));   /* a puff of powder smoke that hangs, spreads, and goes with the wind */
+        if (p) { p.grow = 3.2; p.alpha = 0.52; p.drag = 2.6; p.wind = 1; p.rot = rr(0, 6); p.rotv = rr(-0.5, 0.5); p.spin = true; p.fadeIn = 0.05; } }
     } else if (j.kind === 2) {
       let p = qp(1, QT.gBlue, x, y, 0, 0, 0.12, k * 0.5); if (p) { p.add = true; p.alpha = 0.8; }
       for (let i = 0; i < 3; i++) { p = qp(1, qsm(QT.smB), x, y, c * 20 + rr(-10, 10), -rr(5, 20), rr(0.7, 1.1), k * 0.14); if (p) { p.grow = 1.8; p.alpha = 0.35; p.drag = 2; p.wind = 0.7; } }
@@ -16900,18 +16978,24 @@ window.BGM = (() => {
     for (let i = 0; i < 4 * n; i++) { p = qp(1, qsm(snowy ? QT.smW : QT.smG), x + rr(-k * 0.08, k * 0.08), y - k * 0.03, rr(-40, 40), -rr(30, 90), rr(0.45, 0.8), k * rr(0.1, 0.17)); if (p) { p.grow = 1.6; p.alpha = 0.5; p.drag = 2.5; p.wind = 0.6; } }
     for (let i = 0; i < 6 * n; i++) { p = qp(1, snowy ? QT.cSnow : QT.cOrange, x, y - k * 0.03, rr(-90, 90), -rr(120, 260), rr(0.35, 0.6), k * rr(0.022, 0.04)); if (p) { p.grav = 1100; if (!snowy) { p.img = TEX.core; p.alpha = 0.6; } } }
   }
-  function qBlast(x, y, k, fire, ice) {   /* a shell, bottle or ice bomb bursting on the ground */
+  function qBlast(x, y, k, fire, ice) {   /* a shell, bottle or ice bomb bursting on the ground: flash, shock ring, a column of snow and earth whose chunks fall back, smoke that rises and drifts, a crater */
     const snowy = CH2(); let p;
-    p = qp(1, ice ? QT.gBlue : QT.gWarm, x, y - k * 0.15, 0, 0, 0.11, k * 1.0); if (p) { p.add = true; p.alpha = 0.6; p.grow = 0.5; }   /* a short flash, kept small so the one struck still shows through it */
-    p = qp(1, QT.cW, x, y - k * 0.1, 0, 0, 0.05, k * 0.3); if (p) { p.add = true; p.alpha = 0.8; }
-    if (!ice) for (let i = 0; i < (fire ? 10 : 7); i++) { p = qp(1, qsm(i % 3 ? QT.fire : QT.fireHi), x + rr(-k * 0.2, k * 0.2), y - rr(0, k * 0.25), rr(-70, 70), -rr(40, fire ? 130 : 90), rr(0.22, fire ? 0.6 : 0.4), k * rr(0.25, 0.45)); if (p) { p.add = i % 3 === 0; p.grow = 1.2; p.alpha = p.add ? 0.6 : 0.8; p.drag = 3; p.wind = 0.4; } }
-    for (let i = 0; i < 18; i++) { const a = i / 18 * 6.28 + rr(-0.15, 0.15), v = rr(120, 260); p = qp(0, qsm(snowy || ice ? QT.smW : QT.smG), x + Math.cos(a) * k * 0.15, y + Math.sin(a) * k * 0.06, Math.cos(a) * v, Math.sin(a) * v * 0.38, rr(0.5, 0.9), k * rr(0.16, 0.26)); if (p) { p.grow = 1.5; p.alpha = 0.6; p.drag = 4.5; p.wind = 0.3; } }   /* the ring of thrown snow */
-    for (let i = 0; i < 14; i++) { const a = rr(Math.PI * 1.05, Math.PI * 1.95), v = rr(160, 420); p = qp(1, snowy || ice ? QT.cSnow : TEX.core, x, y - k * 0.05, Math.cos(a) * v, Math.sin(a) * v, rr(0.4, 0.75), k * rr(0.025, 0.05)); if (p) { p.grav = 1200; if (!(snowy || ice)) { p.img = QT.cOrange; } } }
-    if (ice) for (let i = 0; i < 12; i++) { const a = rr(0, 6.28), v = rr(140, 340); p = qp(1, QT.shardB, x, y - k * 0.2, Math.cos(a) * v, Math.sin(a) * v * 0.6 - 120, rr(0.4, 0.7), k * rr(0.05, 0.09)); if (p) { p.rot = rr(0, 6); p.rotv = rr(-12, 12); p.spin = true; p.grav = 900; p.alpha = 0.95; } }
-    for (let i = 0; i < (ice ? 7 : 13); i++) { const up = i < 3 ? 1 : 1.2 + i * 0.12; p = qp(1, qsm(ice ? QT.smB : i < 3 ? QT.smG : QT.smD), x + rr(-k * 0.18, k * 0.18), y - rr(0, k * 0.25), rr(-14, 14), -rr(35, 75) * up, rr(1.8, 3.0), k * rr(0.28, 0.46)); if (p) { p.grow = 2.4; p.alpha = ice ? 0.5 : 0.62; p.drag = 0.7; p.wind = 0.9; p.rot = rr(0, 6); p.rotv = rr(-0.5, 0.5); p.spin = true; p.fadeIn = 0.06 + i * 0.012; } }   /* the smoke column */
-    p = qp(0, TEX.ring, x, y, 0, 0, 0.35, k * 0.5); if (p) { p.img = ice ? tinted(TEX.ring, "#cfeaff") : tinted(TEX.ring, "#ffd9a0"); p.add = true; p.grow = 3; p.flat = 0.4; p.alpha = 0.7; }
-    qd(ice ? 2 : 1, x, y, k, ice ? 4 : 7, fire ? 1.1 : 1);
-    if (!reduceMotion) shake = Math.max(shake, ice ? 0.18 : 0.28);
+    p = qp(1, ice ? QT.gBlue : QT.gWarm, x, y - k * 0.32, 0, 0, 0.16, k * 2.0); if (p) { p.add = true; p.alpha = 0.9; p.grow = 0.4; }   /* the flash: hot and short, so the one struck still shows */
+    p = qp(1, QT.cW, x, y - k * 0.18, 0, 0, 0.07, k * 0.55); if (p) { p.add = true; p.alpha = 0.95; }
+    p = qp(0, ice ? QT.gBlue : fire ? QT.gFire : QT.gWarm, x, y, 0, 0, 0.3, k * 2.6); if (p) { p.add = true; p.flat = 0.42; p.alpha = 0.65; }   /* the ground lit round it */
+    p = qp(0, ice ? QT.ringB : QT.ringW, x, y, 0, 0, 0.3, k * 0.35); if (p) { p.add = true; p.grow = 6; p.flat = 0.42; p.alpha = 0.95; }   /* the shock ring on the ground */
+    p = qp(0, QT.ringS, x, y, 0, 0, 0.55, k * 0.5); if (p) { p.grow = 5; p.flat = 0.42; p.alpha = 0.5; }
+    for (let i = 0; i < 18; i++) { const a = i / 18 * 6.28 + rr(-0.15, 0.15), v = k * rr(1.8, 3.4); p = qp(0, qsm(snowy || ice ? QT.smW : QT.smG), x + Math.cos(a) * k * 0.15, y + Math.sin(a) * k * 0.06, Math.cos(a) * v, Math.sin(a) * v * 0.4, rr(0.6, 1.0), k * rr(0.2, 0.32)); if (p) { p.grow = 1.6; p.alpha = 0.6; p.drag = 4; p.wind = 0.4; } }   /* the ring of thrown snow */
+    for (let i = 0; i < 16; i++) { const dirt = !ice && (i % 3 === 0 || !snowy), hi = i < 6; p = qp(1, qsm(dirt ? QT.smE : ice ? QT.smB : QT.smW), x + rr(-k * 0.12, k * 0.12), y - k * 0.05, rr(-1, 1) * k * (hi ? 0.5 : 1.1), -k * (hi ? rr(8, 11) : rr(4.5, 8)), rr(0.9, 1.35), k * rr(0.2, 0.34)); if (p) { p.grav = k * 10; p.drag = 1.1; p.grow = 1.7; p.alpha = dirt ? 0.75 : 0.7; p.wind = 0.3; p.rot = rr(0, 6); p.rotv = rr(-2, 2); p.spin = true; } }   /* the column of snow and earth */
+    for (let i = 0; i < (ice ? 14 : 16); i++) { const vy = -k * rr(3, 7.5), g = k * 14; p = qp(1, ice ? QT.shardF[i % 3] : QT.chunk[i % 4], x + rr(-k * 0.08, k * 0.08), y - k * 0.06, rr(-1, 1) * k * 3, vy * 1.2, Math.min(1.6, -2.4 * vy / g + 0.04), k * rr(0.06, 0.13)); if (p) { p.grav = g; p.rot = rr(0, 6); p.rotv = rr(-14, 14); p.spin = true; p.alpha = 1; } }   /* chunks that fall back to the ground */
+    for (let i = 0; i < 12; i++) { const a = rr(Math.PI * 1.05, Math.PI * 1.95), v = k * rr(2, 5); p = qp(1, snowy || ice ? QT.cSnow : TEX.core, x, y - k * 0.05, Math.cos(a) * v, Math.sin(a) * v, rr(0.4, 0.75), k * rr(0.025, 0.05)); if (p) { p.grav = k * 12; } }
+    if (!ice) for (let i = 0; i < (fire ? 14 : 8); i++) { p = qp(1, qsm(i % 4 === 0 ? QT.fireDeep : i % 3 ? QT.fire : QT.fireHi), x + rr(-k * 0.22, k * 0.22), y - rr(0, k * 0.3), rr(-1, 1) * k * 0.7, -k * rr(0.6, fire ? 2 : 1.4), rr(0.25, fire ? 0.7 : 0.45), k * rr(0.25, 0.5)); if (p) { p.add = i % 4 !== 0; p.grow = 1.3; p.alpha = p.add ? 0.6 : 0.35; p.drag = 3; p.wind = 0.4; } }   /* the fireball: mostly light, so the one struck shows through it */
+    if (!ice) for (let i = 0; i < 10; i++) { p = qp(1, QT.cEmber, x + rr(-k * 0.15, k * 0.15), y - k * 0.2, rr(-1, 1) * k * 1.6, -k * rr(1.5, 4), rr(0.5, 1.1), k * rr(0.02, 0.035)); if (p) { p.add = true; p.grav = k * 3; p.wind = 0.8; p.drag = 1; } }
+    if (fire) { for (let i = 0; i < 7; i++) { p = qp(1, QT.glassG, x, y - k * 0.12, rr(-1, 1) * k * 2.4, -k * rr(1.5, 4), rr(0.4, 0.7), k * rr(0.04, 0.07)); if (p) { p.grav = k * 12; p.rot = rr(0, 6); p.rotv = rr(-16, 16); p.spin = true; } } qd(5, x, y, k, 2.8, 1); }   /* the glass, and a pool of burning spirit */
+    if (ice) for (let i = 0; i < 10; i++) { p = qp(1, QT.crysB, x + rr(-k * 0.3, k * 0.3), y - rr(0, k * 0.4), rr(-20, 20), -k * rr(0.2, 0.6), rr(0.8, 1.4), k * rr(0.06, 0.1)); if (p) { p.rot = rr(0, 6); p.rotv = rr(-4, 4); p.spin = true; p.wind = 0.5; p.add = true; p.alpha = 0.85; p.fadeIn = 0.1; } }
+    for (let i = 0; i < (ice ? 8 : 14); i++) { const up = 1 + i * 0.06; p = qp(1, qsm(ice ? QT.smB : i < 4 ? QT.smG : QT.smD), x + rr(-k * 0.2, k * 0.2), y - rr(0, k * 0.3), rr(-12, 12), -k * rr(0.5, 1.1) * up, rr(2.4, 3.6), k * rr(0.3, 0.5)); if (p) { p.grow = 2.8; p.alpha = ice ? 0.45 : 0.6; p.drag = 0.5; p.wind = 1; p.rot = rr(0, 6); p.rotv = rr(-0.5, 0.5); p.spin = true; p.fadeIn = 0.08 + i * 0.015; } }   /* smoke that rises and drifts with the wind */
+    qd(ice ? 2 : 1, x, y, k, ice ? 5 : 9, fire ? 1.1 : 1.2);
+    if (!reduceMotion) shake = Math.max(shake, ice ? 0.2 : 0.32);
   }
   function qSlash(e, u) {   /* a foe's blow with no drawn effect of its own: a quick cold arc across the one it strikes */
     const j = qj(); if (!j) return; const s = SP(u.x, u.y, 0.5); j.kind = 7; j.T = 0.2; j.k = s[2]; j.x1 = s[0]; j.y1 = s[1]; j.face = e.x <= u.x ? 1 : -1; j.flash = false;
@@ -16939,13 +17023,13 @@ window.BGM = (() => {
       if ((j.kind === 3 || j.kind === 6) && j.t < j.T) { j.acc += dt * 45; while (j.acc >= 1) { j.acc -= 1; const u = j.t / j.T, x = j.x0 + (j.x1 - j.x0) * u, y = j.y0 + (j.y1 - j.y0) * u - Math.sin(u * Math.PI) * j.k * 0.12;
           const p = qp(1, j.kind === 6 ? QT.cGreen : QT.cViolet, x, y, rr(-20, 20), rr(-30, 10), rr(0.2, 0.35), j.k * rr(0.03, 0.055)); if (p) { p.add = true; p.alpha = 0.9; } } }
       if (j.kind === 4 && j.t < j.T) { j.acc += dt * 38; while (j.acc >= 1) { j.acc -= 1; const u = j.t / j.T, x = j.x0 + (j.g1x - j.x0) * u, y = j.y0 + (j.g1y - j.y0) * u - Math.sin(u * Math.PI) * j.h;
-          let p = qp(1, qsm(QT.smD), x, y, rr(-6, 6), rr(-8, 4), rr(1.3, 2.1), j.k * rr(0.07, 0.11)); if (p) { p.grow = 2.4; p.alpha = 0.42; p.wind = 0.8; p.drag = 1; p.fadeIn = 0.1; p.rot = rr(0, 6); p.rotv = rr(-0.6, 0.6); p.spin = true; }
-          p = qp(1, QT.cEmber, x, y, rr(-60, 60), rr(-80, 20), rr(0.12, 0.25), j.k * rr(0.02, 0.035)); if (p) { p.add = true; p.grav = 300; } } }
+          let p = qp(1, qsm(Math.random() < 0.6 ? QT.smG : QT.smW), x, y, rr(-6, 6), rr(-8, 4), rr(2.2, 3.2), j.k * rr(0.08, 0.12)); if (p) { p.grow = 3.2; p.alpha = 0.4; p.wind = 1; p.drag = 1.4; p.fadeIn = 0.08; p.rot = rr(0, 6); p.rotv = rr(-0.5, 0.5); p.spin = true; }   /* a smoke trail that hangs and drifts */
+          p = qp(1, Math.random() < 0.5 ? QT.cEmber : QT.sGold, x, y - j.k * 0.15, rr(-90, 90), rr(-110, 20), rr(0.12, 0.25), j.k * rr(0.02, 0.035)); if (p) { p.add = true; p.grav = 300; if (p.img === QT.sGold) { p.stretch = 3; p.size = j.k * 0.03; } } } }
       if (!j.hit && j.t >= j.T) { j.hit = true; if (j.kind === 4) { qBlast(j.g1x, j.g1y, j.k, false, false);   /* and the four squares beside it flash as they are struck */
           for (let n = 0; n < 4; n++) { const ax = j.tx + [1, -1, 0, 0][n], ay = j.ty + [0, 0, 1, -1][n]; if (ax < 0 || ay < 0 || ax >= W || ay >= H) continue; PQ(ax, ay, zOf(ax, ay)); const p = qp(0, QT.gWarm, PX, PY, 0, 0, 0.35, PK * 1.1); if (p) { p.add = true; p.flat = 0.42; p.alpha = 0.55; }
             for (let m = 0; m < 3; m++) { const q = qp(0, qsm(CH2() ? QT.smW : QT.smG), PX + rr(-PK * 0.25, PK * 0.25), PY + rr(-PK * 0.08, PK * 0.08), rr(-30, 30), -rr(10, 40), rr(0.5, 0.8), PK * rr(0.15, 0.24)); if (q) { q.grow = 1.4; q.alpha = 0.45; q.drag = 3; q.wind = 0.4; } } } }
         else if (j.kind !== 7) qImpact(j); }
-      if (j.t >= j.T + (j.kind === 7 ? 0 : 0.06)) j.on = false; }
+      if (j.t >= j.T + (j.kind === 7 ? 0 : j.kind === 1 || j.kind === 2 || j.kind === 5 ? 0.22 : 0.06)) j.on = false; }
     for (const d of QD) if (d.on) { d.t += dt; if (d.t >= d.life) d.on = false; }
   }
   function qDrawP(layer) {
@@ -16963,6 +17047,14 @@ window.BGM = (() => {
     }
     ctx.setTransform(BA, BB, BC, BD, BE, BF); ctx.globalAlpha = 1; ctx.globalCompositeOperation = "source-over";
   }
+  function qPool(d, u) {   /* spirit burning on the snow: licks of flame over a lit patch, embers and a little smoke going up */
+    const inten = Math.min(1, d.t / 0.1) * (1 - u * u), k = d.k; ctx.setTransform(BA, BB, BC, BD, BE, BF); ctx.globalCompositeOperation = "lighter";
+    ctx.globalAlpha = 0.45 * inten * (0.8 + 0.2 * Math.sin(clock * 17)); qSetT(d.x, d.y, 0, k * 1.3, k * 0.5); ctx.drawImage(QT.gFire, -0.5, -0.5, 1, 1); ctx.setTransform(BA, BB, BC, BD, BE, BF);
+    for (let i = 0; i < 7; i++) { const r1 = qh(d.rot * 10 + i, i), r2 = qh(i, d.rot), ox = (r1 - 0.5) * k * 0.8, oy = (r2 - 0.5) * k * 0.28, h = k * (0.22 + 0.14 * r1 + 0.08 * Math.sin(clock * (11 + i) + i * 2)) * inten * (1 - 0.4 * Math.abs(r1 - 0.5)), w = h * 0.6;
+      ctx.globalAlpha = 0.85 * inten; ctx.drawImage(QT.flameL[i % 4], d.x + ox - w / 2 + QW.vx * h * 0.2, d.y + oy - h * 0.92, w, h); }
+    ctx.globalCompositeOperation = "source-over"; ctx.globalAlpha = 1;
+    if (!paused && Math.random() < 0.35 * inten) { const p = qp(1, Math.random() < 0.6 ? QT.cEmber : qsm(QT.smD), d.x + rr(-k * 0.3, k * 0.3), d.y - k * 0.15, rr(-15, 15), -rr(40, 90), rr(0.6, 1.4), k * rr(0.02, 0.04)); if (p) { if (p.img === QT.cEmber) { p.add = true; } else { p.size = k * 0.18; p.grow = 2.5; p.alpha = 0.3; } p.wind = 1; } }
+  }
   function qPile(bx, by) { if (QW.S < 0.5 || Math.random() < 0.6) return; PQ(bx, by, 0.02); qd(4, PX, PY, PK, 1.4, 0.7 + Math.random() * 0.5); }
   /* under the figures: scorch and rime on the ground, the shells' shadows, the snow streaming over the open squares, spindrift */
   function ch2Floor(dtR) {
@@ -16974,25 +17066,26 @@ window.BGM = (() => {
     const ch2 = CH2(); if (ch2) { qWind(paused ? 0 : Math.min(0.05, dtR || 0)); qShadow(); } else { QW.wx = 0; QW.wy = 0; QW.S = 0; }
     qUpdate(qGdt);
     qBase();
-    for (const d of QD) if (d.on) { const u = d.t / d.life, img = d.kind === 1 ? QT.scorch : d.kind === 2 ? QT.rime : QT.smW[0];
+    for (const d of QD) if (d.on) { const u = d.t / d.life, img = d.kind === 1 ? QT.crater : d.kind === 2 ? QT.rime : QT.heap[d.rot > 3.14 ? 1 : 0];
       let a = d.kind === 1 ? (u < 0.02 ? u / 0.02 : 1) * (1 - Math.pow(u, 2.5)) * 0.85 : d.kind === 2 ? Math.min(1, d.t / 0.15) * (1 - u * u) * 0.75 : Math.min(1, d.t / 0.3) * (1 - u) * 0.8;
-      const s = d.k * (d.kind === 1 ? 1.25 : d.kind === 2 ? 1.1 : 0.4) * d.sc * (d.kind === 2 ? 0.6 + 0.4 * Math.min(1, d.t / 0.25) : d.kind === 4 ? 0.6 + 0.4 * Math.min(1, d.t / 0.4) : 1);
-      ctx.globalAlpha = a; if (d.kind === 4) { qSetT(d.x, d.y, 0, s * 1.4, s * 0.6); ctx.drawImage(img, -0.5, -0.8, 1, 1); }
+      if (d.kind === 5) { qPool(d, u); continue; }
+      const s = d.k * (d.kind === 1 ? 1.35 : d.kind === 2 ? 1.1 : 0.4) * d.sc * (d.kind === 2 ? 0.6 + 0.4 * Math.min(1, d.t / 0.25) : d.kind === 4 ? 0.6 + 0.4 * Math.min(1, d.t / 0.4) : 1);
+      ctx.globalAlpha = a; if (d.kind === 4) { qSetT(d.x, d.y, 0, s * 1.5, s * 0.55); ctx.drawImage(img, -0.5, -0.85, 1, 1); }
       else { qSetT(d.x, d.y, 0, s, s * 0.42); ctx.rotate(d.rot); ctx.drawImage(img, -0.5, -0.5, 1, 1); } }
     ctx.setTransform(BA, BB, BC, BD, BE, BF); ctx.globalAlpha = 1;
     for (const j of QJ) if (j.on && j.kind === 4 && j.t < j.T) {   /* the shell's shadow running along the ground under it, darker and tighter as it comes down */
-      const u = j.t / j.T, x = j.g0x + (j.g1x - j.g0x) * u, y = j.g0y + (j.g1y - j.g0y) * u, ht = Math.sin(u * Math.PI);
-      ctx.globalAlpha = 0.22 + 0.3 * (1 - ht); ctx.fillStyle = "#0a0c12"; ctx.beginPath(); ctx.ellipse(x, y, j.k * (0.1 + 0.08 * ht), j.k * (0.04 + 0.03 * ht), 0, 0, 6.29); ctx.fill(); }
+      const u = j.t / j.T, x = j.g0x + (j.g1x - j.g0x) * u, y = j.g0y + (j.g1y - j.g0y) * u, ht = Math.sin(u * Math.PI), sz = j.k * (0.62 - 0.3 * (1 - ht));
+      ctx.globalAlpha = 0.3 + 0.5 * (1 - ht); ctx.drawImage(QT.shad, x - sz / 2, y - sz / 4, sz, sz / 2); }
     for (const f of game.fx) if ((f.k === "lob" || f.k === "bombdrop") && f.t < f.life) { const u = Math.min(1, f.t / f.life), a = SP(f.x0, f.y0, 0), b = SP(f.x1, f.y1, 0), x = a[0] + (b[0] - a[0]) * u, y = a[1] + (b[1] - a[1]) * u, k0 = b[2], ht = f.k === "lob" ? Math.sin(u * Math.PI) : 1 - u;
-      ctx.globalAlpha = 0.2 + 0.35 * (1 - ht); ctx.fillStyle = "#0a0c12"; ctx.beginPath(); ctx.ellipse(f.k === "lob" ? x : b[0], f.k === "lob" ? y : b[1], k0 * (0.09 + 0.08 * ht), k0 * (0.035 + 0.03 * ht), 0, 0, 6.29); ctx.fill(); }
+      const sx = f.k === "lob" ? x : b[0], sy = f.k === "lob" ? y : b[1], sz = k0 * (0.56 - 0.26 * (1 - ht)); ctx.globalAlpha = 0.28 + 0.5 * (1 - ht); ctx.drawImage(QT.shad, sx - sz / 2, sy - sz / 4, sz, sz / 2); }
     ctx.globalAlpha = 1;
     if (ch2 && QW.S > 0.05) {   /* blowing snow over every square the wind reaches; the sheltered ones stay still */
       const ang = Math.atan2(QW.vy, QW.vx), scroll = clock * (0.9 + 0.8 * QW.S);
       const fr = game.frost && !game.frost.all ? game.frost : null;
       for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) { if (!QSH[y * W + x] || ((x * 7 + y * 3) & 1) && QW.S < 0.9) continue; const c = tileAt(x, y); if (!qOpen(c) || fr && frostFogA(x, y) > 0.5) continue;
-        PQ(x, y, zOf(x, y) + 0.03); const ph = (scroll + (x * 0.37 + y * 0.61)) % 1, k0 = PK;
-        ctx.globalCompositeOperation = "lighter"; for (let m = 0; m < 1; m++) { const q = (ph + m * 0.5) % 1, d = (q - 0.5) * k0 * 0.9; ctx.globalAlpha = Math.min(0.5, 0.38 * QW.S) * (0.4 + 0.6 * Math.sin(q * Math.PI));
-          qSetT(PX + Math.cos(ang) * d, PY + Math.sin(ang) * d * 0.5 + (m - 0.5) * k0 * 0.12, ang, k0 * 0.95, k0 * 0.3); ctx.drawImage(QT.haze, -0.5, -0.5, 1, 1); } }
+        const z0 = zOf(x, y) + 0.03, ph = (scroll + (x * 0.37 + y * 0.61)) % 1, Vd = QV4[QW.dir]; PQ(x, y, z0); const cx = PX, cy = PY; PQ(x + Vd[0] * 0.5, y + Vd[1] * 0.5, z0); const ux = PX - cx, uy = PY - cy; PQ(x + Vd[1] * 0.5, y + Vd[0] * 0.5, z0); const px = PX - cx, py = PY - cy;
+        const d = (ph - 0.5) * 1.6; ctx.globalAlpha = Math.min(0.5, 0.42 * QW.S) * Math.sin(ph * Math.PI);   /* driven snow lying low on the square, along the wind, in the board's own plane */
+        qMat(cx + ux * d, cy + uy * d, ux * 1.8, uy * 1.8, px * 0.75, py * 0.75); ctx.drawImage(QT.wisp, -0.5, -0.5, 1, 1); }
       ctx.setTransform(BA, BB, BC, BD, BE, BF); ctx.globalAlpha = 1; ctx.globalCompositeOperation = "source-over";
       const want = (reduceMotion ? 6 : [10, 18, 28][Q]) * Math.min(1, QW.S); let live = 0; for (let i = 0; i < qpN; i++) if (QP[i].board) live++;   /* spindrift: thin snakes of snow running with the wind along the ground */
       if (!paused) for (let n = 0; n < 3 && live < want; n++) { const x = (Math.random() * W) | 0, y = (Math.random() * H) | 0; if (!QSH[y * W + x] || !qOpen(tileAt(x, y))) continue;
@@ -17000,11 +17093,6 @@ window.BGM = (() => {
         p.board = true; p.bx = x - V[0] * 0.45 + (V[1] ? rr(-0.4, 0.4) : 0); p.by = y - V[1] * 0.45 + (V[0] ? rr(-0.4, 0.4) : 0); p.bvx = V[0] * v; p.bvy = V[1] * v; p.alpha = 0.55; p.add = true; p.sq = rr(0.8, 1.5); p.fadeIn = 0.2; live++; }
     }
     qDrawP(0);
-    if (ch2 && game.wind && game.wind.blowing && game.wind.front && !game.frost) {   /* the gust's own front, square by square as the engine moves it: a crest of driven snow on each line */
-      const w = game.wind, [dx, dy] = [[1, 0], [0, 1], [-1, 0], [0, -1]][w.dir], horiz = dy === 0, lines = horiz ? H : W, len = horiz ? W : H, fu = Math.min(1, Math.max(0, 1 - (w.adv - game.t) / 1.1));
-      for (let a = 0; a < lines; a++) { const i = w.front[a]; if (i >= len || (w.done && w.done[a])) continue; const jj = (dx > 0 || dy > 0) ? i - 0.5 + fu * 0.4 : len - 1 - i + 0.5 - fu * 0.4, bx = horiz ? jj : a, by = horiz ? a : jj;
-        PQ(bx, by, 0.05); ctx.globalAlpha = 0.75 * Math.min(1, QW.S); qSetT(PX, PY - PK * 0.12, horiz ? Math.PI / 2 : 0, PK * 2.2, PK * 0.7); ctx.drawImage(QT.bank, -0.5, -0.5, 1, 1); }
-      ctx.setTransform(BA, BB, BC, BD, BE, BF); ctx.globalAlpha = 1; }
   }
   /* over the figures: the shots in flight, the impacts */
   function ch2Air() {
@@ -17013,30 +17101,35 @@ window.BGM = (() => {
     for (const j of QJ) { if (!j.on) continue; const k = j.k, u = Math.min(1, j.t / j.T);
       if (j.kind === 1 || j.kind === 5) {   /* a tracer: tapered tail, hot core, a little glow */
         const hx = j.x0 + (j.x1 - j.x0) * u, hy = j.y0 + (j.y1 - j.y0) * u, ang = Math.atan2(j.y1 - j.y0, j.x1 - j.x0), dist = Math.hypot(j.x1 - j.x0, j.y1 - j.y0);
-        const back = Math.max(0, j.t - j.T) / 0.06, L = Math.min(dist * u, k * (j.kind === 5 ? 1.25 : 1.05)) * (1 - back); if (L < 1) continue;
+        const back = Math.min(1, Math.max(0, j.t - j.T) / 0.06), L = Math.min(dist * u, k * (j.kind === 5 ? 1.25 : 1.05)) * (1 - back), wC = Math.max(k * 0.06, 2.4), wG = Math.max(k * 0.16, 7), gH = Math.max(k * 0.26, 11);
         ctx.globalCompositeOperation = "lighter";
-        ctx.globalAlpha = 0.5 * (1 - back); qSetT(hx, hy, ang, L * 1.05, k * 0.13); ctx.drawImage(j.kind === 5 ? QT.tailGold : QT.tailWarm, -1, -0.5, 1, 1);
-        ctx.globalAlpha = 1 - back; qSetT(hx, hy, ang, L, k * 0.05); ctx.drawImage(QT.tailW, -1, -0.5, 1, 1);
-        if (back <= 0) { ctx.setTransform(BA, BB, BC, BD, BE, BF); ctx.globalAlpha = 0.9; ctx.drawImage(QT.gWarm, hx - k * 0.11, hy - k * 0.11, k * 0.22, k * 0.22); ctx.drawImage(QT.cW, hx - k * 0.04, hy - k * 0.04, k * 0.08, k * 0.08); }
+        if (j.t > j.T) { const ag = 1 - (j.t - j.T) / 0.22; if (ag > 0) { ctx.globalAlpha = 0.38 * ag * ag; qSetT(j.x1, j.y1, ang, dist, wC * 0.8); ctx.drawImage(j.kind === 5 ? QT.tailGold : QT.tailWarm, -1, -0.5, 1, 1); } }   /* the shot's line hangs a moment after it lands */
+        if (L < 1) continue;
+        ctx.globalAlpha = 0.55 * (1 - back); qSetT(hx, hy, ang, L * 1.05, wG); ctx.drawImage(j.kind === 5 ? QT.tailGold : QT.tailWarm, -1, -0.5, 1, 1);
+        ctx.globalAlpha = 1 - back; qSetT(hx, hy, ang, L, wC); ctx.drawImage(QT.tailW, -1, -0.5, 1, 1);
+        if (back <= 0) { ctx.setTransform(BA, BB, BC, BD, BE, BF); ctx.globalAlpha = 0.9; ctx.drawImage(QT.gWarm, hx - gH / 2, hy - gH / 2, gH, gH); ctx.drawImage(QT.cW, hx - gH * 0.18, hy - gH * 0.18, gH * 0.36, gH * 0.36); }
       } else if (j.kind === 2) {   /* the cold bolt: a streaming blue-white head, a long frayed tail */
-        if (u >= 1) continue; const hx = j.x0 + (j.x1 - j.x0) * u, hy = j.y0 + (j.y1 - j.y0) * u, ang = Math.atan2(j.y1 - j.y0, j.x1 - j.x0), L = Math.min(Math.hypot(j.x1 - j.x0, j.y1 - j.y0) * u, k * 0.95), pl = 0.85 + 0.15 * Math.sin(j.t * 60);
+        const ang = Math.atan2(j.y1 - j.y0, j.x1 - j.x0), dist = Math.hypot(j.x1 - j.x0, j.y1 - j.y0);
+        if (u >= 1) { const ag = 1 - (j.t - j.T) / 0.22; if (ag > 0) { ctx.globalCompositeOperation = "lighter"; ctx.globalAlpha = 0.4 * ag * ag; qSetT(j.x1, j.y1, ang, dist, Math.max(k * 0.07, 3)); ctx.drawImage(QT.tailBlue, -1, -0.5, 1, 1); } continue; }   /* a cold line hangs a moment after it */
+        const hx = j.x0 + (j.x1 - j.x0) * u, hy = j.y0 + (j.y1 - j.y0) * u, L = Math.min(dist * u, k * 0.95), pl = 0.85 + 0.15 * Math.sin(j.t * 60), gB = Math.max(k * 0.52, 20), cB = Math.max(k * 0.14, 6.5);
         ctx.globalCompositeOperation = "lighter";
-        ctx.globalAlpha = 0.55; qSetT(hx, hy, ang, L * 1.1, k * 0.24); ctx.drawImage(QT.tailBlue, -1, -0.5, 1, 1);
-        ctx.globalAlpha = 0.9; qSetT(hx, hy + Math.sin(j.t * 40) * k * 0.01, ang, L * 0.7, k * 0.08); ctx.drawImage(QT.tailIce, -1, -0.5, 1, 1);
-        ctx.setTransform(BA, BB, BC, BD, BE, BF); ctx.globalAlpha = 0.85 * pl; ctx.drawImage(QT.gBlue, hx - k * 0.26, hy - k * 0.26, k * 0.52, k * 0.52); ctx.globalAlpha = 1; ctx.drawImage(QT.cW, hx - k * 0.07, hy - k * 0.07, k * 0.14, k * 0.14);
-        qSetT(hx, hy, j.t * 9, k * 0.16, k * 0.16); ctx.drawImage(QT.crystal, -0.5, -0.5, 1, 1);
+        ctx.globalAlpha = 0.6; qSetT(hx, hy, ang, L * 1.1, Math.max(k * 0.24, 9)); ctx.drawImage(QT.tailBlue, -1, -0.5, 1, 1);
+        ctx.globalAlpha = 0.95; qSetT(hx, hy + Math.sin(j.t * 40) * k * 0.01, ang, L * 0.75, Math.max(k * 0.09, 3.6)); ctx.drawImage(QT.tailIce, -1, -0.5, 1, 1);
+        ctx.setTransform(BA, BB, BC, BD, BE, BF); ctx.globalAlpha = 0.85 * pl; ctx.drawImage(QT.gBlue, hx - gB / 2, hy - gB / 2, gB, gB); ctx.globalAlpha = 1; ctx.drawImage(QT.cW, hx - cB / 2, hy - cB / 2, cB, cB);
+        qSetT(hx, hy, j.t * 9, Math.max(k * 0.18, 8), Math.max(k * 0.18, 8)); ctx.drawImage(QT.crystal, -0.5, -0.5, 1, 1);
       } else if (j.kind === 3 || j.kind === 6) {   /* arts and mending: an orb on a tapered stream of its colour, motes shed behind */
         if (u >= 1) continue; const lift = Math.sin(u * Math.PI) * k * 0.12, hx = j.x0 + (j.x1 - j.x0) * u, hy = j.y0 + (j.y1 - j.y0) * u - lift, ang = Math.atan2(j.y1 - j.y0 - Math.cos(u * Math.PI) * k * 0.12 * 2, j.x1 - j.x0), L = Math.min(Math.hypot(j.x1 - j.x0, j.y1 - j.y0) * u, k * 0.8);
         const tl = j.kind === 6 ? QT.tailGreen : QT.tailViolet, gl = j.kind === 6 ? QT.gGreen : QT.gViolet, r = j.big ? 1 : 0.8;
         ctx.globalCompositeOperation = "lighter"; ctx.globalAlpha = 0.65; qSetT(hx, hy, ang, L, k * 0.18 * r); ctx.drawImage(tl, -1, -0.5, 1, 1);
         ctx.setTransform(BA, BB, BC, BD, BE, BF); ctx.globalAlpha = 0.8; ctx.drawImage(gl, hx - k * 0.3 * r, hy - k * 0.3 * r, k * 0.6 * r, k * 0.6 * r); ctx.globalAlpha = 1; ctx.drawImage(QT.cW, hx - k * 0.07 * r, hy - k * 0.07 * r, k * 0.14 * r, k * 0.14 * r);
       } else if (j.kind === 4) {   /* the mortar bomb: a real arc, spinning, its fuse fizzing */
-        if (u >= 1) continue; const x = j.x0 + (j.g1x - j.x0) * u, y = j.y0 + (j.g1y - j.y0) * u - Math.sin(u * Math.PI) * j.h, r = k * 0.11;
-        ctx.globalCompositeOperation = "source-over"; ctx.globalAlpha = 1; qSetT(x, y, j.t * 14, 1, 1);
-        ctx.fillStyle = "#1d1f24"; ctx.beginPath(); ctx.arc(0, 0, r, 0, 6.29); ctx.fill(); ctx.strokeStyle = "rgba(160,170,185,.55)"; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.arc(-r * 0.25, -r * 0.25, r * 0.55, 3.6, 5.2); ctx.stroke();
-        ctx.fillStyle = "#4a3a28"; ctx.fillRect(-r * 0.18, -r * 1.35, r * 0.36, r * 0.45);
-        ctx.setTransform(BA, BB, BC, BD, BE, BF); const fx = x + Math.cos(j.t * 14 - Math.PI / 2) * r * 1.3, fy = y + Math.sin(j.t * 14 - Math.PI / 2) * r * 1.3, fl = 0.7 + 0.3 * Math.sin(j.t * 70);
-        ctx.globalCompositeOperation = "lighter"; ctx.globalAlpha = fl; ctx.drawImage(QT.gWarm, fx - k * 0.09, fy - k * 0.09, k * 0.18, k * 0.18); ctx.drawImage(QT.cW, fx - k * 0.025, fy - k * 0.025, k * 0.05, k * 0.05);
+        if (u >= 1) continue; const x = j.x0 + (j.g1x - j.x0) * u, y = j.y0 + (j.g1y - j.y0) * u - Math.sin(u * Math.PI) * j.h, r = Math.max(k * 0.15, 6.5), sp = j.t * 9 - Math.PI / 2;   /* the iron ball keeps its light (only the fuse turns) */
+        ctx.globalCompositeOperation = "source-over"; ctx.globalAlpha = 1; ctx.setTransform(BA, BB, BC, BD, BE, BF);
+        const bx0 = x + Math.cos(sp) * r * 0.85, by0 = y + Math.sin(sp) * r * 0.85, fx = x + Math.cos(sp) * r * 1.4, fy = y + Math.sin(sp) * r * 1.4;
+        ctx.drawImage(QT.bomb, x - r, y - r, r * 2, r * 2); ctx.strokeStyle = "#3a2a1a"; ctx.lineWidth = Math.max(2, r * 0.24); ctx.lineCap = "round"; ctx.beginPath(); ctx.moveTo(bx0, by0); ctx.lineTo(fx, fy); ctx.stroke();
+        const fl = 0.7 + 0.3 * Math.sin(j.t * 70) * Math.sin(j.t * 23), gs = Math.max(k * 0.34, 15);
+        ctx.globalCompositeOperation = "lighter"; ctx.globalAlpha = fl; ctx.drawImage(QT.gWarm, fx - gs / 2, fy - gs / 2, gs, gs); ctx.drawImage(QT.cW, fx - gs * 0.12, fy - gs * 0.12, gs * 0.24, gs * 0.24);
+        ctx.globalAlpha = 0.6 * fl; qSetT(fx, fy, j.t * 31, gs * 0.7, gs * 0.08); ctx.drawImage(QT.sGold, -0.5, -0.5, 1, 1); qSetT(fx, fy, j.t * 31 + 1.6, gs * 0.5, gs * 0.07); ctx.drawImage(QT.sGold, -0.5, -0.5, 1, 1); ctx.setTransform(BA, BB, BC, BD, BE, BF);
       } else if (j.kind === 7) {   /* the cold slash arc */
         const q = j.t / j.T, sweep = easeO(Math.min(1, q * 1.8)), fade = q < 0.45 ? 1 : 1 - (q - 0.45) / 0.55, f = j.face, R = k * 0.36;
         const a0 = f > 0 ? -2.3 : -0.84, a1 = f > 0 ? 0.5 : -3.64, aE = a0 + (a1 - a0) * sweep, aS = a0 + (a1 - a0) * Math.max(0, sweep - 0.55);
@@ -17048,48 +17141,105 @@ window.BGM = (() => {
       }
     }
     ctx.setTransform(BA, BB, BC, BD, BE, BF); ctx.globalAlpha = 1; ctx.globalCompositeOperation = "source-over";
+    if (CH2()) qGustFront();
     qDrawP(1);
+  }
+  /* ---- the gust front, on the board: a rolling wall of blown snow crossing the squares line by line (the engine's own front where it has one) ---- */
+  const QV4 = [[1, 0], [0, 1], [-1, 0], [0, -1]];
+  let QAX = 0, QAY = 0, QA_p = true, QA_l = 1, QA_h = true;
+  function qAt(s, c) { const al = QA_p ? s : QA_l - 1 - s; if (QA_h) { QAX = al; QAY = c; } else { QAX = c; QAY = al; } }
+  const qh = (a, b) => { const v = Math.sin(a * 12.9898 + b * 78.233) * 43758.5453; return v - Math.floor(v); };
+  const QFD = new Float32Array(64); let qfdGust = -1;
+  function qMat(cx, cy, ax, ay, bx, by) { ctx.setTransform(BA * ax + BC * ay, BB * ax + BD * ay, BA * bx + BC * by, BB * bx + BD * by, BA * cx + BC * cy + BE, BB * cx + BD * cy + BF); }
+  function qGustFront() {
+    const w = game.wind, R = game.frost; if (!w || !QW.blow || (R && R.final) || QW.t0g === undefined) return;
+    const ft = game.t - QW.t0g; if (ft < 0) return;
+    const V = QV4[w.dir], dx = V[0], dy = V[1], horiz = dy === 0, lines = horiz ? H : W, len = horiz ? W : H, pos = dx > 0 || dy > 0;
+    const eng = !!(w.front && !R && !game.storm), step = w.step || 0.25, dur = eng ? len * step + 1.6 : 2.6; if (ft > dur) return;
+    if (qfdGust !== QW.t0g) { qfdGust = QW.t0g; QFD.fill(-1); }
+    const seed = (QW.t0g * 7.13) % 97, fA = Math.min(1, QW.S * 1.4 + 0.35), late = eng && ft > 2.5, nW = reduceMotion ? 3 : late ? [1, 2, 2][Q] : [3, 4, 5][Q], nV = reduceMotion || late ? 1 : [0, 1, 2][Q], nF = reduceMotion ? 1 : [2, 2, 3][Q];   /* once the front has crossed in, it runs on as a lighter crest (it lasts the whole gust) */
+    PQ((W - 1) / 2, (H - 1) / 2, 0); const cx0 = PX, cy0 = PY, k00 = PK; PQ((W - 1) / 2 + dx, (H - 1) / 2 + dy, 0); const sAng = Math.atan2(PY - cy0, PX - cx0), sLen = Math.hypot(PX - cx0, PY - cy0) / k00;
+    let tilt = sAng; if (tilt > Math.PI / 2) tilt -= Math.PI; else if (tilt < -Math.PI / 2) tilt += Math.PI; tilt *= 0.3;
+    const fu = eng ? Math.min(1, Math.max(0, 1 - (w.adv - game.t) / step)) : 0;
+    for (let a = 0; a < lines; a++) {
+      let sF, fade = 1;
+      if (eng) { const i = w.front[a]; sF = i - 0.5 + ((w.done && w.done[a]) || i >= len ? 0 : fu);
+        if ((w.done && w.done[a]) || i >= len) { if (QFD[a] < 0) QFD[a] = game.t; fade = Math.max(0, 1 - (game.t - QFD[a]) / 0.9); if (i >= len) sF += (game.t - QFD[a]) * 1.2; } }
+      else { sF = -1.6 + (len + 3.2) * ft / 2.1 + 0.3 * Math.sin(a * 1.3 + seed); fade = Math.min(1, ft / 0.25) * Math.min(1, (dur - ft) / 0.5); }
+      if (fade <= 0.01 || sF < -2.5 || sF > len + 2.5) continue;
+      const A = fA * fade * (eng ? Math.max(0.5, 1 - Math.max(0, ft - 2) / 4) : 1); QA_p = pos; QA_l = len; QA_h = horiz;
+      /* trailing veils, lying low along the wind behind the wall */
+      for (let m = 0; m < nV; m++) { const r1 = qh(a + seed, m + 40), r2 = qh(a * 3.1 + seed, m + 41), back = 0.9 + r1 * 2.0, s = sF - back; if (s < -1 || s > len) continue;
+        qAt(s, a + (r2 - 0.5) * 0.9); const bx = QAX, by = QAY; PQ(bx, by, 0.12 + r2 * 0.25); const X = PX, Y = PY; PQ(bx + dx * 0.5, by + dy * 0.5, 0.12 + r2 * 0.25); const ax = (PX - X) * 2 * (0.8 + 0.6 * r1), ay = (PY - Y) * 2 * (0.8 + 0.6 * r1);
+        PQ(bx + dy * 0.5, by + dx * 0.5, 0.12 + r2 * 0.25); const px = (PX - X) * 0.9, py = (PY - Y) * 0.9;
+        ctx.globalAlpha = A * 0.42 * (1 - back / 3.2) * (0.7 + 0.3 * Math.sin(clock * 2 + m + a)); qMat(X, Y, ax, ay, px, py); ctx.drawImage(QT.wisp, -0.75, -0.5, 1, 1); }
+      /* the wall: overlapping billows, denser and larger at the ground, each one rolling up and back over itself as the front advances */
+      for (let m = 0; m < nW; m++) { const r1 = qh(a + seed, m), r2 = qh(a * 1.7 + seed, m + 7), r3 = qh(a * 2.3 + seed, m + 13), r4 = qh(a * 0.7 + seed, m + 19), r5 = qh(a * 5.1 + seed, m + 29);
+        const ph = (clock * (0.7 + 0.4 * r5) + r5) % 1, back = Math.pow(r1, 1.4) * 0.85 - 0.12 + ph * 0.45, s = sF - back; if (s < -0.9 || s > len - 0.1) continue;
+        const z = r3 * r3 * 0.7 + ph * 0.3; qAt(s, a + (r2 - 0.5) * 1.3); PQ(QAX, QAY, z);
+        const sz = PK * (0.6 + 0.5 * r4) * (1 - 0.3 * z) * (1 + 0.15 * Math.sin(ph * Math.PI)), al = A * (1.0 - 0.4 * z) * (0.5 + 0.5 * Math.sin(Math.min(1, ph * 1.2 + 0.1) * Math.PI)) * (0.8 + 0.2 * r4);
+        if (al < 0.02) continue; ctx.globalAlpha = al > 1 ? 1 : al;
+        if (m % 3 === 2) { qSetT(PX, PY - sz * 0.2, sAng, sz * 2.4 * (0.7 + 0.3 * sLen), sz * 0.55); ctx.drawImage(QT.wisp, -0.6, -0.5, 1, 1); }   /* streaks running the wind's way through the wall */
+        else { qSetT(PX, PY - sz * 0.22, tilt + (r5 - 0.5) * 0.4, sz * 1.55, sz); ctx.drawImage(QT.billow[m % 3], -0.5, -0.5, 1, 1); } }
+      /* snow thrown ahead of it, streaking the wind's way */
+      ctx.globalCompositeOperation = "lighter";
+      for (let m = 0; m < nF; m++) { const r1 = qh(a + seed, m + 60), r2 = qh(a * 2.9 + seed, m + 61), q = (clock * (1.3 + r1) + r2) % 1, s = sF + 0.1 + q * 1.15; if (s < -0.5 || s > len - 0.5) continue;
+        qAt(s, a + (r1 - 0.5) * 1.1); const bx = QAX, by = QAY; PQ(bx, by, 0.12 + Math.sin(q * Math.PI) * 0.45 * r2); ctx.globalAlpha = A * 0.75 * (1 - q); qSetT(PX, PY, sAng, PK * (0.18 + 0.25 * sLen), PK * 0.05); ctx.drawImage(QT.sSnow, -1, -0.5, 1, 1); }
+      ctx.globalCompositeOperation = "source-over";
+    }
+    ctx.setTransform(BA, BB, BC, BD, BE, BF); ctx.globalAlpha = 1;
   }
   /* a bottle or an ice bomb in the air, drawn from the game's own fx (so its timing is the game's) */
   function qLob(f) {
     const u = Math.min(1, f.t / f.life), a = SP(f.x0, f.y0, 0.9), b = SP(f.x1, f.y1, 0.05), k0 = (a[2] + b[2]) / 2;
     let x, y; if (f.k === "lob") { x = a[0] + (b[0] - a[0]) * u; y = a[1] + (b[1] - a[1]) * u - Math.sin(u * Math.PI) * k0 * 0.9; } else { const a2 = SP(f.x0, f.y0, 1.4); x = a2[0] + (b[0] - a2[0]) * u; y = a2[1] + (b[1] - a2[1]) * u * u; }
-    qBase(); const spin = f.t * (f.k === "lob" ? 13 : 5);
-    qSetT(x, y, spin, 1, 1);
-    if (f.k === "lob") { ctx.fillStyle = "#3e5a3a"; ctx.strokeStyle = "#141a10"; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(-k0 * 0.05, k0 * 0.08); ctx.lineTo(-k0 * 0.05, -k0 * 0.02); ctx.lineTo(-k0 * 0.025, -k0 * 0.06); ctx.lineTo(-k0 * 0.025, -k0 * 0.11); ctx.lineTo(k0 * 0.025, -k0 * 0.11); ctx.lineTo(k0 * 0.025, -k0 * 0.06); ctx.lineTo(k0 * 0.05, -k0 * 0.02); ctx.lineTo(k0 * 0.05, k0 * 0.08); ctx.closePath(); ctx.fill(); ctx.stroke();
-      ctx.fillStyle = "rgba(200,230,190,.5)"; ctx.fillRect(-k0 * 0.035, -k0 * 0.01, k0 * 0.015, k0 * 0.07); }
-    else { const r = k0 * 0.07; ctx.fillStyle = "#24343e"; ctx.beginPath(); ctx.arc(0, 0, r, 0, 6.29); ctx.fill(); ctx.strokeStyle = "rgba(170,230,255,.9)"; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(0, 0, r * 0.62, 0, 6.29); ctx.stroke(); ctx.fillStyle = "#56616a"; ctx.fillRect(-r * 0.2, -r * 1.3, r * 0.4, r * 0.4); }
+    qBase(); const spin = f.t * (f.k === "lob" ? 11 : 5), B = 1.7, kb = Math.max(k0, 40);
+    if (f.k === "lob") {   /* a bottle tumbling end over end: green glass with a lit edge, a burning rag at the neck */
+      qSetT(x, y, spin, kb * B, kb * B); ctx.drawImage(QT.bottle, -0.06, -0.145, 0.12, 0.24); }
+    else {   /* the frost bomb: an iron-banded glass ball with a cold light inside */
+      ctx.setTransform(BA, BB, BC, BD, BE, BF); const r = Math.max(kb * 0.11, 6); ctx.drawImage(QT.bomb, x - r, y - r, r * 2, r * 2);
+      ctx.globalCompositeOperation = "lighter"; ctx.globalAlpha = 0.75 + 0.25 * Math.sin(clock * 9); ctx.drawImage(QT.gBlue, x - r * 1.1, y - r * 1.1, r * 2.2, r * 2.2); ctx.globalAlpha = 1; ctx.globalCompositeOperation = "source-over";
+      qSetT(x, y, spin, 1, 1); ctx.strokeStyle = "rgba(190,236,255,.95)"; ctx.lineWidth = 1.6; ctx.beginPath(); ctx.arc(0, 0, r * 0.6, 0, 6.29); ctx.stroke(); ctx.fillStyle = "#56616a"; ctx.fillRect(-r * 0.2, -r * 1.3, r * 0.4, r * 0.4); }
     ctx.setTransform(BA, BB, BC, BD, BE, BF);
-    const fx = x + Math.sin(spin) * k0 * (f.k === "lob" ? 0.11 : 0.09), fy = y - Math.cos(spin) * k0 * (f.k === "lob" ? 0.11 : 0.09), fl = 0.75 + 0.25 * Math.sin(clock * 50);
-    ctx.globalCompositeOperation = "lighter"; ctx.globalAlpha = fl; ctx.drawImage(f.k === "lob" ? QT.gFire : QT.gBlue, fx - k0 * 0.12, fy - k0 * 0.12, k0 * 0.24, k0 * 0.24); ctx.drawImage(QT.cW, fx - k0 * 0.03, fy - k0 * 0.03, k0 * 0.06, k0 * 0.06);
+    const nk = f.k === "lob" ? kb * 0.125 * B : Math.max(kb * 0.11, 6) * 1.35, fx = x + Math.sin(spin) * nk, fy = y - Math.cos(spin) * nk, fl = 0.75 + 0.25 * Math.sin(clock * 50), gs = Math.max(k0 * 0.3, 14);
+    ctx.globalCompositeOperation = "lighter"; ctx.globalAlpha = fl; ctx.drawImage(f.k === "lob" ? QT.gFire : QT.gBlue, fx - gs / 2, fy - gs / 2, gs, gs); ctx.drawImage(QT.cW, fx - gs * 0.1, fy - gs * 0.1, gs * 0.2, gs * 0.2);
+    if (f.k === "lob") for (let i = 0; i < 3; i++) { const h = gs * (0.75 - i * 0.15) * (1 + 0.2 * Math.sin(clock * (19 + i * 7))), w = h * 0.55; ctx.globalAlpha = 0.85; ctx.drawImage(QT.flameL[i + 1], fx - w / 2 + QW.vx * h * 0.25, fy - h * 0.85, w, h); }   /* the rag's flame stays upright as the bottle turns */
     ctx.globalCompositeOperation = "source-over"; ctx.globalAlpha = 1;
     if (!paused) { let p = qp(1, f.k === "lob" ? QT.cOrange : QT.cIce, fx, fy, rr(-40, 40), rr(-50, 10), rr(0.12, 0.25), k0 * rr(0.025, 0.04)); if (p) { p.add = true; p.grav = 200; }
-      if (Math.random() < 0.6) { p = qp(1, qsm(f.k === "lob" ? QT.smG : QT.smB), x, y, rr(-5, 5), rr(-6, 2), rr(0.8, 1.4), k0 * rr(0.05, 0.08)); if (p) { p.grow = 2.4; p.alpha = 0.32; p.wind = 0.8; p.fadeIn = 0.15; } }
-      if (f.k === "lob" && Math.random() < 0.7) { p = qp(1, qsm(QT.fire), fx, fy, rr(-10, 10), rr(-30, -10), rr(0.12, 0.22), k0 * rr(0.06, 0.1)); if (p) { p.add = true; p.alpha = 0.7; p.wind = 0.5; } } }
+      if (Math.random() < 0.7) { p = qp(1, qsm(f.k === "lob" ? QT.smD : QT.smB), f.k === "lob" ? fx : x, f.k === "lob" ? fy : y, rr(-5, 5), rr(-8, 2), rr(1.6, 2.4), k0 * rr(0.06, 0.1)); if (p) { p.grow = 3; p.alpha = f.k === "lob" ? 0.38 : 0.3; p.wind = 1; p.drag = 1.2; p.fadeIn = 0.1; } }
+      if (f.k === "lob" && Math.random() < 0.7) { p = qp(1, qsm(QT.fire), fx, fy, rr(-10, 10), rr(-30, -10), rr(0.12, 0.22), k0 * rr(0.07, 0.11)); if (p) { p.add = true; p.alpha = 0.7; p.wind = 0.5; } } }
   }
   /* ---- the weather (chapter 2): three depths of snow, fog banks, gust front, frost at the edges, white-out, the clearing ---- */
   const QF = { n: [0, 0, 0], x: [new Float32Array(400), new Float32Array(180), new Float32Array(20)], y: [new Float32Array(400), new Float32Array(180), new Float32Array(20)], ph: [new Float32Array(400), new Float32Array(180), new Float32Array(20)], sz: [new Float32Array(400), new Float32Array(180), new Float32Array(20)], init: false, bank: [] };
   QF.veil = []; for (let i = 0; i < 12; i++) QF.veil.push({ x: Math.random() * 1600, y: Math.random() * 720, len: 260 + Math.random() * 320, ph: Math.random() * 6.28, sp: 0.8 + Math.random() * 0.7 });
   for (let i = 0; i < 4; i++) QF.bank.push({ x: Math.random() * 1600, y: 0.62 + Math.random() * 0.33, r: 190 + Math.random() * 120, ph: Math.random() * 6.28 });
-  const QF_SPEC = [{ fall: 24, wind: 0.5, size: [5.2, 7.6], a: 0.78, img: 0, ex: 0.09 }, { fall: 52, wind: 1.0, size: [9, 13.5], a: 0.95, img: 1, ex: 0.12 }, { fall: 130, wind: 2.3, size: [30, 52], a: 0.42, img: 2, ex: 0 }];
-  function qFlakesInit() { for (let l = 0; l < 3; l++) { const X = QF.x[l], Y = QF.y[l]; for (let i = 0; i < X.length; i++) { X[i] = Math.random() * (VW + 80) - 40; Y[i] = Math.random() * (VH + 80) - 40; QF.ph[l][i] = Math.random() * 6.28; QF.sz[l][i] = QF_SPEC[l].size[0] + Math.random() * (QF_SPEC[l].size[1] - QF_SPEC[l].size[0]); } } QF.init = true; }
-  let QCV = { key: "", c: null }, QEF = { key: "", c: null }, QWO = null;
+  const QF_SPEC = [{ fall: 24, wind: 0.5, size: [3.6, 9], a: 0.8, img: 0, ex: 0.09 }, { fall: 52, wind: 1.0, size: [7, 18], a: 0.95, img: 1, ex: 0.12 }, { fall: 130, wind: 2.3, size: [22, 66], a: 0.42, img: 2, ex: 0 }];
+  function qFlakesInit() { for (let l = 0; l < 3; l++) { const X = QF.x[l], Y = QF.y[l]; for (let i = 0; i < X.length; i++) { X[i] = Math.random() * (VW + 80) - 40; Y[i] = Math.random() * (VH + 80) - 40; QF.ph[l][i] = Math.random() * 6.28; QF.sz[l][i] = QF_SPEC[l].size[0] + Math.pow(Math.random(), 1.7) * (QF_SPEC[l].size[1] - QF_SPEC[l].size[0]); } } QF.init = true; }   /* many small, a few large */
+  let QCV = { key: "", c: null }, QEF = { key: "", c: [null, null], n: 0, sd: 1 }, QWO = null, QWOP = null;
   function qColdVignette() { const key = VW + "x" + VH; if (QCV.key === key) return QCV.c;   /* a cold vignette as a gradient made once per screen size (a gradient fill is cheaper than stretching a picture over the screen) */
     const gr = ctx.createRadialGradient(VW / 2, VH * 0.5, VH * 0.38, VW / 2, VH * 0.5, VW * 0.7); gr.addColorStop(0, "rgba(10,16,34,0)"); gr.addColorStop(1, "rgba(8,12,28,.52)");   /* two stops: the fast gradient path */
     QCV.key = key; QCV.c = gr; return gr; }
-  function qEdgeFrost() {   /* frost on the glass: rime and fern crystals from the screen edges inward, thickest in the corners (made once per screen size) */
-    const key = VW + "x" + VH; if (QEF.key === key) return QEF.c; const w = Math.round(VW / 2), h = Math.round(VH / 2), c = document.createElement("canvas"); c.width = w; c.height = h; const g = c.getContext("2d");
-    let sd = 4242; const r2 = () => (sd = (sd * 16807) % 2147483647) / 2147483647;
-    const edge = (x, y) => Math.min(x / w, 1 - x / w, (y / h) * 1.2, (1 - y / h) * 1.6);   /* the bottom edge (cards and the cost) frosts less */
-    for (let i = 0; i < 1500; i++) { const side = r2(), t = r2(); let x, y; if (side < 0.3) { x = t * w; y = Math.pow(r2(), 2.2) * h * 0.2; } else if (side < 0.45) { x = t * w; y = h - Math.pow(r2(), 2.6) * h * 0.1; } else if (side < 0.72) { x = Math.pow(r2(), 2.2) * w * 0.14; y = t * h; } else { x = w - Math.pow(r2(), 2.2) * w * 0.14; y = t * h; }
-      const e = edge(x, y), a = Math.max(0, 0.38 - e * 3.6); if (a <= 0) continue; g.fillStyle = `rgba(236,246,255,${a})`; const r = 0.6 + r2() * 1.8; g.beginPath(); g.arc(x, y, r, 0, 6.29); g.fill(); }
-    g.lineCap = "round";
-    const fern = (x, y, a, len, wd, n) => { if (n <= 0 || len < 2) return; let px = x, py = y; g.lineWidth = wd; g.strokeStyle = `rgba(245,250,255,${0.25 + 0.35 * wd / 2})`; g.beginPath(); g.moveTo(px, py);
-      const steps = 6; for (let i = 1; i <= steps; i++) { a += (r2() - 0.5) * 0.25; px += Math.cos(a) * len / steps; py += Math.sin(a) * len / steps; g.lineTo(px, py); } g.stroke();
-      for (let i = 1; i < steps; i++) { const t = i / steps, bx = x + (px - x) * t, by = y + (py - y) * t; if (r2() < 0.75) fern(bx, by, a + 0.75 + r2() * 0.2, len * 0.36 * (1 - t * 0.5), wd * 0.6, n - 1); if (r2() < 0.75) fern(bx, by, a - 0.75 - r2() * 0.2, len * 0.36 * (1 - t * 0.5), wd * 0.6, n - 1); } };
-    for (let i = 0; i < 46; i++) { const side = i % 4, t = r2(); let x, y, a; if (side === 0) { x = t * w; y = 0; a = Math.PI / 2; } else if (side === 1) { x = 0; y = t * h * 0.85; a = 0; } else if (side === 2) { x = w; y = t * h * 0.85; a = Math.PI; } else { x = (r2() < 0.5 ? r2() * 0.2 : 0.8 + r2() * 0.2) * w; y = 0; a = Math.PI / 2; }
-      const corner = Math.min(1, Math.min(x, w - x) / (w * 0.25) + 0.15); fern(x, y, a + (r2() - 0.5) * 0.9, (20 + r2() * 46) * (1.4 - corner * 0.6), 1.8, 3); }
-    QEF.key = key; QEF.c = c; return c; }
+  function qEdgeFrost() {   /* frost on the glass: a rime band at the edges, and branching fern crystals growing in from them (short ones first, long ones later); built a few ferns a frame, once per screen size */
+    const key = VW + "x" + VH, w = Math.round(VW / 2), h = Math.round(VH / 2);
+    if (QEF.key !== key) { QEF.key = key; QEF.n = 0; QEF.sd = 4242; QEF.c = [0, 1].map(() => { const c = document.createElement("canvas"); c.width = w; c.height = h; return c; });
+      const g = QEF.c[0].getContext("2d"); let sd = 991; const r2 = () => (sd = (sd * 16807) % 2147483647) / 2147483647;
+      for (const [x0, y0, x1, y1, d] of [[0, 0, 0, h * 0.1, 0], [0, h, 0, h - h * 0.05, 0], [0, 0, w * 0.06, 0, 1], [w, 0, w - w * 0.06, 0, 1]]) { const gr = g.createLinearGradient(x0, y0, x1, y1); gr.addColorStop(0, "rgba(232,244,255,.42)"); gr.addColorStop(1, "rgba(232,244,255,0)"); g.fillStyle = gr; g.fillRect(0, 0, w, h); }
+      const edge = (x, y) => Math.min(x / w, 1 - x / w, (y / h) * 1.2, (1 - y / h) * 1.6);
+      for (let i = 0; i < 1400; i++) { const x = r2() * w, y = r2() * h, e = edge(x, y), a = Math.max(0, 0.42 - e * 5); if (a <= 0.01) continue; g.fillStyle = `rgba(240,248,255,${a})`; g.fillRect(x, y, 0.6 + r2() * 1.4, 0.6 + r2() * 1.4); } }
+    if (QEF.n < 72) { let sd = QEF.sd; const r2 = () => (sd = (sd * 16807) % 2147483647) / 2147483647, T = h * 0.24, B = h * 0.12, Lw = w * 0.16, base = Math.min(T, Lw);
+      const fern = (g, x, y, a, len, wd, depth) => { const segs = Math.max(3, (len / 3.5) | 0), cur = (r2() - 0.5) * 0.05; let px = x, py = y, aa = a;
+        g.lineWidth = wd; g.strokeStyle = `rgba(238,247,255,${0.5 + 0.3 * Math.min(1, wd)})`; g.beginPath(); g.moveTo(px, py);
+        const P = []; for (let i = 1; i <= segs; i++) { aa += cur + (r2() - 0.5) * 0.06; px += Math.cos(aa) * len / segs; py += Math.sin(aa) * len / segs; g.lineTo(px, py); P.push(px, py, aa); } g.stroke();
+        if (depth <= 0) return; for (let i = 0; i < segs - 1; i++) { const t = (i + 1) / segs, L = len * 0.4 * Math.pow(1 - t, 0.85) * (0.75 + r2() * 0.5); if (L < 1.6) continue; const side = i % 2 ? 1 : -1;
+          fern(g, P[i * 3], P[i * 3 + 1], P[i * 3 + 2] + side * (1.02 + (r2() - 0.5) * 0.12), L, wd * 0.62, depth - 1); if (depth > 1 && r2() < 0.55) fern(g, P[i * 3], P[i * 3 + 1], P[i * 3 + 2] - side * (1.02 + (r2() - 0.5) * 0.12), L * 0.8, wd * 0.62, depth - 1); } };
+      for (let k = 0; k < 8 && QEF.n < 72; k++, QEF.n++) { const longF = QEF.n >= 36, g = QEF.c[longF ? 1 : 0].getContext("2d"); g.lineCap = "round"; g.lineJoin = "round";
+        const sw = r2(), tq = r2(), tt = tq < 0.5 ? Math.pow(r2(), 1.6) * 0.5 : 1 - Math.pow(r2(), 1.6) * 0.5; let x, y, a, lim;
+        if (sw < 0.42) { x = tt * w; y = 0; a = Math.PI / 2; lim = T; } else if (sw < 0.56) { x = tt * w; y = h; a = -Math.PI / 2; lim = B; } else if (sw < 0.78) { x = 0; y = tt * h; a = 0; lim = Lw; } else { x = w; y = tt * h; a = Math.PI; lim = Lw; }
+        const nearC = Math.min(x, w - x) < w * 0.12 && (y < h * 0.25 || y > h * 0.8); if (nearC) { a += (x < w / 2 ? 1 : -1) * (y < h / 2 ? -0.6 : 0.6) * (a === Math.PI / 2 || a === -Math.PI / 2 ? -1 : 1); lim *= 1.25; }
+        const len = Math.min(lim * 0.95, base * (longF ? 0.55 + r2() * 0.45 : 0.22 + r2() * 0.32) * (nearC ? 1.3 : 1));
+        fern(g, x, y, a + (r2() - 0.5) * 0.9, len, longF ? 1.25 : 1.05, len > 26 ? 3 : 2); }
+      QEF.sd = sd; if (QEF.n >= 72) { const g = QEF.c[0].getContext("2d"); g.globalAlpha = 1; g.drawImage(QEF.c[1], 0, 0); QEF.c[1] = null; } }   /* done: the long ferns are folded into the first canvas, so a full frost is one draw */
+    return QEF.c; }
   function ch2Weather(dt) {
     if (!QF.init) qFlakesInit();
     const R = game.frost, sd = scale * dpr, S = QW.S, CMm = camM();
@@ -17097,27 +17247,24 @@ window.BGM = (() => {
     const busy = S > 0.6 ? 1 : 0, mul = 1 + Math.min(1, S) * 0.6 * Math.min(1.3, I);
     const cnt = [Math.round([50, 85, 120][Q] * dens * mul), Math.round([24, 38, 52][Q] * dens * mul), Math.round([3, 5, 7][Q] * dens * (1 + 0.6 * busy))];
     for (let l = 0; l < 3; l++) cnt[l] = Math.min(cnt[l], QF.x[l].length);
-    /* the gust front at a gust's start: snow ahead of it still falls calm, behind it streams */
-    const ft = game.t - (QW.t0g === undefined ? -99 : QW.t0g), fOn = QW.blow && ft < 1.8 && ft >= 0 && !(R && R.final), axL = Math.abs(QW.vx) * VW + Math.abs(QW.vy) * VH, fPos = fOn ? (ft / 1.6) * (axL + 400) - 200 : 1e9;
-    const sAx = (x, y) => (QW.vx >= 0 ? x : VW - x) * Math.abs(QW.vx) + (QW.vy >= 0 ? y : VH - y) * Math.abs(QW.vy);
     /* warm holes: lit braziers on screen push the snow back */
     const holes = BRZ.n, hR = 1.0 + 0.6 * QW.white, HX = QBH.x, HY = QBH.y, HRr = QBH.r;
     for (let i = 0; i < holes && i < 24; i++) { const x = BRZ.x[i], y = BRZ.y[i]; HX[i] = CMm[0] * x + CMm[2] * y + CMm[4]; HY[i] = CMm[1] * x + CMm[3] * y + CMm[5] - BRZ.k[i] * 0.4; HRr[i] = BRZ.k[i] * camScale() * (1.1 + 0.9 * QW.white) * hR * (0.6 + 0.4 * BRZ.f[i]); }
     ctx.save(); ctx.setTransform(sd, 0, 0, sd, 0, 0); ctx.globalCompositeOperation = "source-over";
-    const rad = QW.vy * Math.min(1.4, S) * 0.55, fcx = VW / 2, fcy = -VH * 0.35;   /* wind toward us (from the north) fans the snow out from far up the field; away from us draws it in */
+    const rad = Math.max(0, QW.vy) * Math.min(1.4, S) * 0.55, fcx = VW / 2, fcy = -VH * 0.35;   /* wind toward us (from the north) fans the snow out from far up the field; away from us draws it in */
     /* fog banks low over the field, breathing */
     const fogA = (0.6 + 0.6 * Math.min(1.5, S)) * (1 - 0.85 * clr);
     for (let bi = 0; bi < [2, 3, 4][Q]; bi++) { const b = QF.bank[bi]; b.x += (QW.wx * 0.12 + 6) * dt; const bw = b.r * 2.3; if (b.x - bw / 2 > VW + 40) b.x = -bw / 2 - 40; if (b.x + bw / 2 < -60) b.x = VW + bw / 2;
       ctx.globalAlpha = Math.min(1, (0.5 + 0.3 * Math.sin(clock * 0.21 + b.ph)) * fogA); ctx.drawImage(QT.bank, b.x - bw / 2, VH * b.y - b.r * 0.3, bw, b.r * 0.6); }
     /* driven snow: long streaky veils racing with the gust, layered over the field */
-    if (S > 0.15 && !reduceMotion) { const nv = Math.round([3, 5, 7][Q] * Math.min(1, S) * (1 - 0.8 * clr)); ctx.globalCompositeOperation = "lighter";
+    if (S > 0.15 && !reduceMotion) { const nv = Math.round([3, 5, 7][Q] * Math.min(1, S) * (1 - 0.8 * clr)); ctx.globalCompositeOperation = "source-over";
       for (let i = 0; i < nv; i++) { const v = QF.veil[i]; let vx = QW.vx * 420 * S * v.sp, vy = QW.vy * 420 * S * v.sp + 30;
         if (rad) { vx += (v.x - fcx) * rad * 1.2; vy += (v.y - fcy) * rad * 0.5; }
         if (QW.multi) { const sw = Math.sin(clock * 0.7 + v.ph) * 260 * S; vx += Math.cos(v.ph + clock * 0.4) * sw; vy += Math.sin(v.ph + clock * 0.4) * sw * 0.5; }
         v.x += vx * dt; v.y += vy * dt; const m = v.len; if (v.x > VW + m) v.x -= VW + 2 * m; else if (v.x < -m) v.x += VW + 2 * m; if (v.y > VH + m * 0.5) v.y -= VH + m; else if (v.y < -m * 0.5) v.y += VH + m;
-        const aa = Math.atan2(vy, vx), cs = Math.cos(aa), sn = Math.sin(aa), w2 = m * (0.13 + 0.04 * Math.sin(v.ph));
-        ctx.globalAlpha = Math.min(0.42, 0.3 * S) * (0.6 + 0.4 * Math.sin(clock * 1.3 + v.ph));
-        ctx.setTransform(sd * cs * m, sd * sn * m, -sd * sn * w2, sd * cs * w2, sd * v.x, sd * v.y); ctx.drawImage(QT.haze, -0.5, -0.5, 1, 1); }
+        const aa = Math.atan2(vy, vx), cs = Math.cos(aa), sn = Math.sin(aa), w2 = m * (0.2 + 0.06 * Math.sin(v.ph));
+        ctx.globalAlpha = Math.min(0.5, 0.36 * S) * (0.55 + 0.45 * Math.sin(clock * 1.3 + v.ph));
+        ctx.setTransform(sd * cs * m, sd * sn * m, -sd * sn * w2, sd * cs * w2, sd * v.x, sd * v.y); ctx.drawImage(QT.wisp, -0.5, -0.5, 1, 1); }   /* feathered bundles of streaks, not bars */
       ctx.setTransform(sd, 0, 0, sd, 0, 0); ctx.globalCompositeOperation = "source-over"; }
     /* the snow, three depths */
     const streakV = 110;
@@ -17126,7 +17273,6 @@ window.BGM = (() => {
       for (let i = 0; i < n; i++) { const ph = PH[i];
         let wx = QW.vx * (12 + 260 * S) * sp.wind, wy = QW.vy * (12 + 260 * S) * sp.wind + sp.fall * (1 + 0.3 * S);
         if (rad) { const k2 = rad * (0.5 + 0.5 * sp.wind); wx += (X[i] - fcx) * k2; wy += (Y[i] - fcy) * k2 * 0.35; }
-        if (fOn && sAx(X[i], Y[i]) > fPos) { wx = QW.vx * 12 * sp.wind; wy = sp.fall; }
         if (QW.multi) { const sw = Math.sin(clock * 0.9 + ph * 3) * 160 * S * sp.wind; wx += Math.cos(ph + clock * 0.5) * sw; wy += Math.sin(ph + clock * 0.5) * sw * 0.5; }
         const tx = Math.sin(clock * (0.7 + ph * 0.13) + ph * 5) * turb, ty = Math.cos(clock * (0.9 + ph * 0.11) + ph * 3) * turb * 0.4;
         X[i] += (wx + tx) * dt; Y[i] += (wy + ty) * dt;
@@ -17142,21 +17288,28 @@ window.BGM = (() => {
             ctx.setTransform(sd * cs * st, sd * sn * st, -sd * sn, sd * cs, sd * x, sd * y); ctx.drawImage(img, -s / 2, -s / 2, s, s); ctx.setTransform(sd, 0, 0, sd, 0, 0); }
           else ctx.drawImage(img, x - s / 2, y - s / 2, s, s); }
       } }
-    /* the front itself: a band of dense driven white crossing the screen at the gust's start */
-    if (fOn) { const fa = Math.min(0.75, Math.sin(Math.min(1, ft / 1.6) * Math.PI) * 0.9 * Math.min(1, S * 2 + 0.3)); ctx.globalAlpha = fa;
-      const nx = QW.vx / (Math.hypot(QW.vx, QW.vy) || 1), ny = QW.vy / (Math.hypot(QW.vx, QW.vy) || 1), ox = nx >= 0 ? 0 : VW, oy = ny >= 0 ? 0 : VH, cx = ox + nx * fPos, cy = oy + ny * fPos, px = -ny, py = nx;
-      for (let i = -9; i <= 9; i++) { const bx = cx + px * i * 95, by = cy + py * i * 95, r = 260 + 50 * Math.sin(i * 1.7 + clock * 2); ctx.setTransform(sd * nx, sd * ny, -sd * ny, sd * nx, sd * bx, sd * by); ctx.drawImage(QT.bank, -r * 0.9, -r * 0.9, r * 0.9, r * 1.8); ctx.drawImage(QT.bank, -r * 0.45, -r * 0.8, r * 0.7, r * 1.6); }
-      ctx.setTransform(sd, 0, 0, sd, 0, 0); }
     /* gate mist, as before */
     ctx.globalAlpha = 1;
-    /* the near-white-out of the last storm: a pale veil that pulses, cut open round every lit brazier */
-    if (QW.white > 0.01 && R) { if (!QWO) { QWO = document.createElement("canvas"); QWO.width = 192; QWO.height = 108; }
-      const g = QWO.getContext("2d"), ww = QWO.width, wh = QWO.height, pl = 0.5 + 0.5 * Math.sin(clock * 1.7) * Math.sin(clock * 0.63 + 1);
-      g.globalCompositeOperation = "source-over"; g.clearRect(0, 0, ww, wh); g.fillStyle = "rgba(232,240,248,1)"; g.fillRect(0, 0, ww, wh); g.globalCompositeOperation = "destination-out";
-      for (let h = 0; h < holes; h++) { const r = HRr[h] * 2.4 * ww / VW; g.drawImage(QT.hole, HX[h] * ww / VW - r, HY[h] * wh / VH - r * 0.75, r * 2, r * 1.5); }
-      ctx.globalAlpha = QW.white * (0.4 + 0.2 * pl) * (1 - clr); ctx.imageSmoothingEnabled = true; ctx.drawImage(QWO, 0, 0, VW, VH);
+    /* the white-out of the last storm: sheets of snow tearing across in the wind's direction at three depths (far ones slower and finer), each surging in its own gusts,
+       cut open round every lit brazier with a turbulent edge, thinned round each figure so they still read; snow whirls round the warm holes */
+    if (QW.white > 0.01 && R) { const ww = Math.min(480, Math.round(VW / 3)), wh = Math.max(40, Math.round(ww * VH / VW));
+      if (!QWO || QWO.width !== ww || QWO.height !== wh) { QWO = document.createElement("canvas"); QWO.width = ww; QWO.height = wh; QWOP = null; }
+      const g = QWO.getContext("2d"), pl = 0.5 + 0.5 * Math.sin(clock * 1.7) * Math.sin(clock * 0.63 + 1), wa = Math.atan2(QW.vy, QW.vx), wc = Math.cos(wa), ws = Math.sin(wa), fs = ww / VW;
+      if (!QWOP) QWOP = [g.createPattern(QT.sheet[0], "repeat"), g.createPattern(QT.sheet[1], "repeat")];
+      g.setTransform(1, 0, 0, 1, 0, 0); g.globalCompositeOperation = "source-over"; g.clearRect(0, 0, ww, wh); g.globalAlpha = 0.3 + 0.12 * pl; g.fillStyle = "#e2eaf4"; g.fillRect(0, 0, ww, wh);
+      for (let L = 0; L < 3; L++) { const scl = [0.32, 0.55, 0.95][L] * ww / 320, spd = [70, 150, 300][L], off = (clock * spd) % 256, gu = 0.5 + 0.5 * Math.sin(clock * [0.9, 1.3, 1.8][L] + L * 2.1 + Math.sin(clock * 0.41 + L) * 1.5), Rr = (ww + wh) / scl;
+        g.globalAlpha = [0.75, 0.9, 1][L] * (0.3 + 0.7 * gu); g.setTransform(wc * scl, ws * scl, -ws * scl, wc * scl, ww / 2, wh / 2); g.translate(off, L * 41 + Math.sin(clock * 0.3 + L) * 12); g.fillStyle = QWOP[L & 1]; g.fillRect(-Rr - off, -Rr, Rr * 2, Rr * 2); }
+      g.setTransform(1, 0, 0, 1, 0, 0); g.globalCompositeOperation = "destination-out"; g.globalAlpha = 1;
+      for (let h = 0; h < holes; h++) { const r = HRr[h] * 1.5 * fs, hx = HX[h] * fs, hy = HY[h] * fs; for (let m = 0; m < 2; m++) { const ro = clock * (m ? -0.7 : 0.5) + h, sc2 = 1 + 0.08 * Math.sin(clock * 3 + m * 2 + h);
+          g.setTransform(Math.cos(ro) * sc2, Math.sin(ro) * sc2 * 0.75, -Math.sin(ro) * sc2, Math.cos(ro) * sc2 * 0.75, hx, hy); g.drawImage(QT.holeT, -r, -r, r * 2, r * 2); } }
+      g.setTransform(1, 0, 0, 1, 0, 0);
+      for (let pass = 0; pass < 2; pass++) { const arr = pass ? game.enemies : game.units; g.globalAlpha = pass ? 0.4 : 0.6; for (let i = 0; i < arr.length; i++) { const u = arr[i]; if (u.dead) continue; PQ(u.x, u.y, 0.45); const sx = (CMm[0] * PX + CMm[2] * PY + CMm[4]) * fs, sy = (CMm[1] * PX + CMm[3] * PY + CMm[5]) * fs, r = PK * camScale() * 0.62 * fs; g.drawImage(QT.hole, sx - r, sy - r * 1.3, r * 2, r * 2.4); } }   /* the figures stay readable as shapes in it */
+      ctx.globalAlpha = QW.white * (0.78 + 0.16 * pl) * (1 - clr); ctx.imageSmoothingEnabled = true; ctx.drawImage(QWO, 0, 0, VW, VH);
       ctx.globalCompositeOperation = "lighter"; for (let h = 0; h < holes; h++) { const r = HRr[h] * 1.3; ctx.globalAlpha = (0.26 + 0.08 * Math.sin(clock * 9 + h)) * QW.white * (1 - clr); ctx.drawImage(QT.warm, HX[h] - r, HY[h] - r * 0.7, r * 2, r * 1.4); }
-      ctx.globalCompositeOperation = "source-over"; }
+      ctx.globalCompositeOperation = "lighter"; const nS = reduceMotion ? 4 : [8, 12, 16][Q];
+      for (let h = 0; h < holes; h++) for (let i = 0; i < nS; i++) { const q1 = qh(i, h + 3), th = i / nS * 6.28 + clock * (1.4 + q1 * 0.9) * (1 + 0.3 * (i % 2)), rr0 = HRr[h] * (0.42 + 0.25 * q1) * (1 + 0.06 * Math.sin(clock * 4 + i)), X = HX[h] + Math.cos(th) * rr0 + QW.vx * rr0 * 0.2, Y = HY[h] + Math.sin(th) * rr0 * 0.55, ta = Math.atan2(Math.cos(th) * 0.55, -Math.sin(th)), Ls = 10 + 12 * q1;
+        ctx.globalAlpha = 0.85 * QW.white * (1 - clr) * (0.6 + 0.4 * Math.sin(clock * 5 + i)); const cs = Math.cos(ta), sn = Math.sin(ta); ctx.setTransform(sd * cs * Ls * 1.4, sd * sn * Ls * 1.4, -sd * sn * 3.2, sd * cs * 3.2, sd * X, sd * Y); ctx.drawImage(QT.sSnow, -1, -0.5, 1, 1); }   /* snow whirling round the warm hole */
+      ctx.setTransform(sd, 0, 0, sd, 0, 0); ctx.globalAlpha = 1; ctx.globalCompositeOperation = "source-over"; }
     /* the clearing: warm light spreads from the light's side as the storm tears open */
     if (clr > 0) { const lx = QW_LIGHT.x, ly = QW_LIGHT.y, gx0 = lx < 0 ? 0 : VW, gy0 = ly < 0 ? 0 : VH, reach = (0.2 + Math.min(1, clr) * 1.5) * (Math.abs(lx) * VW + Math.abs(ly) * VH), gr = ctx.createRadialGradient(gx0, gy0, 0, gx0, gy0, Math.max(10, reach));
       gr.addColorStop(0, `rgba(255,230,180,${0.1 + 0.2 * Math.sin(Math.min(1, clr) * Math.PI * 0.5 + 0.3)})`); gr.addColorStop(0.7, `rgba(255,214,150,${0.05 + 0.2 * Math.sin(clr * Math.PI)})`); gr.addColorStop(0.9, `rgba(255,214,150,${0.22 * Math.sin(clr * Math.PI)})`); gr.addColorStop(1, "rgba(255,214,150,0)"); ctx.globalCompositeOperation = "lighter"; ctx.globalAlpha = 1; ctx.fillStyle = gr; ctx.fillRect(0, 0, VW, VH); ctx.globalCompositeOperation = "source-over"; }
@@ -17174,11 +17327,13 @@ window.BGM = (() => {
   function ch2Screen() {
     if (!game || !CH2() || QW.edge < 0.01 || reduceMotion && QW.edge < 0.5) return;
     const e = QW.edge * (1 - (QW.clearOn ? QW.clearU : 0)); if (e < 0.01) return;
-    const c = qEdgeFrost(), sc = 1 + 0.12 * (1 - e), sd = scale * dpr, cw = c.width, ch = c.height, ox = VW / 2 - VW * sc / 2, oy = VH / 2 - VH * sc / 2, fx = VW * sc / cw, fy = VH * sc / ch;
-    ctx.save(); ctx.setTransform(sd, 0, 0, sd, 0, 0); ctx.globalAlpha = Math.min(0.72, e * 0.8); ctx.imageSmoothingEnabled = true;
-    const T = Math.round(ch * 0.24), B = Math.round(ch * 0.12), Lw = Math.round(cw * 0.16);   /* only the frosted margins are drawn: the clear middle costs nothing */
-    ctx.drawImage(c, 0, 0, cw, T, ox, oy, cw * fx, T * fy); ctx.drawImage(c, 0, ch - B, cw, B, ox, oy + (ch - B) * fy, cw * fx, B * fy);
-    ctx.drawImage(c, 0, T, Lw, ch - T - B, ox, oy + T * fy, Lw * fx, (ch - T - B) * fy); ctx.drawImage(c, cw - Lw, T, Lw, ch - T - B, ox + (cw - Lw) * fx, oy + T * fy, Lw * fx, (ch - T - B) * fy);
+    const CC = qEdgeFrost(), sd = scale * dpr; ctx.save(); ctx.setTransform(sd, 0, 0, sd, 0, 0); ctx.imageSmoothingEnabled = true;
+    for (let li = 0; li < 2; li++) { const c = CC[li]; if (!c) continue; const el = li ? Math.max(0, Math.min(1, e * 2 - 0.8)) : CC[1] ? Math.min(1, e * 1.8) : Math.max(0, Math.min(1, e * 1.6 - 0.2)); if (el < 0.01) continue;   /* the short crystals first, then the long ferns creep in */
+      const sc = 1 + (li ? 0.16 : 0.08) * (1 - el), cw = c.width, ch = c.height, ox = VW / 2 - VW * sc / 2, oy = VH / 2 - VH * sc / 2, fx = VW * sc / cw, fy = VH * sc / ch;
+      ctx.globalAlpha = Math.min(0.85, el * 0.9);
+      const T = Math.round(ch * 0.24), B = Math.round(ch * 0.12), Lw = Math.round(cw * 0.16);   /* only the frosted margins are drawn: the clear middle costs nothing */
+      ctx.drawImage(c, 0, 0, cw, T, ox, oy, cw * fx, T * fy); ctx.drawImage(c, 0, ch - B, cw, B, ox, oy + (ch - B) * fy, cw * fx, B * fy);
+      ctx.drawImage(c, 0, T, Lw, ch - T - B, ox, oy + T * fy, Lw * fx, (ch - T - B) * fy); ctx.drawImage(c, cw - Lw, T, Lw, ch - T - B, ox + (cw - Lw) * fx, oy + T * fy, Lw * fx, (ch - T - B) * fy); }
     ctx.restore();
   }
   /* a chapter-2 brazier, lit: a light pool on the stones, a living flame that leans with the wind and shrinks as it weakens, sparks going up */
@@ -17186,25 +17341,31 @@ window.BGM = (() => {
     const fl = 0.5 + 0.5 * Math.sin(clock * 9 + x * 2 + y), S = QW.S, white = QW.white;
     const warmR = game.frost ? game.frost.warm + 0.5 : 1.5, rx = k0 * warmR * 1.05, ry = rx * 0.45;
     if (BRZ.n < 24) { BRZ.x[BRZ.n] = t0[0]; BRZ.y[BRZ.n] = t0[1]; BRZ.k[BRZ.n] = k0; BRZ.f[BRZ.n] = hpF; BRZ.n++; }
+    const lean0 = Math.max(-0.75, Math.min(0.75, QW.vx * (0.1 + 0.6 * Math.min(1.2, S)))), fk = 0.75 + 0.15 * Math.sin(clock * 13 + x) + 0.1 * Math.sin(clock * 29 + y) * Math.min(1, S * 2), shx = lean0 * k0 * 0.4, shy = QW.vy * Math.min(1.2, S) * k0 * 0.12;   /* the light pool shifts downwind and flickers as the flame is torn */
     ctx.save(); ctx.globalCompositeOperation = "lighter";
-    ctx.globalAlpha = (0.32 + 0.08 * fl + 0.18 * white) * (0.55 + 0.45 * hpF); ctx.drawImage(QT.warm, c0[0] - rx, c0[1] - ry, rx * 2, ry * 2);
-    ctx.globalAlpha = 0.5 * (0.6 + 0.4 * hpF); ctx.drawImage(QT.warm, c0[0] - k0 * 0.55, c0[1] - k0 * 0.25, k0 * 1.1, k0 * 0.5);
+    ctx.globalAlpha = (0.32 + 0.08 * fl + 0.18 * white) * (0.55 + 0.45 * hpF) * fk; ctx.drawImage(QT.warm, c0[0] - rx + shx, c0[1] - ry + shy, rx * 2, ry * 2);
+    ctx.globalAlpha = 0.5 * (0.6 + 0.4 * hpF) * fk; ctx.drawImage(QT.warm, c0[0] - k0 * 0.55 + shx * 0.6, c0[1] - k0 * 0.25 + shy * 0.6, k0 * 1.1, k0 * 0.5);
     ctx.globalCompositeOperation = "source-over"; ctx.globalAlpha = 1;
     ctx.strokeStyle = "#1c1612"; ctx.lineWidth = 3; for (const s of [-1, 1]) { ctx.beginPath(); ctx.moveTo(t0[0] + s * w0 * 0.7, t0[1]); ctx.lineTo(t0[0] + s * w0, t0[1] + (c0[1] - t0[1]) * 0.9); ctx.stroke(); }
     ctx.fillStyle = "#2a211b"; ctx.beginPath(); ctx.ellipse(t0[0], t0[1], w0, w0 * 0.42, 0, 0, 6.29); ctx.fill(); ctx.strokeStyle = "#4a3a2c"; ctx.lineWidth = 2; ctx.stroke();
     ctx.fillStyle = `rgba(255,${(110 + 70 * fl) | 0},40,.95)`; ctx.beginPath(); ctx.ellipse(t0[0], t0[1] - 2, w0 * 0.8, w0 * 0.3, 0, 0, 6.29); ctx.fill();
-    /* the flame: four tongues, each flickering on its own, all leaning with the wind (squashed when it blows toward us or away) */
-    const lean = Math.max(-0.75, Math.min(0.75, QW.vx * (0.1 + 0.6 * Math.min(1.2, S)))) + Math.sin(clock * 2.3 + x) * 0.06, squash = 1 - 0.25 * QW.vy * Math.min(1.2, S), al = Math.abs(lean), hgt = k0 * (0.42 + 0.34 * hpF) * (1 + 0.1 * white) * Math.max(0.7, squash) * (1 - 0.3 * al), wid = k0 * (0.3 + 0.12 * hpF) * (1 + 0.6 * al);
+    /* the flame: four tongues, each built of stacked licks that bend downwind along a curve (it keeps its body in a side gust), the top licks tearing off and streaming away */
+    const lean = lean0 + Math.sin(clock * 2.3 + x) * 0.06, squash = 1 - 0.25 * QW.vy * Math.min(1.2, S), al = Math.abs(lean), hgt = k0 * (0.42 + 0.34 * hpF) * (1 + 0.1 * white) * Math.max(0.72, squash) * (1 - 0.18 * al), wid = k0 * (0.3 + 0.12 * hpF) * (1 + 0.25 * al);
     ctx.restore();
+    ctx.save(); const bx = t0[0], by = t0[1] - 3;
     for (let i = 0; i < 4; i++) { const ph = i * 1.9 + x * 0.7 + y * 1.3, f1 = 1 + 0.16 * Math.sin(clock * (11 + i * 3) + ph) + 0.09 * Math.sin(clock * (23 + i * 5) + ph * 2), sw = (1 - i * 0.18) * wid, sh = (1 - i * 0.16) * hgt * f1;
       const ox = Math.sin(clock * (5 + i) + ph) * wid * 0.12 * (1 - i * 0.2);
-      ctx.save(); ctx.globalCompositeOperation = i < 2 ? "source-over" : "lighter"; ctx.translate(t0[0] + ox, t0[1] - 3); ctx.transform(1, 0, -lean * (1 + i * 0.15), 1, 0, 0); ctx.globalAlpha = [0.85, 0.8, 0.8, 0.9][i];
-      ctx.drawImage(QT.flameL[i], -sw / 2, -sh * 0.92, sw, sh); ctx.restore(); }
+      for (let m = 0; m < 3; m++) { const q = m / 3, q2 = (m + 1) / 3, bend = lean * sh * (q2 * q2) * 0.7 + Math.sin(clock * (9 + m * 4) + ph + m) * wid * 0.06 * m, lw = sw * 1.2 * (1 - q * 0.35), lh = sh * 0.6 * (1 - q * 0.15);
+        ctx.restore(); ctx.save(); ctx.globalCompositeOperation = i < 2 ? "source-over" : "lighter"; ctx.globalAlpha = [0.85, 0.8, 0.8, 0.9][i] * (1 - m * 0.12);
+        ctx.translate(bx + ox + bend, by - sh * q * 0.62); ctx.transform(1, 0, -Math.max(-0.3, Math.min(0.3, lean * (0.3 + q * 0.6))), 1, 0, 0); ctx.drawImage(QT.flameL[i], -lw / 2, -lh * 0.95, lw, lh); } }
+    ctx.restore();
     ctx.save(); ctx.globalCompositeOperation = "lighter";
     ctx.globalAlpha = 0.28 + 0.1 * fl; ctx.drawImage(QT.gWarm, t0[0] + lean * hgt * 0.5 - k0 * 0.45, t0[1] - hgt * 0.55 - k0 * 0.45, k0 * 0.9, k0 * 0.9);
     ctx.restore();
-    if (!paused) { const rate = (0.12 + 0.1 * hpF) * (1 + S); if (Math.random() < rate) { const p = qp(1, Math.random() < 0.5 ? QT.cEmber : QT.cOrange, t0[0] + rr(-w0 * 0.5, w0 * 0.5), t0[1] - hgt * 0.6, rr(-15, 15), -rr(50, 110), rr(0.6, 1.2), k0 * rr(0.018, 0.035)); if (p) { p.add = true; p.wind = 1.2; p.drag = 0.6; } }
-      if (Math.random() < 0.05 + 0.04 * S) { const p = qp(1, qsm(QT.smD), t0[0], t0[1] - hgt, rr(-6, 6), -rr(25, 45), rr(1.4, 2.2), k0 * rr(0.12, 0.2)); if (p) { p.grow = 2; p.alpha = 0.22; p.wind = 1; p.fadeIn = 0.25; } } }
+    if (!paused) { const rate = (0.12 + 0.1 * hpF) * (1 + 2.5 * S), tipX = t0[0] + lean * hgt * 0.75, tipY = t0[1] - hgt * 0.75;
+      if (Math.random() < rate) { const p = qp(1, Math.random() < 0.5 ? QT.cEmber : QT.cOrange, t0[0] + rr(-w0 * 0.5, w0 * 0.5) + lean * hgt * 0.4, t0[1] - hgt * 0.6, rr(-15, 15), -rr(50, 110) * (1 - 0.5 * Math.min(1, S)), rr(0.6, 1.2), k0 * rr(0.018, 0.035)); if (p) { p.add = true; p.wind = 1.3; p.drag = 0.6; if (S > 0.3) { p.img = QT.sGold; p.stretch = 3; p.size = k0 * 0.03; } } }   /* sparks streaming downwind */
+      if (S > 0.25 && Math.random() < 0.35 * S) { const p = qp(1, qsm(Math.random() < 0.5 ? QT.fire : QT.fireHi), tipX, tipY, QW.wx * 0.35, QW.wy * 0.35 - 20, rr(0.18, 0.32), k0 * rr(0.1, 0.16) * (0.6 + 0.4 * hpF)); if (p) { p.add = true; p.alpha = 0.75; p.wind = 0.8; p.grow = -0.5; p.drag = 1; } }   /* licks torn off the top */
+      if (Math.random() < 0.05 + 0.04 * S) { const p = qp(1, qsm(QT.smD), t0[0] + lean * hgt, t0[1] - hgt, rr(-6, 6), -rr(25, 45), rr(1.4, 2.2), k0 * rr(0.12, 0.2)); if (p) { p.grow = 2; p.alpha = 0.22; p.wind = 1; p.fadeIn = 0.25; } } }
   }
   function qBrazierOut(x, y, t0, k0) {   /* just put out: a thin wisp of smoke for a few seconds */
     const at = game.lampOffT && game.lampOffT.get ? game.lampOffT.get(y * 100 + x) : undefined; if (at === undefined || paused) return; const age = game.t - at; if (age > 6 || age < 0) return;
@@ -17234,21 +17395,31 @@ window.BGM = (() => {
   function qShatter(u) { u._qHold = game.t + 0.2;
     const z = RISE(tileAt(u.x, u.y)) ? HZ : 0; PQ(u.x, u.y, z); const x = PX, y = PY, k = PK; let p;
     p = qp(1, QT.gBlue, x, y - k * 0.55, 0, 0, 0.12, k * 0.8); if (p) { p.add = true; p.alpha = 0.45; p.grow = 0.5; }
-    for (let i = 0; i < 16; i++) { const a = rr(0, 6.28), v = rr(120, 320); p = qp(1, QT.shardB, x + Math.cos(a) * k * 0.2, y - k * rr(0.15, 1.0), Math.cos(a) * v, Math.sin(a) * v * 0.5 - rr(60, 200), rr(0.45, 0.8), k * rr(0.06, 0.12)); if (p) { p.rot = rr(0, 6); p.rotv = rr(-14, 14); p.spin = true; p.grav = 1000; p.alpha = 0.95; } }
+    for (let i = 0; i < 16; i++) { const a = rr(0, 6.28), v = rr(120, 320); p = qp(1, QT.shardF[i % 3], x + Math.cos(a) * k * 0.2, y - k * rr(0.15, 1.0), Math.cos(a) * v, Math.sin(a) * v * 0.5 - rr(60, 200), rr(0.45, 0.8), k * rr(0.06, 0.12)); if (p) { p.rot = rr(0, 6); p.rotv = rr(-14, 14); p.spin = true; p.grav = 1000; p.alpha = 0.95; } }
     for (let i = 0; i < 6; i++) { p = qp(1, qsm(QT.smW), x + rr(-k * 0.25, k * 0.25), y - k * rr(0.1, 0.8), rr(-30, 30), rr(-30, 0), rr(0.5, 0.9), k * rr(0.15, 0.25)); if (p) { p.grow = 1.6; p.alpha = 0.45; p.drag = 3; p.wind = 0.6; } }
     p = qp(0, tinted(TEX.ring, "#d8f0ff"), x, y, 0, 0, 0.3, k * 0.4); if (p) { p.add = true; p.grow = 2; p.flat = 0.4; p.alpha = 0.7; }
   }
-  /* snow the gust left on a square: soft heaped white with a few glints, not a flat sheet */
+  /* snow the gust left on a square: a thin blotchy dusting lying in the board's plane (the painting shows through it), heaped against the windward face of a wall,
+     building up over a second or so and melting back; never the tile's square */
   QT.puffW = TEX.puff.map((s) => tinted(s, "#f4f8fc"));
+  const QDT = new Float32Array(10000).fill(-1), QDL = new Float32Array(10000).fill(-9), QDD = new Uint8Array(10000); let qdFrame = -1;
   function qDrift(x, y, a, z) {
-    const q = quad(x, y, z); poly(ctx, q); ctx.fillStyle = `rgba(232,240,248,${0.42 * a})`; ctx.fill();
-    PQ(x, y, z); const cx = PX, cy = PY, k0 = PK;
-    for (let i = 0; i < 7; i++) { const s1 = Math.sin(x * 12.9898 + y * 78.233 + i * 3.7) * 43758.5453, r1 = s1 - Math.floor(s1), s2 = Math.sin(x * 39.34 + y * 11.13 + i * 5.1) * 23421.631, r2 = s2 - Math.floor(s2);
-      const px = cx + (r1 - 0.5) * k0 * 0.78, py = cy + (r2 - 0.5) * k0 * 0.32, s = k0 * (0.42 + 0.22 * r1);
-      ctx.globalAlpha = 0.5 * a; ctx.drawImage(QT.puffW[i % 3], px - s / 2, py - s * 0.22, s, s * 0.44); }
+    const key = y * 100 + x; if (key < 0 || key >= 10000) return;
+    if (game.t - QDL[key] > 0.5 || QDT[key] < 0 || QDT[key] > game.t) { QDT[key] = game.t; QDD[key] = game.wind ? game.wind.dir : 0; } QDL[key] = game.t;
+    if (qdFrame !== qFrameN) { qdFrame = qFrameN; qBase(); }
+    const grow = Math.min(1, (game.t - QDT[key]) / 1.3), cov = easeO(grow) * a; if (cov < 0.02) return;
+    PQ(x, y, z); const cx = PX, cy = PY, k0 = PK; PQ(x + 1, y, z); const ex = PX - cx, ey = PY - cy; PQ(x, y + 1, z); const fx = PX - cx, fy = PY - cy;
+    const n = Q >= 2 ? 3 : 2;
+    for (let i = 0; i < n; i++) { const r1 = qh(x + i * 3.7, y), r2 = qh(y + i * 5.1, x + 0.5), r3 = qh(x * 1.9 + i, y * 2.3), ox = (r1 - 0.5) * 0.4, oy = (r2 - 0.5) * 0.36, sc = (0.68 + 0.3 * r3) * (0.6 + 0.4 * cov), ro = r3 * 6.28, c = Math.cos(ro), sn = Math.sin(ro);
+      ctx.globalAlpha = Math.min(1, cov * (0.85 - 0.1 * i)); qMat(cx + ex * ox + fx * oy, cy + ey * ox + fy * oy, (ex * c + fx * sn) * sc, (ey * c + fy * sn) * sc, (-ex * sn + fx * c) * sc, (-ey * sn + fy * c) * sc); ctx.drawImage(QT.dust[(i + x + y) & 3], -0.5, -0.5, 1, 1); }
+    const V = QV4[QDD[key]], wx = x + V[0], wy = y + V[1];   /* heaped where the wind met a wall: on this square's downwind edge */
+    const wc = wx >= 0 && wy >= 0 && wx < W && wy < H ? tileAt(wx, wy) : "";
+    if ((wc === "W" || wc === "D" || wc === "F") && !RISE(tileAt(x, y))) { const ux = ex * V[0] + fx * V[1], uy = ey * V[0] + fy * V[1], px = ex * V[1] + fx * V[0], py = ey * V[1] + fy * V[0], hs = 0.55 + 0.45 * cov, r1 = qh(x, y + 9);
+      ctx.globalAlpha = Math.min(1, cov * 1.1); qMat(cx + ux * 0.3, cy + uy * 0.3 - k0 * 0.03 * hs, px * (1.08 + 0.1 * r1), py * (1.08 + 0.1 * r1), -ux * 0.44 * hs, -uy * 0.44 * hs); ctx.drawImage(QT.heap[(x + y) & 1], -0.5, -1, 1, 1); }
+    ctx.setTransform(BA, BB, BC, BD, BE, BF);
     ctx.globalCompositeOperation = "lighter";
-    for (let i = 0; i < 3; i++) { const s1 = Math.sin(x * 7.1 + y * 3.3 + i * 9.7) * 9631.7, r1 = s1 - Math.floor(s1), tw = Math.max(0, Math.sin(clock * (1.3 + r1) + r1 * 40)); if (tw < 0.6) continue;
-      ctx.globalAlpha = a * (tw - 0.6) * 2; const px = cx + (r1 - 0.5) * k0 * 0.7, py = cy + (((r1 * 7) % 1) - 0.5) * k0 * 0.28; ctx.drawImage(QT.cW, px - 2, py - 2, 4, 4); }
+    for (let i = 0; i < 3; i++) { const r1 = qh(x * 7.1 + i, y * 3.3), tw = Math.max(0, Math.sin(clock * (1.3 + r1) + r1 * 40)); if (tw < 0.7) continue;
+      ctx.globalAlpha = cov * (tw - 0.7) * 2.5; const px = cx + (r1 - 0.5) * k0 * 0.7, py = cy + (((r1 * 7) % 1) - 0.5) * k0 * 0.28; ctx.drawImage(QT.cW, px - 2, py - 2, 4, 4); }
     ctx.globalCompositeOperation = "source-over"; ctx.globalAlpha = 1;
   }
   /* the fog on a frost stage: slow mist rolling over the covered squares */
@@ -17261,8 +17432,9 @@ window.BGM = (() => {
 
   // ---------- frame ----------
   let panelOn = false;   // the operator panel is up this frame: the terminal's lines move over to its right
+  let qFrameN = 0;
   function render(dtReal) {
-    buttons.length = 0; panelOn = false;
+    buttons.length = 0; panelOn = false; qFrameN++;
     ctx.setTransform(scale * dpr, 0, 0, scale * dpr, 0, 0);
     let ox = 0, oy = 0;
     if (shake > 0 && !reduceMotion) { ox = (Math.random() - .5) * shake * 10; oy = (Math.random() - .5) * shake * 10; }
