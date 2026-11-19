@@ -10996,7 +10996,7 @@ window.BGM = (() => {
         void k0;
       }
     }
-    for (const fx of game.fx) if (fx.k === "bombdrop" && NEWFX()) qLob(fx); else if (fx.k === "bombdrop") {   // the bomb's fall, from the drone to the mark
+    for (const fx of game.fx) if (fx.k === "bombdrop" && NEWFX()) qLob(fx); else if (fx.k === "bombdrop") {   /* the bomb's fall, from the drone to the mark */
       const u = Math.min(1, fx.t / fx.life), a = P(fx.x0, fx.y0, 1.4), b = P(fx.x1, fx.y1, 0.05);
       const x = a[0] + (b[0] - a[0]) * u, y = a[1] + (b[1] - a[1]) * u * u, k0 = b[2];
       ctx.fillStyle = "#2b3c48"; ctx.beginPath(); ctx.arc(x, y, k0 * 0.08, 0, Math.PI * 2); ctx.fill();
@@ -16735,9 +16735,10 @@ window.BGM = (() => {
     T.tail = mkCanvas(128, 16, (g) => {   /* a tracer's tail: thin and faint at the back, full and hot at the head (right end) */
       for (const [wd, al] of [[7, 0.35], [3.2, 1]]) { const gr = g.createLinearGradient(0, 0, 128, 0); gr.addColorStop(0, "rgba(255,255,255,0)"); gr.addColorStop(0.55, `rgba(255,255,255,${al * 0.35})`); gr.addColorStop(0.9, `rgba(255,255,255,${al * 0.9})`); gr.addColorStop(1, `rgba(255,255,255,${al})`);
         g.fillStyle = gr; g.beginPath(); g.moveTo(0, 8); g.lineTo(118, 8 - wd); g.quadraticCurveTo(128, 8, 118, 8 + wd); g.closePath(); g.fill(); } });
-    T.flake = [mkCanvas(8, 8, (g) => { const gr = g.createRadialGradient(4, 4, 0, 4, 4, 4); gr.addColorStop(0, "rgba(255,255,255,1)"); gr.addColorStop(0.5, "rgba(255,255,255,.6)"); gr.addColorStop(1, "rgba(255,255,255,0)"); g.fillStyle = gr; g.fillRect(0, 0, 8, 8); }),
-      mkCanvas(16, 16, (g) => { const gr = g.createRadialGradient(8, 8, 0, 8, 8, 8); gr.addColorStop(0, "rgba(255,255,255,1)"); gr.addColorStop(0.35, "rgba(250,252,255,.85)"); gr.addColorStop(1, "rgba(240,246,255,0)"); g.fillStyle = gr; g.fillRect(0, 0, 16, 16); }),
-      mkCanvas(64, 64, (g) => { const gr = g.createRadialGradient(32, 32, 0, 32, 32, 32); gr.addColorStop(0, "rgba(255,255,255,.62)"); gr.addColorStop(0.62, "rgba(248,251,255,.5)"); gr.addColorStop(0.8, "rgba(240,246,255,.22)"); gr.addColorStop(1, "rgba(240,246,255,0)"); g.fillStyle = gr; g.fillRect(0, 0, 64, 64); })];
+    const fdisc = (n, core, rim) => mkCanvas(n, n, (g) => { const c = n / 2, gr = g.createRadialGradient(c, c, 0, c, c, c);
+      gr.addColorStop(0, "rgba(255,255,255,1)"); gr.addColorStop(core, "rgba(255,255,255,1)"); gr.addColorStop(core + 0.12, "rgba(236,242,250,.9)"); gr.addColorStop(Math.min(0.9, core + 0.26), `rgba(140,160,190,${rim})`); gr.addColorStop(1, "rgba(140,160,190,0)"); g.fillStyle = gr; g.fillRect(0, 0, n, n); });
+    T.flake = [fdisc(16, 0.4, 0.35), fdisc(24, 0.44, 0.4),
+      mkCanvas(64, 64, (g) => { const gr = g.createRadialGradient(32, 32, 0, 32, 32, 32); gr.addColorStop(0, "rgba(255,255,255,.7)"); gr.addColorStop(0.62, "rgba(248,251,255,.58)"); gr.addColorStop(0.8, "rgba(240,246,255,.25)"); gr.addColorStop(1, "rgba(240,246,255,0)"); g.fillStyle = gr; g.fillRect(0, 0, 64, 64); })];
     T.crystal = mkCanvas(24, 24, (g) => { g.translate(12, 12); g.strokeStyle = "#fff"; g.lineCap = "round";
       for (let i = 0; i < 3; i++) { g.rotate(Math.PI / 3); g.lineWidth = 2; g.beginPath(); g.moveTo(-10, 0); g.lineTo(10, 0); g.stroke(); g.lineWidth = 1.2; for (const s of [-1, 1]) { g.beginPath(); g.moveTo(s * 6, 0); g.lineTo(s * 9, -3); g.moveTo(s * 6, 0); g.lineTo(s * 9, 3); g.stroke(); } }
       const gr = g.createRadialGradient(0, 0, 0, 0, 0, 6); gr.addColorStop(0, "rgba(255,255,255,1)"); gr.addColorStop(1, "rgba(255,255,255,0)"); g.fillStyle = gr; g.fillRect(-6, -6, 12, 12); });
@@ -16762,6 +16763,9 @@ window.BGM = (() => {
     T.hole = mkCanvas(64, 64, (g) => { const gr = g.createRadialGradient(32, 32, 0, 32, 32, 32); gr.addColorStop(0, "rgba(0,0,0,1)"); gr.addColorStop(0.5, "rgba(0,0,0,.75)"); gr.addColorStop(1, "rgba(0,0,0,0)"); g.fillStyle = gr; g.fillRect(0, 0, 64, 64); });
     T.mist = mkCanvas(256, 128, (g) => { let sd = 91; const r2 = () => (sd = (sd * 16807) % 2147483647) / 2147483647;
       for (let i = 0; i < 12; i++) { const x = 50 + r2() * 156, y = 44 + r2() * 40, r = 26 + r2() * 30, gr = g.createRadialGradient(x, y, 0, x, y, r); gr.addColorStop(0, "rgba(232,240,250,.42)"); gr.addColorStop(1, "rgba(232,240,250,0)"); g.fillStyle = gr; g.fillRect(0, 0, 256, 128); } });
+    T.bank = mkCanvas(256, 96, (g) => { let sd = 733; const r2 = () => (sd = (sd * 16807) % 2147483647) / 2147483647;
+      for (let i = 0; i < 44; i++) { const x = 64 + r2() * 128, y = 42 + r2() * 12, r = 22 + r2() * 20, gr = g.createRadialGradient(x, y, 0, x, y, r); gr.addColorStop(0, "rgba(236,242,250,.15)"); gr.addColorStop(0.6, "rgba(236,242,250,.07)"); gr.addColorStop(1, "rgba(236,242,250,0)"); g.fillStyle = gr; g.fillRect(0, 0, 256, 96); }
+      g.globalCompositeOperation = "destination-in"; const ge = g.createRadialGradient(128, 48, 10, 128, 48, 128); ge.addColorStop(0, "rgba(0,0,0,1)"); ge.addColorStop(0.7, "rgba(0,0,0,.8)"); ge.addColorStop(1, "rgba(0,0,0,0)"); g.setTransform(1, 0, 0, 0.375, 0, 30); g.fillStyle = ge; g.fillRect(0, -80, 256, 256); });
     const tn = (tex, c) => tinted(tex, c);
     T.tailW = tn(T.tail, "#fff6e2"); T.tailWarm = tn(T.tail, "#ffc874"); T.tailBlue = tn(T.tail, "#9ad8ff"); T.tailIce = tn(T.tail, "#e8f7ff"); T.tailViolet = tn(T.tail, "#d4a6ff"); T.tailGreen = tn(T.tail, "#a4ffcf"); T.tailGold = tn(T.tail, "#ffe2a0");
     T.gW = tn(TEX.glow, "#ffffff"); T.gWarm = tn(TEX.glow, "#ffb45c"); T.gFire = tn(TEX.glow, "#ff7a2a"); T.gBlue = tn(TEX.glow, "#86ccff"); T.gViolet = tn(TEX.glow, "#c79cff"); T.gGreen = tn(TEX.glow, "#74f5ae"); T.gGold = tn(TEX.glow, "#ffd47a");
@@ -16801,11 +16805,12 @@ window.BGM = (() => {
     if (dirs && dirs.length) for (const d of dirs) { dx += V[d][0]; dy += V[d][1]; } else { const d = w ? w.dir : 0; dx = V[d][0]; dy = V[d][1]; }
     if (Math.abs(dx) + Math.abs(dy) < 0.01) { dx = 1; dy = 0.4; }
     const blow = !!(w && w.blowing);
-    if (blow && !QW.blow) QW.t0 = clock; if (!blow && QW.blow) QW.tEnd = clock; QW.blow = blow;
+    if (blow && !QW.blow) { QW.t0 = clock; QW.t0g = game.t; } if (!blow && QW.blow) QW.tEnd = clock; QW.blow = blow;
     QW.warn = w && !blow && w.warned && !game.frost ? 1 : 0;
     if (R) { I = R.final ? 1.75 : 0.72 + 0.28 * R.level; if (R.clearT !== null) { QW.clearU = Math.min(1, (game.t - R.clearT) / 3); QW.clearOn = true; } else { QW.clearU = 0; QW.clearOn = false; } }
     else if (Sg) { I = Sg.ended ? 1 : Sg.gauge / Sg.max < 0.25 ? 1.0 : 1.3; if (Sg.ended) { QW.clearU = Math.min(1, (game.t - Sg.endT) / 3); QW.clearOn = true; } }
     target = blow ? I : QW.warn ? 0.32 : 0; QW.I = I;
+    const Lt = game.stage.scene && game.stage.scene.light; QW_LIGHT.x = Lt ? Lt[0] : -0.7; QW_LIGHT.y = Lt ? Lt[1] : -0.5;   /* the clearing comes from the painting's light */
     const tau = target > QW.S ? 0.55 : 0.42; QW.S += (target - QW.S) * Math.min(1, dt / tau); if (Math.abs(QW.S - target) < 0.002) QW.S = target;
     /* screen direction of one tile of wind, from the middle of the board */
     PQ((W - 1) / 2, (H - 1) / 2, 0); const ax = PX, ay = PY, k0 = PK; PQ((W - 1) / 2 + dx, (H - 1) / 2 + dy, 0);
@@ -16828,6 +16833,7 @@ window.BGM = (() => {
   const qOpen = (c) => c !== "W" && c !== "#" && c !== "D" && c !== "F";
   /* ---- the shots ---- */
   const QMZ = [null, [0.55, 0.48], [0.5, 0.62], [0.3, 0.7], [0.22, 0.95], [0.3, 0.55], [0.3, 0.55]];   /* where the shot leaves the figure: [ahead, up] in tiles, by kind */
+  const QMZT = { frostmage: [-0.5, 0.6] };   /* figures whose drawn cast leaves from somewhere else */
   const QNOFLASH = { mortar: 1, chxlong: 1, chxelite: 1, frostmage: 1, longrifle3: 1 };
   function qFoeAt(x, y) { for (const e of game.enemies) if (e.x === x && e.y === y) return e; let best = null, bd = 0.6; for (const e of game.enemies) { const d = Math.abs(e.x - x) + Math.abs(e.y - y); if (d < bd) { bd = d; best = e; } } return best; }
   function qKind(f, e) { if (f.foe) { if (e && e.def.lob) return 4; if (e && e.def.frost) return 2; if (e && e.def.ranged && (e.def.phys || !e.def.burn && e.def.ranged >= 1.5 && /사수|총|저격|엽병|게릴라/.test(e.def.name || ""))) return 1; return 3; }
@@ -16835,7 +16841,7 @@ window.BGM = (() => {
   function qFlightT(kind, dd) { return kind === 4 ? 0.5 + 0.07 * dd : kind === 2 ? 0.12 + 0.075 * dd : kind === 1 || kind === 5 ? 0.04 + 0.025 * dd : 0.2; }
   function qBolt(f) {
     const e = f.foe ? qFoeAt(f.x0, f.y0) : null, kind = qKind(f, e), j = qj(); if (!j) return;
-    const dd = Math.hypot(f.x1 - f.x0, f.y1 - f.y0), MZ = QMZ[kind], s0 = SP(f.x0, f.y0, e ? MZ[1] : 0.55), s1 = SP(f.x1, f.y1, 0.45), g1 = SP(f.x1, f.y1, 0), g0 = SP(f.x0, f.y0, 0);
+    const dd = Math.hypot(f.x1 - f.x0, f.y1 - f.y0), MZ = (e && QMZT[e.type]) || QMZ[kind], s0 = SP(f.x0, f.y0, e ? MZ[1] : 0.55), s1 = SP(f.x1, f.y1, 0.45), g1 = SP(f.x1, f.y1, 0), g0 = SP(f.x0, f.y0, 0);
     const k = s0[2], face = e ? (e.face || (s1[0] >= s0[0] ? 1 : -1)) : 0;
     j.kind = kind; j.T = f.flightT || qFlightT(kind, dd); j.k = k; j.tx = f.x1; j.ty = f.y1; j.foe = !!f.foe; j.face = s1[0] >= s0[0] ? 1 : -1;
     if (e) { j.x0 = s0[0] + face * k * MZ[0]; j.y0 = s0[1]; } else { const ang = Math.atan2(s1[1] - s0[1], s1[0] - s0[0]); j.x0 = s0[0] + Math.cos(ang) * k * 0.25; j.y0 = s0[1] + Math.sin(ang) * k * 0.15; }
@@ -16855,7 +16861,7 @@ window.BGM = (() => {
       p = qp(1, QT.cW, x, y, 0, 0, 0.05, k * 0.16); if (p) p.add = true;
       for (let i = 0; i < 3; i++) { const a = ang + (i - 1) * 0.35, v = 260 + Math.random() * 200; p = qp(1, QT.sGold, x, y, Math.cos(a) * v, Math.sin(a) * v, 0.06 + Math.random() * 0.04, k * 0.06); if (p) { p.add = true; p.stretch = 5; p.drag = 10; } }
       if (j.kind === 1) for (let i = 0; i < 4; i++) { p = qp(1, qsm(QT.smW), x + c * k * 0.06 * i, y + s * k * 0.04 * i - k * 0.02, c * (20 + i * 12) + rr(-8, 8), s * 10 - rr(6, 18), rr(1.1, 1.8), k * rr(0.12, 0.2));
-        if (p) { p.grow = 2.4; p.alpha = 0.34; p.drag = 1.6; p.wind = 0.85; p.rot = rr(0, 6); p.rotv = rr(-0.8, 0.8); p.spin = true; p.fadeIn = 0.08; } }
+        if (p) { p.grow = 2.6; p.alpha = 0.5; p.drag = 1.6; p.wind = 0.85; p.rot = rr(0, 6); p.rotv = rr(-0.8, 0.8); p.spin = true; p.fadeIn = 0.08; } }
     } else if (j.kind === 2) {
       let p = qp(1, QT.gBlue, x, y, 0, 0, 0.12, k * 0.5); if (p) { p.add = true; p.alpha = 0.8; }
       for (let i = 0; i < 3; i++) { p = qp(1, qsm(QT.smB), x, y, c * 20 + rr(-10, 10), -rr(5, 20), rr(0.7, 1.1), k * 0.14); if (p) { p.grow = 1.8; p.alpha = 0.35; p.drag = 2; p.wind = 0.7; } }
@@ -16896,13 +16902,13 @@ window.BGM = (() => {
   }
   function qBlast(x, y, k, fire, ice) {   /* a shell, bottle or ice bomb bursting on the ground */
     const snowy = CH2(); let p;
-    p = qp(1, ice ? QT.gBlue : QT.gWarm, x, y - k * 0.2, 0, 0, 0.16, k * 1.5); if (p) { p.add = true; p.alpha = 0.9; p.grow = 0.4; }
-    p = qp(1, QT.cW, x, y - k * 0.15, 0, 0, 0.07, k * 0.6); if (p) p.add = true;
-    if (!ice) for (let i = 0; i < (fire ? 10 : 7); i++) { p = qp(1, qsm(i % 3 ? QT.fire : QT.fireHi), x + rr(-k * 0.2, k * 0.2), y - rr(0, k * 0.25), rr(-70, 70), -rr(40, fire ? 130 : 90), rr(0.22, fire ? 0.6 : 0.4), k * rr(0.25, 0.45)); if (p) { p.add = true; p.grow = 1.2; p.alpha = 0.85; p.drag = 3; p.wind = 0.4; } }
+    p = qp(1, ice ? QT.gBlue : QT.gWarm, x, y - k * 0.15, 0, 0, 0.11, k * 1.0); if (p) { p.add = true; p.alpha = 0.6; p.grow = 0.5; }   /* a short flash, kept small so the one struck still shows through it */
+    p = qp(1, QT.cW, x, y - k * 0.1, 0, 0, 0.05, k * 0.3); if (p) { p.add = true; p.alpha = 0.8; }
+    if (!ice) for (let i = 0; i < (fire ? 10 : 7); i++) { p = qp(1, qsm(i % 3 ? QT.fire : QT.fireHi), x + rr(-k * 0.2, k * 0.2), y - rr(0, k * 0.25), rr(-70, 70), -rr(40, fire ? 130 : 90), rr(0.22, fire ? 0.6 : 0.4), k * rr(0.25, 0.45)); if (p) { p.add = i % 3 === 0; p.grow = 1.2; p.alpha = p.add ? 0.6 : 0.8; p.drag = 3; p.wind = 0.4; } }
     for (let i = 0; i < 18; i++) { const a = i / 18 * 6.28 + rr(-0.15, 0.15), v = rr(120, 260); p = qp(0, qsm(snowy || ice ? QT.smW : QT.smG), x + Math.cos(a) * k * 0.15, y + Math.sin(a) * k * 0.06, Math.cos(a) * v, Math.sin(a) * v * 0.38, rr(0.5, 0.9), k * rr(0.16, 0.26)); if (p) { p.grow = 1.5; p.alpha = 0.6; p.drag = 4.5; p.wind = 0.3; } }   /* the ring of thrown snow */
     for (let i = 0; i < 14; i++) { const a = rr(Math.PI * 1.05, Math.PI * 1.95), v = rr(160, 420); p = qp(1, snowy || ice ? QT.cSnow : TEX.core, x, y - k * 0.05, Math.cos(a) * v, Math.sin(a) * v, rr(0.4, 0.75), k * rr(0.025, 0.05)); if (p) { p.grav = 1200; if (!(snowy || ice)) { p.img = QT.cOrange; } } }
     if (ice) for (let i = 0; i < 12; i++) { const a = rr(0, 6.28), v = rr(140, 340); p = qp(1, QT.shardB, x, y - k * 0.2, Math.cos(a) * v, Math.sin(a) * v * 0.6 - 120, rr(0.4, 0.7), k * rr(0.05, 0.09)); if (p) { p.rot = rr(0, 6); p.rotv = rr(-12, 12); p.spin = true; p.grav = 900; p.alpha = 0.95; } }
-    for (let i = 0; i < (ice ? 6 : 9); i++) { p = qp(1, qsm(ice ? QT.smB : i < 3 ? QT.smG : QT.smD), x + rr(-k * 0.2, k * 0.2), y - rr(0, k * 0.2), rr(-18, 18), -rr(25, 70) * (i < 3 ? 1 : 1.4), rr(1.5, 2.6), k * rr(0.3, 0.5)); if (p) { p.grow = 2.2; p.alpha = ice ? 0.45 : 0.55; p.drag = 0.8; p.wind = 0.9; p.rot = rr(0, 6); p.rotv = rr(-0.5, 0.5); p.spin = true; p.fadeIn = 0.1; } }   /* the smoke column */
+    for (let i = 0; i < (ice ? 7 : 13); i++) { const up = i < 3 ? 1 : 1.2 + i * 0.12; p = qp(1, qsm(ice ? QT.smB : i < 3 ? QT.smG : QT.smD), x + rr(-k * 0.18, k * 0.18), y - rr(0, k * 0.25), rr(-14, 14), -rr(35, 75) * up, rr(1.8, 3.0), k * rr(0.28, 0.46)); if (p) { p.grow = 2.4; p.alpha = ice ? 0.5 : 0.62; p.drag = 0.7; p.wind = 0.9; p.rot = rr(0, 6); p.rotv = rr(-0.5, 0.5); p.spin = true; p.fadeIn = 0.06 + i * 0.012; } }   /* the smoke column */
     p = qp(0, TEX.ring, x, y, 0, 0, 0.35, k * 0.5); if (p) { p.img = ice ? tinted(TEX.ring, "#cfeaff") : tinted(TEX.ring, "#ffd9a0"); p.add = true; p.grow = 3; p.flat = 0.4; p.alpha = 0.7; }
     qd(ice ? 2 : 1, x, y, k, ice ? 4 : 7, fire ? 1.1 : 1);
     if (!reduceMotion) shake = Math.max(shake, ice ? 0.18 : 0.28);
@@ -16948,8 +16954,8 @@ window.BGM = (() => {
       const u = p.t / p.life; let a = p.alpha * (1 - u * u); if (p.fadeIn) a *= Math.min(1, u / p.fadeIn); if (a <= 0.004) continue;
       if (p.add !== add) { add = p.add; ctx.globalCompositeOperation = add ? "lighter" : "source-over"; }
       ctx.globalAlpha = a > 1 ? 1 : a; const s = p.size * (1 + p.grow * u);
-      if (p.board) { PQ(p.bx, p.by, 0.06); const ang = Math.atan2(QW.vy, QW.vx), off = Math.sin(p.t * 9 + p.ph) * PK * 0.07, len = PK * (0.35 + 0.25 * Math.sin(p.ph));
-        qSetT(PX - Math.sin(ang) * off, PY + Math.cos(ang) * off, ang, len, PK * 0.05 * p.sq); ctx.drawImage(p.img, -1, -0.5, 1, 1); continue; }
+      if (p.board) { PQ(p.bx, p.by, 0.06); const ang = Math.atan2(QW.vy, QW.vx), off = Math.sin(p.t * 9 + p.ph) * PK * 0.07, len = PK * (0.5 + 0.3 * Math.sin(p.ph));
+        qSetT(PX - Math.sin(ang) * off, PY + Math.cos(ang) * off * 0.5, ang, len, PK * 0.07 * p.sq); ctx.drawImage(p.img, -1, -0.5, 1, 1); continue; }
       if (p.stretch) { const ang = Math.atan2(p.vy, p.vx), len = s * p.stretch * (0.4 + 0.6 * Math.min(1, Math.hypot(p.vx, p.vy) / 500)); qSetT(p.x, p.y, ang, len, s); ctx.drawImage(p.img, -1, -0.5, 1, 1); }
       else if (p.flat) { qSetT(p.x, p.y, 0, s, s * p.flat); ctx.drawImage(p.img, -0.5, -0.5, 1, 1); }
       else if (p.spin) { qSetT(p.x, p.y, p.rot, s, s); ctx.drawImage(p.img, -0.5, -0.5, 1, 1); }
@@ -16982,21 +16988,22 @@ window.BGM = (() => {
     ctx.globalAlpha = 1;
     if (ch2 && QW.S > 0.05) {   /* blowing snow over every square the wind reaches; the sheltered ones stay still */
       const ang = Math.atan2(QW.vy, QW.vx), scroll = clock * (0.9 + 0.8 * QW.S);
-      for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) { if (!QSH[y * W + x]) continue; const c = tileAt(x, y); if (!qOpen(c)) continue;
+      const fr = game.frost && !game.frost.all ? game.frost : null;
+      for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) { if (!QSH[y * W + x] || ((x * 7 + y * 3) & 1) && QW.S < 0.9) continue; const c = tileAt(x, y); if (!qOpen(c) || fr && frostFogA(x, y) > 0.5) continue;
         PQ(x, y, zOf(x, y) + 0.03); const ph = (scroll + (x * 0.37 + y * 0.61)) % 1, k0 = PK;
-        for (let m = 0; m < 2; m++) { const q = (ph + m * 0.5) % 1, d = (q - 0.5) * k0 * 0.9; ctx.globalAlpha = Math.min(0.32, 0.2 * QW.S) * Math.sin(q * Math.PI);
+        ctx.globalCompositeOperation = "lighter"; for (let m = 0; m < 1; m++) { const q = (ph + m * 0.5) % 1, d = (q - 0.5) * k0 * 0.9; ctx.globalAlpha = Math.min(0.5, 0.38 * QW.S) * (0.4 + 0.6 * Math.sin(q * Math.PI));
           qSetT(PX + Math.cos(ang) * d, PY + Math.sin(ang) * d * 0.5 + (m - 0.5) * k0 * 0.12, ang, k0 * 0.95, k0 * 0.3); ctx.drawImage(QT.haze, -0.5, -0.5, 1, 1); } }
-      ctx.setTransform(BA, BB, BC, BD, BE, BF); ctx.globalAlpha = 1;
+      ctx.setTransform(BA, BB, BC, BD, BE, BF); ctx.globalAlpha = 1; ctx.globalCompositeOperation = "source-over";
       const want = (reduceMotion ? 6 : [10, 18, 28][Q]) * Math.min(1, QW.S); let live = 0; for (let i = 0; i < qpN; i++) if (QP[i].board) live++;   /* spindrift: thin snakes of snow running with the wind along the ground */
       if (!paused) for (let n = 0; n < 3 && live < want; n++) { const x = (Math.random() * W) | 0, y = (Math.random() * H) | 0; if (!QSH[y * W + x] || !qOpen(tileAt(x, y))) continue;
         const V = [[1, 0], [0, 1], [-1, 0], [0, -1]][QW.dir], v = 1.6 + Math.random() * 1.4 * QW.S, p = qp(0, QT.sSnow, 0, 0, 0, 0, 1.2 + Math.random(), 1); if (!p) break;
-        p.board = true; p.bx = x - V[0] * 0.45 + (V[1] ? rr(-0.4, 0.4) : 0); p.by = y - V[1] * 0.45 + (V[0] ? rr(-0.4, 0.4) : 0); p.bvx = V[0] * v; p.bvy = V[1] * v; p.alpha = 0.42; p.sq = rr(0.7, 1.3); p.fadeIn = 0.2; live++; }
+        p.board = true; p.bx = x - V[0] * 0.45 + (V[1] ? rr(-0.4, 0.4) : 0); p.by = y - V[1] * 0.45 + (V[0] ? rr(-0.4, 0.4) : 0); p.bvx = V[0] * v; p.bvy = V[1] * v; p.alpha = 0.55; p.add = true; p.sq = rr(0.8, 1.5); p.fadeIn = 0.2; live++; }
     }
     qDrawP(0);
     if (ch2 && game.wind && game.wind.blowing && game.wind.front && !game.frost) {   /* the gust's own front, square by square as the engine moves it: a crest of driven snow on each line */
       const w = game.wind, [dx, dy] = [[1, 0], [0, 1], [-1, 0], [0, -1]][w.dir], horiz = dy === 0, lines = horiz ? H : W, len = horiz ? W : H, fu = Math.min(1, Math.max(0, 1 - (w.adv - game.t) / 1.1));
       for (let a = 0; a < lines; a++) { const i = w.front[a]; if (i >= len || (w.done && w.done[a])) continue; const jj = (dx > 0 || dy > 0) ? i - 0.5 + fu * 0.4 : len - 1 - i + 0.5 - fu * 0.4, bx = horiz ? jj : a, by = horiz ? a : jj;
-        PQ(bx, by, 0.05); ctx.globalAlpha = 0.5 * Math.min(1, QW.S); qSetT(PX, PY - PK * 0.1, horiz ? Math.PI / 2 : 0, PK * 1.0, PK * 0.42); ctx.drawImage(QT.mist, -0.5, -0.5, 1, 1); }
+        PQ(bx, by, 0.05); ctx.globalAlpha = 0.75 * Math.min(1, QW.S); qSetT(PX, PY - PK * 0.12, horiz ? Math.PI / 2 : 0, PK * 2.2, PK * 0.7); ctx.drawImage(QT.bank, -0.5, -0.5, 1, 1); }
       ctx.setTransform(BA, BB, BC, BD, BE, BF); ctx.globalAlpha = 1; }
   }
   /* over the figures: the shots in flight, the impacts */
@@ -17061,20 +17068,21 @@ window.BGM = (() => {
       if (f.k === "lob" && Math.random() < 0.7) { p = qp(1, qsm(QT.fire), fx, fy, rr(-10, 10), rr(-30, -10), rr(0.12, 0.22), k0 * rr(0.06, 0.1)); if (p) { p.add = true; p.alpha = 0.7; p.wind = 0.5; } } }
   }
   /* ---- the weather (chapter 2): three depths of snow, fog banks, gust front, frost at the edges, white-out, the clearing ---- */
-  const QF = { n: [0, 0, 0], x: [new Float32Array(220), new Float32Array(110), new Float32Array(16)], y: [new Float32Array(220), new Float32Array(110), new Float32Array(16)], ph: [new Float32Array(220), new Float32Array(110), new Float32Array(16)], sz: [new Float32Array(220), new Float32Array(110), new Float32Array(16)], init: false, bank: [] };
-  for (let i = 0; i < 6; i++) QF.bank.push({ x: Math.random() * 1600, y: 0.55 + Math.random() * 0.4, r: 260 + Math.random() * 200, ph: Math.random() * 6.28 });
-  const QF_SPEC = [{ fall: 20, wind: 0.45, size: [1.6, 2.8], a: 0.5, img: 0 }, { fall: 46, wind: 1.0, size: [2.8, 4.6], a: 0.62, img: 1 }, { fall: 120, wind: 2.3, size: [16, 30], a: 0.3, img: 2 }];
+  const QF = { n: [0, 0, 0], x: [new Float32Array(400), new Float32Array(180), new Float32Array(20)], y: [new Float32Array(400), new Float32Array(180), new Float32Array(20)], ph: [new Float32Array(400), new Float32Array(180), new Float32Array(20)], sz: [new Float32Array(400), new Float32Array(180), new Float32Array(20)], init: false, bank: [] };
+  QF.veil = []; for (let i = 0; i < 12; i++) QF.veil.push({ x: Math.random() * 1600, y: Math.random() * 720, len: 260 + Math.random() * 320, ph: Math.random() * 6.28, sp: 0.8 + Math.random() * 0.7 });
+  for (let i = 0; i < 4; i++) QF.bank.push({ x: Math.random() * 1600, y: 0.62 + Math.random() * 0.33, r: 190 + Math.random() * 120, ph: Math.random() * 6.28 });
+  const QF_SPEC = [{ fall: 24, wind: 0.5, size: [5.2, 7.6], a: 0.78, img: 0, ex: 0.09 }, { fall: 52, wind: 1.0, size: [9, 13.5], a: 0.95, img: 1, ex: 0.12 }, { fall: 130, wind: 2.3, size: [30, 52], a: 0.42, img: 2, ex: 0 }];
   function qFlakesInit() { for (let l = 0; l < 3; l++) { const X = QF.x[l], Y = QF.y[l]; for (let i = 0; i < X.length; i++) { X[i] = Math.random() * (VW + 80) - 40; Y[i] = Math.random() * (VH + 80) - 40; QF.ph[l][i] = Math.random() * 6.28; QF.sz[l][i] = QF_SPEC[l].size[0] + Math.random() * (QF_SPEC[l].size[1] - QF_SPEC[l].size[0]); } } QF.init = true; }
   let QCV = { key: "", c: null }, QEF = { key: "", c: null }, QWO = null;
-  function qColdVignette() { const key = VW + "x" + VH; if (QCV.key === key) return QCV.c; const c = document.createElement("canvas"), w = 256, h = Math.max(64, Math.round(256 * VH / VW)); c.width = w; c.height = h; const g = c.getContext("2d");
-    g.save(); g.translate(w / 2, h * 0.5); g.scale(1, h / w); const r = w * 0.72, gr = g.createRadialGradient(0, 0, r * 0.4, 0, 0, r); gr.addColorStop(0, "rgba(14,22,40,0)"); gr.addColorStop(0.55, "rgba(14,22,40,.12)"); gr.addColorStop(1, "rgba(8,14,30,.5)"); g.fillStyle = gr; g.fillRect(-w, -w, w * 2, w * 2); g.restore();
-    QCV.key = key; QCV.c = c; return c; }
+  function qColdVignette() { const key = VW + "x" + VH; if (QCV.key === key) return QCV.c;   /* a cold vignette as a gradient made once per screen size (a gradient fill is cheaper than stretching a picture over the screen) */
+    const gr = ctx.createRadialGradient(VW / 2, VH * 0.5, VH * 0.38, VW / 2, VH * 0.5, VW * 0.7); gr.addColorStop(0, "rgba(10,16,34,0)"); gr.addColorStop(1, "rgba(8,12,28,.52)");   /* two stops: the fast gradient path */
+    QCV.key = key; QCV.c = gr; return gr; }
   function qEdgeFrost() {   /* frost on the glass: rime and fern crystals from the screen edges inward, thickest in the corners (made once per screen size) */
     const key = VW + "x" + VH; if (QEF.key === key) return QEF.c; const w = Math.round(VW / 2), h = Math.round(VH / 2), c = document.createElement("canvas"); c.width = w; c.height = h; const g = c.getContext("2d");
     let sd = 4242; const r2 = () => (sd = (sd * 16807) % 2147483647) / 2147483647;
     const edge = (x, y) => Math.min(x / w, 1 - x / w, (y / h) * 1.2, (1 - y / h) * 1.6);   /* the bottom edge (cards and the cost) frosts less */
-    for (let i = 0; i < 2600; i++) { const side = r2(), t = r2(); let x, y; if (side < 0.3) { x = t * w; y = Math.pow(r2(), 2.2) * h * 0.2; } else if (side < 0.45) { x = t * w; y = h - Math.pow(r2(), 2.6) * h * 0.1; } else if (side < 0.72) { x = Math.pow(r2(), 2.2) * w * 0.14; y = t * h; } else { x = w - Math.pow(r2(), 2.2) * w * 0.14; y = t * h; }
-      const e = edge(x, y), a = Math.max(0, 0.55 - e * 4.2); if (a <= 0) continue; g.fillStyle = `rgba(236,246,255,${a})`; const r = 0.6 + r2() * 1.8; g.beginPath(); g.arc(x, y, r, 0, 6.29); g.fill(); }
+    for (let i = 0; i < 1500; i++) { const side = r2(), t = r2(); let x, y; if (side < 0.3) { x = t * w; y = Math.pow(r2(), 2.2) * h * 0.2; } else if (side < 0.45) { x = t * w; y = h - Math.pow(r2(), 2.6) * h * 0.1; } else if (side < 0.72) { x = Math.pow(r2(), 2.2) * w * 0.14; y = t * h; } else { x = w - Math.pow(r2(), 2.2) * w * 0.14; y = t * h; }
+      const e = edge(x, y), a = Math.max(0, 0.38 - e * 3.6); if (a <= 0) continue; g.fillStyle = `rgba(236,246,255,${a})`; const r = 0.6 + r2() * 1.8; g.beginPath(); g.arc(x, y, r, 0, 6.29); g.fill(); }
     g.lineCap = "round";
     const fern = (x, y, a, len, wd, n) => { if (n <= 0 || len < 2) return; let px = x, py = y; g.lineWidth = wd; g.strokeStyle = `rgba(245,250,255,${0.25 + 0.35 * wd / 2})`; g.beginPath(); g.moveTo(px, py);
       const steps = 6; for (let i = 1; i <= steps; i++) { a += (r2() - 0.5) * 0.25; px += Math.cos(a) * len / steps; py += Math.sin(a) * len / steps; g.lineTo(px, py); } g.stroke();
@@ -17086,46 +17094,58 @@ window.BGM = (() => {
     if (!QF.init) qFlakesInit();
     const R = game.frost, sd = scale * dpr, S = QW.S, CMm = camM();
     const clr = QW.clearOn ? QW.clearU : 0, dens = (reduceMotion ? 0.5 : 1) * (R && R.gust && !R.gust.on && R.clearT === null && !R.final ? 0.75 : 1) * (1 - 0.82 * clr), I = QW.I;
-    const busy = S > 0.6 ? 1 : 0, mul = 1 + (S > 0.8 ? 0.45 * Math.min(1.4, I) : 0);
-    const cnt = [Math.round([70, 120, 200][Q] * dens * mul), Math.round([34, 60, 96][Q] * dens * mul), Math.round([4, 7, 11][Q] * dens * (1 + 0.6 * busy))];
+    const busy = S > 0.6 ? 1 : 0, mul = 1 + Math.min(1, S) * 0.6 * Math.min(1.3, I);
+    const cnt = [Math.round([50, 85, 120][Q] * dens * mul), Math.round([24, 38, 52][Q] * dens * mul), Math.round([3, 5, 7][Q] * dens * (1 + 0.6 * busy))];
     for (let l = 0; l < 3; l++) cnt[l] = Math.min(cnt[l], QF.x[l].length);
     /* the gust front at a gust's start: snow ahead of it still falls calm, behind it streams */
-    const ft = clock - QW.t0, fOn = QW.blow && ft < 1.8, axL = Math.abs(QW.vx) * VW + Math.abs(QW.vy) * VH, fPos = fOn ? (ft / 1.6) * (axL + 400) - 200 : 1e9;
+    const ft = game.t - (QW.t0g === undefined ? -99 : QW.t0g), fOn = QW.blow && ft < 1.8 && ft >= 0 && !(R && R.final), axL = Math.abs(QW.vx) * VW + Math.abs(QW.vy) * VH, fPos = fOn ? (ft / 1.6) * (axL + 400) - 200 : 1e9;
     const sAx = (x, y) => (QW.vx >= 0 ? x : VW - x) * Math.abs(QW.vx) + (QW.vy >= 0 ? y : VH - y) * Math.abs(QW.vy);
     /* warm holes: lit braziers on screen push the snow back */
     const holes = BRZ.n, hR = 1.0 + 0.6 * QW.white, HX = QBH.x, HY = QBH.y, HRr = QBH.r;
     for (let i = 0; i < holes && i < 24; i++) { const x = BRZ.x[i], y = BRZ.y[i]; HX[i] = CMm[0] * x + CMm[2] * y + CMm[4]; HY[i] = CMm[1] * x + CMm[3] * y + CMm[5] - BRZ.k[i] * 0.4; HRr[i] = BRZ.k[i] * camScale() * (1.1 + 0.9 * QW.white) * hR * (0.6 + 0.4 * BRZ.f[i]); }
-    ctx.save(); ctx.setTransform(sd, 0, 0, sd, 0, 0);
+    ctx.save(); ctx.setTransform(sd, 0, 0, sd, 0, 0); ctx.globalCompositeOperation = "source-over";
+    const rad = QW.vy * Math.min(1.4, S) * 0.55, fcx = VW / 2, fcy = -VH * 0.35;   /* wind toward us (from the north) fans the snow out from far up the field; away from us draws it in */
     /* fog banks low over the field, breathing */
     const fogA = (0.6 + 0.6 * Math.min(1.5, S)) * (1 - 0.85 * clr);
-    for (const b of QF.bank) { b.x += (QW.wx * 0.12 + 6) * dt; const bw = b.r * 2.3; if (b.x - bw / 2 > VW + 40) b.x = -bw / 2 - 40; if (b.x + bw / 2 < -60) b.x = VW + bw / 2;
-      ctx.globalAlpha = (0.12 + 0.07 * Math.sin(clock * 0.21 + b.ph)) * fogA; ctx.drawImage(QT.mist, b.x - bw / 2, VH * b.y - b.r * 0.4, bw, b.r * 0.8); }
+    for (let bi = 0; bi < [2, 3, 4][Q]; bi++) { const b = QF.bank[bi]; b.x += (QW.wx * 0.12 + 6) * dt; const bw = b.r * 2.3; if (b.x - bw / 2 > VW + 40) b.x = -bw / 2 - 40; if (b.x + bw / 2 < -60) b.x = VW + bw / 2;
+      ctx.globalAlpha = Math.min(1, (0.5 + 0.3 * Math.sin(clock * 0.21 + b.ph)) * fogA); ctx.drawImage(QT.bank, b.x - bw / 2, VH * b.y - b.r * 0.3, bw, b.r * 0.6); }
+    /* driven snow: long streaky veils racing with the gust, layered over the field */
+    if (S > 0.15 && !reduceMotion) { const nv = Math.round([3, 5, 7][Q] * Math.min(1, S) * (1 - 0.8 * clr)); ctx.globalCompositeOperation = "lighter";
+      for (let i = 0; i < nv; i++) { const v = QF.veil[i]; let vx = QW.vx * 420 * S * v.sp, vy = QW.vy * 420 * S * v.sp + 30;
+        if (rad) { vx += (v.x - fcx) * rad * 1.2; vy += (v.y - fcy) * rad * 0.5; }
+        if (QW.multi) { const sw = Math.sin(clock * 0.7 + v.ph) * 260 * S; vx += Math.cos(v.ph + clock * 0.4) * sw; vy += Math.sin(v.ph + clock * 0.4) * sw * 0.5; }
+        v.x += vx * dt; v.y += vy * dt; const m = v.len; if (v.x > VW + m) v.x -= VW + 2 * m; else if (v.x < -m) v.x += VW + 2 * m; if (v.y > VH + m * 0.5) v.y -= VH + m; else if (v.y < -m * 0.5) v.y += VH + m;
+        const aa = Math.atan2(vy, vx), cs = Math.cos(aa), sn = Math.sin(aa), w2 = m * (0.13 + 0.04 * Math.sin(v.ph));
+        ctx.globalAlpha = Math.min(0.42, 0.3 * S) * (0.6 + 0.4 * Math.sin(clock * 1.3 + v.ph));
+        ctx.setTransform(sd * cs * m, sd * sn * m, -sd * sn * w2, sd * cs * w2, sd * v.x, sd * v.y); ctx.drawImage(QT.haze, -0.5, -0.5, 1, 1); }
+      ctx.setTransform(sd, 0, 0, sd, 0, 0); ctx.globalCompositeOperation = "source-over"; }
     /* the snow, three depths */
-    const streakV = 150;
+    const streakV = 110;
     for (let l = 0; l < 3; l++) { const sp = QF_SPEC[l], X = QF.x[l], Y = QF.y[l], PH = QF.ph[l], SZ = QF.sz[l], n = cnt[l], img = QT.flake[sp.img];
       const turb = (l === 2 ? 26 : 14) * (1 + 1.6 * S + (QW.multi ? 1.2 * S : 0));
       for (let i = 0; i < n; i++) { const ph = PH[i];
         let wx = QW.vx * (12 + 260 * S) * sp.wind, wy = QW.vy * (12 + 260 * S) * sp.wind + sp.fall * (1 + 0.3 * S);
+        if (rad) { const k2 = rad * (0.5 + 0.5 * sp.wind); wx += (X[i] - fcx) * k2; wy += (Y[i] - fcy) * k2 * 0.35; }
         if (fOn && sAx(X[i], Y[i]) > fPos) { wx = QW.vx * 12 * sp.wind; wy = sp.fall; }
         if (QW.multi) { const sw = Math.sin(clock * 0.9 + ph * 3) * 160 * S * sp.wind; wx += Math.cos(ph + clock * 0.5) * sw; wy += Math.sin(ph + clock * 0.5) * sw * 0.5; }
         const tx = Math.sin(clock * (0.7 + ph * 0.13) + ph * 5) * turb, ty = Math.cos(clock * (0.9 + ph * 0.11) + ph * 3) * turb * 0.4;
         X[i] += (wx + tx) * dt; Y[i] += (wy + ty) * dt;
         if (X[i] > VW + 50) X[i] -= VW + 100; else if (X[i] < -50) X[i] += VW + 100; if (Y[i] > VH + 50) Y[i] -= VH + 100; else if (Y[i] < -50) Y[i] += VH + 100;
-        let x = X[i], y = Y[i], a = sp.a * (0.65 + 0.35 * Math.sin(ph * 7));
+        let x = X[i], y = Y[i], a = sp.a * (0.78 + 0.22 * Math.sin(ph * 7));
         if (clr > 0) { const lx = QW_LIGHT.x, ly = QW_LIGHT.y, along = ((lx < 0 ? VW - x : x) / VW) * Math.abs(lx) + ((ly < 0 ? VH - y : y) / VH) * Math.abs(ly), tear = clr * 1.6 - 0.25; if (along < tear) a *= Math.max(0, 1 - (tear - along) * 4); }
         for (let h = 0; h < holes; h++) { const dx = x - HX[h], dy = (y - HY[h]) * 1.4, d2 = dx * dx + dy * dy, r = HRr[h]; if (d2 < r * r) { const d = Math.sqrt(d2) || 1, q = d / r; a *= q * q; x += dx / d * (r - d) * 0.5; y += dy / d * (r - d) * 0.35; } }
         if (a <= 0.01) continue;
         const v = Math.hypot(wx, wy);
-        if (v > streakV && l < 2 && !reduceMotion) { const len = Math.min(SZ[i] * 14, v * 0.045) * (l ? 1 : 0.8); ctx.globalAlpha = a * 0.85; const aa = Math.atan2(wy + ty, wx + tx), cs = Math.cos(aa), sn = Math.sin(aa);
-          ctx.setTransform(sd * cs * len, sd * sn * len, -sd * sn * SZ[i], sd * cs * SZ[i], sd * x, sd * y); ctx.drawImage(QT.sSnow, -1, -0.5, 1, 1); ctx.setTransform(sd, 0, 0, sd, 0, 0); }
+        if (v > streakV && l < 2 && !reduceMotion) { const len = Math.max(SZ[i] * 0.9, Math.min(SZ[i] * 10, v * sp.ex)); ctx.globalAlpha = a * 0.85; const aa = Math.atan2(wy + ty, wx + tx), cs = Math.cos(aa), sn = Math.sin(aa);
+          ctx.setTransform(sd * cs * len, sd * sn * len, -sd * sn * SZ[i] * 0.42, sd * cs * SZ[i] * 0.42, sd * x, sd * y); ctx.drawImage(QT.sSnow, -1, -0.5, 1, 1); ctx.setTransform(sd, 0, 0, sd, 0, 0); }
         else { const s = SZ[i] * (l === 2 && S > 0.6 ? 1.25 : 1); ctx.globalAlpha = a; if (l === 2 && v > streakV) { const aa = Math.atan2(wy, wx), cs = Math.cos(aa), sn = Math.sin(aa), st = 1 + Math.min(2.2, v / 400);
             ctx.setTransform(sd * cs * st, sd * sn * st, -sd * sn, sd * cs, sd * x, sd * y); ctx.drawImage(img, -s / 2, -s / 2, s, s); ctx.setTransform(sd, 0, 0, sd, 0, 0); }
           else ctx.drawImage(img, x - s / 2, y - s / 2, s, s); }
       } }
     /* the front itself: a band of dense driven white crossing the screen at the gust's start */
-    if (fOn) { const fa = Math.sin(Math.min(1, ft / 1.6) * Math.PI) * 0.55 * Math.min(1, S * 2 + 0.3); ctx.globalAlpha = fa;
+    if (fOn) { const fa = Math.min(0.75, Math.sin(Math.min(1, ft / 1.6) * Math.PI) * 0.9 * Math.min(1, S * 2 + 0.3)); ctx.globalAlpha = fa;
       const nx = QW.vx / (Math.hypot(QW.vx, QW.vy) || 1), ny = QW.vy / (Math.hypot(QW.vx, QW.vy) || 1), ox = nx >= 0 ? 0 : VW, oy = ny >= 0 ? 0 : VH, cx = ox + nx * fPos, cy = oy + ny * fPos, px = -ny, py = nx;
-      for (let i = -6; i <= 6; i++) { const bx = cx + px * i * 150, by = cy + py * i * 150, r = 230 + 60 * Math.sin(i * 1.7 + clock); ctx.setTransform(sd * nx, sd * ny, -sd * ny * 2.2, sd * nx * 2.2, sd * bx, sd * by); ctx.drawImage(QT.mist, -r * 0.35, -r * 0.5, r * 0.7, r); }
+      for (let i = -9; i <= 9; i++) { const bx = cx + px * i * 95, by = cy + py * i * 95, r = 260 + 50 * Math.sin(i * 1.7 + clock * 2); ctx.setTransform(sd * nx, sd * ny, -sd * ny, sd * nx, sd * bx, sd * by); ctx.drawImage(QT.bank, -r * 0.9, -r * 0.9, r * 0.9, r * 1.8); ctx.drawImage(QT.bank, -r * 0.45, -r * 0.8, r * 0.7, r * 1.6); }
       ctx.setTransform(sd, 0, 0, sd, 0, 0); }
     /* gate mist, as before */
     ctx.globalAlpha = 1;
@@ -17133,17 +17153,19 @@ window.BGM = (() => {
     if (QW.white > 0.01 && R) { if (!QWO) { QWO = document.createElement("canvas"); QWO.width = 192; QWO.height = 108; }
       const g = QWO.getContext("2d"), ww = QWO.width, wh = QWO.height, pl = 0.5 + 0.5 * Math.sin(clock * 1.7) * Math.sin(clock * 0.63 + 1);
       g.globalCompositeOperation = "source-over"; g.clearRect(0, 0, ww, wh); g.fillStyle = "rgba(232,240,248,1)"; g.fillRect(0, 0, ww, wh); g.globalCompositeOperation = "destination-out";
-      for (let h = 0; h < holes; h++) { const r = HRr[h] * 1.9 * ww / VW; g.drawImage(QT.hole, HX[h] * ww / VW - r, HY[h] * wh / VH - r * 0.75, r * 2, r * 1.5); }
-      ctx.globalAlpha = QW.white * (0.26 + 0.16 * pl) * (1 - clr); ctx.imageSmoothingEnabled = true; ctx.drawImage(QWO, 0, 0, VW, VH);
-      ctx.globalCompositeOperation = "lighter"; for (let h = 0; h < holes; h++) { const r = HRr[h] * 1.3; ctx.globalAlpha = (0.16 + 0.06 * Math.sin(clock * 9 + h)) * QW.white * (1 - clr); ctx.drawImage(QT.warm, HX[h] - r, HY[h] - r * 0.7, r * 2, r * 1.4); }
+      for (let h = 0; h < holes; h++) { const r = HRr[h] * 2.4 * ww / VW; g.drawImage(QT.hole, HX[h] * ww / VW - r, HY[h] * wh / VH - r * 0.75, r * 2, r * 1.5); }
+      ctx.globalAlpha = QW.white * (0.4 + 0.2 * pl) * (1 - clr); ctx.imageSmoothingEnabled = true; ctx.drawImage(QWO, 0, 0, VW, VH);
+      ctx.globalCompositeOperation = "lighter"; for (let h = 0; h < holes; h++) { const r = HRr[h] * 1.3; ctx.globalAlpha = (0.26 + 0.08 * Math.sin(clock * 9 + h)) * QW.white * (1 - clr); ctx.drawImage(QT.warm, HX[h] - r, HY[h] - r * 0.7, r * 2, r * 1.4); }
       ctx.globalCompositeOperation = "source-over"; }
     /* the clearing: warm light spreads from the light's side as the storm tears open */
-    if (clr > 0 && clr < 1) { const lx = QW_LIGHT.x, ly = QW_LIGHT.y, gx0 = lx < 0 ? 0 : VW, gy0 = ly < 0 ? 0 : VH, reach = clr * 1.6 * (Math.abs(lx) * VW + Math.abs(ly) * VH), gr = ctx.createRadialGradient(gx0, gy0, 0, gx0, gy0, Math.max(10, reach));
-      gr.addColorStop(0, `rgba(255,226,170,${0.16 * (1 - clr)})`); gr.addColorStop(0.75, `rgba(255,214,150,${0.12 * Math.sin(clr * Math.PI)})`); gr.addColorStop(1, "rgba(255,214,150,0)"); ctx.globalCompositeOperation = "lighter"; ctx.globalAlpha = 1; ctx.fillStyle = gr; ctx.fillRect(0, 0, VW, VH); ctx.globalCompositeOperation = "source-over"; }
+    if (clr > 0) { const lx = QW_LIGHT.x, ly = QW_LIGHT.y, gx0 = lx < 0 ? 0 : VW, gy0 = ly < 0 ? 0 : VH, reach = (0.2 + Math.min(1, clr) * 1.5) * (Math.abs(lx) * VW + Math.abs(ly) * VH), gr = ctx.createRadialGradient(gx0, gy0, 0, gx0, gy0, Math.max(10, reach));
+      gr.addColorStop(0, `rgba(255,230,180,${0.1 + 0.2 * Math.sin(Math.min(1, clr) * Math.PI * 0.5 + 0.3)})`); gr.addColorStop(0.7, `rgba(255,214,150,${0.05 + 0.2 * Math.sin(clr * Math.PI)})`); gr.addColorStop(0.9, `rgba(255,214,150,${0.22 * Math.sin(clr * Math.PI)})`); gr.addColorStop(1, "rgba(255,214,150,0)"); ctx.globalCompositeOperation = "lighter"; ctx.globalAlpha = 1; ctx.fillStyle = gr; ctx.fillRect(0, 0, VW, VH); ctx.globalCompositeOperation = "source-over"; }
     /* cold cast: a cool haze from the top, and a cold vignette where the stage has no painted one */
+    ctx.globalCompositeOperation = "source-over"; ctx.imageSmoothingEnabled = true;
     const cold = (0.6 + 0.5 * Math.min(1.5, S)) * (1 - clr);
-    if (cold > 0.01) { ctx.globalAlpha = Math.min(1, cold); ctx.drawImage(QT.hazeTop || (QT.hazeTop = mkCanvas(4, 128, (g) => { const gr = g.createLinearGradient(0, 0, 0, 128); gr.addColorStop(0, "rgba(200,214,232,.22)"); gr.addColorStop(1, "rgba(200,214,232,0)"); g.fillStyle = gr; g.fillRect(0, 0, 4, 128); })), 0, 0, VW, VH * 0.45);
-      if (!(game.stage.scene && IMG[game.stage.scene.bg] && ready(IMG[game.stage.scene.bg]))) { ctx.globalAlpha = Math.min(1, 0.85 * cold + 0.15); ctx.drawImage(qColdVignette(), 0, 0, VW, VH); } }
+    if (cold > 0.01) {
+      if (!(game.stage.scene && IMG[game.stage.scene.bg] && ready(IMG[game.stage.scene.bg]))) { ctx.globalAlpha = 1; ctx.fillStyle = qColdVignette(); ctx.fillRect(0, 0, VW, VH); } }
+    ctx.globalAlpha = 1; ctx.globalCompositeOperation = "source-over";
     ctx.restore();
   }
   const QBH = { x: new Float32Array(24), y: new Float32Array(24), r: new Float32Array(24) };
@@ -17152,9 +17174,12 @@ window.BGM = (() => {
   function ch2Screen() {
     if (!game || !CH2() || QW.edge < 0.01 || reduceMotion && QW.edge < 0.5) return;
     const e = QW.edge * (1 - (QW.clearOn ? QW.clearU : 0)); if (e < 0.01) return;
-    const c = qEdgeFrost(), sc = 1 + 0.12 * (1 - e), sd = scale * dpr;
-    ctx.save(); ctx.setTransform(sd, 0, 0, sd, 0, 0); ctx.globalAlpha = Math.min(1, e * 1.1); ctx.imageSmoothingEnabled = true;
-    ctx.drawImage(c, VW / 2 - VW * sc / 2, VH / 2 - VH * sc / 2, VW * sc, VH * sc); ctx.restore();
+    const c = qEdgeFrost(), sc = 1 + 0.12 * (1 - e), sd = scale * dpr, cw = c.width, ch = c.height, ox = VW / 2 - VW * sc / 2, oy = VH / 2 - VH * sc / 2, fx = VW * sc / cw, fy = VH * sc / ch;
+    ctx.save(); ctx.setTransform(sd, 0, 0, sd, 0, 0); ctx.globalAlpha = Math.min(0.72, e * 0.8); ctx.imageSmoothingEnabled = true;
+    const T = Math.round(ch * 0.24), B = Math.round(ch * 0.12), Lw = Math.round(cw * 0.16);   /* only the frosted margins are drawn: the clear middle costs nothing */
+    ctx.drawImage(c, 0, 0, cw, T, ox, oy, cw * fx, T * fy); ctx.drawImage(c, 0, ch - B, cw, B, ox, oy + (ch - B) * fy, cw * fx, B * fy);
+    ctx.drawImage(c, 0, T, Lw, ch - T - B, ox, oy + T * fy, Lw * fx, (ch - T - B) * fy); ctx.drawImage(c, cw - Lw, T, Lw, ch - T - B, ox + (cw - Lw) * fx, oy + T * fy, Lw * fx, (ch - T - B) * fy);
+    ctx.restore();
   }
   /* a chapter-2 brazier, lit: a light pool on the stones, a living flame that leans with the wind and shrinks as it weakens, sparks going up */
   function qBrazier(x, y, c0, k0, t0, w0, hpF) {
@@ -17169,11 +17194,11 @@ window.BGM = (() => {
     ctx.fillStyle = "#2a211b"; ctx.beginPath(); ctx.ellipse(t0[0], t0[1], w0, w0 * 0.42, 0, 0, 6.29); ctx.fill(); ctx.strokeStyle = "#4a3a2c"; ctx.lineWidth = 2; ctx.stroke();
     ctx.fillStyle = `rgba(255,${(110 + 70 * fl) | 0},40,.95)`; ctx.beginPath(); ctx.ellipse(t0[0], t0[1] - 2, w0 * 0.8, w0 * 0.3, 0, 0, 6.29); ctx.fill();
     /* the flame: four tongues, each flickering on its own, all leaning with the wind (squashed when it blows toward us or away) */
-    const lean = QW.vx * (0.12 + 0.95 * Math.min(1.3, S)) + Math.sin(clock * 2.3 + x) * 0.06, squash = 1 - 0.28 * QW.vy * Math.min(1.2, S), hgt = k0 * (0.3 + 0.24 * hpF) * (1 + 0.1 * white) * squash, wid = k0 * (0.15 + 0.07 * hpF);
+    const lean = Math.max(-0.75, Math.min(0.75, QW.vx * (0.1 + 0.6 * Math.min(1.2, S)))) + Math.sin(clock * 2.3 + x) * 0.06, squash = 1 - 0.25 * QW.vy * Math.min(1.2, S), al = Math.abs(lean), hgt = k0 * (0.42 + 0.34 * hpF) * (1 + 0.1 * white) * Math.max(0.7, squash) * (1 - 0.3 * al), wid = k0 * (0.3 + 0.12 * hpF) * (1 + 0.6 * al);
     ctx.restore();
     for (let i = 0; i < 4; i++) { const ph = i * 1.9 + x * 0.7 + y * 1.3, f1 = 1 + 0.16 * Math.sin(clock * (11 + i * 3) + ph) + 0.09 * Math.sin(clock * (23 + i * 5) + ph * 2), sw = (1 - i * 0.18) * wid, sh = (1 - i * 0.16) * hgt * f1;
       const ox = Math.sin(clock * (5 + i) + ph) * wid * 0.12 * (1 - i * 0.2);
-      ctx.save(); ctx.globalCompositeOperation = "lighter"; ctx.translate(t0[0] + ox, t0[1] - 3); ctx.transform(1, 0, -lean * (1 + i * 0.15), 1, 0, 0); ctx.globalAlpha = [0.75, 0.8, 0.85, 0.9][i];
+      ctx.save(); ctx.globalCompositeOperation = i < 2 ? "source-over" : "lighter"; ctx.translate(t0[0] + ox, t0[1] - 3); ctx.transform(1, 0, -lean * (1 + i * 0.15), 1, 0, 0); ctx.globalAlpha = [0.85, 0.8, 0.8, 0.9][i];
       ctx.drawImage(QT.flameL[i], -sw / 2, -sh * 0.92, sw, sh); ctx.restore(); }
     ctx.save(); ctx.globalCompositeOperation = "lighter";
     ctx.globalAlpha = 0.28 + 0.1 * fl; ctx.drawImage(QT.gWarm, t0[0] + lean * hgt * 0.5 - k0 * 0.45, t0[1] - hgt * 0.55 - k0 * 0.45, k0 * 0.9, k0 * 0.9);
@@ -17186,25 +17211,29 @@ window.BGM = (() => {
     if (Math.random() < 0.35 * (1 - age / 6)) { const p = qp(1, qsm(QT.smG), t0[0] + rr(-3, 3), t0[1] - 4, rr(-4, 4), -rr(18, 34), rr(1.4, 2.2), k0 * rr(0.07, 0.12)); if (p) { p.grow = 2.4; p.alpha = 0.35 * (1 - age / 6); p.wind = 0.9; p.fadeIn = 0.2; p.drag = 0.4; } }
   }
   /* a frozen operator: a clear ice shell climbing up them, rime creeping in; on thawing, it cracks and bursts */
-  const QICE = [[-0.36, 0], [-0.42, -0.5], [-0.3, -0.92], [-0.08, -1.1], [0.16, -1.04], [0.34, -0.78], [0.4, -0.3], [0.36, 0]];
+  const QICE = [[-0.36, 0], [-0.44, -0.4], [-0.37, -0.6], [-0.43, -0.8], [-0.27, -0.9], [-0.22, -1.1], [-0.07, -0.99], [0.05, -1.16], [0.16, -1.0], [0.3, -0.97], [0.33, -0.76], [0.44, -0.6], [0.38, -0.3], [0.36, 0]];
   function qIce(u) {
     const z = RISE(tileAt(u.x, u.y)) ? HZ : 0; PQ(u.x, u.y, z); const x = PX, y = PY, k = PK;
     if (u._iceT0 === undefined) u._iceT0 = game.t;
-    const age = game.t - u._iceT0, grow = Math.min(1, age / 0.3), rime = Math.min(1, age / 2.2), top = -1.12 * grow;
+    const age = game.t - u._iceT0, grow = Math.min(1, age / 0.3), rime = Math.min(1, age / 2.2), top = -1.16 * easeO(grow);
     ctx.save(); ctx.translate(x, y); ctx.scale(k, k);
-    ctx.beginPath(); for (let i = 0; i < QICE.length; i++) { const [px, py] = QICE[i]; const yy = Math.max(top, py); i ? ctx.lineTo(px, yy) : ctx.moveTo(px, yy); } ctx.closePath();
-    ctx.globalAlpha = 0.85; const gr = ctx.createLinearGradient(0, -1.1, 0, 0); gr.addColorStop(0, "rgba(220,244,255,.22)"); gr.addColorStop(0.6, "rgba(160,215,245,.28)"); gr.addColorStop(1, "rgba(120,185,230,.45)"); ctx.fillStyle = gr; ctx.fill();
-    ctx.save(); ctx.clip(); ctx.globalAlpha = 0.75 * rime; const rh = 1.15 * rime; ctx.drawImage(QT.rime, -0.5, -rh + 0.05, 1, rh * 1.05); ctx.globalAlpha = 0.5 * rime; ctx.drawImage(QT.rime, -0.45, -rh * 0.6, 0.9, rh * 0.62); ctx.restore();
-    ctx.lineJoin = "round"; ctx.strokeStyle = "rgba(240,250,255,.85)"; ctx.lineWidth = 0.022; ctx.stroke();
-    if (grow >= 1) { ctx.strokeStyle = "rgba(255,255,255,.45)"; ctx.lineWidth = 0.012; ctx.beginPath(); ctx.moveTo(-0.3, -0.92); ctx.lineTo(-0.05, -0.55); ctx.lineTo(0.34, -0.78); ctx.moveTo(-0.05, -0.55); ctx.lineTo(0.02, 0); ctx.moveTo(-0.42, -0.5); ctx.lineTo(-0.05, -0.55); ctx.stroke();
-      const gl = (clock * 0.45 + u.id * 0.3) % 1.6; if (gl < 1) { ctx.globalCompositeOperation = "lighter"; ctx.globalAlpha = Math.sin(gl * Math.PI) * 0.7; ctx.strokeStyle = "#ffffff"; ctx.lineWidth = 0.035; ctx.beginPath(); ctx.moveTo(-0.38, -0.2 - gl * 0.6); ctx.lineTo(-0.3, -0.45 - gl * 0.6); ctx.stroke(); } }
+    ctx.globalAlpha = 0.75; ctx.fillStyle = "rgba(235,244,252,.9)"; ctx.beginPath(); ctx.ellipse(0, 0.01, 0.46, 0.13, 0, 0, 6.29); ctx.fill();   /* frost heaped at the feet */
+    ctx.beginPath(); for (let i = 0; i < QICE.length; i++) { const px = QICE[i][0], py = Math.max(top, QICE[i][1]); i ? ctx.lineTo(px, py) : ctx.moveTo(px, py); } ctx.closePath();
+    ctx.globalAlpha = 1; const gr = ctx.createLinearGradient(-0.4, -1.1, 0.4, 0); gr.addColorStop(0, "rgba(225,246,255,.30)"); gr.addColorStop(0.5, "rgba(150,210,245,.22)"); gr.addColorStop(1, "rgba(110,175,225,.42)"); ctx.fillStyle = gr; ctx.fill();
+    ctx.save(); ctx.clip();
+    ctx.globalAlpha = 0.9 * rime; const rh = 0.25 + 0.95 * rime; ctx.drawImage(QT.rime, -0.62, -rh * 0.55, 1.24, rh * 0.9); ctx.globalAlpha = 0.6 * rime; ctx.drawImage(QT.rime, -0.5, -rh, 0.6, rh * 0.8); ctx.drawImage(QT.rime, 0, -rh * 0.85, 0.55, rh * 0.75);   /* rime growing in from the bottom */
+    ctx.globalAlpha = 0.28; ctx.strokeStyle = "#ffffff"; ctx.lineWidth = 0.13; ctx.lineJoin = "round"; ctx.stroke();   /* the thickness of the ice, frosted at its rim */
     ctx.restore();
-    u._iceSeen = game.t;
+    ctx.lineJoin = "round"; ctx.globalAlpha = 0.85; ctx.strokeStyle = "rgba(170,220,255,1)"; ctx.lineWidth = 0.035; ctx.stroke(); ctx.globalAlpha = 1; ctx.strokeStyle = "rgba(250,253,255,.95)"; ctx.lineWidth = 0.014; ctx.stroke();
+    if (grow >= 1) { ctx.globalAlpha = 0.5; ctx.strokeStyle = "#ffffff"; ctx.lineWidth = 0.012; ctx.beginPath(); ctx.moveTo(-0.27, -0.9); ctx.lineTo(-0.06, -0.58); ctx.lineTo(0.3, -0.97); ctx.moveTo(-0.06, -0.58); ctx.lineTo(0.04, 0); ctx.moveTo(-0.43, -0.8); ctx.lineTo(-0.06, -0.58); ctx.lineTo(0.44, -0.6); ctx.moveTo(0.05, -1.16); ctx.lineTo(-0.06, -0.58); ctx.stroke();
+      const gl = (clock * 0.45 + u.id * 0.3) % 1.6; if (gl < 1) { ctx.globalCompositeOperation = "lighter"; ctx.globalAlpha = Math.sin(gl * Math.PI) * 0.8; ctx.strokeStyle = "#ffffff"; ctx.lineWidth = 0.04; ctx.lineCap = "round"; ctx.beginPath(); ctx.moveTo(-0.38, -0.18 - gl * 0.55); ctx.lineTo(-0.31, -0.42 - gl * 0.55); ctx.stroke(); ctx.globalAlpha *= 0.6; ctx.beginPath(); ctx.moveTo(0.3, -0.3 - gl * 0.4); ctx.lineTo(0.34, -0.42 - gl * 0.4); ctx.stroke(); } }
+    if (u.frozenT < 0.35) { const c = 1 - u.frozenT / 0.35; ctx.globalCompositeOperation = "source-over"; ctx.globalAlpha = 0.9; ctx.strokeStyle = "#ffffff"; ctx.lineWidth = 0.018; ctx.lineCap = "round"; ctx.beginPath();   /* about to thaw: cracks run through the shell */
+      for (let i = 0; i < 6; i++) { const an = i * 1.05 + 0.4, r = 0.12 + 0.42 * c; ctx.moveTo(0.02, -0.55); ctx.lineTo(0.02 + Math.cos(an) * r * 0.8, -0.55 + Math.sin(an) * r); ctx.lineTo(0.02 + Math.cos(an + 0.3) * r, -0.55 + Math.sin(an + 0.3) * r * 1.2); } ctx.stroke(); }
+    ctx.restore();
   }
-  function qShatter(u) {
+  function qShatter(u) { u._qHold = game.t + 0.2;
     const z = RISE(tileAt(u.x, u.y)) ? HZ : 0; PQ(u.x, u.y, z); const x = PX, y = PY, k = PK; let p;
-    p = qp(1, QT.gBlue, x, y - k * 0.55, 0, 0, 0.18, k * 1.1); if (p) { p.add = true; p.alpha = 0.7; p.grow = 0.4; }
-    p = qp(1, QT.cW, x, y - k * 0.55, 0, 0, 0.07, k * 0.4); if (p) p.add = true;
+    p = qp(1, QT.gBlue, x, y - k * 0.55, 0, 0, 0.12, k * 0.8); if (p) { p.add = true; p.alpha = 0.45; p.grow = 0.5; }
     for (let i = 0; i < 16; i++) { const a = rr(0, 6.28), v = rr(120, 320); p = qp(1, QT.shardB, x + Math.cos(a) * k * 0.2, y - k * rr(0.15, 1.0), Math.cos(a) * v, Math.sin(a) * v * 0.5 - rr(60, 200), rr(0.45, 0.8), k * rr(0.06, 0.12)); if (p) { p.rot = rr(0, 6); p.rotv = rr(-14, 14); p.spin = true; p.grav = 1000; p.alpha = 0.95; } }
     for (let i = 0; i < 6; i++) { p = qp(1, qsm(QT.smW), x + rr(-k * 0.25, k * 0.25), y - k * rr(0.1, 0.8), rr(-30, 30), rr(-30, 0), rr(0.5, 0.9), k * rr(0.15, 0.25)); if (p) { p.grow = 1.6; p.alpha = 0.45; p.drag = 3; p.wind = 0.6; } }
     p = qp(0, tinted(TEX.ring, "#d8f0ff"), x, y, 0, 0, 0.3, k * 0.4); if (p) { p.add = true; p.grow = 2; p.flat = 0.4; p.alpha = 0.7; }
@@ -17214,9 +17243,9 @@ window.BGM = (() => {
   function qDrift(x, y, a, z) {
     const q = quad(x, y, z); poly(ctx, q); ctx.fillStyle = `rgba(232,240,248,${0.42 * a})`; ctx.fill();
     PQ(x, y, z); const cx = PX, cy = PY, k0 = PK;
-    for (let i = 0; i < 5; i++) { const s1 = Math.sin(x * 12.9898 + y * 78.233 + i * 3.7) * 43758.5453, r1 = s1 - Math.floor(s1), s2 = Math.sin(x * 39.34 + y * 11.13 + i * 5.1) * 23421.631, r2 = s2 - Math.floor(s2);
+    for (let i = 0; i < 7; i++) { const s1 = Math.sin(x * 12.9898 + y * 78.233 + i * 3.7) * 43758.5453, r1 = s1 - Math.floor(s1), s2 = Math.sin(x * 39.34 + y * 11.13 + i * 5.1) * 23421.631, r2 = s2 - Math.floor(s2);
       const px = cx + (r1 - 0.5) * k0 * 0.78, py = cy + (r2 - 0.5) * k0 * 0.32, s = k0 * (0.42 + 0.22 * r1);
-      ctx.globalAlpha = 0.75 * a; ctx.drawImage(QT.puffW[i % 3], px - s / 2, py - s * 0.22, s, s * 0.44); }
+      ctx.globalAlpha = 0.5 * a; ctx.drawImage(QT.puffW[i % 3], px - s / 2, py - s * 0.22, s, s * 0.44); }
     ctx.globalCompositeOperation = "lighter";
     for (let i = 0; i < 3; i++) { const s1 = Math.sin(x * 7.1 + y * 3.3 + i * 9.7) * 9631.7, r1 = s1 - Math.floor(s1), tw = Math.max(0, Math.sin(clock * (1.3 + r1) + r1 * 40)); if (tw < 0.6) continue;
       ctx.globalAlpha = a * (tw - 0.6) * 2; const px = cx + (r1 - 0.5) * k0 * 0.7, py = cy + (((r1 * 7) % 1) - 0.5) * k0 * 0.28; ctx.drawImage(QT.cW, px - 2, py - 2, 4, 4); }
@@ -17224,8 +17253,8 @@ window.BGM = (() => {
   }
   /* the fog on a frost stage: slow mist rolling over the covered squares */
   function qFogMist() {
-    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) { if ((x + y) & 1) continue; const a = frostFogA(x, y); if (a <= 0.3) continue;
-      PQ(x, y, 0.3); const ph = x * 1.3 + y * 2.1, dx = Math.sin(clock * 0.23 + ph) * PK * 0.35, s = PK * (2.0 + 0.3 * Math.sin(clock * 0.31 + ph));
+    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) { if ((x + 2 * y) % 4) continue; const a = frostFogA(x, y); if (a <= 0.3) continue;
+      PQ(x, y, 0.3); const ph = x * 1.3 + y * 2.1, dx = Math.sin(clock * 0.23 + ph) * PK * 0.35, s = PK * (2.4 + 0.3 * Math.sin(clock * 0.31 + ph));
       ctx.globalAlpha = (0.32 + 0.12 * Math.sin(clock * 0.4 + ph * 1.7)) * a; ctx.drawImage(QT.mist, PX + dx - s / 2, PY - s * 0.3, s, s * 0.5); }
     ctx.globalAlpha = 1;
   }
@@ -17347,7 +17376,7 @@ window.BGM = (() => {
         }
         if (u.image) { ctx.save(); ctx.globalAlpha = 0.62; if ("filter" in ctx) ctx.filter = "grayscale(.6) sepia(.3) hue-rotate(170deg) saturate(2.2) brightness(1.15)"; }   // lab L3: an image in the glass, cool blue and see-through
         else if (u.ghost) { ctx.save(); ctx.globalAlpha = 0.55; if ("filter" in ctx) ctx.filter = "grayscale(.85) sepia(.4) hue-rotate(220deg) saturate(1.6) brightness(1.1)"; }   // lab L5: yesterday's ghost, grey-violet and see-through
-        drawOperator(ctx, u.def.id, sx, sy, k * 0.8 * BODY, Object.assign({ face, t: clock, swing: u.swing, flash: (u.flash > 0 && !(u._qHold > game.t)) || (u._qHit !== undefined && game.t >= u._qHit && game.t - u._qHit < 0.12), seed: u.id, unit: u, out: (u._draw = u._draw || {}), clip: u.def.id === "yui" && u._an ? u._an.want : null }, poseOf(u)));
+        drawOperator(ctx, u.def.id, sx, sy, k * 0.8 * BODY, Object.assign({ face, t: clock, swing: u.swing, flash: (u.flash > (u.blizFrozen && CH2() ? 0.06 : 0) && !(u._qHold > game.t)) || (u._qHit !== undefined && game.t >= u._qHit && game.t - u._qHit < 0.12), seed: u.id, unit: u, out: (u._draw = u._draw || {}), clip: u.def.id === "yui" && u._an ? u._an.want : null }, poseOf(u)));
         if (u.image || u.ghost) { ctx.filter = "none"; ctx.restore(); }
         if (u.ghost) { const cx0 = sx + k * 0.24, cy0 = sy - k * 1.0; ctx.strokeStyle = "#d8c8ff"; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(cx0, cy0, 6, 0, Math.PI * 2); ctx.moveTo(cx0, cy0); ctx.lineTo(cx0, cy0 - 4); ctx.moveTo(cx0, cy0); ctx.lineTo(cx0 + 3, cy0); ctx.stroke(); }   // its small clock
         if (u.ward > 0 && u.def.id !== "eungyeol") {   // a ward from 방호학파 / 구원: a thin bubble of pale-blue light round them, a hexagon pattern turning slowly
@@ -19145,7 +19174,7 @@ window.BGM = (() => {
       for (const [e, a] of atkBefore) if (e.atkT > a + 0.01 && e.atkT >= e.def.interval / (e.frenzyM || 1) - 0.02) { e.atkAnim = 0.2; e.atkAt = game.t; pushEnFx(e); }
       left -= st; }
     return game.t; };
-  window.__tdQ = () => ({ S: +QW.S.toFixed(3), vx: +QW.vx.toFixed(3), vy: +QW.vy.toFixed(3), blow: QW.blow, edge: +QW.edge.toFixed(2), white: +QW.white.toFixed(2), clr: QW.clearU, qp: qpN, flake: [QF.x[1][0], QF.y[1][0]], init: QF.init, brz: BRZ.n });   /* test hook: the chapter-2 weather and pools */
+  window.__tdQ = () => ({ S: +QW.S.toFixed(3), vx: +QW.vx.toFixed(3), vy: +QW.vy.toFixed(3), blow: QW.blow, edge: +QW.edge.toFixed(2), white: +QW.white.toFixed(2), clr: QW.clearU, qp: qpN, flake: [QF.x[1][0], QF.y[1][0]], init: QF.init, brz: BRZ.n, fin: [0, 1, 2].map((l) => Array.from(QF.x[l]).filter((v, i) => isFinite(v) && v > 0 && v < VW && QF.y[l][i] > 0 && QF.y[l][i] < VH).length), Q });   /* test hook: the chapter-2 weather and pools */
   window.__tdPfx = () => PFX.length;   /* test hook: live particles */
   window.__tdBig = () => [...BIG_BM].map(([k, v]) => k + ":" + (v ? v.width + "x" + v.height : v));
   window.__tdMaskPick = (e) => { maskSel = e || null; };   // lab L3 (LAB-04): pick a mask for judging, as a tap would (for test shots)
