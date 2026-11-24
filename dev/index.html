@@ -17560,8 +17560,8 @@ window.BGM = (() => {
     const z = RISE(tileAt(u.x, u.y)) ? HZ : 0; PQ(u.x, u.y, z); const x = PX, y = PY, k = PK;
     if (u._iceT0 === undefined) u._iceT0 = game.t;
     const age = game.t - u._iceT0, grow = Math.min(1, age / 0.3), top = -1.16 * easeO(grow);
-    ctx.save(); ctx.translate(x, y); ctx.scale(k, k);
-    ctx.globalAlpha = 0.75; ctx.fillStyle = "rgba(235,244,252,.9)"; ctx.beginPath(); ctx.ellipse(0, 0.01, 0.46, 0.13, 0, 0, 6.29); ctx.fill();   /* frost heaped at the feet */
+    ctx.save(); ctx.translate(x, y); ctx.scale(k * 0.7, k * 0.74);   /* the shell hugs the figure: it used to stand taller and wider than the unit */
+    ctx.globalAlpha = 0.5; ctx.fillStyle = "rgba(235,244,252,.9)"; ctx.beginPath(); ctx.ellipse(0, 0.01, 0.4, 0.1, 0, 0, 6.29); ctx.fill();   /* frost heaped at the feet */
     ctx.beginPath(); for (let i = 0; i < QICE.length; i++) { const px = QICE[i][0], py = Math.max(top, QICE[i][1]); i ? ctx.lineTo(px, py) : ctx.moveTo(px, py); } ctx.closePath();
     ctx.globalAlpha = 1; const gr = ctx.createLinearGradient(-0.4, -1.1, 0.4, 0); gr.addColorStop(0, "rgba(225,246,255,.30)"); gr.addColorStop(0.5, "rgba(150,210,245,.22)"); gr.addColorStop(1, "rgba(110,175,225,.42)"); ctx.fillStyle = gr; ctx.fill();
     ctx.save(); ctx.clip();
