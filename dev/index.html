@@ -5091,7 +5091,7 @@ window.BGM = (() => {
       /* IM-10 v3 (2026-11-18 night, stage.frost): the cold is the boss. Directions: 0 from the west, 1 from the north, 2 from the east, 3 from the south.
          Before the final the storm comes in gusts (storm[k] every / dur / first, calm between); braziers drain and cold windward squares freeze only in a gust. Braziers a phase sets
          appear unlit (braziers.unlit) and are lit with cost in calm (light); the deploy limit is base + per x (lit - 1) (limit). The final storm lasts 150 s by the clock */
-      frost: { braziers: { hp: 3000, drain: [7, 8, 10, 11, 13, 5], feed: { cost: 10, hp: 900, cd: 4 }, warm: 1, unlit: true }, light: { cost: 12, hp: 0.5 }, limit: { base: 4, per: 2, max: 12 },
+      frost: { braziers: { hp: 3000, drain: [7, 8, 10, 11, 13, 40], feed: { cost: 10, hp: 900, cd: 4 }, warm: 1, unlit: true }, light: { cost: 12, hp: 0.5 }, limit: { base: 4, per: 2, max: 12 },
         finalFeed: { hp: 450, cd: 5 }, finalRedeployCost: 0.25, finalHit: 250, finalHitK: 250, finalRedeploy: 0.35,
         storm: [{ dirs: [1], first: 30, every: 40, dur: 10 }, { dirs: [1], every: 36, dur: 12 }, { dirs: [1, 0], every: 32, dur: 12 }, { dirs: [1, 0], every: 30, dur: 14 }, { dirs: [1, 0, 3], every: 28, dur: 16 }, { dirs: [0, 1, 2, 3] }],
         phases: [{ open: [[5, 1, 11, 7]], cap: 55 },
@@ -5099,7 +5099,7 @@ window.BGM = (() => {
           { open: [[0, 1, 16, 7]], set: [[11, 2, "F"], [5, 6, "F"], [0, 4, "S"], [16, 4, "S"]], when: "clear", cap: 80 },
           { open: [[0, 0, 16, 8]], set: [[8, 0, "S"], [8, 8, "S"]], when: "clear", cap: 85 },
           { set: [[2, 0, "S"], [14, 0, "S"], [2, 8, "S"], [14, 8, "S"], [8, 2, "W"], [8, 6, "W"]], tunnels: [{ a: [14, 7], b: [10, 4], t: 5 }], when: "clear", cap: 90 },
-          { final: true, time: 150, when: "clear" }] },
+          { final: true, retreat: true, time: 40, when: "clear" }] },
       /* waves: times from each phase's start, gates by square; a via square's until counts from the phase's start too (frostShift). GO(ph, gate, post, until): walks to the post and
          stands there until then (several with one until gather one by one and leave all at once). TR: a steady trickle along one road */
       waves: (() => { const G = (ph, x, y, o) => Object.assign({ ph, gate: [x, y] }, o || {}), GO = (ph, gx, gy, x, y, t, o) => G(ph, gx, gy, Object.assign({ via: [[x, y, { until: t }]] }, o || {}));
@@ -5136,9 +5136,9 @@ window.BGM = (() => {
         [6, "mortar", 0, 1, 0, GO(4, 14, 0, 14, 1, 60, { march: true })], [24, "standard", 0, 1, 0, G(4, 2, 8)], [34, "soldier", 0, 2, 2, G(4, 2, 0)], [52, "grenadier", 0, 2, 2.5, G(4, 14, 8)],
         [6, "frostgun", 0, 1, 0, GO(4, 2, 0, 5, 1, 60)], [16, "frostgun", 0, 1, 0, GO(4, 14, 0, 11, 1, 60)], [28, "frostgun", 0, 1, 0, GO(4, 2, 0, 6, 1, 60)],
         [20, "yfang", 0, 3, 1, G(4, 14, 8, { tun: true })], [30, "yshield", 0, 1, 0, G(4, 14, 0, { hp: 0.35 })],
-        /* the final storm (150 s by the clock): hounds and soldiers from the corners now and then */
-        [10, "yfang", 0, 2, 1.2, G(5, 2, 0)], [30, "soldier", 0, 1, 0, G(5, 14, 8)], [55, "yfang", 0, 2, 1.2, G(5, 14, 0)], [80, "soldier", 0, 1, 0, G(5, 2, 8)]])); })(),
-      boss: ["", ""], desc: "수도의 성문 앞 골목. 화로가 모두 꺼지면 얼어 죽습니다. 켜진 화로가 늘수록 더 많이 배치할 수 있습니다. 새 화로는 꺼진 채 나타나니, 눈보라가 잠잠할 때 코스트를 넣어 붙이세요. 눈보라는 몰아쳤다 그치기를 되풀이하고, 마지막 눈보라는 150초 동안 그치지 않습니다.",
+        /* the final storm (40 s by the clock): theirs pull out, only the cold is left */
+        ])); })(),
+      boss: ["", ""], desc: "수도의 성문 앞 골목. 화로가 모두 꺼지면 얼어 죽습니다. 켜진 화로가 늘수록 더 많이 배치할 수 있습니다. 새 화로는 꺼진 채 나타나니, 눈보라가 잠잠할 때 코스트를 넣어 붙이세요. 눈보라는 몰아쳤다 그치기를 되풀이하고, 마지막 눈보라는 40초 동안 그치지 않습니다.",
       lose: "화로가 모두 꺼졌습니다. 잠잠할 때 화로를 붙여 배치 인원을 늘리고, 바람이 들어오는 쪽 칸에 가사인격을 세워 화로를 지키세요." },
     // a side branch shown under IM-01 and open with chapter 2: the terminal's lesson on the blizzard, with a fixed squad (lines by 유진)
     { code: "TR-03", name: "눈보라 학습", map: MAP_C2.lesson, bg: null, hz: 0.5, ep: 2, branch: "IM-01", startCost: 30, mul: { hp: 0.245, atk: 0.262, def: 0.5 },
@@ -6282,6 +6282,10 @@ window.BGM = (() => {
       if (changed && !first) this.frostReplan();
       this.frostLevel(P.final ? R.storm.length - 1 : Math.min(p, R.storm.length - 1));
       const list = R.held[p]; if (list && list.length) { const rest = this.waves.slice(this.waveIdx).concat(list.map((w) => [w[0] + this.t, w[1], w[2], this.frostShift(w[3], this.t)])); rest.sort((a, b) => a[0] - b[0]); this.waves = this.waves.slice(0, this.waveIdx).concat(rest); R.held[p] = []; }
+      if (P.final && P.retreat) {   /* the last storm: whoever of theirs is on the board pulls out, and nothing more of theirs comes */
+        for (const e of this.enemies) if (!e.dead && e.hp > 0 && !e.ally && !e.hired && !e.stake && !e.loop) { e.dead = true; e.fled = true; e.blockedBy = null; e.heldBy = null; this.killed++; this.fx.push({ k: "die", x: e.x, y: e.y, e, fled: true, t: 0, life: 0.5 }); }
+        const rest = this.waves.length - this.waveIdx; if (rest > 0) { this.total = Math.max(this.killed + this.leaked, this.total - rest); this.waves = this.waves.slice(0, this.waveIdx); }
+        this.snd("retreat"); }
       if (P.final) { R.endAt = this.t + (P.time || 60); if (P.gauge) { R.gauge = R.gaugeMax = P.gauge; R.rate = P.rate || 1; R.endAt = Infinity; } }   /* a final with a gauge (the 2-6 rule): it falls by rate for every lit brazier, the storm ends at 0 */
       if (!first) this.fx.push({ k: "frostphase", final: R.final, n: p, t: 0, life: 2.5 });
       this.lampV = (this.lampV || 0) + 1; }
@@ -12422,19 +12426,27 @@ window.BGM = (() => {
      tap skips), then sight only round lit braziers and a faint memory of the roads; a brazier going out closes its hole. Victory tears it open to the clear painting (held 2 s);
      a frozen loss closes it to white. */
   const BOSS = { game: null, ph: -1, phT: -99, rev: new Map(), openK: new Set(), V: null, M: null, body: null, curtain: null, fogP: null, fogSrc: null, blob: null, cut: null, banner: null, bannerAt: null, winT: null, loseT: null, ox: 0, oy: 0, lastClock: 0, thin: 0 };
-  const BOSS_HOLD = 0.3, CUT_BACK = 9.5, CUT_END = 10.4;
+  const BOSS_HOLD = 0.3;
+  /* the two cutscenes: "far" (the second clearing: the view climbs, the ground shakes, a storm cloud too big to be there on the horizon) and "fall" (the last storm: the sky, and it
+     comes down). back: when the board returns (the world holds still until then); end: when the cut is over. The lines are the script's own, spoken in the terminal's box */
+  const CUTS = { far: { back: 8.2, end: 9.1, skip: 7.3, lines: [[3.0, 7.3, "alpha", "...라스푸티차 정도로 끝나지 않을 것 같네"]] },
+    fall: { back: 11.2, end: 12.1, skip: 10.65, lines: [[0.9, 3.7, "yui", "적이 물러갑니다."], [4.6, 10.5, "alpha", "우리도 물러가야 했던 거 아냐? 저게 대체 뭐야-----!!!!"]] } };
+  const BOSS_END_LINE = ["alpha", "으윽, 지금이야. 적들이 없을 때 뛰어!!!"];
+  const bossPf = () => game.frost.final ? 1 : Math.min(1, game.frost.phase / 5);   /* how far the storm has grown: every clearing leaves it stronger than the last */
   const BOSSON = () => !!(game && game.frost && game.stage.scene && game.stage.scene.boss && PAINTED());
   function bossBannerLater(a, b, c) { if (game.frost.final) BOSS.banner = [a, b, c]; else BOSS.bannerAt = [[a, b, c], game.t + 1.15]; }
   function bossOpenKeys() { const R = game.frost, s = new Set(); for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) if (R.all || R.open.some((q) => x >= q.r[0] && x <= q.r[2] && y >= q.r[1] && y <= q.r[3])) s.add(y * 100 + x); return s; }
   function bossTick() { const R = game.frost;
-    if (BOSS.game !== game) { Object.assign(BOSS, { game, ph: R.phase, phT: -99, rev: new Map(), openK: bossOpenKeys(), cut: null, banner: null, bannerAt: null, winT: null, loseT: null, thin: 0 }); }
+    if (BOSS.game !== game) { Object.assign(BOSS, { game, ph: R.phase, phT: -99, rev: new Map(), openK: bossOpenKeys(), cut: null, cutAt: null, endLine: null, banner: null, bannerAt: null, winT: null, loseT: null, thin: 0 }); }
     if (R.phase !== BOSS.ph) { const prev = BOSS.openK, now = bossOpenKeys(); BOSS.ph = R.phase; BOSS.phT = game.t;
       const dist = new Map(), q = []; for (const k of prev) if (now.has(k)) { dist.set(k, 0); q.push(k); }   /* the reveal travels square by square out of what was already open */
       for (let i = 0; i < q.length; i++) { const k = q[i], x = k % 100, y = (k / 100) | 0; for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) { const n = (y + dy) * 100 + x + dx; if (x + dx < 0 || x + dx >= W || !now.has(n) || dist.has(n)) continue; dist.set(n, dist.get(k) + 1); q.push(n); } }
-      for (const k of now) if (!prev.has(k)) BOSS.rev.set(k, game.t + 1.1 + 0.15 * (dist.has(k) ? dist.get(k) - 1 : 6));
+      for (const k of now) if (!prev.has(k)) BOSS.rev.set(k, game.t + 1.1 + 0.35 * R.phase + 0.15 * (dist.has(k) ? dist.get(k) - 1 : 6));
       BOSS.openK = now;
-      if (R.final) BOSS.cut = { t0: clock, banner: false };
-      else if (!reduceMotion) shake = Math.max(shake, 0.12); }
+      if (R.final) BOSS.cut = { kind: "fall", t0: clock, banner: false };
+      else { if (R.phase === 2) BOSS.cutAt = game.t + 3.4; if (!reduceMotion) shake = Math.max(shake, 0.12 + 0.05 * R.phase); } }
+    if (BOSS.cutAt !== null && game.t >= BOSS.cutAt && !BOSS.cut && !game.over) { BOSS.cutAt = null; if (!R.final) BOSS.cut = { kind: "far", t0: clock, banner: true }; }
+    if (R.clearT !== null && !BOSS.endLine) BOSS.endLine = { txt: BOSS_END_LINE[1], who: BOSS_END_LINE[0], t: 0, at: "bottom", c0: clock };
     if (BOSS.bannerAt && game.t >= BOSS.bannerAt[1]) { banner(...BOSS.bannerAt[0]); BOSS.bannerAt = null; }
     if (game.over === "lose" && R.lost && BOSS.loseT === null) BOSS.loseT = clock; }
   /* a seamless tile cut from a painting: the crop, with its halves swapped laid over it near the edges (a soft mask), across and then down, so it wraps with no seam */
@@ -12472,25 +12484,27 @@ window.BGM = (() => {
       g.restore(); }
     g.restore(); }
   function bossSurge() { const u = game.t - BOSS.phT; if (BOSS.ph <= 0 && BOSS.phT < 0) return 0; if (game.frost.final) return 0;
-    return u < 0 ? 0 : u < 0.25 ? 0.62 + 0.38 * easeO(u / 0.25) : u < 0.8 ? 1 : Math.max(0, 1 - ease((u - 0.8) / 1.3)); }   /* it hits at once (the board's change is under it), holds, eases */
+    const hold = 0.8 + 0.35 * BOSS.ph;   /* each one holds longer than the last */
+    return u < 0 ? 0 : u < 0.25 ? 0.62 + 0.38 * easeO(u / 0.25) : u < hold ? 1 : Math.max(0, 1 - ease((u - hold) / 1.3)); }   /* it hits at once (the board's change is under it), holds, eases */
   function bossVeil() {
     const R = game.frost, t = game.t, vw = Math.max(16, Math.round(VW / 4)), vh = Math.max(16, Math.round(VH / 4)), dtc = Math.max(0, Math.min(0.1, clock - BOSS.lastClock)); BOSS.lastClock = clock;
     const clr = R.clearT !== null ? Math.max(0, Math.min(1, (t - R.clearT) / 2.8)) : 0, lose = BOSS.loseT !== null ? Math.min(1, (clock - BOSS.loseT) / 1.3) : 0;
     const surge = bossSurge(), S = Math.min(1.2, QW.S || 0), fin = R.final && R.clearT === null;
     const DB = window.__bossDbg || 0; if (DB & 8) return;   /* test hook: parts off, for timing */
-    let A = fin ? 0.97 : 0.93; if (BOSS.cut) { const T = clock - BOSS.cut.t0; BOSS.thin = T < CUT_BACK ? ease(T / 1.0) : 0; A *= 1 - 0.55 * BOSS.thin; }
+    const pf = bossPf();
+    let A = fin ? 0.97 : 0.9 + 0.05 * pf; if (BOSS.cut) { const T = clock - BOSS.cut.t0; BOSS.thin = T < CUTS[BOSS.cut.kind].back ? ease(T / 1.0) : 0; A *= 1 - 0.55 * BOSS.thin; }
     A *= 1 - ease((clr - 0.45) / 0.55); A += (1 - A) * lose; if (A <= 0.005) return;
     if (!BOSS.V || BOSS.V.width !== vw || BOSS.V.height !== vh) { BOSS.V = mkCanvas(vw, vh, () => {}); BOSS.M = mkCanvas(vw, vh, () => {}); }
     const V = BOSS.V, M = BOSS.M, gv = V.getContext("2d"), gm = M.getContext("2d"), sx = vw / VW, sy = vh / VH;
-    const wa = Math.atan2(QW.vy || 0.6, QW.vx || 0.3), sp = 16 + 150 * S + 300 * surge; BOSS.ox += Math.cos(wa) * sp * dtc; BOSS.oy += Math.sin(wa) * sp * dtc + 6 * dtc;
+    const wa = Math.atan2(QW.vy || 0.6, QW.vx || 0.3), sp = 16 + 110 * pf + (150 + 160 * pf) * S + 300 * surge; BOSS.ox += Math.cos(wa) * sp * dtc; BOSS.oy += Math.sin(wa) * sp * dtc + 6 * dtc;
     /* the storm body */
     gv.setTransform(1, 0, 0, 1, 0, 0); gv.globalCompositeOperation = "source-over"; gv.globalAlpha = 1; gv.drawImage(bossFog(vw, vh), 0, 0);
-    gv.setTransform(sx, 0, 0, sy, 0, 0); if (!(DB & 1)) bossTileBody(gv, VW, VH, VH * 0.62, BOSS.ox, BOSS.oy, 0.62 + 0.2 * Math.min(1, S) + 0.18 * surge);
-    if (!(DB & 2)) bossSheets(gv, VW, VH, wa, 260 + 420 * S + 500 * surge, 0.75 + 0.3 * S, 1, false, true);
+    gv.setTransform(sx, 0, 0, sy, 0, 0); if (!(DB & 1)) bossTileBody(gv, VW, VH, VH * 0.62, BOSS.ox, BOSS.oy, Math.min(1, 0.54 + 0.14 * pf + 0.2 * Math.min(1, S) + 0.18 * surge));
+    if (!(DB & 2)) bossSheets(gv, VW, VH, wa, 220 + 300 * pf + (420 + 300 * pf) * S + 500 * surge, 0.6 + 0.25 * pf + 0.3 * S, 1, false, true);
     /* the sight mask */
     gm.setTransform(1, 0, 0, 1, 0, 0); gm.globalCompositeOperation = "source-over"; gm.clearRect(0, 0, vw, vh); gm.setTransform(sx, 0, 0, sy, 0, 0); gm.globalCompositeOperation = "lighter";
     if (DB & 32) return;
-    const bl = bossBlob(), shrink = (1 - 0.1 * Math.min(1, S)) * (1 - 0.45 * surge) * (1 - lose), tearR = clr * 22;
+    const bl = bossBlob(), shrink = (1 - (0.06 + 0.22 * pf) * Math.min(1, S)) * (1 - 0.1 * pf) * (1 - 0.45 * surge) * (1 - lose), tearR = clr * 22;
     let lamps = []; for (const [k] of game.lampHp) { const x = k % 100, y = (k / 100) | 0; if (tileAt(x, y) !== "F") continue; const lit = game.lampLit(x, y), at = game.lampOffT && game.lampOffT.get ? game.lampOffT.get(k) : undefined;
       const f = lit ? 1 : at !== undefined && t >= at && t - at < 0.9 ? 1 - easeO((t - at) / 0.9) : 0; if (f > 0.01) lamps.push([x, y, f]); }   /* one going out: its hole closes (a gulp) */
     for (const k of BOSS.openK) { const x = k % 100, y = (k / 100) | 0, c = tileAt(x, y), wall = c === "#" || c === "W", rv = BOSS.rev.has(k) ? Math.max(0, Math.min(1, (t - BOSS.rev.get(k)) / 0.5)) : 1;
@@ -12501,49 +12515,74 @@ window.BGM = (() => {
       const p = P(x, y, zOf(x, y)), rx = p[2] * 1.1, ry = rx * 0.62; gm.globalAlpha = s; gm.drawImage(bl, p[0] - rx, p[1] - ry, rx * 2, ry * 2); }   /* victory: the storm tears open out from the fires */
     for (const [x, y, f] of lamps) { const p = P(x, y, 0.4), rr0 = p[2] * (fin ? 2.5 : 1.75) * f * (1 - lose) * (1 + 0.05 * Math.sin(clock * 3 + x)), ry = rr0 * 0.6; gm.globalAlpha = 1; gm.drawImage(bl, p[0] - rr0, p[1] - ry, rr0 * 2, ry * 2); }   /* warm pools: fire is what lets you see */
     gm.globalAlpha = 1; gm.globalCompositeOperation = "destination-out";
-    { const T = DB & 4 ? null : bossSnowA(); if (T) { gm.save(); gm.translate(VW / 2, VH / 2); gm.rotate(wa); const tw = 1500, th = 750, off = (clock * (200 + 400 * S)) % tw, Rr = Math.hypot(VW, VH) / 2 + 10; gm.globalAlpha = 0.75;
+    { const T = DB & 4 ? null : bossSnowA(); if (T) { gm.save(); gm.translate(VW / 2, VH / 2); gm.rotate(wa); const tw = 1500, th = 750, off = (clock * (200 + 260 * pf + 400 * S)) % tw, Rr = Math.hypot(VW, VH) / 2 + 10; gm.globalAlpha = 0.55 + 0.35 * pf;
       for (let x = -Rr - tw + off; x < Rr; x += tw) for (let y = -Rr; y < Rr; y += th) gm.drawImage(T, x, y, tw + 1, th + 1); gm.restore(); } }   /* the edge bitten by the driven snow (the painted wisps eat into the hole) */
     /* cut the holes, lay it on */
     gv.setTransform(1, 0, 0, 1, 0, 0); gv.globalCompositeOperation = "destination-out"; gv.globalAlpha = fin ? 0.94 : 0.9; gv.drawImage(M, 0, 0); gv.globalCompositeOperation = "source-over"; gv.globalAlpha = 1;
-    gv.setTransform(sx, 0, 0, sy, 0, 0); if (!(DB & 2)) bossSheets(gv, VW, VH, wa, 330 + 520 * S + 500 * surge, (0.3 + 0.45 * Math.min(1, S)) * (1 - clr), 1.15, true, true); gv.setTransform(1, 0, 0, 1, 0, 0);   /* driven snow across the clear holes too (this stage's gust sheets: ch2Weather leaves them out here) */
+    gv.setTransform(sx, 0, 0, sy, 0, 0); if (!(DB & 2)) bossSheets(gv, VW, VH, wa, 300 + 380 * pf + (520 + 300 * pf) * S + 500 * surge, (0.12 + 0.3 * pf + (0.4 + 0.25 * pf) * Math.min(1, S)) * (1 - clr), 1.15, true, true); gv.setTransform(1, 0, 0, 1, 0, 0);   /* driven snow across the clear holes too (this stage's gust sheets: ch2Weather leaves them out here) */
     if (A < 0.999) { gv.globalCompositeOperation = "destination-in"; gv.fillStyle = `rgba(0,0,0,${A.toFixed(3)})`; gv.fillRect(0, 0, vw, vh); gv.globalCompositeOperation = "source-over"; }   /* its strength baked in on the small sheet, so the full-screen draw is a plain one */
     if (!(DB & 16)) { ctx.save(); ctx.imageSmoothingEnabled = true; ctx.drawImage(V, 0, 0, VW, VH); ctx.restore(); }
   }
   /* over everything (units too), under the HUD: the surge of a phase change, and the white closing on a frozen loss */
-  function bossOver() { const surge = bossSurge(), lose = BOSS.loseT !== null ? Math.min(1, (clock - BOSS.loseT) / 1.3) : 0, a = Math.max(0.8 * surge, 0.92 * lose); if (a <= 0.01) return;
+  function bossOver() { const surge = bossSurge(), lose = BOSS.loseT !== null ? Math.min(1, (clock - BOSS.loseT) / 1.3) : 0, a = Math.max(0.8 * surge, 0.92 * lose), pf = bossPf(), gs = game.frost.clearT === null && !BOSS.cut ? Math.max(0, pf - 0.15) * (0.25 + 0.75 * Math.min(1, QW.S || 0)) : 0;   /* gs: from the second clearing on, the driven snow crosses our own people too, more each time */
+    if (a <= 0.01 && gs <= 0.01) return;
     const sd = scale * dpr, wa = Math.atan2(QW.vy || 0.6, QW.vx || 0.3);
-    ctx.save(); ctx.setTransform(sd, 0, 0, sd, 0, 0); bossTileBody(ctx, VW, VH, VH * 0.7, BOSS.ox * 1.6, BOSS.oy * 1.6, a); bossSheets(ctx, VW, VH, wa, 900, a * 0.9, 1.2); ctx.restore(); }
-  /* the final storm's cutscene: the board thins, the first painting (the far view, the impossible storm on the horizon) from close on the gate yard pulling up and back, a slow
-     push toward the storm; the second (it breaks over the city) pushing in fast, streamers and the storm wall coming down over the frame, a white flash, the board in the storm */
-  function drawBossCut() { const C = BOSS.cut, T = clock - C.t0, sd = scale * dpr, A = IMG.cut_c2_im10a, Bm = IMG.cut_c2_im10b;
-    if (T >= CUT_END) { BOSS.cut = null; return; }
-    if (T >= CUT_BACK - 0.1 && !C.banner) { C.banner = true; if (BOSS.banner) { banner(...BOSS.banner); BOSS.banner = null; } if (!reduceMotion) shake = Math.max(shake, 0.9); }
+    ctx.save(); ctx.setTransform(sd, 0, 0, sd, 0, 0); if (a > 0.01) bossTileBody(ctx, VW, VH, VH * 0.7, BOSS.ox * 1.6, BOSS.oy * 1.6, a); bossSheets(ctx, VW, VH, wa, 700 + 500 * pf, Math.max(a * 0.9, gs * 0.75), 1.2); ctx.restore(); }
+  /* a line of the script, in the terminal's own box */
+  function bossLine(L, T) { if (!L || T < L[0] || T > L[1]) return; const k = "ln" + L[0]; const C = BOSS.cut; if (!C[k]) C[k] = { txt: L[3], who: L[2], at: "low", t: 0 };
+    C[k].t = T - L[0]; panel(C[k]); }
+  /* both cutscenes are the two paintings moved in layers: the picture itself, its own storm band drifting over itself, the driven-snow sheets at two depths, the storm wall as a curtain,
+     and the lower part of the picture (the city) drawn again a little larger and later, so near and far slide against each other */
+  function drawBossCut() { const C = BOSS.cut, D = CUTS[C.kind], T = clock - C.t0, sd = scale * dpr, A = IMG.cut_c2_im10a, Bm = IMG.cut_c2_im10b;
+    if (T >= D.end) { BOSS.cut = null; return; }
+    if (T >= D.back - 0.1 && !C.banner) { C.banner = true; if (BOSS.banner) { banner(...BOSS.banner); BOSS.banner = null; } if (!reduceMotion) shake = Math.max(shake, 0.9); }
     ctx.save(); ctx.setTransform(sd, 0, 0, sd, 0, 0); ctx.imageSmoothingEnabled = true;
-    const cover = (im, z, cx, cy, a) => { if (!ready(im) || a <= 0.005) return; const iw = im.naturalWidth || im.width, ih = im.naturalHeight || im.height, s0 = Math.max(VW / iw, VH / ih) * z, w = iw * s0, h = ih * s0;
-      const x = Math.min(0, Math.max(VW - w, VW / 2 - cx * w)), y = Math.min(0, Math.max(VH - h, VH / 2 - cy * h)); ctx.globalAlpha = a; ctx.drawImage(im, x, y, w, h); ctx.globalAlpha = 1; return [x, y, w, h]; };
-    const lerp = (a, b, u) => a + (b - a) * u;
-    if (T < CUT_BACK) {
-      const aA = T < 7.3 ? ease((T - 0.45) / 1.1) : 0,   /* kept whole under the second painting's fade-in, so the board never shows through */
-        u1 = ease((T - 0.45) / 4.9), u2 = Math.max(0, Math.min(1, (T - 5.35) / 1.9));
-      const zA = T < 5.35 ? lerp(2.3, 1.04, u1) : lerp(1.04, 1.13, u2), cyA = T < 5.35 ? lerp(0.79, 0.5, u1) : lerp(0.5, 0.43, u2);
-      if (aA > 0) { const r = cover(A, zA, 0.5, cyA, aA);
-        if (r && T > 1.5) { const T2 = IMG.fx_c2_snow, k = Math.min(1, (T - 1.5) / 1.5) * aA; ctx.save(); ctx.beginPath(); ctx.rect(r[0], r[1], r[2], r[3] * 0.44); ctx.clip();   /* the storm wall moving: its own painted band drifting over itself, and curtains falling out of it */
-          ctx.globalCompositeOperation = "lighten"; ctx.globalAlpha = 0.32 * k; const dx = (T * 9) % 40; ctx.drawImage(A, 0, 0, A.naturalWidth, A.naturalHeight * 0.44, r[0] - 20 + dx, r[1] + Math.sin(T * 0.6) * 3, r[2] * 1.02, r[3] * 0.44 * 1.02); ctx.restore();
-          bossSheets(ctx, VW, VH, 1.45, 120, 0.3 * k, 1.3); } }
-      const aB = ease((T - 7.0) / 0.3);
-      if (aB > 0) { const u3 = Math.max(0, Math.min(1, (T - 7.0) / 2.3)), r = cover(Bm, lerp(1.05, 1.32, u3 * u3 * 0.6 + u3 * 0.4), 0.5, lerp(0.56, 0.68, u3), aB);
-        bossSheets(ctx, VW, VH, 0.12, 900 + 900 * u3, (0.3 + 0.6 * u3) * aB, 1.3);
-        const Cc = bossCurtain(); if (Cc) { const hC = VH * 1.0, wC = hC * Cc.width / Cc.height, yC = -hC + (VH + hC * 0.5) * ease((T - 7.25) / 1.95); ctx.globalAlpha = aB;
-          for (let x = ((-T * 140) % wC) - wC; x < VW; x += wC) { ctx.drawImage(Cc, x, yC, wC + 1, hC); for (let y = yC - hC; y > -hC; y -= hC) ctx.drawImage(BOSS.curtTile, x, y, wC + 1, hC + 1); } ctx.globalAlpha = 1; } }   /* the white swallowing the frame from the top */
-      if (T > 0.3 && T < 7.6) text("탭하여 건너뛰기", VW - 24, VH - 24, 16, `rgba(255,255,255,${0.55 * Math.min(1, (T - 0.3) / 0.5)})`, { align: "right", weight: 700, shadow: true });
-      buttons.push({ x: 0, y: 0, w: VW, h: VH, act: () => { if (BOSS.cut && clock - BOSS.cut.t0 < 8.95) BOSS.cut.t0 = clock - 8.95; } });   /* a tap skips to the flash */
+    const lerp = (a, b, u) => a + (b - a) * u, c01 = (v) => Math.max(0, Math.min(1, v));
+    const cover = (im, z, cx, cy, a, top, bot) => { if (!ready(im) || a <= 0.005) return; const iw = im.naturalWidth || im.width, ih = im.naturalHeight || im.height, s0 = Math.max(VW / iw, VH / ih) * z, w = iw * s0, h = ih * s0;
+      const x = Math.min(0, Math.max(VW - w, VW / 2 - cx * w)), y = Math.min(0, Math.max(VH - h, VH / 2 - cy * h)), t0 = top || 0, b0 = bot === undefined ? 1 : bot;
+      ctx.globalAlpha = a; ctx.drawImage(im, 0, ih * t0, iw, ih * (b0 - t0), x, y + h * t0, w, h * (b0 - t0)); ctx.globalAlpha = 1; return [x, y, w, h]; };
+    /* the near layer: the picture's lower part once more, larger about the frame's foot, its upper edge feathered */
+    const near = (im, r, from, grow, a) => { if (!r || a <= 0.005 || reduceMotion) return; const iw = im.naturalWidth || im.width, ih = im.naturalHeight || im.height, y0 = r[1] + r[3] * from, hh = r[3] * (1 - from), g2 = 1 + grow;
+      const cv = BOSS.nearC || (BOSS.nearC = document.createElement("canvas")); const cw = 448, ch = Math.max(8, Math.round(448 * hh / r[2])); if (cv.width !== cw || cv.height !== ch) { cv.width = cw; cv.height = ch; }
+      const g = cv.getContext("2d"); g.globalCompositeOperation = "source-over"; g.clearRect(0, 0, cw, ch); g.drawImage(im, 0, ih * from, iw, ih * (1 - from), 0, 0, cw, ch);
+      g.globalCompositeOperation = "destination-in"; const gr = g.createLinearGradient(0, 0, 0, ch); gr.addColorStop(0, "rgba(0,0,0,0)"); gr.addColorStop(0.45, "rgba(0,0,0,1)"); g.fillStyle = gr; g.fillRect(0, 0, cw, ch);
+      ctx.globalAlpha = a; ctx.drawImage(cv, r[0] - r[2] * grow / 2, y0 - hh * grow * 0.35, r[2] * g2, hh * g2); ctx.globalAlpha = 1; };
+    const band = (im, r, T, k) => { if (!r || k <= 0.01) return; ctx.save(); ctx.beginPath(); ctx.rect(r[0], r[1], r[2], r[3] * 0.44); ctx.clip();   /* the storm wall moving: its own painted band drifting over itself */
+      ctx.globalCompositeOperation = "lighten"; ctx.globalAlpha = 0.32 * k; const dx = (T * 9) % 40; ctx.drawImage(im, 0, 0, im.naturalWidth, im.naturalHeight * 0.44, r[0] - 20 + dx, r[1] + Math.sin(T * 0.6) * 3, r[2] * 1.02, r[3] * 0.44 * 1.02); ctx.restore(); };
+    const curtain = (u, a, sp) => { const Cc = bossCurtain(); if (!Cc || a <= 0.005) return; const hC = VH * 1.0, wC = hC * Cc.width / Cc.height, yC = -hC + (VH + hC * 0.5) * u; ctx.globalAlpha = a;
+      for (let x = ((-T * sp) % wC) - wC; x < VW; x += wC) { ctx.drawImage(Cc, x, yC, wC + 1, hC); for (let y = yC - hC; y > -hC; y -= hC) ctx.drawImage(BOSS.curtTile, x, y, wC + 1, hC + 1); } ctx.globalAlpha = 1; };
+    let fl = 0;
+    if (C.kind === "far") {
+      if (T < D.back + 0.05) { const aIn = ease((T - 0.45) / 1.1), aOut = 1 - ease((T - D.skip) / (D.back - D.skip)), a = aIn * aOut;
+        const u1 = ease((T - 0.45) / 4.4), u2 = c01((T - 4.85) / 3.4), z = T < 4.85 ? lerp(2.3, 1.06, u1) : lerp(1.06, 1.15, u2), cy = T < 4.85 ? lerp(0.79, 0.47, u1) : lerp(0.47, 0.42, u2);
+        const r = cover(A, z, 0.5, cy, a); if (r) { const k = c01((T - 1.5) / 1.5) * a; band(A, r, T, k); bossSheets(ctx, VW, VH, 1.45, 120, 0.3 * k, 1.3); near(A, r, 0.6, 0.035 + 0.05 * u2 + 0.03 * (1 - u1), a); }
+        if (!reduceMotion && T > 2.2 && T < D.skip) shake = Math.max(shake, 0.1 + 0.3 * c01((T - 2.2) / 1.2) * (0.6 + 0.4 * Math.sin(T * 5.3)));   /* the ground shaking under it */
+      }
+    } else {
+      if (T < D.back) {
+        /* the sky first: the far view, tilted up */
+        const aA = T < 4.6 ? ease((T - 0.45) / 0.9) : 0, uA = ease((T - 0.45) / 3.4);
+        if (aA > 0) { const r = cover(A, lerp(1.2, 1.5, uA), 0.5, lerp(0.5, 0.2, uA), aA); band(A, r, T, aA); bossSheets(ctx, VW, VH, 1.4, 160 + 200 * uA, (0.25 + 0.3 * uA) * aA, 1.3); }
+        /* and it comes down */
+        const aB = ease((T - 4.0) / 0.6);
+        if (aB > 0) { const u3 = c01((T - 4.0) / 6.6), z = lerp(1.04, 1.36, u3 * u3 * 0.6 + u3 * 0.4), cy = lerp(0.3, 0.68, ease(u3 * 1.25)), r = cover(Bm, z, 0.5, cy, aB);
+          band(Bm, r, T * 2.4, aB * (0.6 + 0.4 * u3));
+          bossSheets(ctx, VW, VH, 1.25 - 0.9 * u3, 500 + 1300 * u3, (0.25 + 0.65 * u3) * aB, 1.3);
+          curtain(ease((T - 5.2) / 5.2) * 0.93, aB * c01((T - 5.0) / 0.8), 140 + 260 * u3);
+          near(Bm, r, 0.58, 0.04 + 0.12 * u3, aB * (1 - 0.75 * ease((T - 7.6) / 2.6)));
+          bossSheets(ctx, VW, VH, 1.0 - 0.8 * u3, 900 + 1500 * u3, 0.5 * u3 * aB, 2.2);
+          if (!reduceMotion && T < D.skip) shake = Math.max(shake, 0.08 + 0.5 * u3 * u3); }
+      }
+      fl = T < D.skip ? 0 : T < D.skip + 0.35 ? ease((T - D.skip) / 0.35) : T < D.back ? 1 : 1 - ease((T - D.back) / (D.end - D.back));
     }
-    const fl = T < 8.95 ? 0 : T < 9.3 ? ease((T - 8.95) / 0.35) : T < CUT_BACK ? 1 : 1 - ease((T - CUT_BACK) / (CUT_END - CUT_BACK));
     if (fl > 0) { ctx.fillStyle = `rgba(246,249,255,${fl})`; ctx.fillRect(0, 0, VW, VH); }
+    if (T < D.skip) { for (const L of D.lines) bossLine(L, T);
+      if (T > 0.3) text("탭하여 건너뛰기", VW - 24, VH - 24, 16, `rgba(255,255,255,${0.55 * Math.min(1, (T - 0.3) / 0.5)})`, { align: "right", weight: 700, shadow: true });
+      buttons.push({ x: 0, y: 0, w: VW, h: VH, act: () => { if (BOSS.cut && clock - BOSS.cut.t0 < D.skip) BOSS.cut.t0 = clock - D.skip; } }); }   /* a tap skips to the end of it */
     ctx.restore(); }
-  /* the frost fog over unopened squares on a painting: a white bank of soft cloud, lit from the upper left and shaded below, its edge ragged; a square that opens sees its fog lift and roll away.
-     The settled bank is drawn once into its own sheet (kept until the open squares change); only the squares lifting are drawn every frame */
-  const PFOG = { key: "", c: null, puff: null };
+  /* the storm is over: the last line of the script, held over the clearing */
+  function drawBossEnd() { const L = BOSS.endLine; if (!L) return; const sd = scale * dpr; L.t = clock - L.c0 - 0.5; if (L.t <= 0) return;
+    ctx.save(); ctx.setTransform(sd, 0, 0, sd, 0, 0); panel(L); ctx.restore(); }
   function pFogPuffs() { if (PFOG.puff) return PFOG.puff;
     PFOG.puff = [0, 1, 2].map((v) => mkCanvas(128, 96, (g) => { let sd = 17 + v * 41; const r2 = () => (sd = (sd * 16807) % 2147483647) / 2147483647, bl = [];
       for (let i = 0; i < 9; i++) bl.push([30 + r2() * 68, 34 + r2() * 30, 16 + r2() * 20]);
@@ -17001,7 +17040,7 @@ window.BGM = (() => {
     if (egCine) { const rt = clock - egCine.rt0;   // 김은결: the world holds still for him
       if (egCine.kind === "legion") return rt < 0.95 ? 0 : Math.min(1, 0.1 + 0.9 * Math.pow(Math.min(1, (rt - 0.95) / 0.8), 1.5));
       return rt < 0.35 ? 0 : Math.min(1, (rt - 0.35) / 0.4); }
-    if (BOSS.cut && clock - BOSS.cut.t0 < CUT_BACK && BOSSON()) return 0;   /* 2-10: the world holds still through the cutscene */
+    if (BOSS.cut && clock - BOSS.cut.t0 < CUTS[BOSS.cut.kind].back && BOSSON()) return 0;   /* 2-10: the world holds still through the cutscene */
     const C = vlCine; if (!C) return 1;
     const rt = clock - C.rt0; return rt < 1.0 ? 0 : Math.min(1, 0.08 + 0.92 * Math.pow(Math.min(1, (rt - 1.0) / 2.2), 1.8));
   }
@@ -18101,6 +18140,7 @@ window.BGM = (() => {
     if (phase === "play" && game.march && game.march.choose) drawRoute(game.march);   // the ways on, over everything
     if ((selected || inspect >= 0) && phase === "play") drawKwTip(); else kwTip = null;
     if (BOSS.cut && BOSSON()) drawBossCut();
+    if (BOSS.endLine && BOSSON() && BOSS.game === game && phase === "play") drawBossEnd();
     if (paused && phase === "play" && !quitAsk) {
       // after the original: a big pale PAUSE over the field, which stays visible
       rect(0, 0, VW, VH, "rgba(0,0,0,.22)");
@@ -19281,7 +19321,7 @@ window.BGM = (() => {
     const wd0 = ln.who && TD.UNITS.find((u) => u.id === ln.who), wi0 = wd0 && artOf(wd0, null, "card");
     const ox0 = wi0 && wi0.complete && wi0.naturalWidth ? Math.round(92 * BIG) * wi0.naturalWidth / wi0.naturalHeight - 52 : 0;
     const lines = wrapRuby(ln.txt, w - 110 - ox0, size), h = Math.round(50 * BIG) + lines.length * lh;
-    const y = ln.at === "top" ? 88 : ln.at === "mid" ? 230 : VH - (TOUCH ? 180 : 150) - h - 16;
+    const y = ln.at === "low" ? VH - h - 34 : ln.at === "top" ? 88 : ln.at === "mid" ? 230 : VH - (TOUCH ? 180 : 150) - h - 16;
     const a = Math.min(1, ln.t * 5);
     ctx.save(); ctx.globalAlpha = a;
     const gr = ctx.createLinearGradient(x, 0, x + w, 0); gr.addColorStop(0, "rgba(6,18,26,.94)"); gr.addColorStop(1, "rgba(6,14,20,.86)");
@@ -19571,7 +19611,7 @@ window.BGM = (() => {
       if (game.leaked > before) { flashLeak = 1; shake = 0.7; }
       for (const f of game.fx) if (f.k === "shock" && !f.seen) { f.seen = true; shake = 1.4; flashWhite = 0.7; }
     }
-    if (phase === "play" && game.over && BOSSON() && game.over === "win" && (BOSS.winT === null || clock - BOSS.winT < 2)) { if (BOSS.winT === null) BOSS.winT = clock; }   /* 2-10: the clear painting held 2 s before the clear screen */
+    if (phase === "play" && game.over && BOSSON() && game.over === "win" && (BOSS.winT === null || clock - BOSS.winT < 2.6)) { if (BOSS.winT === null) BOSS.winT = clock; }   /* 2-10: the clear painting held 2 s before the clear screen */
     else if (phase === "play" && game.over) { if (onEnd && !game.stage.tutorial && !game.stage.sandbox) startFin(); else { phase = "end"; selected = null; aim = null; drag = null; pending = -1; } }
     if (phase === "fin" && fin) { fin.t += real; CAM.e = fin.win ? ease3(Math.min(1, fin.t / FIN_TILT)) : 0; if (fin.shot && fin.t >= (fin.win ? 3.7 : 2.6)) finHand(fin.shot); }
     routes = routes.filter((r) => r.t < r.life);
