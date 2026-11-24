@@ -21626,6 +21626,7 @@ window.BSL_ECON = (() => {
   return { supplyPreview, supplyKeys, SIX_REC, BASE_SKILLS, CLS, clsKey, MATS, ITEMS, REFINE, expNeed, coinPerExp, matsOf, promoCost, skillCost, masteryCost, MS_HOURS, DROPS, SUPPLY, OPEN, SUPPLY_META, supplyDrops, ZONES, BASE };
 })();
 
+window.BSL_DEV = true;
 // Lobby and everything around the battles: the main menu, operations, squads, operators, headhunting, base.
 // DOM drawn on a fixed 1280x720 sheet that is scaled to the stage like the battle canvas.
 (function () {
@@ -26156,7 +26157,7 @@ window.BSL_ECON = (() => {
     return { main: id };
   }
   // a scene's weather: soft snow drifting down, or a blizzard driving across from the right.
-  function storyWeather(wg, kind, flakes, dt) {
+  function storyWeather(wg, kind, flakes, dt, lite) {   /* lite: a sheet is open over the scene, so one layer of snow is enough behind it */
     const bl = kind === "blizzard", t = (flakes.t = (flakes.t || 0) + dt);
     if (!bl) {   // gentle snow
       while (flakes.length < 160) { const z = Math.random(); flakes.push({ x: Math.random() * VW, y: Math.random() * VH, z, ph: Math.random() * 6.28 }); }
@@ -26172,7 +26173,7 @@ window.BSL_ECON = (() => {
     const wo = wg.createLinearGradient(VW, 0, 0, 0); wo.addColorStop(0, `rgba(214,224,236,${0.1 + 0.16 * gust})`); wo.addColorStop(1, `rgba(214,224,236,${0.02 + 0.07 * gust})`);
     wg.fillStyle = wo; wg.fillRect(0, 0, VW, VH);
     if (T) { const R = Math.hypot(VW, VH) / 2 + 10; flakes.o = flakes.o || [0, 0, 0];
-      for (let l = 0; l < 3; l++) { const kk = [0.9, 1.6, 2.7][l], w = 1024 * kk, hh = 512 * kk; flakes.o[l] = (flakes.o[l] + [300, 520, 900][l] * (0.6 + 0.7 * gust) * dt) % w;
+      for (let l = lite ? 1 : 0; l < (lite ? 2 : 3); l++) { const kk = [0.9, 1.6, 2.7][l], w = 1024 * kk, hh = 512 * kk; flakes.o[l] = (flakes.o[l] + [300, 520, 900][l] * (0.6 + 0.7 * gust) * dt) % w;
         wg.save(); wg.translate(VW / 2, VH / 2); wg.rotate(Math.PI - 0.16 - l * 0.05); wg.globalAlpha = [0.55, 0.6, 0.42][l] * (0.6 + 0.4 * gust);
         for (let x = -R - w + flakes.o[l]; x < R; x += w) for (let y = -R - ((l * 170) % hh); y < R; y += hh) wg.drawImage(T, x, y, w + 1, hh + 1);
         wg.restore(); } }
@@ -26335,8 +26336,7 @@ window.BSL_ECON = (() => {
       g.lineCap = "round"; g.lineJoin = "round";
       // the sweep
       if (st.scan && scan < 1.2) { const sx = scan * 1000, sg = g.createLinearGradient(sx - 90, 0, sx, 0); sg.addColorStop(0, "rgba(127,227,255,0)"); sg.addColorStop(1, "rgba(127,227,255,.28)"); g.fillStyle = sg; g.fillRect(sx - 90, 0, 90, 420); g.fillStyle = "rgba(170,240,255,.95)"; g.fillRect(sx, 0, px(2), 420); }
-      g.fillStyle = "rgba(6,16,24,.42)"; g.fillRect(0, 0, Math.min(1000, scan * 1000), 420);   // the scanned part goes dark and cold, so the marks stand out
-      g.shadowColor = "rgba(0,0,0,.85)"; g.shadowBlur = 6;
+      g.fillStyle = "rgba(6,16,24,.52)"; g.fillRect(0, 0, Math.min(1000, scan * 1000), 420);   // the scanned part goes dark and cold, so the marks stand out
       // the burning city, as the terminal reads it: heat
       if (seen(F.city[0])) { const [x, y] = F.city, hg = g.createRadialGradient(x, y, 4, x, y, 52 + 6 * pulse); hg.addColorStop(0, `rgba(255,120,40,${0.45 + 0.15 * pulse})`); hg.addColorStop(0.6, "rgba(255,60,30,.18)"); hg.addColorStop(1, "rgba(255,60,30,0)"); g.fillStyle = hg; g.beginPath(); g.arc(x, y, 60, 0, 6.283); g.fill(); }
       // Ney's line along the western foot of the range, its teeth facing east
@@ -26435,6 +26435,19 @@ window.BSL_ECON = (() => {
     g.restore();
   }
   window.__bslPlay = (key) => playStory(key, () => {});   // for checking a scene on its own
+  /* the test build only (window.BSL_DEV, set by deploy_dev.sh): every story scene in a list, read in any order without playing the stage */
+  if (window.BSL_DEV) { const CH = [["TR", "훈련"], ["START", "시작"], ["BL", "1장"], ["BASE", "기지"], ["IM", "2장"], ["WL", "3장"]];
+    const btn = document.createElement("div"); btn.textContent = "스토리 열람"; btn.style.cssText = "position:fixed;left:10px;bottom:10px;z-index:60;padding:9px 14px;background:rgba(8,18,26,.92);color:#7fe3ff;border:1px solid rgba(127,227,255,.7);font:700 14px sans-serif;border-radius:4px;cursor:pointer";
+    const ov = document.createElement("div"); ov.hidden = true; ov.style.cssText = "position:fixed;inset:0;z-index:61;background:rgba(6,12,18,.97);color:#e8f2f6;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px 16px 40px;font:14px sans-serif";
+    const nameOf = (code) => { const st = TD.STAGES.find((q) => q.code === code); return st ? st.name : ""; };
+    const build = () => { ov.innerHTML = ""; const x = document.createElement("div"); x.textContent = "닫기"; x.style.cssText = "position:sticky;top:0;float:right;padding:8px 14px;border:1px solid #7fe3ff;color:#7fe3ff;background:#08121a;border-radius:4px;cursor:pointer"; x.onclick = () => { ov.hidden = true; }; ov.appendChild(x);
+      for (const [pre, label] of CH) { const keys = Object.keys(STORIES).filter((k) => k.split("-")[0].split(":")[0] === pre); if (!keys.length) continue;
+        const hd = document.createElement("div"); hd.textContent = label; hd.style.cssText = "clear:both;margin:18px 0 8px;font:800 17px sans-serif;color:#7fe3ff"; ov.appendChild(hd);
+        const wrap = document.createElement("div"); wrap.style.cssText = "display:flex;flex-wrap:wrap;gap:8px"; ov.appendChild(wrap);
+        for (const k of keys) { const [code, part] = k.split(":"), b = document.createElement("div"); b.textContent = code + " " + nameOf(code) + (part === "before" ? " · 전" : part === "after" ? " · 후" : "");
+          b.style.cssText = "padding:10px 12px;border:1px solid rgba(255,255,255,.25);border-radius:4px;cursor:pointer;background:rgba(255,255,255,.04)"; b.onclick = () => { ov.hidden = true; btn.hidden = true; playStory(k, () => { btn.hidden = false; ov.hidden = false; }); }; wrap.appendChild(b); } } };
+    btn.onclick = () => { build(); ov.hidden = false; };
+    document.body.append(btn, ov); setInterval(() => { btn.style.display = host.hidden || document.querySelector(".story") ? "none" : ""; }, 400); }
   window.__bslGo = (r, a) => go(r, a);   // for checking a screen on its own
   function playStory(key, done, opt = {}) {
     if (window.BGM) BGM.stop();   // story scenes keep their own music (none yet): the main track waits
@@ -26461,7 +26474,7 @@ window.BSL_ECON = (() => {
       const t = (now - t0) / 1000, dt = Math.min(0.05, t - lastT); lastT = t;
       g.clearRect(0, 0, VW, VH);
       wg.clearRect(0, 0, VW, VH);
-      if (weather) storyWeather(wg, weather, flakes, dt);
+      if (weather) storyWeather(wg, weather, flakes, dt, !!(smap && smap.a > 0.6));
       if (smap) { smap.a += ((smap.out ? 0 : 1) - smap.a) * 0.12; if (smap.out && smap.a < 0.02) smap = null; else regionMap(wg, smap, t); }
       const ids = Object.keys(chars).sort((a, b) => (a === speakingId) - (b === speakingId));
       for (const id of ids) {
