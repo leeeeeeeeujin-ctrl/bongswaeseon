@@ -1,0 +1,20 @@
+const { chromium } = require("/opt/npm-tools/node_modules/playwright");
+const OUT=process.env.OUT, POS=JSON.parse(process.env.POS||"[7,2]");
+(async () => { const b = await chromium.launch({ args: ["--allow-file-access-from-files"] });
+  const p = await b.newPage({ viewport: { width: 844, height: 390 }, deviceScaleFactor: 3 });
+  await p.goto("file:///home/claude/td/index.html"); await p.waitForTimeout(3500);
+  await p.evaluate((ID) => { window.__bslGo("sandbox"); document.getElementById("meta").hidden = true; TDB.start("sandbox", [{ id: ID, skillIdx: 1, elite: 2, slv: 7 }], () => {}); }, process.env.ID);
+  await p.waitForTimeout(800); for (let i = 0; i < 4; i++) { await p.mouse.click(420, 100); await p.waitForTimeout(120); }
+  await p.evaluate((POS) => { const g = __tdGame(); g.cost = 99; g.deploy(0, POS[0], POS[1], 2); }, POS);
+  await p.waitForTimeout(1500); const clip = { x: +(process.env.CX||330), y: +(process.env.CY||50), width: 200, height: 160 };
+  await p.evaluate(() => { window.__tdScale = 0.15; });
+  await p.screenshot({ path: OUT + "_idle.png", clip });
+  await p.evaluate(() => { const g = __tdGame(); for (let i = 0; i < 3; i++) { const e = g.spawn("soldier", 0); e.hp = e.maxHp = 90000; e.atk = 1; } window.__tdScale = 1; });
+  await p.waitForFunction(() => { const u = __tdGame().units[0]; return u.atkStart !== undefined && __tdGame().t - u.atkStart < 0.05; }, null, { timeout: 30000 });
+  await p.evaluate(() => { window.__tdScale = 0.02; }); await p.waitForTimeout(1200);
+  await p.screenshot({ path: OUT + "_atk.png", clip });
+  await p.evaluate(() => { const g = __tdGame(), u = g.units[0]; u.sp = u.skill.sp; g.useSkill(u); window.__tdScale = 0.1; }); await p.waitForTimeout(2500);
+  await p.screenshot({ path: OUT + "_sum.png", clip });
+  await p.evaluate(() => { window.__tdScale = 0.5; }); await p.waitForTimeout(3000);
+  await p.screenshot({ path: OUT + "_loop.png", clip });
+  await b.close(); })();
