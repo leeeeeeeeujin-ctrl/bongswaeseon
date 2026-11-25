@@ -1,5 +1,6 @@
 # Lucilia, on-model parts (parts3_lucilia.png): silver hair, butterfly ornaments, white frilly dress; casts with bare hands.
 import json
+HDX = -26
 B = [("root", None, 0, 0), ("hip", "root", 54, -170), ("torso", "hip", 62, -212), ("head", "torso", 104, -362),
      ("hair_back", "head", 84, -606), ("hair_mid", "hair_back", 74, -426), ("hair_tip", "hair_mid", 66, -240),
      ("arm_r", "torso", -24, -304), ("forearm_r", "arm_r", -24, -206), ("hand_r", "forearm_r", -24, -112),
@@ -17,7 +18,7 @@ S = {
  "leg_f": {"img": "leg_f", "bone": "leg_l", "s": 0.55, "px": 48, "py": 6, "mesh": {"cols": 2, "rows": 6, "chain": ["leg_l", "shin_l"], "splits": [0.45], "blend": 0.12}},
  "leg_n": {"img": "leg_n", "bone": "leg_r", "s": 0.55, "px": 46, "py": 6, "mesh": {"cols": 2, "rows": 6, "chain": ["leg_r", "shin_r"], "splits": [0.45], "blend": 0.12}},
  "skirt": {"img": "skirt", "bone": "skirt", "s": 0.98, "sx": 1.0, "px": 160, "py": 10, "mesh": {"cols": 6, "rows": 5, "chain": ["skirt", "skirt_hem"], "splits": [0.5], "blend": 0.2}},
- "torso": {"img": "torso", "bone": "torso", "s": 1.06, "px": 114, "py": 160},
+ "torso": {"img": "torso_nn", "bone": "torso", "s": 1.06, "px": 114, "py": 160},
  "head": {"img": "head", "bone": "head", "s": 1.26, "px": 170, "py": 200, "heads": True},
  "uarm_n": {"img": "sleeve_n", "bone": "arm_r", "s": 0.6, "sx": 0.8, "px": 68, "py": 2},
  "farm_n": {"img": "farm_n", "bone": "forearm_r", "s": 0.44, "px": 34, "py": 150, "rot": 123},
@@ -29,4 +30,7 @@ rig = {"bones": bones, "front": {"slots": S, "order": order}, "back": {"slots": 
  "hands": {"open": {"img": "none", "s": 0.1, "px": 0, "py": 0, "ang": 90}},
  "cross": {"img": "none", "s": 1, "px": 0, "py": 0, "grips": {g: {"r": [0, 0], "l": [0, 0]} for g in ("guard", "hammer", "top")}, "head": -100},
  "height": 640, "eyes": [], "heads": {"neutral": "head", "closed": "head_closed", "blink": "head_closed"}, "trail": [[250, 240, 255], [200, 160, 255], [140, 90, 220], [60, 30, 110]]}
+import os
+from headshift import shift_head
+shift_head(rig["bones"], float(os.environ.get("HEADDX", HDX)))
 json.dump(rig, open("art/lucilia3/u_rig.json", "w"))

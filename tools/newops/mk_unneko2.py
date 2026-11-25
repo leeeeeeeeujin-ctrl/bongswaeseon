@@ -1,5 +1,6 @@
 # unneko rig from the GPT-style parts (art/unneko2). Units: feet on y=0, about 640 tall. n = near (viewer) side, f = far side; rig3 names: r = near, l = far.
 import json
+HDX = 0
 P = {}   # tweakables
 B = [("root", None, 0, 0), ("hip", "root", 22, -172), ("torso", "hip", 22, -196), ("head", "torso", 30, -318),
      ("arm_r", "torso", -4, -288), ("forearm_r", "arm_r", -4, -212), ("hand_r", "forearm_r", -4, -137),
@@ -32,4 +33,7 @@ rig = {"bones": bones, "front": {"slots": S, "order": order}, "back": {"slots": 
  "hands": {"open": {"img": "none", "s": 0.1, "px": 0, "py": 0, "ang": 90}},
  "cross": {"img": "saw", "s": ws, "px": 110, "py": 110, "grips": {g: {"r": [-58, 14], "l": [22, -65]} for g in ("guard", "hammer", "top")}, "head": -300},
  "height": 640, "eyes": [], "heads": {"neutral": "head", "closed": "head_closed", "blink": "head_closed"}, "trail": [[255, 244, 232], [255, 154, 104], [206, 55, 45], [80, 14, 22]]}
+import os
+from headshift import shift_head
+shift_head(rig["bones"], float(os.environ.get("HEADDX", HDX)))
 json.dump(rig, open("art/unneko2/u_rig.json", "w"))

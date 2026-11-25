@@ -1,5 +1,6 @@
 # Helena, on-model parts (parts3_helena.png): red curly hair, pointed elf ears, wide witch hat, dark cape and robe, crooked wooden cane.
 import json
+HDX = 0
 B = [("root", None, 0, 0), ("hip", "root", 64, -170), ("torso", "hip", 70, -184), ("head", "torso", 88, -300), ("hat", "head", 52, -462),
      ("hair_back", "head", 40, -430), ("hair_mid", "hair_back", 36, -330), ("hair_tip", "hair_mid", 32, -210),
      ("cape", "torso", 120, -290),
@@ -33,5 +34,8 @@ rig = {"bones": bones, "front": {"slots": S, "order": order}, "back": {"slots": 
  "hands": {"open": {"img": "none", "s": 0.1, "px": 0, "py": 0, "ang": 90}},
  "cross": {"img": "cane", "s": cs, "px": 62, "py": 78, "grips": {"top": {"r": L(40, 18), "l": L(34, 2)}, "guard": {"r": L(54, 170), "l": L(56, 148)}, "hammer": {"r": L(47, 236), "l": L(49, 214)}}, "head": L(30, 6)[1]},
  "height": 640, "eyes": [], "heads": {"neutral": "head", "closed": "head_grin", "blink": "head", "grin": "head_grin"}, "trail": [[255, 200, 120], [255, 120, 60], [220, 70, 40], [90, 30, 20]]}
+import os
+from headshift import shift_head
+shift_head(rig["bones"], float(os.environ.get("HEADDX", HDX)))
 json.dump(rig, open("art/helena3/u_rig.json", "w"))
 print(rig["cross"])
