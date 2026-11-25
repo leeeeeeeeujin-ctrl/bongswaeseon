@@ -1,0 +1,42 @@
+<!doctype html><html><body style="margin:0;background:#3a4250">
+<canvas id="c"></canvas>
+<script src="rig3.js"></script>
+<script src="nwkf.js"></script>
+<script>
+window.run = async (id, rigFile, clipsFile, glob, rows, sc, cw, ch) => {
+  try { window.KFDATA = await (await fetch(id + '/kf.json?' + Date.now())).json(); } catch (e) { window.KFDATA = null; }
+  window.BG = window.BG || "#4a5362";
+  await new Promise(r => { const s = document.createElement("script"); s.src = id + "/" + clipsFile + "?" + Date.now(); s.onload = r; document.body.appendChild(s); });
+  const data = await (await fetch(id + "/" + rigFile + "?" + Date.now())).json();
+  const names = new Set();
+  const walk = (o) => { if (o && typeof o === "object") for (const k in o) { if (k === "img" && typeof o[k] === "string") names.add(o[k]); else walk(o[k]); } };
+  walk(data); for (const k in (data.heads || {})) names.add(data.heads[k]);
+  const images = {};
+  await Promise.all([...names].map(n => new Promise(r => { const im = new Image(); im.onload = r; im.onerror = r; im.src = id + "/" + n + ".png?" + Date.now(); images[n] = im; })));
+  const rig = new RIG3.Rig3(data, images), C = window[glob].CLIPS;
+  rows = rows.map(r => Array.isArray(r[1]) ? [r[0], r[1].length, r[1]] : r); const cv = document.getElementById("c"); const maxn = Math.max(...rows.map(r => r[1]));
+  cv.width = cw * maxn; cv.height = ch * rows.length; const g = cv.getContext("2d");
+  for (let ri = 0; ri < rows.length; ri++) { const row = rows[ri];
+    const clip = C[row[0]]; if (!clip) continue;
+    const mem = {};
+    for (let i = 0; i < row[1]; i++) {
+      const t = row[2] ? row[2][i] : clip.dur * i / (row[1] - (clip.loop ? 0 : 1));
+      const x = i * cw + cw * 0.45, y = ri * ch + ch - 24;
+      g.fillStyle = "#4a5362"; g.fillRect(i * cw + 2, ri * ch + 2, cw - 4, ch - 4);
+      g.strokeStyle = "#8a93a3"; g.beginPath(); g.moveTo(i * cw + 8, y); g.lineTo(i * cw + cw - 8, y); g.stroke();
+      const st = rig.evaluate(clip, t);
+      if (window.SECOND) for (let k = 0; k < 6; k++) { const s2 = rig.evaluate(clip, Math.max(0, t - (5 - k) * 0.03)); rig.secondary(s2, 0.03, mem); if (k === 5) Object.assign(st, s2); }
+      g.save(); g.translate(x, y); g.scale(sc, sc);
+      if (st.extra.alpha !== undefined) g.globalAlpha = st.extra.alpha;
+      if (rig.drawTrail && clip.trail !== false) try { if (!(window.KFDATA && window.KFDATA[row[0]])) rig.drawTrail(g, clip, t, { edge: 16 }); } catch (e) {}
+      const K = window.KFDATA && window.KFDATA[row[0]];
+      if (K) { for (const f of K.frames) if (!images[f.img]) { const im = new Image(); im.src = id + '/' + f.img + '.png'; images[f.img] = im; await new Promise(r => { im.onload = r; im.onerror = r; }); } const pl = NWKF.draw(g, K, images, t, () => rig.draw(g, st)); g.restore(); g.fillStyle = pl.w >= 1 ? '#8f8' : pl.w > 0 ? '#ff8' : '#f88'; g.fillRect(i * cw + 4, ri * ch + ch - 10, cw - 8, 5); g.save(); }
+      else rig.draw(g, st);
+      g.restore();
+      if (window.OVER) { const o = window.OVER, im = new Image(); im.src = o.src; await new Promise(r => { im.onload = r; im.onerror = r; }); g.save(); g.translate(x + (o.dx || 0) * cw, y); g.scale(sc, sc); g.globalAlpha = o.a; g.drawImage(im, -o.ox * o.k, -o.oy * o.k, im.naturalWidth * o.k, im.naturalHeight * o.k); g.restore(); }
+      g.fillStyle = "#fff"; g.font = "13px sans-serif"; g.fillText(row[0] + " " + t.toFixed(2), i * cw + 8, ri * ch + 18);
+    }
+  }
+  return "ok";
+};
+</script></body></html>
