@@ -49,7 +49,7 @@ fr = {}
 GRID_SHEETS = {"idle16", "atk16", "sum16", "shot16b", "shot16", "shot8", "sum8", "idle8", "atk8"}
 GRID = {}   # sheets drawn in one generation keep GPT's own registration: every cell uses the same anchor point (the first cell's feet)
 SC = {("sum16", i): 286 / h for i, h in zip(range(1, 6), (238, 239, 238, 238, 242))}   # GPT drew the first summon cells a size smaller
-SC[("sum16", 6)] = 286 / 262
+SC.clear()   # sizes are evened out afterwards by facescale.py (face matched to the idle face)
 def F(n, i, tag):
     at = None
     if n in GRID_SHEETS: at = GRID.setdefault(n, feet(C[n][0]))
