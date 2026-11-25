@@ -72,5 +72,8 @@
     [1.7,   10, 118,  16,  20,    86, -170,  90,   1,    -60,  40],
   ], { extra: { head: [[0, "closed"]], blink: [[0, 0]], alpha: [[0, 1], [1.3, 1], [1.7, 0]] } });
   C.attack_un_star = C.attack;
+  // TAILREST: the thin cat tail is drawn hanging straight up; carry it swept back and curling (root leans back, middle and tip curl forward)
+  for (const c of new Set(Object.values(C))) { const b = c.bones; const add = (n, v) => { const k = b[n] || (b[n] = { r: [[0, 0]] }); k.r = (k.r || [[0, 0]]).map((q) => [q[0], q[1] + v, q[2]]); };
+    add("tail", -48); add("tail_mid", 26); add("tail_tip", 30); }
   root.UNNEKO2_MY = { CLIPS: C };
 })(typeof window !== "undefined" ? window : globalThis);

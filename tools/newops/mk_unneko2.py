@@ -5,13 +5,13 @@ B = [("root", None, 0, 0), ("hip", "root", 22, -172), ("torso", "hip", 22, -196)
      ("arm_r", "torso", -4, -288), ("forearm_r", "arm_r", -4, -212), ("hand_r", "forearm_r", -4, -137),
      ("arm_l", "torso", 62, -292), ("forearm_l", "arm_l", 62, -216), ("hand_l", "forearm_l", 62, -141),
      ("leg_r", "hip", -2, -168), ("shin_r", "leg_r", -2, -84), ("leg_l", "hip", 46, -168), ("shin_l", "leg_l", 46, -84),
-     ("tail", "hip", -62, -176), ("tail_mid", "tail", -104, -104), ("tail_tip", "tail_mid", -96, -30),
+     ("tail", "hip", -40, -186), ("tail_mid", "tail", -52, -300), ("tail_tip", "tail_mid", -40, -420),
      ("scarf", "torso", -14, -316), ("scarf_tip", "scarf", -70, -300), ("scarf2", "torso", -12, -304), ("scarf2_tip", "scarf2", -64, -280),
      ("hair_back", "head", 0, -600), ("hair_mid", "hair_back", 0, -500), ("hair_tip", "hair_mid", 0, -400), ("skirt", "hip", 0, -200), ("skirt_hem", "skirt", 0, -150)]
 LEG = {"leg_r": (-16, -225), "shin_r": (-16, -112), "leg_l": (36, -225), "shin_l": (36, -112)}
 bones = [{"name": n, "parent": p, "x": (LEG[n][0] if n in LEG else x - 5 + (38 if n in ("head", "hair_back", "hair_mid", "hair_tip") else 0) if n != "root" else 0), "y": (LEG[n][1] if n in LEG else y - 57 if n != "root" else 0)} for n, p, x, y in B]
 S = {
- "tail": {"img": "tail", "bone": "tail", "s": 0.62, "px": 120, "py": 14, "mesh": {"cols": 3, "rows": 10, "chain": ["tail", "tail_mid", "tail_tip"], "splits": [0.4, 0.74], "blend": 0.16}},
+ "tail": {"img": "tail2", "bone": "tail", "s": 0.6, "px": 140, "py": 560, "mesh": {"cols": 3, "rows": 12, "chain": ["tail_tip", "tail_mid", "tail"], "splits": [0.33, 0.66], "blend": 0.14}},
  "scarf_a": {"img": "scarf_a", "bone": "scarf", "s": 0.62, "px": 160, "py": 46, "rot": 8},
  "scarf_b": {"img": "scarf_b", "bone": "scarf2", "s": 0.6, "px": 154, "py": 20, "rot": -10},
  "uarm_f": {"img": "uarm_f", "bone": "arm_l", "s": 0.44, "px": 50, "py": 38, "rot": 14},
