@@ -1,0 +1,58 @@
+(function (root) {
+  "use strict";
+  const P = (x, y) => ({ x, y }), HN = P(64, -200), HF = P(84, -206), FR = P(36, 0), FL = P(76, 0), Z = 0.001;
+  const C = {};
+  C.idle = { dur: 2.8, loop: true, bones: { hip: { y: [[0, 0], [1.4, 3, "io"], [2.8, 0, "io"]] }, head: { r: [[0, 0], [1.5, 1.5, "io"], [2.8, 0, "io"]] },
+      hair_mid: { r: [[0, 0], [1.4, 2, "io"], [2.8, 0, "io"]] }, hair_tip: { r: [[0, 0], [1.6, 3, "io"], [2.8, 0, "io"]] }, blow_hair: { sx: [[0, Z]], sy: [[0, Z]] } },
+    extra: { G: [[0, HN], [1.4, P(64, -197), "io"], [2.8, HN, "io"]], cr: [[0, 0]], hand_l_at: [[0, HF]], hm_l: [[0, 1]], foot_r: [[0, FR]], foot_l: [[0, FL]] } };
+  const build = (dur, impact, T, opt) => {
+    const col = (i) => T.map((r) => [r[0], r[i], r[13] || "io"]), lag = (k, d) => T.map((r) => [Math.min(dur, r[0] + d), -r[3] * k, "io"]);
+    return { dur, impact, bones: Object.assign({ hip: { x: col(1), y: col(2) }, torso: { r: col(3) }, head: { r: col(4) },
+      hair_back: { r: lag(0.6, 0.04) }, hair_mid: { r: lag(1.3, 0.08) }, hair_tip: { r: lag(1.8, 0.12) }, skirt_hem: { r: lag(0.5, 0.06), sx: T.map((r) => [r[0], 1 + Math.abs(r[3]) * 0.006, "io"]) } }, (opt && opt.bones) || {}),
+      extra: Object.assign({ G: T.map((r) => [r[0], P(r[5], r[6]), r[13] || "io"]), cr: col(7), hand_l_at: T.map((r) => [r[0], P(r[8], r[9]), "io"]), hm_l: [[0, 1]],
+        foot_r: T.map((r) => [r[0], P(r[10], 0), "io"]), foot_l: T.map((r) => [r[0], P(r[11], r[12] || 0), "io"]) }, (opt && opt.extra) || {}) };
+  };
+  //          t     hx  hy  tor head   Gx    Gy   cr    Fx    Fy    fR   fL  fLy
+  C.attack = build(1.3, 0.5, [
+    [0,       0,   0,   0,   0,    64, -200,   0,   84, -206,  36,  76,   0],
+    [0.08,    0,   2,   0,   3,    66, -224,   0,  150, -282,  36,  76,   0],
+    [0.17,   -4,   4,  -3,   2,    70, -280,   0,   86, -286,  34,  76,   0],
+    [0.26,   -6,   6,  -4,  -2,    72, -290,   0,   88, -296,  32,  78,   0],
+    [0.34,   -4,   0,  -4,  -4,    66, -272,   0,  236, -520,  32,  84, -20],
+    [0.41,   -2,  -2,  -4,  -4,    64, -268,   0,  246, -540,  32,  88, -26],
+    [0.46,   10,  10,   6,  -2,    60, -260,   0,  312, -480,  18, 116,  -4, "in2"],
+    [0.5,    22,  18,  12,   2,    58, -250,   0,  360, -400,   6, 130,   0, "in2"],
+    [0.62,   24,  18,  14,   4,    58, -248,   0,  356, -390,   6, 130,   0, "out"],
+    [0.82,   14,  12,   8,   2,    60, -230,   0,  200, -276,  18, 110,   0],
+    [1.02,    6,   6,   4,   0,    62, -210,   0,  120, -224,  30,  88,   0],
+    [1.3,     0,   0,   0,   0,    64, -200,   0,   84, -206,  36,  76,   0],
+  ]);
+  C.skill = build(1.7, 0.9, [
+    [0,       0,   0,   0,   0,    64, -200,   0,   84, -206,  36,  76,   0],
+    [0.25,    0,   4,  -2,   4,    70, -280,   0,   88, -286,  36,  76,   0],
+    [0.5,     0,   0,  -3,  -6,    68, -282,   0,  250, -540,  36,  76,   0],
+    [0.8,     0, -10,  -4, -10,    70, -286,   0,  262, -560,  36,  80, -14, "out"],
+    [1.05,    0, -12,  -4, -12,    70, -288,   0,  262, -562,  36,  80, -16],
+    [1.25,   18,  14,  10,   2,    58, -252,   0,  336, -392,  20, 110,   0, "in2"],
+    [1.45,   10,   8,   6,   0,    60, -236,   0,  220, -290,  30,  90,   0],
+    [1.7,     0,   0,   0,   0,    64, -200,   0,   84, -206,  36,  76,   0],
+  ]);
+  C.die = build(1.7, 0, [
+    [0,       0,   0,   0,   0,    64, -200,   0,   84, -206,  36,  76,   0],
+    [0.25,  -20,   6, -12,  -5,    30, -220,   0,   60, -230,  20,  66,   0, "out"],
+    [0.6,    -6,  36,   8,   3,    50, -180,   0,   80, -180,  24,  70,   0],
+    [1.0,     0,  58,  14,   5,    70, -150,   0,   96, -150,  28,  74,   0, "in2"],
+    [1.3,     0,  62,  18,   6,    74, -146,   0,  100, -146,  28,  74,   0],
+    [1.7,     0,  62,  18,   6,    74, -146,   0,  100, -146,  28,  74,   0],
+  ], { extra: { head: [[0, "closed"]], blink: [[0, 0]], alpha: [[0, 1], [1.3, 1], [1.7, 0]] } });
+  for (const k of ["hair_back", "hair_mid", "hair_tip"]) { C.die.bones[k].r = C.die.bones[k].r.map((f) => [f[0], f[1] * 0.35, f[2]]); for (const c of [C.attack, C.skill]) c.bones[k].r = c.bones[k].r.map((f) => [f[0], f[1] * 0.55, f[2]]); }
+  C.attack.extra.armhi = [[0, 0], [0.29, 0], [0.3, 1], [0.9, 1], [0.91, 0]];
+  C.skill.extra.armhi = [[0, 0], [0.38, 0], [0.4, 1], [1.5, 1], [1.52, 0]];
+  for (const c of [C.attack, C.skill, C.die]) c.bones.blow_hair = { sx: [[0, 0.001]], sy: [[0, 0.001]] };
+  // GPT frame drawings drive these (kf.json); skill = summoning and drawing the sky bow, skill_loop = one shot (release, swing the bow back round, nock, draw), repeated while ammo lasts
+  C.idle.dur = 1.9; C.idle.loop = true;
+  C.attack.dur = 0.95; C.attack.impact = 0.38;
+  C.skill.dur = 1.1; C.skill.impact = 1.1;
+  C.skill_loop = Object.assign({}, C.idle, { dur: 0.6, loop: true });
+  root.LUCILIA5_MY = { CLIPS: C };
+})(typeof window !== "undefined" ? window : globalThis);
