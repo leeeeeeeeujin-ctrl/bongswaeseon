@@ -21,8 +21,8 @@ S = {
  "hat_back": {"img": "hat", "bone": "hat", "s": 1.5, "px": 168, "py": 150},
  "hat": {"img": "hat_front", "bone": "hat", "s": 1.5, "px": 168, "py": 150},
  "uarm_n": {"img": "uarm_n", "bone": "arm_r", "s": 0.62, "px": 62, "py": 22},
- "farm_n": {"img": "farm_n", "bone": "forearm_r", "s": 0.62, "px": 42, "py": 40, "rot": 86, "hideIf": "armlow"},
- "farm_n_lo": {"img": "farm_n", "bone": "forearm_r", "s": 0.62, "px": 42, "py": 40, "rot": 86, "showIf": "armlow"},
+ "farm_n": {"img": "farm_n", "bone": "forearm_r", "s": 0.62, "px": 14, "py": 40, "rot": 86, "hideIf": "armlow"},
+ "farm_n_lo": {"img": "farm_n", "bone": "forearm_r", "s": 0.62, "px": 14, "py": 40, "rot": 86, "showIf": "armlow"},
 }
 order = ["cloak_tail", "hair_back", "foot_f", "foot_n", "robe", "uarm_f", "uarm_n", "farm_f", "torso", "farm_n_lo", "hat_back", "head", "hat", "CROSS", "farm_n"]
 cs = 0.95
