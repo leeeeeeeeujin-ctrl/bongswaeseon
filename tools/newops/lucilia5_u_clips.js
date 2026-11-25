@@ -49,10 +49,10 @@
   C.attack.extra.armhi = [[0, 0], [0.29, 0], [0.3, 1], [0.9, 1], [0.91, 0]];
   C.skill.extra.armhi = [[0, 0], [0.38, 0], [0.4, 1], [1.5, 1], [1.52, 0]];
   for (const c of [C.attack, C.skill, C.die]) c.bones.blow_hair = { sx: [[0, 0.001]], sy: [[0, 0.001]] };
-  // GPT frame drawings drive these (kf.json); skill = summoning and drawing the sky bow, skill_loop = one shot (release, swing the bow back round, nock, draw), repeated while ammo lasts
+  // GPT frame drawings drive these (kf.json); skill = summoning and drawing the sky bow, skill_loop = one shot (release, held follow-through, a new arrow from over the shoulder swung round low and nocked, the bow raised and drawn), repeated while ammo lasts
   C.idle.dur = 1.9; C.idle.loop = true;
   C.attack.dur = 0.95; C.attack.impact = 0.38;
-  C.skill.dur = 1.1; C.skill.impact = 1.1;
-  C.skill_loop = Object.assign({}, C.idle, { dur: 0.6, loop: true });
+  C.skill.dur = 1.05; C.skill.impact = 1.05;
+  C.skill_loop = Object.assign({}, C.idle, { dur: 1.05, loop: true });
   root.LUCILIA5_MY = { CLIPS: C };
 })(typeof window !== "undefined" ? window : globalThis);

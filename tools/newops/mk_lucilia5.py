@@ -40,15 +40,17 @@ kb = k * 533 / 480                # bow sheets are drawn smaller (standing 480 v
 I = [save(f"idle{i}", f) for i, f in enumerate(cells("gpt_lc_idle.png"))]
 a, m = cells("gpt_lc_atk.png"), cells("gpt_lc_atk2.png")
 A = [save(f"atk{j}", f) for j, f in enumerate([a[0], m[0], a[1], m[1], a[2], m[2], a[3], m[3]])]
-sa, sm = cells("gpt_lc_bowA.png"), cells("gpt_lc_bowA2.png")
-SA = [save(f"sum{j}", f, (1.032 if j % 2 == 0 else 1.0)) for j, f in enumerate([sa[0], sm[0], sa[1], sm[1], sa[2], sm[2], sa[3], sm[3]])]
-ba, bm = cells("gpt_lc_bowB.png"), cells("gpt_lc_bowB2.png")
-B = [save(f"shot{j}", f) for j, f in enumerate([bm[0], ba[1], bm[1], ba[2], bm[2], ba[3], bm[3], ba[0]])]   # starts on the release
+sa, sm = cells("gpt_lc_bowA.png"), cells("gpt_lc_bowA2.png"); s5 = cells("gpt_lc_S5.png")
+SA = [save(f"sum{j}", f, (1.032 if j % 2 == 0 and j < 6 else 1.0)) for j, f in enumerate([sa[0], sm[0], sa[1], sm[1], sa[2], sm[2]] + s5)]
+L1, L2, L3, L4 = (cells(f"gpt_lc_L{i}.png") for i in (1, 2, 3, 4))
+# one shot, as Typhon's S3 does it: release, a held follow-through with the eyes shut, the hand over the shoulder for a new arrow,
+# the arrow swung round low in front and nocked, the bow raised and drawn again
+B = [save(f"shot{j}", f) for j, f in enumerate([L4[3], L1[0], L1[1], L1[2], L1[3], L2[0], L2[2], L2[3], L3[0], L3[1], L3[2], L3[3], L4[0], L4[1], L4[2]])]
 kf, durs = {}, {}
 kf["idle"], durs["idle"] = clip(I, [0, 0.55, 1.1, 1.25], k, 1.9)
 kf["attack"], durs["attack"] = clip(A, [0, 0.09, 0.18, 0.28, 0.38, 0.52, 0.66, 0.8], k, 0.95)
-kf["skill"], durs["skill"] = clip(SA + [B[7]], [0, 0.12, 0.24, 0.36, 0.5, 0.64, 0.78, 0.9, 1.02], kb, 1.1)
-kf["skill_loop"], durs["skill_loop"] = clip(B, [0, 0.06, 0.13, 0.2, 0.28, 0.37, 0.45, 0.53], kb, 0.6)
+kf["skill"], durs["skill"] = clip(SA, [0, 0.1, 0.2, 0.3, 0.42, 0.54, 0.66, 0.78, 0.88, 0.97], kb, 1.05)
+kf["skill_loop"], durs["skill_loop"] = clip(B, [0, 0.05, 0.12, 0.24, 0.4, 0.48, 0.55, 0.63, 0.7, 0.77, 0.83, 0.88, 0.93, 0.97, 1.01], kb, 1.05)
 json.dump(kf, open(f"{D}/kf.json", "w"))
 print(durs, round(k, 3), round(kb, 3))
 for n, s in saved.items(): print(n, round(s["ox"]), round(s["oy"]))
