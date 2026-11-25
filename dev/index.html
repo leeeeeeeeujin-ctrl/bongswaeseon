@@ -116,6 +116,13 @@ window.__ART = {"z_cut_atlas": "a/z_cut_atlas.webp?v=59232", "z_hair_back": "a/z
       if (M.verts) return M.verts;
       const s = M.s, sz = this.size(s.img); if (!sz) return null;
       const [w, h] = sz, verts = [], sb = this.bones[s.bone], ch = s.mesh.chain, sp = s.mesh.splits, bl = s.mesh.blend;
+      if (s.mesh.vw) {   // painted weights: one list of [bone, weight] per grid vertex, row by row
+        for (let r = 0; r <= M.rows; r++) for (let c = 0; c <= M.cols; c++) {
+          const u = c / M.cols * w, v = r / M.rows * h, wx = sb.x + (u - s.px) * s.s, wy = sb.y + (v - s.py) * s.s;
+          verts.push({ u, v, ws: s.mesh.vw[r * (M.cols + 1) + c].map(([n, wt]) => [n, wt, wx - this.bones[n].x, wy - this.bones[n].y]) });
+        }
+        return (M.verts = verts);
+      }
       for (let r = 0; r <= M.rows; r++) for (let c = 0; c <= M.cols; c++) {
         const u = c / M.cols * w, v = r / M.rows * h;
         const wx = sb.x + (u - s.px) * s.s * (s.sx || 1), wy = sb.y + (v - s.py) * s.s * (s.sy || 1), f = r / M.rows;
@@ -271,6 +278,7 @@ window.__ART = {"z_cut_atlas": "a/z_cut_atlas.webp?v=59232", "z_hair_back": "a/z
         if (!s) continue;
         if (s.hideIf && st.extra[s.hideIf] > 0.5) continue;
         if (s.showIf && !(st.extra[s.showIf] > 0.5)) continue;
+        if (s.showHeads && s.showHeads.indexOf(st.extra.head || "neutral") < 0) continue;
         if (s.hand) { this.drawHand(g, W, st, name.slice(-1)); continue; }
         let key = s.img;
         if (s.heads) key = D.heads[st.extra.head || "neutral"] || s.img;
